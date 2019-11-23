@@ -26,7 +26,7 @@ Moka::Context all ("**Web++ framework - testing**", [](Moka::Context& it) {
 		app
 		.set_logger(*nil)
 		.set_error_logger(*nil)
-		.route ("/{username:.*}", [](std::string username) { // static setup
+		.route ("/{.*}", [](std::string username) { // static setup
 				return webnetpp::response (webnetpp::status_line ("1.1", "201"), {{"Content-Type", "text/html; charset=utf-8"}}, username);
 		});
 		auto params = webnetpp::path_vars();
@@ -41,14 +41,17 @@ Moka::Context all ("**Web++ framework - testing**", [](Moka::Context& it) {
 		app
 		.set_logger(*nil)
 		.set_error_logger(*nil)
-		.route ("/{username:.*}", [testing_header](std::string username) { // static setup
+		.route ("/{.*}", [testing_header](std::string username) { // static setup
 				return webnetpp::response (webnetpp::status_line ("1.1", "201"), {{"Custom-header", testing_header}, {"Content-Type", "text/html; charset=utf-8"}}, username);
 		});
-		
+		try {
 		auto params = webnetpp::path_vars();
 		params += {username, "string"};
 		auto r = (*app.get_routes().begin()).second.call(params);
 		must_equal("HTTP/1.1 201 Created\nContent-Type: text/html; charset=utf-8\nCustom-header: " + testing_header + "\n\n" + username, r.to_string());
+		}catch(std::exception& e) {
+			std::cout << e.what() << std::endl;
+		}
 	});
 	it.should("Pass functional test", [](){
 		bool ended = false;
