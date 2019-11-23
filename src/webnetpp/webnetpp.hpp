@@ -1,23 +1,20 @@
 #pragma once 
 
 #ifdef _WIN32
-	// #define _WIN32_WINNT 0x0501
 	#define WIN32_LEAN_AND_MEAN
 	#include <winsock2.h>
 	#include <winsock.h>
 	#include <windows.h>
 	#define SO_REUSEPORT SO_BROADCAST
 	using socklen_t = int;
-	#include <thread>
-	#define mingw_stdthread std
 	#include <stopwatch.h>
 #else
 	#include <sys/socket.h> 
 	#include <netinet/in.h> 
-	// #include <filesystem>
-	#include <thread>
-	#define mingw_stdthread std
 #endif
+
+#include <thread>
+#define mingw_stdthread std
 
 /*
 #if defined(__cplusplus) && __cplusplus >= 201703L && defined(__has_include)
