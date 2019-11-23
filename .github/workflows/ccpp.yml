@@ -10,8 +10,8 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: make build
-      run: make build
+      run: GCC=g++ make build
     - name: make build_test
-      run: make build_test
+      run: GCC=g++ make build_test
     - name: make run_tests
-      run: make run_tests
+      run: GCC=g++ make run_tests
