@@ -1,4 +1,4 @@
-name: Build under Windows (suggested MinGW)
+name: Build under Linux
 
 on: [push]
 
