@@ -7,6 +7,8 @@ LIB_FLAGS=-static
 
 ifeq ($(OS),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...
     LIB_FLAGS += -lwsock32 -lws2_32
+else
+	LIB_FLAGS += -pthread
 endif
 
 WARNING_FLAGS=-Wall -Wno-long-long -pedantic -fconcepts
