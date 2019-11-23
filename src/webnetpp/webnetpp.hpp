@@ -16,6 +16,7 @@
 	#include <netinet/in.h> 
 	// #include <filesystem>
 	#include <thread>
+	#define mingw_stdthread std
 #endif
 
 /*
