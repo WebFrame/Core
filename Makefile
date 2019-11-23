@@ -1,4 +1,4 @@
-COMPILER_CPP=${GCC}
+COMPILER_CPP=g++
 CPP_STD=--std=c++17 -O3 -Ofast
 INCLUDE_DIRS=-I./tests -I./src -I./lib/win/mingw-std-threads-master -I./lib/win/filesystem-master/include/ -I./lib/win/stopwatch/ 
 JINJA2CPP=-I./lib/Jinja2Cpp/.jinja2cpp-install/include -L./lib/Jinja2Cpp/.jinja2cpp-install/lib/static -ljinja2cpp
