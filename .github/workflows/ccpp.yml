@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: jinja
-      run: cd ./lib/Jinja2Cpp/ && rm -rf .jinja2cpp-{build,install}/* && cmake ../ -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../.jinja2cpp-install -DJINJA2CPP_BUILD_TESTS=OFF -DJINJA2CPP_DEPS_MODE=internal -DJINJA2CPP_CXX_STANDARD=17 && cmake --build . --config Release --target install
+      run: cd ./lib/Jinja2Cpp/ && rm -rf .jinja2cpp-{build,install}/* && cd .jinja2cpp-build && cmake ../ -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../.jinja2cpp-install -DJINJA2CPP_BUILD_TESTS=OFF -DJINJA2CPP_DEPS_MODE=internal -DJINJA2CPP_CXX_STANDARD=17 && cmake --build . --config Release --target install
       shell: bash
     - name: make build
       run: GCC=g++ make build
