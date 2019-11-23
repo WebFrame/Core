@@ -10,8 +10,11 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: make build
-      run: GCC=g++.exe make build
+      run: GCC=g++ make build
+      shell: bash
     - name: make build_test
-      run: GCC=g++.exe make build_test
+      run: GCC=g++ make build_test
+      shell: bash
     - name: make run_tests
-      run: GCC=g++.exe make run_tests
+      run: GCC=g++ make run_tests
+      shell: bash
