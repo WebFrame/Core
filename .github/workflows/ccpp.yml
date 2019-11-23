@@ -5,13 +5,13 @@ on: [push]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     
     steps:
     - uses: actions/checkout@v1
     - name: make build
-      run: GCC=g++ make build
+      run: GCC=g++.exe make build
     - name: make build_test
-      run: GCC=g++ make build_test
+      run: GCC=g++.exe make build_test
     - name: make run_tests
-      run: GCC=g++ make run_tests
+      run: GCC=g++.exe make run_tests
