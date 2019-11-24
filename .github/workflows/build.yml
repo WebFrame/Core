@@ -43,6 +43,9 @@ jobs:
     - name: make build_test
       run: make build_test
       shell: bash
+    - name: non-make run-tests
+      run: mkdir -p ./bin/log && ./bin/test.exe
+      shell: bash
     - name: make run_tests
       run: make run_tests
       shell: bash
