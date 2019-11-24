@@ -25,6 +25,7 @@ run: bin/main.exe
 	./$^
 
 run_tests: bin/test.exe
+	mkdir -p ./bin/log
 	./$^
 
 clean:
