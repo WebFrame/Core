@@ -1,10 +1,10 @@
 ################################################################################
 # RapidJSON source dir
-set( RapidJSON_SOURCE_DIR "D:/Users/atsve/OneDrive/Documents/GitHub/WebFrame/lib/Jinja2Cpp/thirdparty/json/rapid")
+set( RapidJSON_SOURCE_DIR "/home/alex/Core/lib/Jinja2Cpp/thirdparty/json/rapid")
 
 ################################################################################
 # RapidJSON build dir
-set( RapidJSON_DIR "D:/Users/atsve/OneDrive/Documents/GitHub/WebFrame/lib/Jinja2Cpp/.jinja2cpp-build/thirdparty/json/rapid")
+set( RapidJSON_DIR "/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/thirdparty/json/rapid")
 
 ################################################################################
 # Compute paths
