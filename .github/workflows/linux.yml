@@ -3,8 +3,7 @@ name: Build under Ubuntu Linux
 on: [push]
 
 jobs:
-  build-on-windows:
-
+  
   build-on-linux:
 
     runs-on: ubuntu-latest
