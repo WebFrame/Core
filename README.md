@@ -1,3 +1,3 @@
-# Web-CPP
+# WebFrame++
 Modern web framework for C++17 - Make your web application faster
 
