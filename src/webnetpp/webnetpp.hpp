@@ -454,9 +454,9 @@ namespace webnetpp
 				#endif
 */
 				// this->logger << "Listening\n"; 
-				std::cout << "Listening" << std::endl;
+				//std::cout << "Listening" << std::endl;
 
-				std::cout << "Starting initing the threads" << std::endl;
+				//std::cout << "Starting initing the threads" << std::endl;
 				threads = std::min(threads, requests);
 				threads_ptr = new mingw_stdthread::thread* [threads];
 				busy = new bool [threads];
@@ -492,11 +492,11 @@ namespace webnetpp
 						continue;
 					} 
 					
-					std::cout << "New thread creating" << std::endl;
+					//std::cout << "New thread creating" << std::endl;
 					threads_ptr [i] = new mingw_stdthread::thread (accept_req, i, this);
-					std::cout << "Detaching the new thread" << std::endl;
+					//std::cout << "Detaching the new thread" << std::endl;
 					threads_ptr [i]->join ();
-					std::cout << "Successfully detached the new thread" << std::endl;
+					//std::cout << "Successfully detached the new thread" << std::endl;
 					requests --;
 				}
 				for (size_t i = 0 ; i < threads ; i ++)
