@@ -286,7 +286,47 @@ namespace webnetpp
 			{
 				return respond (std::string(p));
 			}
+		private:
+			static void accept_req (size_t id, webnetpp* app) {
+				int new_socket = app->clients[id];
+				std::cout << "accepting started" << std::endl;
+				// clock_t start = clock();
+				char buffer[8196] = {0}; 
+				int valread = recv (new_socket, buffer, 8196, 0); 
+				std::cout << "data received" << std::endl;
+				// app->logger << "Accepted data:\n" << buffer << "\n--------- END-OF-DATA ------------\n"; 
 
+				if (strlen (buffer) == 0)
+				{
+					// app->logger << "================= EMPTY-BUFFER ===============\n";
+					app->busy [id] = false;
+					return ;
+				}
+
+				response res;
+				request r (buffer);
+				// app->logger << "================= PARSING-BUFFER ===============\n";
+				// app->logger << r.to_string () << "\n";
+				// app->logger << "--------- PARSED ------------\n"; 
+					
+				try
+				{
+					res = app->respond (r);
+				}
+				catch(std::exception &e)
+				{
+					res = app->responses.at("500").call(path_vars() += {std::string(e.what()), "string"});
+				}
+				res.set_http (r.http);
+				std::string s = res.to_string ();
+				send (new_socket, s.c_str (), s.size (), 0);
+				shutdown (new_socket, 2);
+				app->busy [id] = false;
+				// clock_t end = clock();
+				// this->performancer << ((double(end-start))/CLOCKS_PER_SEC) << "\n";
+				return;
+			}
+		public:
 			bool run (unsigned short PORT, unsigned int threads, unsigned requests = -1)
 			{
 				#ifdef __WIN32__
@@ -301,11 +341,43 @@ namespace webnetpp
 					
 					// this->logger << "Initialised.\n";
 				#endif
+
+				int server_fd;
+				struct sockaddr_in address; 
+				int addrlen = sizeof(address); 
+
+				// Creating socket file descriptor 
+				if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) 
+				{ 
+					perror("socket failed"); 
+					exit(EXIT_FAILURE); 
+				} 
+				
+				// Forcefully attaching socket to the port
+				address.sin_family = AF_INET; 
+				address.sin_addr.s_addr = INADDR_ANY; 
+				address.sin_port = htons( PORT ); 
+				
+				// Forcefully attaching socket to the port 
+				if (bind(server_fd, (struct sockaddr *)&address,  
+											sizeof(address))<0) 
+				{ 
+					perror("bind failed"); 
+					exit(EXIT_FAILURE); 
+				} 
+				if (listen(server_fd, 3) < 0) 
+				{ 
+					perror("listen"); 
+					exit(EXIT_FAILURE); 
+				} 
+	/*
+
 				#ifndef __WIN32__
-				int32_t server_fd;
+					int server_fd;
 				#else
-				SOCKET server_fd;
+					SOCKET server_fd;
 				#endif
+
 				int valread;
 				struct sockaddr_in address; 
 				#ifndef __WIN32__
@@ -340,6 +412,7 @@ namespace webnetpp
 					} 
 
 					printf("setsockopt done %d\n", (int)opt); 
+					
 					address.sin_family = AF_INET; 
 					address.sin_addr.s_addr = INADDR_ANY; 
 					address.sin_port = htons (PORT); 
@@ -379,52 +452,15 @@ namespace webnetpp
 						throw std::ios_base::failure ("Listen"); 
 					}
 				#endif
-
+*/
 				// this->logger << "Listening\n"; 
+				std::cout << "Listening" << std::endl;
 
-				auto accept_req = [&] (int new_socket, size_t id) {
-					// clock_t start = clock();
-					char buffer[8196] = {0}; 
-					#ifndef __WIN32__
-					valread = read (new_socket, buffer, 8196); 
-					#else
-					valread = recv (new_socket, buffer, 8196, 0); 
-					#endif
-					// this->logger << "Accepted data:\n" << buffer << "\n--------- END-OF-DATA ------------\n"; 
-
-					if (strlen (buffer) == 0)
-					{
-						// this->logger << "================= EMPTY-BUFFER ===============\n";
-						this->busy [id] = false;
-						return ;
-					}
-
-					response res;
-					request r (buffer);
-					// this->logger << "================= PARSING-BUFFER ===============\n";
-					// this->logger << r.to_string () << "\n";
-					// this->logger << "--------- PARSED ------------\n"; 
-						
-					try
-					{
-						res = this->respond (r);
-					}
-					catch(std::exception &e)
-					{
-						res = responses.at("500").call(path_vars() += {std::string(e.what()), "string"});
-					}
-					res.set_http (r.http);
-					std::string s = res.to_string ();
-					send (new_socket, s.c_str (), s.size (), 0);
-					shutdown (new_socket, 2);
-					this->busy [id] = false;
-					// clock_t end = clock();
-					// this->performancer << ((double(end-start))/CLOCKS_PER_SEC) << "\n";
-					return;
-				};
+				std::cout << "Starting initing the threads" << std::endl;
 				threads = std::min(threads, requests);
 				threads_ptr = new mingw_stdthread::thread* [threads];
 				busy = new bool [threads];
+				clients = new int [threads];
 				for (size_t i = 0 ; i < threads ; i ++)
 				{
 					threads_ptr [i] = nullptr;
@@ -449,15 +485,18 @@ namespace webnetpp
 								is_there_thread = true;
 								break;
 							}
-					int new_socket; 
-					if ((new_socket = accept(server_fd, (struct sockaddr *)&address,  
+					if ((clients [i] = accept(server_fd, (struct sockaddr *)&address,  
 									   (socklen_t*)&addrlen))<0) 
 					{ 
 						// this->errors << "Failed to connect to client\n";
 						continue;
 					} 
-					threads_ptr [i] = new mingw_stdthread::thread (accept_req, new_socket, i);
-					threads_ptr [i]->detach ();
+					
+					std::cout << "New thread creating" << std::endl;
+					threads_ptr [i] = new mingw_stdthread::thread (accept_req, i, this);
+					std::cout << "Detaching the new thread" << std::endl;
+					threads_ptr [i]->join ();
+					std::cout << "Successfully detached the new thread" << std::endl;
 					requests --;
 				}
 				for (size_t i = 0 ; i < threads ; i ++)
@@ -473,5 +512,6 @@ namespace webnetpp
 		private:
 			mingw_stdthread::thread** threads_ptr;
 			bool* busy;
+			int* clients;
 	};
 }

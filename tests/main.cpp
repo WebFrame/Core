@@ -57,22 +57,14 @@ Moka::Context all ("**Web++ framework - testing**", [](Moka::Context& it) {
 		bool ended = false;
 		auto server = [&ended]()
 		{
-			std::filebuf performance;
-			performance.open ("./bin/log/performance.txt",std::ios::out);
-			std::ostream performancer (&performance);
 			webnetpp::webnetpp app;
 			app
-			.set_logger(*nil)
-			.set_error_logger(*nil)
-			.set_performancer(performancer)
 			.route ("/", []() { // static setup
 					return webnetpp::response (webnetpp::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 			})
 			.run(8888, 1, 1);
 
-			std::filebuf fb;
-			fb.open ("./bin/log/curl.txt",std::ios::in);
-			std::istream fin (&fb);
+			std::ifstream fin ("./bin/log/curl.txt");
 			std::string response; 
 			std::getline(fin, response);
 			must_equal(response, "<h1>Hello, World!</h1>");
