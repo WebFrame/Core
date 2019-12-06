@@ -21,12 +21,12 @@ build:
 build_test:
 	$(COMPILER_CPP) $(CPP_STD) ./tests/main.cpp -o ./bin/test.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(JINJA2CPP) $(JINJA2CPP_DEFINES)
 
-run: bin/main.exe
-	./$^
+run:
+	./bin/main.exe
 
-run_tests: bin/test.exe
+run_tests:
 	mkdir -p ./bin/log
-	./$^
+	./bin/test.exe
 
 clean:
 	cat ./bin/log/performance.txt
