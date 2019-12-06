@@ -25,6 +25,4 @@ jobs:
     - name: non-make run-tests
       run: mkdir -p ./bin/log && ./bin/test.exe && make clean
       shell: bash
-    - name: make run_tests
-      run: make run_tests
-      shell: bash
+  
