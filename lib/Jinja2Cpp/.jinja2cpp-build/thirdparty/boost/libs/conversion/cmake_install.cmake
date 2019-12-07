@@ -1,8 +1,8 @@
-# Install script for directory: /home/alex/Core/lib/Jinja2Cpp/thirdparty/boost/libs/conversion
+# Install script for directory: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/thirdparty/boost/libs/conversion
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-install")
+  set(CMAKE_INSTALL_PREFIX "D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -27,33 +27,28 @@ if(NOT CMAKE_INSTALL_COMPONENT)
   endif()
 endif()
 
-# Install shared libraries without execute permission?
-if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
-  set(CMAKE_INSTALL_SO_NO_EXE "1")
-endif()
-
 # Is this installation the result of a crosscompile?
 if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "FALSE")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/alex/Core/lib/Jinja2Cpp/thirdparty/boost/libs/conversion/include/")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/thirdparty/boost/libs/conversion/include/")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/thirdparty/boost/libs/conversion/boost_conversion.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/thirdparty/boost/libs/conversion/boost_conversion.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/boost_conversion" TYPE FILE FILES "/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/thirdparty/boost/libs/conversion/properties-boost_conversion-targets.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/boost_conversion" TYPE FILE FILES "D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/thirdparty/boost/libs/conversion/properties-boost_conversion-targets.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/boost_conversion/boost_conversion-targets.cmake")
     file(DIFFERENT EXPORT_FILE_CHANGED FILES
          "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/boost_conversion/boost_conversion-targets.cmake"
-         "/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/thirdparty/boost/libs/conversion/CMakeFiles/Export/lib/cmake/boost_conversion/boost_conversion-targets.cmake")
+         "D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/thirdparty/boost/libs/conversion/CMakeFiles/Export/lib/cmake/boost_conversion/boost_conversion-targets.cmake")
     if(EXPORT_FILE_CHANGED)
       file(GLOB OLD_CONFIG_FILES "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/cmake/boost_conversion/boost_conversion-targets-*.cmake")
       if(OLD_CONFIG_FILES)
@@ -62,13 +57,13 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
       endif()
     endif()
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/boost_conversion" TYPE FILE FILES "/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/thirdparty/boost/libs/conversion/CMakeFiles/Export/lib/cmake/boost_conversion/boost_conversion-targets.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/boost_conversion" TYPE FILE FILES "D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/thirdparty/boost/libs/conversion/CMakeFiles/Export/lib/cmake/boost_conversion/boost_conversion-targets.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/boost_conversion" TYPE FILE FILES
-    "/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/thirdparty/boost/libs/conversion/boost_conversion-config.cmake"
-    "/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/thirdparty/boost/libs/conversion/boost_conversion-config-version.cmake"
+    "D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/thirdparty/boost/libs/conversion/boost_conversion-config.cmake"
+    "D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/thirdparty/boost/libs/conversion/boost_conversion-config-version.cmake"
     )
 endif()
 

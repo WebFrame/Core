@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/boost_atomic.dir/src/lockpool.cpp.o"
-  "libboost_atomic.pdb"
+  "CMakeFiles/boost_atomic.dir/src/lockpool.cpp.obj"
   "libboost_atomic.a"
+  "libboost_atomic.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

@@ -45,11 +45,12 @@ Moka::Context all ("**Web++ framework - testing**", [](Moka::Context& it) {
 				return webnetpp::response (webnetpp::status_line ("1.1", "201"), {{"Custom-header", testing_header}, {"Content-Type", "text/html; charset=utf-8"}}, username);
 		});
 		try {
-		auto params = webnetpp::path_vars();
-		params += {username, "string"};
-		auto r = (*app.get_routes().begin()).second.call(params);
-		must_equal("HTTP/1.1 201 Created\nContent-Type: text/html; charset=utf-8\nCustom-header: " + testing_header + "\n\n" + username, r.to_string());
-		}catch(std::exception& e) {
+			auto params = webnetpp::path_vars();
+			params += {username, "string"};
+			auto r = (*app.get_routes().begin()).second.call(params);
+			must_equal("HTTP/1.1 201 Created\nContent-Type: text/html; charset=utf-8\nCustom-header: " + testing_header + "\n\n" + username, r.to_string());
+		} catch(std::exception& e) {
+			must_equal(1, 0);
 			std::cout << e.what() << std::endl;
 		}
 	});
@@ -69,19 +70,19 @@ Moka::Context all ("**Web++ framework - testing**", [](Moka::Context& it) {
 					return webnetpp::response (webnetpp::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 			})
 			.run(8888, 1, 1);
-
-			std::filebuf fb;
-			fb.open ("./bin/log/curl.txt",std::ios::in);
-			std::istream fin (&fb);
+			std::ifstream fin ("./bin/log/curl.txt");
 			std::string response; 
 			std::getline(fin, response);
+			//std::cout << "response: " << response << std::endl;
 			must_equal(response, "<h1>Hello, World!</h1>");
+			ended = true;
 		};
 		std::thread th(server);
 		th.detach();
 		// sending a single request to /
 		system("curl http://localhost:8888/ >> ./bin/log/curl.txt 2>> ./bin/log/log.txt");
-	});
+		while (!ended){}
+	});/**/
 });
 
 int main ()

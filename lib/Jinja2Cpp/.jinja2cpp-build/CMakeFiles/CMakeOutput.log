@@ -1,6 +1,6 @@
-The system is: Linux - 4.4.0-18362-Microsoft - x86_64
+The system is: Windows - 10.0.18362 - AMD64
 Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
-Compiler: /usr/bin/cc 
+Compiler: C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe 
 Build flags: 
 Id flags:  
 
@@ -8,12 +8,12 @@ The output was:
 0
 
 
-Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.exe"
 
-The C compiler identification is GNU, found in "/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/3.10.2/CompilerIdC/a.out"
+The C compiler identification is GNU, found in "D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/3.16.0-rc3/CompilerIdC/a.exe"
 
 Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
-Compiler: /usr/bin/c++ 
+Compiler: C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe 
 Build flags: 
 Id flags:  
 
@@ -21,660 +21,411 @@ The output was:
 0
 
 
-Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.exe"
 
-The CXX compiler identification is GNU, found in "/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/3.10.2/CompilerIdCXX/a.out"
+The CXX compiler identification is GNU, found in "D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/3.16.0-rc3/CompilerIdCXX/a.exe"
 
 Determining if the C compiler works passed with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_1029a/fast"
-/usr/bin/make -f CMakeFiles/cmTC_1029a.dir/build.make CMakeFiles/cmTC_1029a.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_1029a.dir/testCCompiler.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_1029a.dir/testCCompiler.c.o   -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/testCCompiler.c
-Linking C executable cmTC_1029a
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1029a.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_1029a.dir/testCCompiler.c.o  -o cmTC_1029a 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_ed9f7/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_ed9f7.dir/build.make CMakeFiles/cmTC_ed9f7.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ed9f7.dir/testCCompiler.c.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"    -o CMakeFiles/cmTC_ed9f7.dir/testCCompiler.c.obj   -c D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_ed9f7.exe
+"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_ed9f7.dir/objects.a
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_ed9f7.dir/objects.a @CMakeFiles/cmTC_ed9f7.dir/objects1.rsp
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"      -Wl,--whole-archive CMakeFiles/cmTC_ed9f7.dir/objects.a -Wl,--no-whole-archive  -o cmTC_ed9f7.exe -Wl,--out-implib,libcmTC_ed9f7.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_ed9f7.dir/linklibs.rsp
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+
 
 
 Detecting C compiler ABI info compiled with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_9c9b0/fast"
-/usr/bin/make -f CMakeFiles/cmTC_9c9b0.dir/build.make CMakeFiles/cmTC_9c9b0.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_9c9b0.dir/CMakeCCompilerABI.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_9c9b0.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.10/Modules/CMakeCCompilerABI.c
-Linking C executable cmTC_9c9b0
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9c9b0.dir/link.txt --verbose=1
-/usr/bin/cc     -v -rdynamic CMakeFiles/cmTC_9c9b0.dir/CMakeCCompilerABI.c.o  -o cmTC_9c9b0 
-Using built-in specs.
-COLLECT_GCC=/usr/bin/cc
-COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper
-OFFLOAD_TARGET_NAMES=nvptx-none
-OFFLOAD_TARGET_DEFAULT=1
-Target: x86_64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Ubuntu 7.4.0-1ubuntu1~18.04.1' --with-bugurl=file:///usr/share/doc/gcc-7/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++ --prefix=/usr --with-gcc-major-version-only --program-suffix=-7 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
-Thread model: posix
-gcc version 7.4.0 (Ubuntu 7.4.0-1ubuntu1~18.04.1) 
-COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/
-LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_9c9b0' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/7/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper -plugin-opt=-fresolution=/tmp/cco90uES.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_9c9b0 /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. CMakeFiles/cmTC_9c9b0.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o
-COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_9c9b0' '-mtune=generic' '-march=x86-64'
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_ec31c/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_ec31c.dir/build.make CMakeFiles/cmTC_ec31c.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ec31c.dir/CMakeCCompilerABI.c.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"   -v -o CMakeFiles/cmTC_ec31c.dir/CMakeCCompilerABI.c.obj   -c "C:/Program Files/CMake/share/cmake-3.16/Modules/CMakeCCompilerABI.c"
+Using built-in specs.
+COLLECT_GCC=C:\Program Files\mingw-w64\x86_64-8.1.0-posix-sjlj-rt_v6-rev0\mingw64\bin\gcc.exe
+Target: x86_64-w64-mingw32
+Configured with: ../../../src/gcc-8.1.0/configure --host=x86_64-w64-mingw32 --build=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --prefix=/mingw64 --with-sysroot=/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64 --enable-shared --enable-static --enable-targets=all --enable-multilib --enable-languages=c,c++,fortran,lto --enable-libstdcxx-time=yes --enable-threads=posix --enable-libgomp --enable-libatomic --enable-lto --enable-graphite --enable-checking=release --enable-fully-dynamic-string --enable-version-specific-runtime-libs --enable-sjlj-exceptions --disable-libstdcxx-pch --disable-libstdcxx-debug --enable-bootstrap --disable-rpath --disable-win32-registry --disable-nls --disable-werror --disable-symvers --with-gnu-as --with-gnu-ld --with-arch-32=i686 --with-arch-64=nocona --with-tune-32=generic --with-tune-64=core2 --with-libiconv --with-system-zlib --with-gmp=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-mpfr=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-mpc=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-isl=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-pkgversion='x86_64-posix-sjlj-rev0, Built by MinGW-W64 project' --with-bugurl=https://sourceforge.net/projects/mingw-w64 CFLAGS='-O2 -pipe -fno-ident -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' CXXFLAGS='-O2 -pipe -fno-ident -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' CPPFLAGS=' -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' LDFLAGS='-pipe -fno-ident -L/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/lib -L/c/mingw810/prerequisites/x86_64-zlib-static/lib -L/c/mingw810/prerequisites/x86_64-w64-mingw32-static/lib '
+Thread model: posix
+gcc version 8.1.0 (x86_64-posix-sjlj-rev0, Built by MinGW-W64 project) 
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_ec31c.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=core2' '-march=nocona'
+ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/cc1.exe -quiet -v -iprefix C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/ -D_REENTRANT C:/Program Files/CMake/share/cmake-3.16/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=core2 -march=nocona -auxbase-strip CMakeFiles/cmTC_ec31c.dir/CMakeCCompilerABI.c.obj -version -o C:\Users\atsve\AppData\Local\Temp\ccW3xphg.s
+GNU C17 (x86_64-posix-sjlj-rev0, Built by MinGW-W64 project) version 8.1.0 (x86_64-w64-mingw32)
+	compiled by GNU C version 8.1.0, GMP version 6.1.2, MPFR version 4.0.1, MPC version 1.1.0, isl version isl-0.18-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring duplicate directory "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/8.1.0/include"
+ignoring nonexistent directory "C:/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../include"
+ignoring duplicate directory "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"
+ignoring duplicate directory "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"
+ignoring nonexistent directory "C:/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/mingw/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include
+ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed
+ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include
+End of search list.
+GNU C17 (x86_64-posix-sjlj-rev0, Built by MinGW-W64 project) version 8.1.0 (x86_64-w64-mingw32)
+	compiled by GNU C version 8.1.0, GMP version 6.1.2, MPFR version 4.0.1, MPC version 1.1.0, isl version isl-0.18-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: 7d6121789872d4509209e56c3264e038
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_ec31c.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=core2' '-march=nocona'
+ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/bin/as.exe -v -o CMakeFiles/cmTC_ec31c.dir/CMakeCCompilerABI.c.obj C:\Users\atsve\AppData\Local\Temp\ccW3xphg.s
+GNU assembler version 2.30 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.30
+COMPILER_PATH=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/bin/
+LIBRARY_PATH=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/../lib/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../lib/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_ec31c.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=core2' '-march=nocona'
+Linking C executable cmTC_ec31c.exe
+"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_ec31c.dir/objects.a
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_ec31c.dir/objects.a @CMakeFiles/cmTC_ec31c.dir/objects1.rsp
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"     -v -Wl,--whole-archive CMakeFiles/cmTC_ec31c.dir/objects.a -Wl,--no-whole-archive  -o cmTC_ec31c.exe -Wl,--out-implib,libcmTC_ec31c.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
+Using built-in specs.
+COLLECT_GCC=C:\Program Files\mingw-w64\x86_64-8.1.0-posix-sjlj-rt_v6-rev0\mingw64\bin\gcc.exe
+COLLECT_LTO_WRAPPER=C:/Program\ Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/lto-wrapper.exe
+Target: x86_64-w64-mingw32
+Configured with: ../../../src/gcc-8.1.0/configure --host=x86_64-w64-mingw32 --build=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --prefix=/mingw64 --with-sysroot=/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64 --enable-shared --enable-static --enable-targets=all --enable-multilib --enable-languages=c,c++,fortran,lto --enable-libstdcxx-time=yes --enable-threads=posix --enable-libgomp --enable-libatomic --enable-lto --enable-graphite --enable-checking=release --enable-fully-dynamic-string --enable-version-specific-runtime-libs --enable-sjlj-exceptions --disable-libstdcxx-pch --disable-libstdcxx-debug --enable-bootstrap --disable-rpath --disable-win32-registry --disable-nls --disable-werror --disable-symvers --with-gnu-as --with-gnu-ld --with-arch-32=i686 --with-arch-64=nocona --with-tune-32=generic --with-tune-64=core2 --with-libiconv --with-system-zlib --with-gmp=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-mpfr=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-mpc=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-isl=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-pkgversion='x86_64-posix-sjlj-rev0, Built by MinGW-W64 project' --with-bugurl=https://sourceforge.net/projects/mingw-w64 CFLAGS='-O2 -pipe -fno-ident -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' CXXFLAGS='-O2 -pipe -fno-ident -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' CPPFLAGS=' -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' LDFLAGS='-pipe -fno-ident -L/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/lib -L/c/mingw810/prerequisites/x86_64-zlib-static/lib -L/c/mingw810/prerequisites/x86_64-w64-mingw32-static/lib '
+Thread model: posix
+gcc version 8.1.0 (x86_64-posix-sjlj-rev0, Built by MinGW-W64 project) 
+COMPILER_PATH=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/bin/
+LIBRARY_PATH=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/../lib/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../lib/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_ec31c.exe' '-mtune=core2' '-march=nocona'
+ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/collect2.exe -plugin C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/liblto_plugin-0.dll -plugin-opt=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\Users\atsve\AppData\Local\Temp\cc4dZfCq.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt --sysroot=C:/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64 -m i386pep -Bdynamic -o cmTC_ec31c.exe C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/crtbegin.o -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0 -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../lib -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../.. --whole-archive CMakeFiles/cmTC_ec31c.dir/objects.a --no-whole-archive --out-implib libcmTC_ec31c.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/crtend.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_ec31c.exe' '-mtune=core2' '-march=nocona'
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+
+
+
+Parsed C implicit include dir info from above output: rv=done
+  found start of include info
+  found start of implicit include info
+    add: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include]
+    add: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed]
+    add: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include]
+  end of search list found
+  collapse include dir [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include] ==> [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include]
+  collapse include dir [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed] ==> [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed]
+  collapse include dir [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include] ==> [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/include]
+  implicit include dirs: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/include]
 
 
 Parsed C implicit link information from above output:
-  link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp]
+  link line regex: [^( *|.*[/\])(ld\.exe|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_9c9b0/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_9c9b0.dir/build.make CMakeFiles/cmTC_9c9b0.dir/build]
-  ignore line: [make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp']
-  ignore line: [Building C object CMakeFiles/cmTC_9c9b0.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/bin/cc    -o CMakeFiles/cmTC_9c9b0.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.10/Modules/CMakeCCompilerABI.c]
-  ignore line: [Linking C executable cmTC_9c9b0]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9c9b0.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/cc     -v -rdynamic CMakeFiles/cmTC_9c9b0.dir/CMakeCCompilerABI.c.o  -o cmTC_9c9b0 ]
+  ignore line: [Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_ec31c/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_ec31c.dir/build.make CMakeFiles/cmTC_ec31c.dir/build]
+  ignore line: [make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp']
+  ignore line: [Building C object CMakeFiles/cmTC_ec31c.dir/CMakeCCompilerABI.c.obj]
+  ignore line: ["C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"   -v -o CMakeFiles/cmTC_ec31c.dir/CMakeCCompilerABI.c.obj   -c "C:/Program Files/CMake/share/cmake-3.16/Modules/CMakeCCompilerABI.c"]
   ignore line: [Using built-in specs.]
-  ignore line: [COLLECT_GCC=/usr/bin/cc]
-  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper]
-  ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none]
-  ignore line: [OFFLOAD_TARGET_DEFAULT=1]
-  ignore line: [Target: x86_64-linux-gnu]
-  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 7.4.0-1ubuntu1~18.04.1' --with-bugurl=file:///usr/share/doc/gcc-7/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++ --prefix=/usr --with-gcc-major-version-only --program-suffix=-7 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+  ignore line: [COLLECT_GCC=C:\Program Files\mingw-w64\x86_64-8.1.0-posix-sjlj-rt_v6-rev0\mingw64\bin\gcc.exe]
+  ignore line: [Target: x86_64-w64-mingw32]
+  ignore line: [Configured with: ../../../src/gcc-8.1.0/configure --host=x86_64-w64-mingw32 --build=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --prefix=/mingw64 --with-sysroot=/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64 --enable-shared --enable-static --enable-targets=all --enable-multilib --enable-languages=c,c++,fortran,lto --enable-libstdcxx-time=yes --enable-threads=posix --enable-libgomp --enable-libatomic --enable-lto --enable-graphite --enable-checking=release --enable-fully-dynamic-string --enable-version-specific-runtime-libs --enable-sjlj-exceptions --disable-libstdcxx-pch --disable-libstdcxx-debug --enable-bootstrap --disable-rpath --disable-win32-registry --disable-nls --disable-werror --disable-symvers --with-gnu-as --with-gnu-ld --with-arch-32=i686 --with-arch-64=nocona --with-tune-32=generic --with-tune-64=core2 --with-libiconv --with-system-zlib --with-gmp=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-mpfr=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-mpc=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-isl=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-pkgversion='x86_64-posix-sjlj-rev0, Built by MinGW-W64 project' --with-bugurl=https://sourceforge.net/projects/mingw-w64 CFLAGS='-O2 -pipe -fno-ident -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' CXXFLAGS='-O2 -pipe -fno-ident -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' CPPFLAGS=' -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' LDFLAGS='-pipe -fno-ident -L/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/lib -L/c/mingw810/prerequisites/x86_64-zlib-static/lib -L/c/mingw810/prerequisites/x86_64-w64-mingw32-static/lib ']
   ignore line: [Thread model: posix]
-  ignore line: [gcc version 7.4.0 (Ubuntu 7.4.0-1ubuntu1~18.04.1) ]
-  ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/]
-  ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_9c9b0' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/7/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper -plugin-opt=-fresolution=/tmp/cco90uES.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_9c9b0 /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. CMakeFiles/cmTC_9c9b0.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o]
-    arg [/usr/lib/gcc/x86_64-linux-gnu/7/collect2] ==> ignore
-    arg [-plugin] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so] ==> ignore
-    arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/cco90uES.res] ==> ignore
-    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
-    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
-    arg [-plugin-opt=-pass-through=-lc] ==> ignore
-    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
-    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
-    arg [--sysroot=/] ==> ignore
-    arg [--build-id] ==> ignore
-    arg [--eh-frame-hdr] ==> ignore
-    arg [-m] ==> ignore
-    arg [elf_x86_64] ==> ignore
-    arg [--hash-style=gnu] ==> ignore
-    arg [--as-needed] ==> ignore
-    arg [-export-dynamic] ==> ignore
-    arg [-dynamic-linker] ==> ignore
-    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
-    arg [-pie] ==> ignore
-    arg [-znow] ==> ignore
-    arg [-zrelro] ==> ignore
-    arg [-o] ==> ignore
-    arg [cmTC_9c9b0] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o] ==> ignore
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/7] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/7]
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu]
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib]
-    arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
-    arg [-L/lib/../lib] ==> dir [/lib/../lib]
-    arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
-    arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/7/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../..]
-    arg [CMakeFiles/cmTC_9c9b0.dir/CMakeCCompilerABI.c.o] ==> ignore
-    arg [-lgcc] ==> lib [gcc]
-    arg [--push-state] ==> ignore
-    arg [--as-needed] ==> ignore
-    arg [-lgcc_s] ==> lib [gcc_s]
-    arg [--pop-state] ==> ignore
-    arg [-lc] ==> lib [c]
-    arg [-lgcc] ==> lib [gcc]
-    arg [--push-state] ==> ignore
-    arg [--as-needed] ==> ignore
-    arg [-lgcc_s] ==> lib [gcc_s]
-    arg [--pop-state] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o] ==> ignore
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/7] ==> [/usr/lib/gcc/x86_64-linux-gnu/7]
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib] ==> [/usr/lib]
-  collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
-  collapse library dir [/lib/../lib] ==> [/lib]
-  collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
-  collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../..] ==> [/usr/lib]
-  implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
-  implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/7;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib]
+  ignore line: [gcc version 8.1.0 (x86_64-posix-sjlj-rev0  Built by MinGW-W64 project) ]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_ec31c.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=core2' '-march=nocona']
+  ignore line: [ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/cc1.exe -quiet -v -iprefix C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/ -D_REENTRANT C:/Program Files/CMake/share/cmake-3.16/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mtune=core2 -march=nocona -auxbase-strip CMakeFiles/cmTC_ec31c.dir/CMakeCCompilerABI.c.obj -version -o C:\Users\atsve\AppData\Local\Temp\ccW3xphg.s]
+  ignore line: [GNU C17 (x86_64-posix-sjlj-rev0  Built by MinGW-W64 project) version 8.1.0 (x86_64-w64-mingw32)]
+  ignore line: [	compiled by GNU C version 8.1.0  GMP version 6.1.2  MPFR version 4.0.1  MPC version 1.1.0  isl version isl-0.18-GMP]
+  ignore line: []
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [ignoring duplicate directory "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/8.1.0/include"]
+  ignore line: [ignoring nonexistent directory "C:/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../include"]
+  ignore line: [ignoring duplicate directory "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"]
+  ignore line: [ignoring duplicate directory "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"]
+  ignore line: [ignoring nonexistent directory "C:/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/mingw/include"]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include]
+  ignore line: [ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed]
+  ignore line: [ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include]
+  ignore line: [End of search list.]
+  ignore line: [GNU C17 (x86_64-posix-sjlj-rev0  Built by MinGW-W64 project) version 8.1.0 (x86_64-w64-mingw32)]
+  ignore line: [	compiled by GNU C version 8.1.0  GMP version 6.1.2  MPFR version 4.0.1  MPC version 1.1.0  isl version isl-0.18-GMP]
+  ignore line: []
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [Compiler executable checksum: 7d6121789872d4509209e56c3264e038]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_ec31c.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=core2' '-march=nocona']
+  ignore line: [ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/bin/as.exe -v -o CMakeFiles/cmTC_ec31c.dir/CMakeCCompilerABI.c.obj C:\Users\atsve\AppData\Local\Temp\ccW3xphg.s]
+  ignore line: [GNU assembler version 2.30 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.30]
+  ignore line: [COMPILER_PATH=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/bin/]
+  ignore line: [LIBRARY_PATH=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/../lib/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../lib/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_ec31c.dir/CMakeCCompilerABI.c.obj' '-c' '-mtune=core2' '-march=nocona']
+  ignore line: [Linking C executable cmTC_ec31c.exe]
+  ignore line: ["C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_ec31c.dir/objects.a]
+  ignore line: ["C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_ec31c.dir/objects.a @CMakeFiles/cmTC_ec31c.dir/objects1.rsp]
+  ignore line: ["C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"     -v -Wl --whole-archive CMakeFiles/cmTC_ec31c.dir/objects.a -Wl --no-whole-archive  -o cmTC_ec31c.exe -Wl --out-implib libcmTC_ec31c.dll.a -Wl --major-image-version 0 --minor-image-version 0 ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=C:\Program Files\mingw-w64\x86_64-8.1.0-posix-sjlj-rt_v6-rev0\mingw64\bin\gcc.exe]
+  ignore line: [COLLECT_LTO_WRAPPER=C:/Program\ Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/lto-wrapper.exe]
+  ignore line: [Target: x86_64-w64-mingw32]
+  ignore line: [Configured with: ../../../src/gcc-8.1.0/configure --host=x86_64-w64-mingw32 --build=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --prefix=/mingw64 --with-sysroot=/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64 --enable-shared --enable-static --enable-targets=all --enable-multilib --enable-languages=c,c++,fortran,lto --enable-libstdcxx-time=yes --enable-threads=posix --enable-libgomp --enable-libatomic --enable-lto --enable-graphite --enable-checking=release --enable-fully-dynamic-string --enable-version-specific-runtime-libs --enable-sjlj-exceptions --disable-libstdcxx-pch --disable-libstdcxx-debug --enable-bootstrap --disable-rpath --disable-win32-registry --disable-nls --disable-werror --disable-symvers --with-gnu-as --with-gnu-ld --with-arch-32=i686 --with-arch-64=nocona --with-tune-32=generic --with-tune-64=core2 --with-libiconv --with-system-zlib --with-gmp=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-mpfr=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-mpc=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-isl=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-pkgversion='x86_64-posix-sjlj-rev0, Built by MinGW-W64 project' --with-bugurl=https://sourceforge.net/projects/mingw-w64 CFLAGS='-O2 -pipe -fno-ident -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' CXXFLAGS='-O2 -pipe -fno-ident -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' CPPFLAGS=' -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' LDFLAGS='-pipe -fno-ident -L/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/lib -L/c/mingw810/prerequisites/x86_64-zlib-static/lib -L/c/mingw810/prerequisites/x86_64-w64-mingw32-static/lib ']
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 8.1.0 (x86_64-posix-sjlj-rev0  Built by MinGW-W64 project) ]
+  ignore line: [COMPILER_PATH=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/bin/]
+  ignore line: [LIBRARY_PATH=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/../lib/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../lib/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_ec31c.exe' '-mtune=core2' '-march=nocona']
+  ignore line: [ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/collect2.exe -plugin C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/liblto_plugin-0.dll -plugin-opt=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\Users\atsve\AppData\Local\Temp\cc4dZfCq.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_eh -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt --sysroot=C:/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64 -m i386pep -Bdynamic -o cmTC_ec31c.exe C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/crtbegin.o -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0 -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../lib -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../.. --whole-archive CMakeFiles/cmTC_ec31c.dir/objects.a --no-whole-archive --out-implib libcmTC_ec31c.dll.a --major-image-version 0 --minor-image-version 0 -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc -lgcc_eh -lmoldname -lmingwex -lmsvcrt C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/crtend.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_ec31c.exe' '-mtune=core2' '-march=nocona']
+  ignore line: [make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp']
+  ignore line: []
+  ignore line: []
+  implicit libs: []
+  implicit dirs: []
   implicit fwks: []
 
 
-
-
-Detecting C [-std=c11] compiler features compiled with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
-
-Run Build Command:"/usr/bin/make" "cmTC_bfed0/fast"
-/usr/bin/make -f CMakeFiles/cmTC_bfed0.dir/build.make CMakeFiles/cmTC_bfed0.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_bfed0.dir/feature_tests.c.o
-/usr/bin/cc   -std=c11 -o CMakeFiles/cmTC_bfed0.dir/feature_tests.c.o   -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_bfed0
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bfed0.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_bfed0.dir/feature_tests.c.o  -o cmTC_bfed0 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-
-
-    Feature record: C_FEATURE:1c_function_prototypes
-    Feature record: C_FEATURE:1c_restrict
-    Feature record: C_FEATURE:1c_static_assert
-    Feature record: C_FEATURE:1c_variadic_macros
-
-
-Detecting C [-std=c99] compiler features compiled with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
-
-Run Build Command:"/usr/bin/make" "cmTC_72312/fast"
-/usr/bin/make -f CMakeFiles/cmTC_72312.dir/build.make CMakeFiles/cmTC_72312.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_72312.dir/feature_tests.c.o
-/usr/bin/cc   -std=c99 -o CMakeFiles/cmTC_72312.dir/feature_tests.c.o   -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_72312
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_72312.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_72312.dir/feature_tests.c.o  -o cmTC_72312 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-
-
-    Feature record: C_FEATURE:1c_function_prototypes
-    Feature record: C_FEATURE:1c_restrict
-    Feature record: C_FEATURE:0c_static_assert
-    Feature record: C_FEATURE:1c_variadic_macros
-
-
-Detecting C [-std=c90] compiler features compiled with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
-
-Run Build Command:"/usr/bin/make" "cmTC_8f2e8/fast"
-/usr/bin/make -f CMakeFiles/cmTC_8f2e8.dir/build.make CMakeFiles/cmTC_8f2e8.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_8f2e8.dir/feature_tests.c.o
-/usr/bin/cc   -std=c90 -o CMakeFiles/cmTC_8f2e8.dir/feature_tests.c.o   -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/feature_tests.c
-Linking C executable cmTC_8f2e8
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8f2e8.dir/link.txt --verbose=1
-/usr/bin/cc      -rdynamic CMakeFiles/cmTC_8f2e8.dir/feature_tests.c.o  -o cmTC_8f2e8 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-
-
-    Feature record: C_FEATURE:1c_function_prototypes
-    Feature record: C_FEATURE:0c_restrict
-    Feature record: C_FEATURE:0c_static_assert
-    Feature record: C_FEATURE:0c_variadic_macros
 Determining if the CXX compiler works passed with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_16875/fast"
-/usr/bin/make -f CMakeFiles/cmTC_16875.dir/build.make CMakeFiles/cmTC_16875.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_16875.dir/testCXXCompiler.cxx.o
-/usr/bin/c++     -o CMakeFiles/cmTC_16875.dir/testCXXCompiler.cxx.o -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
-Linking CXX executable cmTC_16875
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_16875.dir/link.txt --verbose=1
-/usr/bin/c++       -rdynamic CMakeFiles/cmTC_16875.dir/testCXXCompiler.cxx.o  -o cmTC_16875 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_7ff6f/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_7ff6f.dir/build.make CMakeFiles/cmTC_7ff6f.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_7ff6f.dir/testCXXCompiler.cxx.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe"     -o CMakeFiles/cmTC_7ff6f.dir/testCXXCompiler.cxx.obj -c D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_7ff6f.exe
+"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_7ff6f.dir/objects.a
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_7ff6f.dir/objects.a @CMakeFiles/cmTC_7ff6f.dir/objects1.rsp
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe"      -Wl,--whole-archive CMakeFiles/cmTC_7ff6f.dir/objects.a -Wl,--no-whole-archive  -o cmTC_7ff6f.exe -Wl,--out-implib,libcmTC_7ff6f.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_7ff6f.dir/linklibs.rsp
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+
 
 
 Detecting CXX compiler ABI info compiled with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_91602/fast"
-/usr/bin/make -f CMakeFiles/cmTC_91602.dir/build.make CMakeFiles/cmTC_91602.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_91602.dir/CMakeCXXCompilerABI.cpp.o
-/usr/bin/c++     -o CMakeFiles/cmTC_91602.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.10/Modules/CMakeCXXCompilerABI.cpp
-Linking CXX executable cmTC_91602
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_91602.dir/link.txt --verbose=1
-/usr/bin/c++      -v -rdynamic CMakeFiles/cmTC_91602.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_91602 
-Using built-in specs.
-COLLECT_GCC=/usr/bin/c++
-COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper
-OFFLOAD_TARGET_NAMES=nvptx-none
-OFFLOAD_TARGET_DEFAULT=1
-Target: x86_64-linux-gnu
-Configured with: ../src/configure -v --with-pkgversion='Ubuntu 7.4.0-1ubuntu1~18.04.1' --with-bugurl=file:///usr/share/doc/gcc-7/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++ --prefix=/usr --with-gcc-major-version-only --program-suffix=-7 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu
-Thread model: posix
-gcc version 7.4.0 (Ubuntu 7.4.0-1ubuntu1~18.04.1) 
-COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/
-LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_91602' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/7/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper -plugin-opt=-fresolution=/tmp/ccspY3i3.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_91602 /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. CMakeFiles/cmTC_91602.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o
-COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_91602' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_0d850/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_0d850.dir/build.make CMakeFiles/cmTC_0d850.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_0d850.dir/CMakeCXXCompilerABI.cpp.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe"    -v -o CMakeFiles/cmTC_0d850.dir/CMakeCXXCompilerABI.cpp.obj -c "C:/Program Files/CMake/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp"
+Using built-in specs.
+COLLECT_GCC=C:\Program Files\mingw-w64\x86_64-8.1.0-posix-sjlj-rt_v6-rev0\mingw64\bin\c++.exe
+Target: x86_64-w64-mingw32
+Configured with: ../../../src/gcc-8.1.0/configure --host=x86_64-w64-mingw32 --build=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --prefix=/mingw64 --with-sysroot=/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64 --enable-shared --enable-static --enable-targets=all --enable-multilib --enable-languages=c,c++,fortran,lto --enable-libstdcxx-time=yes --enable-threads=posix --enable-libgomp --enable-libatomic --enable-lto --enable-graphite --enable-checking=release --enable-fully-dynamic-string --enable-version-specific-runtime-libs --enable-sjlj-exceptions --disable-libstdcxx-pch --disable-libstdcxx-debug --enable-bootstrap --disable-rpath --disable-win32-registry --disable-nls --disable-werror --disable-symvers --with-gnu-as --with-gnu-ld --with-arch-32=i686 --with-arch-64=nocona --with-tune-32=generic --with-tune-64=core2 --with-libiconv --with-system-zlib --with-gmp=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-mpfr=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-mpc=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-isl=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-pkgversion='x86_64-posix-sjlj-rev0, Built by MinGW-W64 project' --with-bugurl=https://sourceforge.net/projects/mingw-w64 CFLAGS='-O2 -pipe -fno-ident -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' CXXFLAGS='-O2 -pipe -fno-ident -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' CPPFLAGS=' -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' LDFLAGS='-pipe -fno-ident -L/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/lib -L/c/mingw810/prerequisites/x86_64-zlib-static/lib -L/c/mingw810/prerequisites/x86_64-w64-mingw32-static/lib '
+Thread model: posix
+gcc version 8.1.0 (x86_64-posix-sjlj-rev0, Built by MinGW-W64 project) 
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_0d850.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=core2' '-march=nocona'
+ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/cc1plus.exe -quiet -v -iprefix C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/ -D_REENTRANT C:/Program Files/CMake/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mtune=core2 -march=nocona -auxbase-strip CMakeFiles/cmTC_0d850.dir/CMakeCXXCompilerABI.cpp.obj -version -o C:\Users\atsve\AppData\Local\Temp\cc2SPtOh.s
+GNU C++14 (x86_64-posix-sjlj-rev0, Built by MinGW-W64 project) version 8.1.0 (x86_64-w64-mingw32)
+	compiled by GNU C version 8.1.0, GMP version 6.1.2, MPFR version 4.0.1, MPC version 1.1.0, isl version isl-0.18-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring duplicate directory "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"
+ignoring duplicate directory "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"
+ignoring duplicate directory "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"
+ignoring duplicate directory "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/8.1.0/include"
+ignoring nonexistent directory "C:/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../include"
+ignoring duplicate directory "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"
+ignoring duplicate directory "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"
+ignoring nonexistent directory "C:/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/mingw/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++
+ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32
+ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward
+ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include
+ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed
+ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include
+End of search list.
+GNU C++14 (x86_64-posix-sjlj-rev0, Built by MinGW-W64 project) version 8.1.0 (x86_64-w64-mingw32)
+	compiled by GNU C version 8.1.0, GMP version 6.1.2, MPFR version 4.0.1, MPC version 1.1.0, isl version isl-0.18-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: 4d9b8bf99f17512bc9c3ca87fdffa973
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_0d850.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=core2' '-march=nocona'
+ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/bin/as.exe -v -o CMakeFiles/cmTC_0d850.dir/CMakeCXXCompilerABI.cpp.obj C:\Users\atsve\AppData\Local\Temp\cc2SPtOh.s
+GNU assembler version 2.30 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.30
+COMPILER_PATH=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/bin/
+LIBRARY_PATH=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/../lib/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../lib/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_0d850.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=core2' '-march=nocona'
+Linking CXX executable cmTC_0d850.exe
+"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_0d850.dir/objects.a
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_0d850.dir/objects.a @CMakeFiles/cmTC_0d850.dir/objects1.rsp
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe"     -v -Wl,--whole-archive CMakeFiles/cmTC_0d850.dir/objects.a -Wl,--no-whole-archive  -o cmTC_0d850.exe -Wl,--out-implib,libcmTC_0d850.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
+Using built-in specs.
+COLLECT_GCC=C:\Program Files\mingw-w64\x86_64-8.1.0-posix-sjlj-rt_v6-rev0\mingw64\bin\c++.exe
+COLLECT_LTO_WRAPPER=C:/Program\ Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/lto-wrapper.exe
+Target: x86_64-w64-mingw32
+Configured with: ../../../src/gcc-8.1.0/configure --host=x86_64-w64-mingw32 --build=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --prefix=/mingw64 --with-sysroot=/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64 --enable-shared --enable-static --enable-targets=all --enable-multilib --enable-languages=c,c++,fortran,lto --enable-libstdcxx-time=yes --enable-threads=posix --enable-libgomp --enable-libatomic --enable-lto --enable-graphite --enable-checking=release --enable-fully-dynamic-string --enable-version-specific-runtime-libs --enable-sjlj-exceptions --disable-libstdcxx-pch --disable-libstdcxx-debug --enable-bootstrap --disable-rpath --disable-win32-registry --disable-nls --disable-werror --disable-symvers --with-gnu-as --with-gnu-ld --with-arch-32=i686 --with-arch-64=nocona --with-tune-32=generic --with-tune-64=core2 --with-libiconv --with-system-zlib --with-gmp=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-mpfr=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-mpc=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-isl=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-pkgversion='x86_64-posix-sjlj-rev0, Built by MinGW-W64 project' --with-bugurl=https://sourceforge.net/projects/mingw-w64 CFLAGS='-O2 -pipe -fno-ident -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' CXXFLAGS='-O2 -pipe -fno-ident -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' CPPFLAGS=' -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' LDFLAGS='-pipe -fno-ident -L/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/lib -L/c/mingw810/prerequisites/x86_64-zlib-static/lib -L/c/mingw810/prerequisites/x86_64-w64-mingw32-static/lib '
+Thread model: posix
+gcc version 8.1.0 (x86_64-posix-sjlj-rev0, Built by MinGW-W64 project) 
+COMPILER_PATH=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/bin/
+LIBRARY_PATH=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/../lib/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../lib/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_0d850.exe' '-shared-libgcc' '-mtune=core2' '-march=nocona'
+ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/collect2.exe -plugin C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/liblto_plugin-0.dll -plugin-opt=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\Users\atsve\AppData\Local\Temp\ccRaNuai.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt --sysroot=C:/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64 -m i386pep -Bdynamic -o cmTC_0d850.exe C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/crtbegin.o -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0 -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../lib -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../.. --whole-archive CMakeFiles/cmTC_0d850.dir/objects.a --no-whole-archive --out-implib libcmTC_0d850.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/crtend.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_0d850.exe' '-shared-libgcc' '-mtune=core2' '-march=nocona'
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+
+
+
+Parsed CXX implicit include dir info from above output: rv=done
+  found start of include info
+  found start of implicit include info
+    add: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++]
+    add: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32]
+    add: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward]
+    add: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include]
+    add: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed]
+    add: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include]
+  end of search list found
+  collapse include dir [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++] ==> [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++]
+  collapse include dir [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32] ==> [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32]
+  collapse include dir [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward] ==> [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward]
+  collapse include dir [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include] ==> [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include]
+  collapse include dir [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed] ==> [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed]
+  collapse include dir [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include] ==> [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/include]
+  implicit include dirs: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed;C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/include]
 
 
 Parsed CXX implicit link information from above output:
-  link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
-  ignore line: [Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp]
+  link line regex: [^( *|.*[/\])(ld\.exe|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_91602/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_91602.dir/build.make CMakeFiles/cmTC_91602.dir/build]
-  ignore line: [make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp']
-  ignore line: [Building CXX object CMakeFiles/cmTC_91602.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/usr/bin/c++     -o CMakeFiles/cmTC_91602.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.10/Modules/CMakeCXXCompilerABI.cpp]
-  ignore line: [Linking CXX executable cmTC_91602]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_91602.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/c++      -v -rdynamic CMakeFiles/cmTC_91602.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_91602 ]
+  ignore line: [Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_0d850/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_0d850.dir/build.make CMakeFiles/cmTC_0d850.dir/build]
+  ignore line: [make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp']
+  ignore line: [Building CXX object CMakeFiles/cmTC_0d850.dir/CMakeCXXCompilerABI.cpp.obj]
+  ignore line: ["C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe"    -v -o CMakeFiles/cmTC_0d850.dir/CMakeCXXCompilerABI.cpp.obj -c "C:/Program Files/CMake/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp"]
   ignore line: [Using built-in specs.]
-  ignore line: [COLLECT_GCC=/usr/bin/c++]
-  ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper]
-  ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none]
-  ignore line: [OFFLOAD_TARGET_DEFAULT=1]
-  ignore line: [Target: x86_64-linux-gnu]
-  ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 7.4.0-1ubuntu1~18.04.1' --with-bugurl=file:///usr/share/doc/gcc-7/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++ --prefix=/usr --with-gcc-major-version-only --program-suffix=-7 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --with-sysroot=/ --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-libmpx --enable-plugin --enable-default-pie --with-system-zlib --with-target-system-zlib --enable-objc-gc=auto --enable-multiarch --disable-werror --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu]
+  ignore line: [COLLECT_GCC=C:\Program Files\mingw-w64\x86_64-8.1.0-posix-sjlj-rt_v6-rev0\mingw64\bin\c++.exe]
+  ignore line: [Target: x86_64-w64-mingw32]
+  ignore line: [Configured with: ../../../src/gcc-8.1.0/configure --host=x86_64-w64-mingw32 --build=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --prefix=/mingw64 --with-sysroot=/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64 --enable-shared --enable-static --enable-targets=all --enable-multilib --enable-languages=c,c++,fortran,lto --enable-libstdcxx-time=yes --enable-threads=posix --enable-libgomp --enable-libatomic --enable-lto --enable-graphite --enable-checking=release --enable-fully-dynamic-string --enable-version-specific-runtime-libs --enable-sjlj-exceptions --disable-libstdcxx-pch --disable-libstdcxx-debug --enable-bootstrap --disable-rpath --disable-win32-registry --disable-nls --disable-werror --disable-symvers --with-gnu-as --with-gnu-ld --with-arch-32=i686 --with-arch-64=nocona --with-tune-32=generic --with-tune-64=core2 --with-libiconv --with-system-zlib --with-gmp=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-mpfr=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-mpc=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-isl=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-pkgversion='x86_64-posix-sjlj-rev0, Built by MinGW-W64 project' --with-bugurl=https://sourceforge.net/projects/mingw-w64 CFLAGS='-O2 -pipe -fno-ident -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' CXXFLAGS='-O2 -pipe -fno-ident -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' CPPFLAGS=' -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' LDFLAGS='-pipe -fno-ident -L/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/lib -L/c/mingw810/prerequisites/x86_64-zlib-static/lib -L/c/mingw810/prerequisites/x86_64-w64-mingw32-static/lib ']
   ignore line: [Thread model: posix]
-  ignore line: [gcc version 7.4.0 (Ubuntu 7.4.0-1ubuntu1~18.04.1) ]
-  ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/]
-  ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/7/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/7/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_91602' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/7/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper -plugin-opt=-fresolution=/tmp/ccspY3i3.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/ --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -export-dynamic -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_91602 /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/7 -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/7/../../.. CMakeFiles/cmTC_91602.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o]
-    arg [/usr/lib/gcc/x86_64-linux-gnu/7/collect2] ==> ignore
-    arg [-plugin] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/7/liblto_plugin.so] ==> ignore
-    arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/7/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccspY3i3.res] ==> ignore
-    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
-    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
-    arg [-plugin-opt=-pass-through=-lc] ==> ignore
-    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
-    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
-    arg [--sysroot=/] ==> ignore
-    arg [--build-id] ==> ignore
-    arg [--eh-frame-hdr] ==> ignore
-    arg [-m] ==> ignore
-    arg [elf_x86_64] ==> ignore
-    arg [--hash-style=gnu] ==> ignore
-    arg [--as-needed] ==> ignore
-    arg [-export-dynamic] ==> ignore
-    arg [-dynamic-linker] ==> ignore
-    arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
-    arg [-pie] ==> ignore
-    arg [-znow] ==> ignore
-    arg [-zrelro] ==> ignore
-    arg [-o] ==> ignore
-    arg [cmTC_91602] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/Scrt1.o] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crti.o] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/7/crtbeginS.o] ==> ignore
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/7] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/7]
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu]
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib]
-    arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
-    arg [-L/lib/../lib] ==> dir [/lib/../lib]
-    arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
-    arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
-    arg [-L/usr/lib/gcc/x86_64-linux-gnu/7/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../..]
-    arg [CMakeFiles/cmTC_91602.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
-    arg [-lstdc++] ==> lib [stdc++]
-    arg [-lm] ==> lib [m]
-    arg [-lgcc_s] ==> lib [gcc_s]
-    arg [-lgcc] ==> lib [gcc]
-    arg [-lc] ==> lib [c]
-    arg [-lgcc_s] ==> lib [gcc_s]
-    arg [-lgcc] ==> lib [gcc]
-    arg [/usr/lib/gcc/x86_64-linux-gnu/7/crtendS.o] ==> ignore
-    arg [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu/crtn.o] ==> ignore
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/7] ==> [/usr/lib/gcc/x86_64-linux-gnu/7]
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../../x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../../../lib] ==> [/usr/lib]
-  collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
-  collapse library dir [/lib/../lib] ==> [/lib]
-  collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
-  collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
-  collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/7/../../..] ==> [/usr/lib]
-  implicit libs: [stdc++;m;gcc_s;gcc;c;gcc_s;gcc]
-  implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/7;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib]
+  ignore line: [gcc version 8.1.0 (x86_64-posix-sjlj-rev0  Built by MinGW-W64 project) ]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_0d850.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=core2' '-march=nocona']
+  ignore line: [ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/cc1plus.exe -quiet -v -iprefix C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/ -D_REENTRANT C:/Program Files/CMake/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mtune=core2 -march=nocona -auxbase-strip CMakeFiles/cmTC_0d850.dir/CMakeCXXCompilerABI.cpp.obj -version -o C:\Users\atsve\AppData\Local\Temp\cc2SPtOh.s]
+  ignore line: [GNU C++14 (x86_64-posix-sjlj-rev0  Built by MinGW-W64 project) version 8.1.0 (x86_64-w64-mingw32)]
+  ignore line: [	compiled by GNU C version 8.1.0  GMP version 6.1.2  MPFR version 4.0.1  MPC version 1.1.0  isl version isl-0.18-GMP]
+  ignore line: []
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [ignoring duplicate directory "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"]
+  ignore line: [ignoring duplicate directory "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"]
+  ignore line: [ignoring duplicate directory "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"]
+  ignore line: [ignoring duplicate directory "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/8.1.0/include"]
+  ignore line: [ignoring nonexistent directory "C:/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64C:/msys64/mingw64/lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../include"]
+  ignore line: [ignoring duplicate directory "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"]
+  ignore line: [ignoring duplicate directory "C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"]
+  ignore line: [ignoring nonexistent directory "C:/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/mingw/include"]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++]
+  ignore line: [ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32]
+  ignore line: [ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward]
+  ignore line: [ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include]
+  ignore line: [ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed]
+  ignore line: [ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include]
+  ignore line: [End of search list.]
+  ignore line: [GNU C++14 (x86_64-posix-sjlj-rev0  Built by MinGW-W64 project) version 8.1.0 (x86_64-w64-mingw32)]
+  ignore line: [	compiled by GNU C version 8.1.0  GMP version 6.1.2  MPFR version 4.0.1  MPC version 1.1.0  isl version isl-0.18-GMP]
+  ignore line: []
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [Compiler executable checksum: 4d9b8bf99f17512bc9c3ca87fdffa973]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_0d850.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=core2' '-march=nocona']
+  ignore line: [ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/bin/as.exe -v -o CMakeFiles/cmTC_0d850.dir/CMakeCXXCompilerABI.cpp.obj C:\Users\atsve\AppData\Local\Temp\cc2SPtOh.s]
+  ignore line: [GNU assembler version 2.30 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.30]
+  ignore line: [COMPILER_PATH=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/bin/]
+  ignore line: [LIBRARY_PATH=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/../lib/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../lib/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_0d850.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-shared-libgcc' '-mtune=core2' '-march=nocona']
+  ignore line: [Linking CXX executable cmTC_0d850.exe]
+  ignore line: ["C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_0d850.dir/objects.a]
+  ignore line: ["C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_0d850.dir/objects.a @CMakeFiles/cmTC_0d850.dir/objects1.rsp]
+  ignore line: ["C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe"     -v -Wl --whole-archive CMakeFiles/cmTC_0d850.dir/objects.a -Wl --no-whole-archive  -o cmTC_0d850.exe -Wl --out-implib libcmTC_0d850.dll.a -Wl --major-image-version 0 --minor-image-version 0 ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=C:\Program Files\mingw-w64\x86_64-8.1.0-posix-sjlj-rt_v6-rev0\mingw64\bin\c++.exe]
+  ignore line: [COLLECT_LTO_WRAPPER=C:/Program\ Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/lto-wrapper.exe]
+  ignore line: [Target: x86_64-w64-mingw32]
+  ignore line: [Configured with: ../../../src/gcc-8.1.0/configure --host=x86_64-w64-mingw32 --build=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --prefix=/mingw64 --with-sysroot=/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64 --enable-shared --enable-static --enable-targets=all --enable-multilib --enable-languages=c,c++,fortran,lto --enable-libstdcxx-time=yes --enable-threads=posix --enable-libgomp --enable-libatomic --enable-lto --enable-graphite --enable-checking=release --enable-fully-dynamic-string --enable-version-specific-runtime-libs --enable-sjlj-exceptions --disable-libstdcxx-pch --disable-libstdcxx-debug --enable-bootstrap --disable-rpath --disable-win32-registry --disable-nls --disable-werror --disable-symvers --with-gnu-as --with-gnu-ld --with-arch-32=i686 --with-arch-64=nocona --with-tune-32=generic --with-tune-64=core2 --with-libiconv --with-system-zlib --with-gmp=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-mpfr=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-mpc=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-isl=/c/mingw810/prerequisites/x86_64-w64-mingw32-static --with-pkgversion='x86_64-posix-sjlj-rev0, Built by MinGW-W64 project' --with-bugurl=https://sourceforge.net/projects/mingw-w64 CFLAGS='-O2 -pipe -fno-ident -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' CXXFLAGS='-O2 -pipe -fno-ident -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' CPPFLAGS=' -I/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/include -I/c/mingw810/prerequisites/x86_64-zlib-static/include -I/c/mingw810/prerequisites/x86_64-w64-mingw32-static/include' LDFLAGS='-pipe -fno-ident -L/c/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64/opt/lib -L/c/mingw810/prerequisites/x86_64-zlib-static/lib -L/c/mingw810/prerequisites/x86_64-w64-mingw32-static/lib ']
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 8.1.0 (x86_64-posix-sjlj-rev0  Built by MinGW-W64 project) ]
+  ignore line: [COMPILER_PATH=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/bin/]
+  ignore line: [LIBRARY_PATH=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/../lib/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../lib/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/]
+  ignore line: [C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_0d850.exe' '-shared-libgcc' '-mtune=core2' '-march=nocona']
+  ignore line: [ C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/collect2.exe -plugin C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/liblto_plugin-0.dll -plugin-opt=C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../libexec/gcc/x86_64-w64-mingw32/8.1.0/lto-wrapper.exe -plugin-opt=-fresolution=C:\Users\atsve\AppData\Local\Temp\ccRaNuai.res -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt -plugin-opt=-pass-through=-lpthread -plugin-opt=-pass-through=-ladvapi32 -plugin-opt=-pass-through=-lshell32 -plugin-opt=-pass-through=-luser32 -plugin-opt=-pass-through=-lkernel32 -plugin-opt=-pass-through=-liconv -plugin-opt=-pass-through=-lmingw32 -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lmoldname -plugin-opt=-pass-through=-lmingwex -plugin-opt=-pass-through=-lmsvcrt --sysroot=C:/mingw810/x86_64-810-posix-sjlj-rt_v6-rev0/mingw64 -m i386pep -Bdynamic -o cmTC_0d850.exe C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/../lib/crt2.o C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/crtbegin.o -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0 -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib/../lib -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../lib -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/lib -LC:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../.. --whole-archive CMakeFiles/cmTC_0d850.dir/objects.a --no-whole-archive --out-implib libcmTC_0d850.dll.a --major-image-version 0 --minor-image-version 0 -lstdc++ -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt -lpthread -ladvapi32 -lshell32 -luser32 -lkernel32 -liconv -lmingw32 -lgcc_s -lgcc -lmoldname -lmingwex -lmsvcrt C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/crtend.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_0d850.exe' '-shared-libgcc' '-mtune=core2' '-march=nocona']
+  ignore line: [make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp']
+  ignore line: []
+  ignore line: []
+  implicit libs: []
+  implicit dirs: []
   implicit fwks: []
 
 
-
-
-Detecting CXX [-std=c++1z] compiler features compiled with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
-
-Run Build Command:"/usr/bin/make" "cmTC_408e4/fast"
-/usr/bin/make -f CMakeFiles/cmTC_408e4.dir/build.make CMakeFiles/cmTC_408e4.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_408e4.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++1z -o CMakeFiles/cmTC_408e4.dir/feature_tests.cxx.o -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_408e4
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_408e4.dir/link.txt --verbose=1
-/usr/bin/c++       -rdynamic CMakeFiles/cmTC_408e4.dir/feature_tests.cxx.o  -o cmTC_408e4 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-
-
-    Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
-    Feature record: CXX_FEATURE:1cxx_alias_templates
-    Feature record: CXX_FEATURE:1cxx_alignas
-    Feature record: CXX_FEATURE:1cxx_alignof
-    Feature record: CXX_FEATURE:1cxx_attributes
-    Feature record: CXX_FEATURE:1cxx_attribute_deprecated
-    Feature record: CXX_FEATURE:1cxx_auto_type
-    Feature record: CXX_FEATURE:1cxx_binary_literals
-    Feature record: CXX_FEATURE:1cxx_constexpr
-    Feature record: CXX_FEATURE:1cxx_contextual_conversions
-    Feature record: CXX_FEATURE:1cxx_decltype
-    Feature record: CXX_FEATURE:1cxx_decltype_auto
-    Feature record: CXX_FEATURE:1cxx_decltype_incomplete_return_types
-    Feature record: CXX_FEATURE:1cxx_default_function_template_args
-    Feature record: CXX_FEATURE:1cxx_defaulted_functions
-    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
-    Feature record: CXX_FEATURE:1cxx_delegating_constructors
-    Feature record: CXX_FEATURE:1cxx_deleted_functions
-    Feature record: CXX_FEATURE:1cxx_digit_separators
-    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
-    Feature record: CXX_FEATURE:1cxx_explicit_conversions
-    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
-    Feature record: CXX_FEATURE:1cxx_extern_templates
-    Feature record: CXX_FEATURE:1cxx_final
-    Feature record: CXX_FEATURE:1cxx_func_identifier
-    Feature record: CXX_FEATURE:1cxx_generalized_initializers
-    Feature record: CXX_FEATURE:1cxx_generic_lambdas
-    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
-    Feature record: CXX_FEATURE:1cxx_inline_namespaces
-    Feature record: CXX_FEATURE:1cxx_lambdas
-    Feature record: CXX_FEATURE:1cxx_lambda_init_captures
-    Feature record: CXX_FEATURE:1cxx_local_type_template_args
-    Feature record: CXX_FEATURE:1cxx_long_long_type
-    Feature record: CXX_FEATURE:1cxx_noexcept
-    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
-    Feature record: CXX_FEATURE:1cxx_nullptr
-    Feature record: CXX_FEATURE:1cxx_override
-    Feature record: CXX_FEATURE:1cxx_range_for
-    Feature record: CXX_FEATURE:1cxx_raw_string_literals
-    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
-    Feature record: CXX_FEATURE:1cxx_relaxed_constexpr
-    Feature record: CXX_FEATURE:1cxx_return_type_deduction
-    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
-    Feature record: CXX_FEATURE:1cxx_rvalue_references
-    Feature record: CXX_FEATURE:1cxx_sizeof_member
-    Feature record: CXX_FEATURE:1cxx_static_assert
-    Feature record: CXX_FEATURE:1cxx_strong_enums
-    Feature record: CXX_FEATURE:1cxx_template_template_parameters
-    Feature record: CXX_FEATURE:1cxx_thread_local
-    Feature record: CXX_FEATURE:1cxx_trailing_return_types
-    Feature record: CXX_FEATURE:1cxx_unicode_literals
-    Feature record: CXX_FEATURE:1cxx_uniform_initialization
-    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
-    Feature record: CXX_FEATURE:1cxx_user_literals
-    Feature record: CXX_FEATURE:1cxx_variable_templates
-    Feature record: CXX_FEATURE:1cxx_variadic_macros
-    Feature record: CXX_FEATURE:1cxx_variadic_templates
-
-
-Detecting CXX [-std=c++14] compiler features compiled with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
-
-Run Build Command:"/usr/bin/make" "cmTC_50468/fast"
-/usr/bin/make -f CMakeFiles/cmTC_50468.dir/build.make CMakeFiles/cmTC_50468.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_50468.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++14 -o CMakeFiles/cmTC_50468.dir/feature_tests.cxx.o -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_50468
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_50468.dir/link.txt --verbose=1
-/usr/bin/c++       -rdynamic CMakeFiles/cmTC_50468.dir/feature_tests.cxx.o  -o cmTC_50468 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-
-
-    Feature record: CXX_FEATURE:1cxx_aggregate_default_initializers
-    Feature record: CXX_FEATURE:1cxx_alias_templates
-    Feature record: CXX_FEATURE:1cxx_alignas
-    Feature record: CXX_FEATURE:1cxx_alignof
-    Feature record: CXX_FEATURE:1cxx_attributes
-    Feature record: CXX_FEATURE:1cxx_attribute_deprecated
-    Feature record: CXX_FEATURE:1cxx_auto_type
-    Feature record: CXX_FEATURE:1cxx_binary_literals
-    Feature record: CXX_FEATURE:1cxx_constexpr
-    Feature record: CXX_FEATURE:1cxx_contextual_conversions
-    Feature record: CXX_FEATURE:1cxx_decltype
-    Feature record: CXX_FEATURE:1cxx_decltype_auto
-    Feature record: CXX_FEATURE:1cxx_decltype_incomplete_return_types
-    Feature record: CXX_FEATURE:1cxx_default_function_template_args
-    Feature record: CXX_FEATURE:1cxx_defaulted_functions
-    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
-    Feature record: CXX_FEATURE:1cxx_delegating_constructors
-    Feature record: CXX_FEATURE:1cxx_deleted_functions
-    Feature record: CXX_FEATURE:1cxx_digit_separators
-    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
-    Feature record: CXX_FEATURE:1cxx_explicit_conversions
-    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
-    Feature record: CXX_FEATURE:1cxx_extern_templates
-    Feature record: CXX_FEATURE:1cxx_final
-    Feature record: CXX_FEATURE:1cxx_func_identifier
-    Feature record: CXX_FEATURE:1cxx_generalized_initializers
-    Feature record: CXX_FEATURE:1cxx_generic_lambdas
-    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
-    Feature record: CXX_FEATURE:1cxx_inline_namespaces
-    Feature record: CXX_FEATURE:1cxx_lambdas
-    Feature record: CXX_FEATURE:1cxx_lambda_init_captures
-    Feature record: CXX_FEATURE:1cxx_local_type_template_args
-    Feature record: CXX_FEATURE:1cxx_long_long_type
-    Feature record: CXX_FEATURE:1cxx_noexcept
-    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
-    Feature record: CXX_FEATURE:1cxx_nullptr
-    Feature record: CXX_FEATURE:1cxx_override
-    Feature record: CXX_FEATURE:1cxx_range_for
-    Feature record: CXX_FEATURE:1cxx_raw_string_literals
-    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
-    Feature record: CXX_FEATURE:1cxx_relaxed_constexpr
-    Feature record: CXX_FEATURE:1cxx_return_type_deduction
-    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
-    Feature record: CXX_FEATURE:1cxx_rvalue_references
-    Feature record: CXX_FEATURE:1cxx_sizeof_member
-    Feature record: CXX_FEATURE:1cxx_static_assert
-    Feature record: CXX_FEATURE:1cxx_strong_enums
-    Feature record: CXX_FEATURE:1cxx_template_template_parameters
-    Feature record: CXX_FEATURE:1cxx_thread_local
-    Feature record: CXX_FEATURE:1cxx_trailing_return_types
-    Feature record: CXX_FEATURE:1cxx_unicode_literals
-    Feature record: CXX_FEATURE:1cxx_uniform_initialization
-    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
-    Feature record: CXX_FEATURE:1cxx_user_literals
-    Feature record: CXX_FEATURE:1cxx_variable_templates
-    Feature record: CXX_FEATURE:1cxx_variadic_macros
-    Feature record: CXX_FEATURE:1cxx_variadic_templates
-
-
-Detecting CXX [-std=c++11] compiler features compiled with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
-
-Run Build Command:"/usr/bin/make" "cmTC_56546/fast"
-/usr/bin/make -f CMakeFiles/cmTC_56546.dir/build.make CMakeFiles/cmTC_56546.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_56546.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++11 -o CMakeFiles/cmTC_56546.dir/feature_tests.cxx.o -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_56546
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_56546.dir/link.txt --verbose=1
-/usr/bin/c++       -rdynamic CMakeFiles/cmTC_56546.dir/feature_tests.cxx.o  -o cmTC_56546 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-
-
-    Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
-    Feature record: CXX_FEATURE:1cxx_alias_templates
-    Feature record: CXX_FEATURE:1cxx_alignas
-    Feature record: CXX_FEATURE:1cxx_alignof
-    Feature record: CXX_FEATURE:1cxx_attributes
-    Feature record: CXX_FEATURE:0cxx_attribute_deprecated
-    Feature record: CXX_FEATURE:1cxx_auto_type
-    Feature record: CXX_FEATURE:0cxx_binary_literals
-    Feature record: CXX_FEATURE:1cxx_constexpr
-    Feature record: CXX_FEATURE:0cxx_contextual_conversions
-    Feature record: CXX_FEATURE:1cxx_decltype
-    Feature record: CXX_FEATURE:0cxx_decltype_auto
-    Feature record: CXX_FEATURE:1cxx_decltype_incomplete_return_types
-    Feature record: CXX_FEATURE:1cxx_default_function_template_args
-    Feature record: CXX_FEATURE:1cxx_defaulted_functions
-    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
-    Feature record: CXX_FEATURE:1cxx_delegating_constructors
-    Feature record: CXX_FEATURE:1cxx_deleted_functions
-    Feature record: CXX_FEATURE:0cxx_digit_separators
-    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
-    Feature record: CXX_FEATURE:1cxx_explicit_conversions
-    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
-    Feature record: CXX_FEATURE:1cxx_extern_templates
-    Feature record: CXX_FEATURE:1cxx_final
-    Feature record: CXX_FEATURE:1cxx_func_identifier
-    Feature record: CXX_FEATURE:1cxx_generalized_initializers
-    Feature record: CXX_FEATURE:0cxx_generic_lambdas
-    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
-    Feature record: CXX_FEATURE:1cxx_inline_namespaces
-    Feature record: CXX_FEATURE:1cxx_lambdas
-    Feature record: CXX_FEATURE:0cxx_lambda_init_captures
-    Feature record: CXX_FEATURE:1cxx_local_type_template_args
-    Feature record: CXX_FEATURE:1cxx_long_long_type
-    Feature record: CXX_FEATURE:1cxx_noexcept
-    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
-    Feature record: CXX_FEATURE:1cxx_nullptr
-    Feature record: CXX_FEATURE:1cxx_override
-    Feature record: CXX_FEATURE:1cxx_range_for
-    Feature record: CXX_FEATURE:1cxx_raw_string_literals
-    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
-    Feature record: CXX_FEATURE:0cxx_relaxed_constexpr
-    Feature record: CXX_FEATURE:0cxx_return_type_deduction
-    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
-    Feature record: CXX_FEATURE:1cxx_rvalue_references
-    Feature record: CXX_FEATURE:1cxx_sizeof_member
-    Feature record: CXX_FEATURE:1cxx_static_assert
-    Feature record: CXX_FEATURE:1cxx_strong_enums
-    Feature record: CXX_FEATURE:1cxx_template_template_parameters
-    Feature record: CXX_FEATURE:1cxx_thread_local
-    Feature record: CXX_FEATURE:1cxx_trailing_return_types
-    Feature record: CXX_FEATURE:1cxx_unicode_literals
-    Feature record: CXX_FEATURE:1cxx_uniform_initialization
-    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
-    Feature record: CXX_FEATURE:1cxx_user_literals
-    Feature record: CXX_FEATURE:0cxx_variable_templates
-    Feature record: CXX_FEATURE:1cxx_variadic_macros
-    Feature record: CXX_FEATURE:1cxx_variadic_templates
-
-
-Detecting CXX [-std=c++98] compiler features compiled with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
-
-Run Build Command:"/usr/bin/make" "cmTC_cdd14/fast"
-/usr/bin/make -f CMakeFiles/cmTC_cdd14.dir/build.make CMakeFiles/cmTC_cdd14.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_cdd14.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++98 -o CMakeFiles/cmTC_cdd14.dir/feature_tests.cxx.o -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_cdd14
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cdd14.dir/link.txt --verbose=1
-/usr/bin/c++       -rdynamic CMakeFiles/cmTC_cdd14.dir/feature_tests.cxx.o  -o cmTC_cdd14 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-
-
-    Feature record: CXX_FEATURE:0cxx_aggregate_default_initializers
-    Feature record: CXX_FEATURE:0cxx_alias_templates
-    Feature record: CXX_FEATURE:0cxx_alignas
-    Feature record: CXX_FEATURE:0cxx_alignof
-    Feature record: CXX_FEATURE:0cxx_attributes
-    Feature record: CXX_FEATURE:0cxx_attribute_deprecated
-    Feature record: CXX_FEATURE:0cxx_auto_type
-    Feature record: CXX_FEATURE:0cxx_binary_literals
-    Feature record: CXX_FEATURE:0cxx_constexpr
-    Feature record: CXX_FEATURE:0cxx_contextual_conversions
-    Feature record: CXX_FEATURE:0cxx_decltype
-    Feature record: CXX_FEATURE:0cxx_decltype_auto
-    Feature record: CXX_FEATURE:0cxx_decltype_incomplete_return_types
-    Feature record: CXX_FEATURE:0cxx_default_function_template_args
-    Feature record: CXX_FEATURE:0cxx_defaulted_functions
-    Feature record: CXX_FEATURE:0cxx_defaulted_move_initializers
-    Feature record: CXX_FEATURE:0cxx_delegating_constructors
-    Feature record: CXX_FEATURE:0cxx_deleted_functions
-    Feature record: CXX_FEATURE:0cxx_digit_separators
-    Feature record: CXX_FEATURE:0cxx_enum_forward_declarations
-    Feature record: CXX_FEATURE:0cxx_explicit_conversions
-    Feature record: CXX_FEATURE:0cxx_extended_friend_declarations
-    Feature record: CXX_FEATURE:0cxx_extern_templates
-    Feature record: CXX_FEATURE:0cxx_final
-    Feature record: CXX_FEATURE:0cxx_func_identifier
-    Feature record: CXX_FEATURE:0cxx_generalized_initializers
-    Feature record: CXX_FEATURE:0cxx_generic_lambdas
-    Feature record: CXX_FEATURE:0cxx_inheriting_constructors
-    Feature record: CXX_FEATURE:0cxx_inline_namespaces
-    Feature record: CXX_FEATURE:0cxx_lambdas
-    Feature record: CXX_FEATURE:0cxx_lambda_init_captures
-    Feature record: CXX_FEATURE:0cxx_local_type_template_args
-    Feature record: CXX_FEATURE:0cxx_long_long_type
-    Feature record: CXX_FEATURE:0cxx_noexcept
-    Feature record: CXX_FEATURE:0cxx_nonstatic_member_init
-    Feature record: CXX_FEATURE:0cxx_nullptr
-    Feature record: CXX_FEATURE:0cxx_override
-    Feature record: CXX_FEATURE:0cxx_range_for
-    Feature record: CXX_FEATURE:0cxx_raw_string_literals
-    Feature record: CXX_FEATURE:0cxx_reference_qualified_functions
-    Feature record: CXX_FEATURE:0cxx_relaxed_constexpr
-    Feature record: CXX_FEATURE:0cxx_return_type_deduction
-    Feature record: CXX_FEATURE:0cxx_right_angle_brackets
-    Feature record: CXX_FEATURE:0cxx_rvalue_references
-    Feature record: CXX_FEATURE:0cxx_sizeof_member
-    Feature record: CXX_FEATURE:0cxx_static_assert
-    Feature record: CXX_FEATURE:0cxx_strong_enums
-    Feature record: CXX_FEATURE:1cxx_template_template_parameters
-    Feature record: CXX_FEATURE:0cxx_thread_local
-    Feature record: CXX_FEATURE:0cxx_trailing_return_types
-    Feature record: CXX_FEATURE:0cxx_unicode_literals
-    Feature record: CXX_FEATURE:0cxx_uniform_initialization
-    Feature record: CXX_FEATURE:0cxx_unrestricted_unions
-    Feature record: CXX_FEATURE:0cxx_user_literals
-    Feature record: CXX_FEATURE:0cxx_variable_templates
-    Feature record: CXX_FEATURE:0cxx_variadic_macros
-    Feature record: CXX_FEATURE:0cxx_variadic_templates
 Performing C++ SOURCE FILE Test has_std_17_flag succeeded with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_d0da7/fast"
-/usr/bin/make -f CMakeFiles/cmTC_d0da7.dir/build.make CMakeFiles/cmTC_d0da7.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_d0da7.dir/src.cxx.o
-/usr/bin/c++    -Dhas_std_17_flag   -std=c++17 -std=gnu++1z -o CMakeFiles/cmTC_d0da7.dir/src.cxx.o -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_d0da7
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d0da7.dir/link.txt --verbose=1
-/usr/bin/c++   -Dhas_std_17_flag    CMakeFiles/cmTC_d0da7.dir/src.cxx.o  -o cmTC_d0da7 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_fe841/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_fe841.dir/build.make CMakeFiles/cmTC_fe841.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_fe841.dir/src.cxx.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe"    -Wa,-mbig-obj -O1 -Dhas_std_17_flag   -std=c++17 -std=gnu++17 -o CMakeFiles/cmTC_fe841.dir/src.cxx.obj -c D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_fe841.exe
+"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_fe841.dir/objects.a
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_fe841.dir/objects.a @CMakeFiles/cmTC_fe841.dir/objects1.rsp
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe" -Wa,-mbig-obj -O1 -Dhas_std_17_flag    -Wl,--whole-archive CMakeFiles/cmTC_fe841.dir/objects.a -Wl,--no-whole-archive  -o cmTC_fe841.exe -Wl,--out-implib,libcmTC_fe841.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_fe841.dir/linklibs.rsp
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+
 
 Source file was:
 int main() { return 0; }
 Performing C++ SOURCE FILE Test has_std_1z_flag succeeded with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_d757a/fast"
-/usr/bin/make -f CMakeFiles/cmTC_d757a.dir/build.make CMakeFiles/cmTC_d757a.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_d757a.dir/src.cxx.o
-/usr/bin/c++    -Dhas_std_1z_flag   -std=c++1z -std=gnu++1z -o CMakeFiles/cmTC_d757a.dir/src.cxx.o -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_d757a
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d757a.dir/link.txt --verbose=1
-/usr/bin/c++   -Dhas_std_1z_flag    CMakeFiles/cmTC_d757a.dir/src.cxx.o  -o cmTC_d757a 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_fc921/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_fc921.dir/build.make CMakeFiles/cmTC_fc921.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_fc921.dir/src.cxx.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe"    -Wa,-mbig-obj -O1 -Dhas_std_1z_flag   -std=c++1z -std=gnu++17 -o CMakeFiles/cmTC_fc921.dir/src.cxx.obj -c D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_fc921.exe
+"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_fc921.dir/objects.a
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_fc921.dir/objects.a @CMakeFiles/cmTC_fc921.dir/objects1.rsp
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe" -Wa,-mbig-obj -O1 -Dhas_std_1z_flag    -Wl,--whole-archive CMakeFiles/cmTC_fc921.dir/objects.a -Wl,--no-whole-archive  -o cmTC_fc921.exe -Wl,--out-implib,libcmTC_fc921.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_fc921.dir/linklibs.rsp
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+
 
 Source file was:
 int main() { return 0; }
 Performing C++ SOURCE FILE Test SUPPORTS_VARIADIC_TEMPLATES succeeded with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_8050c/fast"
-/usr/bin/make -f CMakeFiles/cmTC_8050c.dir/build.make CMakeFiles/cmTC_8050c.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_8050c.dir/src.cxx.o
-/usr/bin/c++    -DSUPPORTS_VARIADIC_TEMPLATES -std=c++17   -std=gnu++1z -o CMakeFiles/cmTC_8050c.dir/src.cxx.o -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_8050c
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8050c.dir/link.txt --verbose=1
-/usr/bin/c++   -DSUPPORTS_VARIADIC_TEMPLATES -std=c++17    CMakeFiles/cmTC_8050c.dir/src.cxx.o  -o cmTC_8050c 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_000c2/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_000c2.dir/build.make CMakeFiles/cmTC_000c2.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_000c2.dir/src.cxx.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe"    -Wa,-mbig-obj -O1 -DSUPPORTS_VARIADIC_TEMPLATES -std=c++17   -std=gnu++17 -o CMakeFiles/cmTC_000c2.dir/src.cxx.obj -c D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_000c2.exe
+"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_000c2.dir/objects.a
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_000c2.dir/objects.a @CMakeFiles/cmTC_000c2.dir/objects1.rsp
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe" -Wa,-mbig-obj -O1 -DSUPPORTS_VARIADIC_TEMPLATES -std=c++17    -Wl,--whole-archive CMakeFiles/cmTC_000c2.dir/objects.a -Wl,--no-whole-archive  -o cmTC_000c2.exe -Wl,--out-implib,libcmTC_000c2.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_000c2.dir/linklibs.rsp
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+
 
 Source file was:
 
@@ -682,55 +433,58 @@ Source file was:
   struct S { typedef typename S<Types...>::type type; };
   int main() {}
 Performing C++ SOURCE FILE Test SUPPORTS_USER_DEFINED_LITERALS succeeded with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_5b1f0/fast"
-/usr/bin/make -f CMakeFiles/cmTC_5b1f0.dir/build.make CMakeFiles/cmTC_5b1f0.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_5b1f0.dir/src.cxx.o
-/usr/bin/c++    -DSUPPORTS_USER_DEFINED_LITERALS -std=c++17   -std=gnu++1z -o CMakeFiles/cmTC_5b1f0.dir/src.cxx.o -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_5b1f0
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5b1f0.dir/link.txt --verbose=1
-/usr/bin/c++   -DSUPPORTS_USER_DEFINED_LITERALS -std=c++17    CMakeFiles/cmTC_5b1f0.dir/src.cxx.o  -o cmTC_5b1f0 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_770cb/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_770cb.dir/build.make CMakeFiles/cmTC_770cb.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_770cb.dir/src.cxx.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe"    -Wa,-mbig-obj -O1 -DSUPPORTS_USER_DEFINED_LITERALS -std=c++17   -std=gnu++17 -o CMakeFiles/cmTC_770cb.dir/src.cxx.obj -c D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_770cb.exe
+"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_770cb.dir/objects.a
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_770cb.dir/objects.a @CMakeFiles/cmTC_770cb.dir/objects1.rsp
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe" -Wa,-mbig-obj -O1 -DSUPPORTS_USER_DEFINED_LITERALS -std=c++17    -Wl,--whole-archive CMakeFiles/cmTC_770cb.dir/objects.a -Wl,--no-whole-archive  -o cmTC_770cb.exe -Wl,--out-implib,libcmTC_770cb.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_770cb.dir/linklibs.rsp
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+
 
 Source file was:
 
   void operator"" _udl(long double);
   int main() {}
 Performing C++ SOURCE FILE Test FMT_HAS_VARIANT succeeded with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_5ba08/fast"
-/usr/bin/make -f CMakeFiles/cmTC_5ba08.dir/build.make CMakeFiles/cmTC_5ba08.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_5ba08.dir/src.cxx.o
-/usr/bin/c++    -DFMT_HAS_VARIANT -std=c++1z   -std=gnu++1z -o CMakeFiles/cmTC_5ba08.dir/src.cxx.o -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_5ba08
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5ba08.dir/link.txt --verbose=1
-/usr/bin/c++   -DFMT_HAS_VARIANT -std=c++1z    CMakeFiles/cmTC_5ba08.dir/src.cxx.o  -o cmTC_5ba08 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_7a67c/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_7a67c.dir/build.make CMakeFiles/cmTC_7a67c.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_7a67c.dir/src.cxx.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe"    -Wa,-mbig-obj -O1 -DFMT_HAS_VARIANT -std=c++1z   -std=gnu++17 -o CMakeFiles/cmTC_7a67c.dir/src.cxx.obj -c D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_7a67c.exe
+"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_7a67c.dir/objects.a
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_7a67c.dir/objects.a @CMakeFiles/cmTC_7a67c.dir/objects1.rsp
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe" -Wa,-mbig-obj -O1 -DFMT_HAS_VARIANT -std=c++1z    -Wl,--whole-archive CMakeFiles/cmTC_7a67c.dir/objects.a -Wl,--no-whole-archive  -o cmTC_7a67c.exe -Wl,--out-implib,libcmTC_7a67c.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_7a67c.dir/linklibs.rsp
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+
 
 Source file was:
 
   #include <variant>
   int main() {}
 Determining if the open exist passed with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_c2918/fast"
-/usr/bin/make -f CMakeFiles/cmTC_c2918.dir/build.make CMakeFiles/cmTC_c2918.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_c2918.dir/CheckSymbolExists.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_c2918.dir/CheckSymbolExists.c.o   -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-Linking C executable cmTC_c2918
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_c2918.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_c2918.dir/CheckSymbolExists.c.o  -o cmTC_c2918 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_f9361/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_f9361.dir/build.make CMakeFiles/cmTC_f9361.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_f9361.dir/CheckSymbolExists.c.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"    -o CMakeFiles/cmTC_f9361.dir/CheckSymbolExists.c.obj   -c D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_f9361.exe
+"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_f9361.dir/objects.a
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_f9361.dir/objects.a @CMakeFiles/cmTC_f9361.dir/objects1.rsp
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"      -Wl,--whole-archive CMakeFiles/cmTC_f9361.dir/objects.a -Wl,--no-whole-archive  -o cmTC_f9361.exe -Wl,--out-implib,libcmTC_f9361.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_f9361.dir/linklibs.rsp
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
 
-File /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+
+File D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
-#include <fcntl.h>
+#include <io.h>
 
 int main(int argc, char** argv)
 {
@@ -742,105 +496,139 @@ int main(int argc, char** argv)
   return 0;
 #endif
 }
+Determining if the _strtod_l exist passed with the following output:
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_73a9e/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_73a9e.dir/build.make CMakeFiles/cmTC_73a9e.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_73a9e.dir/CheckSymbolExists.c.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"    -o CMakeFiles/cmTC_73a9e.dir/CheckSymbolExists.c.obj   -c D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_73a9e.exe
+"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_73a9e.dir/objects.a
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_73a9e.dir/objects.a @CMakeFiles/cmTC_73a9e.dir/objects1.rsp
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"      -Wl,--whole-archive CMakeFiles/cmTC_73a9e.dir/objects.a -Wl,--no-whole-archive  -o cmTC_73a9e.exe -Wl,--out-implib,libcmTC_73a9e.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_73a9e.dir/linklibs.rsp
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+
+
+File D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <stdlib.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef _strtod_l
+  return ((int*)(&_strtod_l))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
 Determining if the include file sys/types.h exists passed with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_a3c95/fast"
-/usr/bin/make -f CMakeFiles/cmTC_a3c95.dir/build.make CMakeFiles/cmTC_a3c95.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_a3c95.dir/CheckIncludeFile.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_a3c95.dir/CheckIncludeFile.c.o   -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
-Linking C executable cmTC_a3c95
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a3c95.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_a3c95.dir/CheckIncludeFile.c.o  -o cmTC_a3c95 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_19336/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_19336.dir/build.make CMakeFiles/cmTC_19336.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_19336.dir/CheckIncludeFile.c.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"    -o CMakeFiles/cmTC_19336.dir/CheckIncludeFile.c.obj   -c D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_19336.exe
+"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_19336.dir/objects.a
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_19336.dir/objects.a @CMakeFiles/cmTC_19336.dir/objects1.rsp
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"      -Wl,--whole-archive CMakeFiles/cmTC_19336.dir/objects.a -Wl,--no-whole-archive  -o cmTC_19336.exe -Wl,--out-implib,libcmTC_19336.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_19336.dir/linklibs.rsp
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+
 
 
 Determining if the include file stdint.h exists passed with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_fc26d/fast"
-/usr/bin/make -f CMakeFiles/cmTC_fc26d.dir/build.make CMakeFiles/cmTC_fc26d.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_fc26d.dir/CheckIncludeFile.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_fc26d.dir/CheckIncludeFile.c.o   -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
-Linking C executable cmTC_fc26d
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fc26d.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_fc26d.dir/CheckIncludeFile.c.o  -o cmTC_fc26d 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_4baa1/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_4baa1.dir/build.make CMakeFiles/cmTC_4baa1.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4baa1.dir/CheckIncludeFile.c.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"    -o CMakeFiles/cmTC_4baa1.dir/CheckIncludeFile.c.obj   -c D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_4baa1.exe
+"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_4baa1.dir/objects.a
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_4baa1.dir/objects.a @CMakeFiles/cmTC_4baa1.dir/objects1.rsp
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"      -Wl,--whole-archive CMakeFiles/cmTC_4baa1.dir/objects.a -Wl,--no-whole-archive  -o cmTC_4baa1.exe -Wl,--out-implib,libcmTC_4baa1.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_4baa1.dir/linklibs.rsp
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+
 
 
 Determining if the include file stddef.h exists passed with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_50754/fast"
-/usr/bin/make -f CMakeFiles/cmTC_50754.dir/build.make CMakeFiles/cmTC_50754.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_50754.dir/CheckIncludeFile.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_50754.dir/CheckIncludeFile.c.o   -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
-Linking C executable cmTC_50754
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_50754.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_50754.dir/CheckIncludeFile.c.o  -o cmTC_50754 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_4300b/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_4300b.dir/build.make CMakeFiles/cmTC_4300b.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4300b.dir/CheckIncludeFile.c.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"    -o CMakeFiles/cmTC_4300b.dir/CheckIncludeFile.c.obj   -c D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_4300b.exe
+"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_4300b.dir/objects.a
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_4300b.dir/objects.a @CMakeFiles/cmTC_4300b.dir/objects1.rsp
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"      -Wl,--whole-archive CMakeFiles/cmTC_4300b.dir/objects.a -Wl,--no-whole-archive  -o cmTC_4300b.exe -Wl,--out-implib,libcmTC_4300b.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_4300b.dir/linklibs.rsp
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+
 
 
 Determining size of long double passed with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_be5ed/fast"
-/usr/bin/make -f CMakeFiles/cmTC_be5ed.dir/build.make CMakeFiles/cmTC_be5ed.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_be5ed.dir/SIZEOF_LONG_DOUBLE.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_be5ed.dir/SIZEOF_LONG_DOUBLE.c.o   -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CheckTypeSize/SIZEOF_LONG_DOUBLE.c
-Linking C executable cmTC_be5ed
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_be5ed.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_be5ed.dir/SIZEOF_LONG_DOUBLE.c.o  -o cmTC_be5ed 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_4f2b7/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_4f2b7.dir/build.make CMakeFiles/cmTC_4f2b7.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4f2b7.dir/SIZEOF_LONG_DOUBLE.c.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"    -o CMakeFiles/cmTC_4f2b7.dir/SIZEOF_LONG_DOUBLE.c.obj   -c D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CheckTypeSize/SIZEOF_LONG_DOUBLE.c
+Linking C executable cmTC_4f2b7.exe
+"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_4f2b7.dir/objects.a
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_4f2b7.dir/objects.a @CMakeFiles/cmTC_4f2b7.dir/objects1.rsp
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"      -Wl,--whole-archive CMakeFiles/cmTC_4f2b7.dir/objects.a -Wl,--no-whole-archive  -o cmTC_4f2b7.exe -Wl,--out-implib,libcmTC_4f2b7.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_4f2b7.dir/linklibs.rsp
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+
 
 
 Performing C++ SOURCE FILE Test COMPILER_HAS_WNO_ERROR_PARENTHESES_FLAG succeeded with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_e85b2/fast"
-/usr/bin/make -f CMakeFiles/cmTC_e85b2.dir/build.make CMakeFiles/cmTC_e85b2.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_e85b2.dir/src.cxx.o
-/usr/bin/c++    -DCOMPILER_HAS_WNO_ERROR_PARENTHESES_FLAG   -Wno-error=parentheses -o CMakeFiles/cmTC_e85b2.dir/src.cxx.o -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_e85b2
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e85b2.dir/link.txt --verbose=1
-/usr/bin/c++   -DCOMPILER_HAS_WNO_ERROR_PARENTHESES_FLAG    -rdynamic CMakeFiles/cmTC_e85b2.dir/src.cxx.o  -o cmTC_e85b2 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_02f7c/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_02f7c.dir/build.make CMakeFiles/cmTC_02f7c.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_02f7c.dir/src.cxx.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe"    -Wa,-mbig-obj -O1 -DCOMPILER_HAS_WNO_ERROR_PARENTHESES_FLAG   -Wno-error=parentheses -std=gnu++17 -o CMakeFiles/cmTC_02f7c.dir/src.cxx.obj -c D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_02f7c.exe
+"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_02f7c.dir/objects.a
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_02f7c.dir/objects.a @CMakeFiles/cmTC_02f7c.dir/objects1.rsp
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe" -Wa,-mbig-obj -O1 -DCOMPILER_HAS_WNO_ERROR_PARENTHESES_FLAG    -Wl,--whole-archive CMakeFiles/cmTC_02f7c.dir/objects.a -Wl,--no-whole-archive  -o cmTC_02f7c.exe -Wl,--out-implib,libcmTC_02f7c.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_02f7c.dir/linklibs.rsp
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+
 
 Source file was:
 int main() { return 0; }
 Performing C++ SOURCE FILE Test COMPILER_HAS_WNO_ERROR_DEPRECATED_DECLARATIONS_FLAG succeeded with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_faa0c/fast"
-/usr/bin/make -f CMakeFiles/cmTC_faa0c.dir/build.make CMakeFiles/cmTC_faa0c.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_faa0c.dir/src.cxx.o
-/usr/bin/c++    -DCOMPILER_HAS_WNO_ERROR_DEPRECATED_DECLARATIONS_FLAG   -Wno-error=deprecated-declarations -o CMakeFiles/cmTC_faa0c.dir/src.cxx.o -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_faa0c
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_faa0c.dir/link.txt --verbose=1
-/usr/bin/c++   -DCOMPILER_HAS_WNO_ERROR_DEPRECATED_DECLARATIONS_FLAG    -rdynamic CMakeFiles/cmTC_faa0c.dir/src.cxx.o  -o cmTC_faa0c 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_684bc/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_684bc.dir/build.make CMakeFiles/cmTC_684bc.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_684bc.dir/src.cxx.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe"    -Wa,-mbig-obj -O1 -DCOMPILER_HAS_WNO_ERROR_DEPRECATED_DECLARATIONS_FLAG   -Wno-error=deprecated-declarations -std=gnu++17 -o CMakeFiles/cmTC_684bc.dir/src.cxx.obj -c D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_684bc.exe
+"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_684bc.dir/objects.a
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_684bc.dir/objects.a @CMakeFiles/cmTC_684bc.dir/objects1.rsp
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe" -Wa,-mbig-obj -O1 -DCOMPILER_HAS_WNO_ERROR_DEPRECATED_DECLARATIONS_FLAG    -Wl,--whole-archive CMakeFiles/cmTC_684bc.dir/objects.a -Wl,--no-whole-archive  -o cmTC_684bc.exe -Wl,--out-implib,libcmTC_684bc.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_684bc.dir/linklibs.rsp
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+
 
 Source file was:
 int main() { return 0; }
 Performing C++ SOURCE FILE Test COMPILER_HAS_WNO_ERROR_MAYBE_UNINITIALIZED_FLAG succeeded with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_6cd35/fast"
-/usr/bin/make -f CMakeFiles/cmTC_6cd35.dir/build.make CMakeFiles/cmTC_6cd35.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_6cd35.dir/src.cxx.o
-/usr/bin/c++    -DCOMPILER_HAS_WNO_ERROR_MAYBE_UNINITIALIZED_FLAG   -Wno-error=maybe-uninitialized -o CMakeFiles/cmTC_6cd35.dir/src.cxx.o -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_6cd35
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6cd35.dir/link.txt --verbose=1
-/usr/bin/c++   -DCOMPILER_HAS_WNO_ERROR_MAYBE_UNINITIALIZED_FLAG    -rdynamic CMakeFiles/cmTC_6cd35.dir/src.cxx.o  -o cmTC_6cd35 
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_e4568/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_e4568.dir/build.make CMakeFiles/cmTC_e4568.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_e4568.dir/src.cxx.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe"    -Wa,-mbig-obj -O1 -DCOMPILER_HAS_WNO_ERROR_MAYBE_UNINITIALIZED_FLAG   -Wno-error=maybe-uninitialized -std=gnu++17 -o CMakeFiles/cmTC_e4568.dir/src.cxx.obj -c D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_e4568.exe
+"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/cmTC_e4568.dir/objects.a
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/x86_64-w64-mingw32/bin/ar.exe" cr CMakeFiles/cmTC_e4568.dir/objects.a @CMakeFiles/cmTC_e4568.dir/objects1.rsp
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe" -Wa,-mbig-obj -O1 -DCOMPILER_HAS_WNO_ERROR_MAYBE_UNINITIALIZED_FLAG    -Wl,--whole-archive CMakeFiles/cmTC_e4568.dir/objects.a -Wl,--no-whole-archive  -o cmTC_e4568.exe -Wl,--out-implib,libcmTC_e4568.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/cmTC_e4568.dir/linklibs.rsp
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+
 
 Source file was:
 int main() { return 0; }

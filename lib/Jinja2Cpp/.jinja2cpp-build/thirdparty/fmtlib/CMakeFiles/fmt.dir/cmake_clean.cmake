@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/fmt.dir/src/format.cc.o"
-  "CMakeFiles/fmt.dir/src/posix.cc.o"
-  "libfmt.pdb"
+  "CMakeFiles/fmt.dir/src/format.cc.obj"
+  "CMakeFiles/fmt.dir/src/posix.cc.obj"
   "libfmt.a"
+  "libfmt.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

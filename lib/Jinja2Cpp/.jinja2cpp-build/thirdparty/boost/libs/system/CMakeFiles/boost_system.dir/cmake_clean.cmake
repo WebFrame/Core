@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/boost_system.dir/src/error_code.cpp.o"
-  "libboost_system.pdb"
+  "CMakeFiles/boost_system.dir/src/error_code.cpp.obj"
   "libboost_system.a"
+  "libboost_system.pdb"
 )
 
 # Per-language clean rules from dependency scanning.
