@@ -496,7 +496,7 @@ climits
 
 ../thirdparty/boost/libs/config/include/boost/version.hpp
 
-/home/alex/Core/lib/Jinja2Cpp/thirdparty/boost/libs/atomic/src/lockpool.cpp
+D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/thirdparty/boost/libs/atomic/src/lockpool.cpp
 cstddef
 -
 boost/config.hpp

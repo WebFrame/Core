@@ -288,12 +288,10 @@ namespace webnetpp
 			}
 		private:
 			static void accept_req (size_t id, webnetpp* app) {
-				int new_socket = app->clients[id];
-				std::cout << "accepting started" << std::endl;
+				int& new_socket = app->clients[id];
 				// clock_t start = clock();
 				char buffer[8196] = {0}; 
 				int valread = recv (new_socket, buffer, 8196, 0); 
-				std::cout << "data received" << std::endl;
 				// app->logger << "Accepted data:\n" << buffer << "\n--------- END-OF-DATA ------------\n"; 
 
 				if (strlen (buffer) == 0)

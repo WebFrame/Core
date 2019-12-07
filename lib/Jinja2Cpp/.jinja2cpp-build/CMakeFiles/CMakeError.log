@@ -1,35 +1,34 @@
-Determining if the strtod_l exist failed with the following output:
-Change Dir: /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+The MPI test test_mpi for C in mode normal failed to compile with the following output:
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_cfe30/fast"
-/usr/bin/make -f CMakeFiles/cmTC_cfe30.dir/build.make CMakeFiles/cmTC_cfe30.dir/build
-make[1]: Entering directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_cfe30.dir/CheckSymbolExists.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_cfe30.dir/CheckSymbolExists.c.o   -c /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/CheckSymbolExists.c: In function ‘main’:
-/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: ‘strtod_l’ undeclared (first use in this function); did you mean ‘strtoull’?
-   return ((int*)(&strtod_l))[argc];
-                   ^~~~~~~~
-                   strtoull
-/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: note: each undeclared identifier is reported only once for each function it appears in
-CMakeFiles/cmTC_cfe30.dir/build.make:65: recipe for target 'CMakeFiles/cmTC_cfe30.dir/CheckSymbolExists.c.o' failed
-make[1]: *** [CMakeFiles/cmTC_cfe30.dir/CheckSymbolExists.c.o] Error 1
-make[1]: Leaving directory '/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_cfe30/fast' failed
-make: *** [cmTC_cfe30/fast] Error 2
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_c84e5/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_c84e5.dir/build.make CMakeFiles/cmTC_c84e5.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_c84e5.dir/test_mpi.c.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/gcc.exe"    -o CMakeFiles/cmTC_c84e5.dir/test_mpi.c.obj   -c "C:/Program Files/CMake/share/cmake-3.16/Modules/FindMPI/test_mpi.c"
+C:/Program Files/CMake/share/cmake-3.16/Modules/FindMPI/test_mpi.c:1:10: fatal error: mpi.h: No such file or directory
+ #include <mpi.h>
+          ^~~~~~~
+compilation terminated.
+make.exe[1]: *** [CMakeFiles/cmTC_c84e5.dir/build.make:66: CMakeFiles/cmTC_c84e5.dir/test_mpi.c.obj] Error 1
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+make.exe: *** [Makefile:121: cmTC_c84e5/fast] Error 2
 
-File /home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
-/* */
-#include <stdlib.h>
 
-int main(int argc, char** argv)
-{
-  (void)argv;
-#ifndef strtod_l
-  return ((int*)(&strtod_l))[argc];
-#else
-  (void)argc;
-  return 0;
-#endif
-}
+
+The MPI test test_mpi for CXX in mode normal failed to compile with the following output:
+Change Dir: D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe cmTC_13dd4/fast && C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/make.exe -f CMakeFiles/cmTC_13dd4.dir/build.make CMakeFiles/cmTC_13dd4.dir/build
+make.exe[1]: Entering directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_13dd4.dir/test_mpi.cpp.obj
+"C:/Program Files/mingw-w64/x86_64-8.1.0-posix-sjlj-rt_v6-rev0/mingw64/bin/c++.exe"    -Wa,-mbig-obj -O1    -o CMakeFiles/cmTC_13dd4.dir/test_mpi.cpp.obj -c D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/FindMPI/test_mpi.cpp
+D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/FindMPI/test_mpi.cpp:1:10: fatal error: mpi.h: No such file or directory
+ #include <mpi.h>
+          ^~~~~~~
+compilation terminated.
+make.exe[1]: *** [CMakeFiles/cmTC_13dd4.dir/build.make:66: CMakeFiles/cmTC_13dd4.dir/test_mpi.cpp.obj] Error 1
+make.exe[1]: Leaving directory 'D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-build/CMakeFiles/CMakeTmp'
+make.exe: *** [Makefile:121: cmTC_13dd4/fast] Error 2
+
+
 
