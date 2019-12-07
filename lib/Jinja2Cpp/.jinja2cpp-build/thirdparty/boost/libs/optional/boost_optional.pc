@@ -1,5 +1,5 @@
 
-prefix=/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-install
+prefix=D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/.jinja2cpp-install
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${exec_prefix}/include

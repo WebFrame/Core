@@ -1,0 +1,23 @@
+GET http://localhost:8888/
+
+###
+
+GET http://localhost:8888/jinja
+
+###
+
+GET http://localhost:8888/user/alex
+
+###
+
+GET http://localhost:8888/id/4
+
+###
+
+GET http://localhost:8888/id/boza
+
+###
+
+GET http://localhost:8888/text/boza
+
+###
