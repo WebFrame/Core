@@ -28,7 +28,7 @@ run:
 run_tests:
 	mkdir -p ./bin/log
 	./bin/test.exe
+	cat ./bin/log/performance.txt
 
 clean:
-	cat ./bin/log/performance.txt
 	rm -rf ./bin/log/*
