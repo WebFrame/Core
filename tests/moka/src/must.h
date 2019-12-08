@@ -9,10 +9,12 @@
 #include <sstream>
 #include <string>
 
-#define must_equal(a, b)     Moka::must::equal(__FILE__, __LINE__, a, b)
-#define must_not_equal(a, b) Moka::must::not_equal(__FILE__, __LINE__, a, b)
-#define must_throw(T, f)     Moka::must::throoow<T>(__FILE__, __LINE__, #T, f)
-#define must_fail(m)         Moka::must::fail(__FILE__, __LINE__, m)
+#define must_equal(a, b)      Moka::must::equal(__FILE__, __LINE__, a, b)
+#define must_be_less(a, b)    Moka::must::be_less(__FILE__, __LINE__, a, b)
+#define must_be_greater(a, b) Moka::must::be_greater(__FILE__, __LINE__, a, b)
+#define must_not_equal(a, b)  Moka::must::not_equal(__FILE__, __LINE__, a, b)
+#define must_throw(T, f)      Moka::must::throoow<T>(__FILE__, __LINE__, #T, f)
+#define must_fail(m)          Moka::must::fail(__FILE__, __LINE__, m)
 
 namespace Moka
 {
@@ -42,6 +44,24 @@ namespace Moka
     template <class A, class B>
     void equal(const char* f, int l, const A& a, const B& b) {
       if(a != b) {
+        std::stringstream message;
+        message << "Expected " << cli::g(b) << " but got " << cli::r(a);
+        throw new Failure(f, l, message.str());
+      }
+    }
+
+    template <class A, class B>
+    void be_less(const char* f, int l, const A& a, const B& b) {
+      if(!(a < b)) {
+        std::stringstream message;
+        message << "Expected " << cli::g(b) << " but got " << cli::r(a);
+        throw new Failure(f, l, message.str());
+      }
+    }
+
+    template <class A, class B>
+    void be_greater(const char* f, int l, const A& a, const B& b) {
+      if(!(a > b)) {
         std::stringstream message;
         message << "Expected " << cli::g(b) << " but got " << cli::r(a);
         throw new Failure(f, l, message.str());
