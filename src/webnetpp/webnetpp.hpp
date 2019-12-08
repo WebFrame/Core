@@ -288,8 +288,8 @@ namespace webnetpp
 			}
 		private:
 			static void accept_req (size_t id, webnetpp* app) {
+				auto t1 = std::chrono::high_resolution_clock::now();
 				int& new_socket = app->clients[id];
-				// clock_t start = clock();
 				char buffer[8196] = {0}; 
 				int valread = recv (new_socket, buffer, 8196, 0); 
 				// app->logger << "Accepted data:\n" << buffer << "\n--------- END-OF-DATA ------------\n"; 
@@ -320,8 +320,9 @@ namespace webnetpp
 				send (new_socket, s.c_str (), s.size (), 0);
 				shutdown (new_socket, 2);
 				app->busy [id] = false;
-				// clock_t end = clock();
-				// this->performancer << ((double(end-start))/CLOCKS_PER_SEC) << "\n";
+    			auto t2 = std::chrono::high_resolution_clock::now();
+				std::chrono::duration<double,std::milli> elapsed = t2 - t1;
+				app->performancer << elapsed.count() << " miliseconds\n";
 				return;
 			}
 		public:
@@ -368,89 +369,7 @@ namespace webnetpp
 					perror("listen"); 
 					exit(EXIT_FAILURE); 
 				} 
-	/*
 
-				#ifndef __WIN32__
-					int server_fd;
-				#else
-					SOCKET server_fd;
-				#endif
-
-				int valread;
-				struct sockaddr_in address; 
-				#ifndef __WIN32__
-				char opt = 1; 
-				#endif
-				int addrlen = sizeof(address); 
-				   
-				// Creating socket file descriptor 
-				#ifdef __WIN32__
-					if((server_fd = socket(AF_INET , SOCK_STREAM , 0 )) == INVALID_SOCKET)
-					{
-						this->errors << "Could not create socket: " << WSAGetLastError() << "\n";
-						throw std::ios_base::failure ("Socket failed"); 
-					}
-				#else
-					if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) 
-					{ 
-						this->errors << "socket failed\n"; 
-						throw std::ios_base::failure ("Socket failed"); 
-					} 
-				#endif
-				// this->logger << "socket done\n"; 
-				
-				#ifndef __WIN32__
-					// Forcefully attaching socket to the port
-					if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, 
-																&opt, sizeof(opt))) 
-					{ 
-						printf("setsockopt failed %d\n", server_fd); 
-						perror("setsockopt"); 
-						throw std::ios_base::failure ("Setsockopt"); 
-					} 
-
-					printf("setsockopt done %d\n", (int)opt); 
-					
-					address.sin_family = AF_INET; 
-					address.sin_addr.s_addr = INADDR_ANY; 
-					address.sin_port = htons (PORT); 
-					
-					// Forcefully attaching socket to the port 8080 
-					if (bind(server_fd, (struct sockaddr *)&address,  
-												sizeof(address))<0) 
-					{ 
-						perror("bind failed"); 
-						throw std::ios_base::failure ("Socket failed"); 
-					} 
-
-					printf("bind done\n"); 
-					if (listen(server_fd, SOMAXCONN) < 0) 
-					{ 
-						perror("listen"); 
-						throw std::ios_base::failure ("Listen"); 
-					}
-				#else
-					address.sin_addr.s_addr = INADDR_ANY;
-					address.sin_family = AF_INET;
-					address.sin_port = htons (PORT); 
-					if (bind(server_fd, (struct sockaddr *)&address,  
-												sizeof(address))<0)
-					{
-						// this->errors << "Server: bind() failed with error " << WSAGetLastError() << "\n";
-						WSACleanup();
-						exit(-1);
-					}
-					else{}
-						// this->logger << "Server: bind() failed with error " << WSAGetLastError() << "\n";
-
-					// this->logger << "bind done\n"; 
-					if (listen(server_fd, SOMAXCONN) < 0) 
-					{ 
-						perror("listen"); 
-						throw std::ios_base::failure ("Listen"); 
-					}
-				#endif
-*/
 				// this->logger << "Listening\n"; 
 				//std::cout << "Listening" << std::endl;
 

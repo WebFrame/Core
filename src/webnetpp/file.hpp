@@ -19,6 +19,7 @@ public:
     friend SynchronizedFile& operator << (SynchronizedFile&,  const std::string&);
     friend SynchronizedFile& operator << (SynchronizedFile&,  const int&);
     friend SynchronizedFile& operator << (SynchronizedFile&,  const double&);
+    friend SynchronizedFile& operator << (SynchronizedFile&,  const long&);
 
 private:
     std::ostream* _path;
@@ -49,6 +50,17 @@ SynchronizedFile& operator << (SynchronizedFile& file,  const std::string& val)
 }
 
 SynchronizedFile& operator << (SynchronizedFile& file,  const int& val)
+{
+    // Ensure that only one thread can execute at a time
+    std::lock_guard<std::mutex> lock(file._writerMutex);
+
+    (*file._path) << val;
+    (*file._path).flush();
+
+    return file;
+}
+
+SynchronizedFile& operator << (SynchronizedFile& file,  const long& val)
 {
     // Ensure that only one thread can execute at a time
     std::lock_guard<std::mutex> lock(file._writerMutex);
