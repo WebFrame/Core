@@ -70,11 +70,6 @@ Moka::Context all ("**Web++ framework - testing**", [](Moka::Context& it) {
 					return webnetpp::response (webnetpp::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 			})
 			.run(8888, 1, 1);
-			std::ifstream fin ("./bin/log/curl.txt");
-			std::string response; 
-			std::getline(fin, response);
-			//std::cout << "response: " << response << std::endl;
-			must_equal(response, "<h1>Hello, World!</h1>");
 			ended = true;
 		};
 		std::thread th(server);
@@ -82,6 +77,10 @@ Moka::Context all ("**Web++ framework - testing**", [](Moka::Context& it) {
 		// sending a single request to /
 		system("curl http://localhost:8888/ >> ./bin/log/curl.txt 2>> ./bin/log/log.txt");
 		while (!ended){}
+		std::ifstream fin ("./bin/log/curl.txt");
+		std::string response; 
+		std::getline(fin, response);
+		must_equal(response, "<h1>Hello, World!</h1>");
 	});/**/
 });
 

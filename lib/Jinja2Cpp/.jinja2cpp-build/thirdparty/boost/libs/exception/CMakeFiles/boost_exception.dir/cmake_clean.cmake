@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/boost_exception.dir/src/clone_current_exception_non_intrusive.cpp.obj"
-  "libboost_exception.a"
+  "CMakeFiles/boost_exception.dir/src/clone_current_exception_non_intrusive.cpp.o"
   "libboost_exception.pdb"
+  "libboost_exception.a"
 )
 
 # Per-language clean rules from dependency scanning.
