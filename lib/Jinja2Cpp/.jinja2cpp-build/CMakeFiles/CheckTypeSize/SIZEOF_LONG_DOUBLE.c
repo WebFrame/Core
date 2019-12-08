@@ -21,7 +21,7 @@
 #endif
 
 #define SIZE (sizeof(long double))
-static char info_size[] =  {'I', 'N', 'F', 'O', ':', 's','i','z','e','[',
+char info_size[] =  {'I', 'N', 'F', 'O', ':', 's','i','z','e','[',
   ('0' + ((SIZE / 10000)%10)),
   ('0' + ((SIZE / 1000)%10)),
   ('0' + ((SIZE / 100)%10)),
