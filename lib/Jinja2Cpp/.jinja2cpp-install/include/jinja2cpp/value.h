@@ -141,7 +141,7 @@ private:
 };
 
 using ValuesList = std::vector<Value>;
-using ValuesMap = std::unordered_map<std::string, Value>;
+struct ValuesMap;
 struct UserCallableArgs;
 struct ParamInfo;
 struct UserCallable;
@@ -205,6 +205,7 @@ public:
     //! Move constructor
     Value(Value&& val) noexcept;
     //! Desctructor
+    // ~Value();
     ~Value();
 
     //! Assignment operator
@@ -276,19 +277,13 @@ public:
      *
      * @param list List of values which should be used to initialize \ref Value instance
      */
-    Value(const ValuesList& list)
-        : m_data(RecWrapper<ValuesList>(list))
-    {
-    }
+    Value(const ValuesList& list);
     /*!
      * \brief Initializing constructor from the \ref ValuesMap
      *
      * @param map Map of values which should be used to initialize \ref Value instance
      */
-    Value(const ValuesMap& map)
-        : m_data(RecWrapper<ValuesMap>(map))
-    {
-    }
+    Value(const ValuesMap& map);
     /*!
      * \brief Initializing constructor from the \ref UserCallable
      *
@@ -300,19 +295,13 @@ public:
      *
      * @param list List of values which should be used to initialize \ref Value instance
      */
-    Value(ValuesList&& list) noexcept
-        : m_data(RecWrapper<ValuesList>(std::move(list)))
-    {
-    }
+    Value(ValuesList&& list) noexcept;
     /*!
      * \brief Initializing move constructor from the \ref ValuesMap
      *
      * @param map Map of values which should be used to initialize \ref Value instance
      */
-    Value(ValuesMap&& map) noexcept
-        : m_data(RecWrapper<ValuesMap>(std::move(map)))
-    {
-    }
+    Value(ValuesMap&& map) noexcept;
     /*!
      * \brief Initializing move constructor from the \ref UserCallable
      *
@@ -463,25 +452,25 @@ public:
     template<typename T>
     auto get()
     {
-        return m_data.get<T>();
+        return nonstd::get<T>(m_data);
     }
 
     template<typename T>
     auto get() const
     {
-        return m_data.get<T>();
+        return nonstd::get<T>(m_data);
     }
 
     template<typename T>
     auto getPtr()
     {
-        return m_data.index() == ValueData::index_of<T>() ? &m_data.get<T>() : nullptr;
+        return nonstd::get_if<T>(&m_data); // m_data.index() == ValueData::template index_of<T>() ? &m_data.get<T>() : nullptr;
     }
 
     template<typename T>
     auto getPtr() const
     {
-        return m_data.index() == ValueData::index_of<T>() ? &m_data.get<T>() : nullptr;
+        return nonstd::get_if<T>(&m_data); // m_data.index() == ValueData::template index_of<T>() ? &m_data.get<T>() : nullptr;
     }
 
     //! Test Value for emptyness
@@ -494,6 +483,10 @@ private:
     ValueData m_data;
 };
 
+struct ValuesMap : std::unordered_map<std::string, Value>
+{
+    using unordered_map::unordered_map;
+};
 
 /*!
  * \brief Information about user-callable parameters passed from Jinja2 call context
@@ -633,8 +626,8 @@ inline Value::Value(Value&& val) noexcept
 {
 }
 inline Value::~Value() = default;
-inline Value& Value::operator =(const Value&) = default;
-inline Value& Value::operator =(Value&& val) noexcept
+inline Value& Value::operator=(const Value&) = default;
+inline Value& Value::operator=(Value&& val) noexcept
 {
     if (this == &val)
         return *this;
@@ -642,7 +635,22 @@ inline Value& Value::operator =(Value&& val) noexcept
     m_data.swap(val.m_data);
     return *this;
 }
-
+inline Value::Value(const ValuesMap& map)
+    : m_data(RecWrapper<ValuesMap>(map))
+{
+}
+inline Value::Value(const ValuesList& list)
+    : m_data(RecWrapper<ValuesList>(list))
+{
+}
+inline Value::Value(ValuesList&& list) noexcept
+    : m_data(RecWrapper<ValuesList>(std::move(list)))
+{
+}
+inline Value::Value(ValuesMap&& map) noexcept
+    : m_data(RecWrapper<ValuesMap>(std::move(map)))
+{
+}
 
 } // jinja2
 

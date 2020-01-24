@@ -25,7 +25,7 @@ workflow starts with::
 
   mkdir build          # Create a directory to hold the build output.
   cd build
-  cmake <path/to/fmt>  # Generate native build scripts.
+  cmake ..  # Generate native build scripts.
 
 where :file:`{<path/to/fmt>}` is a path to the ``fmt`` repository.
 
@@ -79,9 +79,9 @@ You can detect and use an installed version of {fmt} as follows::
    find_package(fmt)
    target_link_libraries(<your-target> fmt::fmt)
 
-Setting up your target to use a header-only version of ``fmt`` is equaly easy::
+Setting up your target to use a header-only version of ``fmt`` is equally easy::
 
-   target_link_libraries(<your-target> PRIVATE fmt-header-only)
+   target_link_libraries(<your-target> PRIVATE fmt::fmt-header-only)
 
 Building the Documentation
 ==========================
@@ -103,7 +103,17 @@ the previous section. Then compile the ``doc`` target/project, for example::
   make doc
 
 This will generate the HTML documentation in ``doc/html``.
-  
+
+Conda
+=====
+
+fmt can be installed on Linux, macOS and Windows with
+`Conda <https://docs.conda.io/en/latest/>`__, using its
+`conda-forge <https://conda-forge.org>`__
+`package <https://github.com/conda-forge/fmt-feedstock>`__, as follows::
+
+  conda install -c conda-forge fmt
+
 Android NDK
 ===========
 

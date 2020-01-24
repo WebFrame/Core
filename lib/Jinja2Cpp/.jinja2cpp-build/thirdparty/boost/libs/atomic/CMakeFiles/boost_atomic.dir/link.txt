@@ -1,2 +1,0 @@
-/usr/bin/ar qc libboost_atomic.a  CMakeFiles/boost_atomic.dir/src/lockpool.cpp.o
-/usr/bin/ranlib libboost_atomic.a
