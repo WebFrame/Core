@@ -1,2 +1,0 @@
-
-set_target_properties(boost::preprocessor PROPERTIES INTERFACE_PKG_CONFIG_NAME boost_preprocessor)

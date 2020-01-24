@@ -60,7 +60,7 @@ set_target_properties(RapidJson PROPERTIES
 add_library(jinja2cpp STATIC IMPORTED)
 
 set_target_properties(jinja2cpp PROPERTIES
-  INTERFACE_COMPILE_DEFINITIONS "variant_CONFIG_SELECT_VARIANT=variant_VARIANT_NONSTD;nssv_CONFIG_SELECT_STRING_VIEW=nssv_STRING_VIEW_NONSTD;optional_CONFIG_SELECT_OPTIONAL=optional_OPTIONAL_NONSTD;BOOST_SYSTEM_NO_DEPRECATED;BOOST_ERROR_CODE_HEADER_ONLY"
+  INTERFACE_COMPILE_DEFINITIONS "BOOST_SYSTEM_NO_DEPRECATED;BOOST_ERROR_CODE_HEADER_ONLY"
   INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
   INTERFACE_LINK_LIBRARIES "nonstd::expected-lite;nonstd::variant-lite;nonstd::optional-lite;nonstd::string-view-lite;\$<LINK_ONLY:boost::variant>;\$<LINK_ONLY:boost::filesystem>;\$<LINK_ONLY:boost::algorithm>;\$<LINK_ONLY:fmt::fmt-header-only>;\$<LINK_ONLY:RapidJson>"
 )

@@ -498,7 +498,7 @@ private:
                 }
                 StartControlBlock(TextBlockType::MetaBlock, matchStart, matchStart + match.length());
                 m_metadataLocation.line = m_currentLineInfo.lineNumber + 1;
-                m_metadataLocation.col = match.position() - m_currentLineInfo.range.startOffset + 1;
+                m_metadataLocation.col = static_cast<unsigned>(match.position() - m_currentLineInfo.range.startOffset + 1);
                 m_metadataLocation.fileName = m_templateName;
                 break;
             case RM_MetaEnd:
@@ -543,7 +543,7 @@ private:
         m_currentBlockInfo.range.startOffset = startOffset;
     }
 
-    size_t StripBlockRight(TextBlockInfo& currentBlockInfo, size_t position, bool trimBlocks)
+    size_t StripBlockRight(TextBlockInfo& /* currentBlockInfo */, size_t position, bool trimBlocks)
     {
         bool doTrim = trimBlocks;
 
@@ -739,7 +739,7 @@ private:
         Token tok;
         tok.type = type;
         tok.range = range;
-        tok.value = static_cast<string_t>(value);
+        tok.value = TargetString(static_cast<string_t>(value));
 
         return tok;
     }
@@ -891,7 +891,7 @@ private:
         if (type == Token::String)
         {
             auto rawValue = CompileEscapes(m_template->substr(range.startOffset, range.size()));
-            return InternalValue(std::move(rawValue));
+            return InternalValue(TargetString(std::move(rawValue)));
         }
         if (type == Token::IntegerNum || type == Token::FloatNum)
             return traits_t::RangeToNum(*m_template, range, type);

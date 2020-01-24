@@ -1,2 +1,0 @@
-
-set_target_properties(boost::throw_exception PROPERTIES INTERFACE_PKG_CONFIG_NAME boost_throw_exception)

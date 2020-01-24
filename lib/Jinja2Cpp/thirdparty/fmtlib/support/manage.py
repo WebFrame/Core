@@ -5,6 +5,9 @@
 Usage:
   manage.py release [<branch>]
   manage.py site
+
+For the release command $FMT_TOKEN should contain a GitHub personal access token
+obtained from https://github.com/settings/tokens.
 """
 
 from __future__ import print_function

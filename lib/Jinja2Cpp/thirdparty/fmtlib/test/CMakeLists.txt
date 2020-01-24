@@ -47,8 +47,6 @@ target_compile_definitions(gmock
 
 set(TEST_MAIN_SRC test-main.cc gtest-extra.cc gtest-extra.h util.cc)
 add_library(test-main STATIC ${TEST_MAIN_SRC})
-target_compile_definitions(test-main PUBLIC
-  FMT_USE_FILE_DESCRIPTORS=$<BOOL:${HAVE_OPEN}>)
 target_include_directories(test-main SYSTEM PUBLIC gtest gmock)
 target_link_libraries(test-main gmock fmt)
 
@@ -84,6 +82,9 @@ function(add_fmt_test name)
   if (FMT_PEDANTIC)
     target_compile_options(${name} PRIVATE ${PEDANTIC_COMPILE_FLAGS})
   endif ()
+  if (FMT_WERROR)
+    target_compile_options(${name} PRIVATE ${WERROR_FLAG})
+  endif ()
   target_include_directories(${name} SYSTEM PUBLIC gtest gmock)
   add_test(NAME ${name} COMMAND ${name})
 endfunction()
@@ -96,23 +97,25 @@ add_fmt_test(grisu-test)
 target_compile_definitions(grisu-test PRIVATE FMT_USE_GRISU=1)
 add_fmt_test(gtest-extra-test)
 add_fmt_test(format-test mock-allocator.h)
+if (MSVC)
+  target_compile_options(format-test PRIVATE /bigobj)
+endif ()
 if (NOT (MSVC AND BUILD_SHARED_LIBS))
   add_fmt_test(format-impl-test)
 endif ()
 add_fmt_test(locale-test)
 add_fmt_test(ostream-test)
-add_fmt_test(prepare-test)
+add_fmt_test(compile-test)
 add_fmt_test(printf-test)
 add_fmt_test(custom-formatter-test)
 add_fmt_test(ranges-test)
 add_fmt_test(scan-test)
 
-if (HAVE_OPEN)
+if (NOT MSVC_BUILD_STATIC)
   add_fmt_executable(posix-mock-test
     posix-mock-test.cc ../src/format.cc ${TEST_MAIN_SRC})
   target_include_directories(
     posix-mock-test PRIVATE ${PROJECT_SOURCE_DIR}/include)
-  target_compile_definitions(posix-mock-test PRIVATE FMT_USE_FILE_DESCRIPTORS=1)
   target_link_libraries(posix-mock-test gmock)
   target_include_directories(posix-mock-test SYSTEM PUBLIC gtest gmock)
   if (FMT_PEDANTIC)
@@ -180,10 +183,10 @@ if (FMT_PEDANTIC)
     target_include_directories(no-windows-h-test SYSTEM PUBLIC gtest gmock)
   endif ()
 
-  add_test(compile-test ${CMAKE_CTEST_COMMAND}
+  add_test(compile-error-test ${CMAKE_CTEST_COMMAND}
     --build-and-test
-    "${CMAKE_CURRENT_SOURCE_DIR}/compile-test"
-    "${CMAKE_CURRENT_BINARY_DIR}/compile-test"
+    "${CMAKE_CURRENT_SOURCE_DIR}/compile-error-test"
+    "${CMAKE_CURRENT_BINARY_DIR}/compile-error-test"
     --build-generator ${CMAKE_GENERATOR}
     --build-makeprogram ${CMAKE_MAKE_PROGRAM}
     --build-options
@@ -224,4 +227,24 @@ if (FMT_PEDANTIC AND NOT WIN32)
     "-DCMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}"
     "-DPEDANTIC_COMPILE_FLAGS=${PEDANTIC_COMPILE_FLAGS}"
     "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}")
+endif ()
+
+# Activate optional CUDA tests if CUDA is found. For version selection see
+# https://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#cpp14-language-features
+if (FMT_CUDA_TEST)
+  if (${CMAKE_VERSION} VERSION_LESS 3.15)
+    find_package(CUDA 9.0)
+  else ()
+    include(CheckLanguage)
+    check_language(CUDA)
+    if (CMAKE_CUDA_COMPILER)
+      enable_language(CUDA OPTIONAL)
+      set(CUDA_FOUND TRUE)
+    endif ()
+  endif ()
+
+  if (CUDA_FOUND)
+    add_subdirectory(cuda-test)
+    add_test(NAME cuda-test COMMAND fmt-in-cuda-test)
+  endif ()
 endif ()

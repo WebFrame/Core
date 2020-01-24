@@ -1,7 +1,0 @@
-includedir=/home/alex/Core/lib/Jinja2Cpp/.jinja2cpp-install/include
-
-Name: RapidJSON
-Description: A fast JSON parser/generator for C++ with both SAX/DOM style API
-Version: 1.1.0
-URL: https://github.com/Tencent/rapidjson
-Cflags: -I${includedir}
