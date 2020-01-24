@@ -587,10 +587,10 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
     }
 #endif
 
-    void swap( compressed_ptr & other ) nsvp_noexcept
+    void swap(compressed_ptr& other) nsvp_noexcept
     {
         using std::swap;
-        swap( ptr, other.ptr );
+        swap(ptr, other.ptr);
     }
 
     pointer ptr;
@@ -651,8 +651,8 @@ public:
     : ptr( p )
     {}
 
-    value_ptr( value_ptr const & other )
-    : ptr( other.ptr )
+    value_ptr(value_ptr const& other)
+        : ptr(other.ptr)
     {}
 
 #if nsvp_CPP11_OR_GREATER
@@ -669,22 +669,6 @@ public:
 
     explicit value_ptr( element_type && value ) nsvp_noexcept
     : ptr( std::move( value ) )
-    {}
-
-    template< class... Args
-        nsvp_REQUIRES_T(
-            std::is_constructible<T, Args&&...>::value )
-    >
-    explicit value_ptr( nonstd_lite_in_place_t(T), Args&&... args )
-    : ptr( nonstd_lite_in_place(T), std::forward<Args>(args)...)
-    {}
-
-    template< class U, class... Args
-        nsvp_REQUIRES_T(
-            std::is_constructible<T, std::initializer_list<U>&, Args&&...>::value )
-    >
-    explicit value_ptr( nonstd_lite_in_place_t(T), std::initializer_list<U> il, Args&&... args )
-    : ptr( nonstd_lite_in_place(T), il, std::forward<Args>(args)...)
     {}
 
 #endif // nsvp_CPP11_OR_GREATER

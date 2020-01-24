@@ -1,2 +1,0 @@
-
-set_target_properties(boost::type_traits PROPERTIES INTERFACE_PKG_CONFIG_NAME boost_type_traits)

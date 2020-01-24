@@ -1,2 +1,0 @@
-
-set_target_properties(boost::container PROPERTIES INTERFACE_PKG_CONFIG_NAME boost_container)

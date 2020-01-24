@@ -9,8 +9,8 @@
 #include "template_parser.h"
 #include "value_visitors.h"
 
-#include <boost/detail/endian.hpp>
 #include <boost/optional.hpp>
+#include <boost/predef/other/endian.h>
 #include <nonstd/expected.hpp>
 #include <rapidjson/error/en.h>
 
@@ -29,7 +29,7 @@ struct RapidJsonEncodingType<1>
     using type = rapidjson::UTF8<char>;
 };
 
-#ifdef BOOST_BIG_ENDIAN
+#ifdef BOOST_ENDIAN_BIG_BYTE
 template<>
 struct RapidJsonEncodingType<2>
 {
@@ -319,7 +319,7 @@ public:
                 errorData.extraParams.push_back(Value(std::move(jsonError)));
                 return nonstd::make_unexpected(ErrorInfoTpl<CharT>(errorData));
             }
-            m_metadata = std::move(Reflect(m_metadataJson.value()).data().template get<GenericMap>());
+            m_metadata = std::move(nonstd::get<GenericMap>(Reflect(m_metadataJson.value()).data()));
             return m_metadata.value();
         }
         return GenericMap();
@@ -358,7 +358,7 @@ private:
         {
             using string_t = std::basic_string<CharT>;
             str = string_t();
-            return OutStream([writer = StringStreamWriter<CharT>(&str.get<string_t>())]() mutable -> OutStream::StreamWriter* {return &writer;});
+            return OutStream([writer = StringStreamWriter<CharT>(&nonstd::get<string_t>(str))]() mutable -> OutStream::StreamWriter* { return &writer; });
         }
 
         nonstd::variant<EmptyValue,

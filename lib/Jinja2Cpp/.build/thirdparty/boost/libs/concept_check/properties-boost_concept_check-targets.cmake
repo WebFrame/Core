@@ -1,2 +1,0 @@
-
-set_target_properties(boost::concept_check PROPERTIES INTERFACE_PKG_CONFIG_NAME boost_concept_check)
