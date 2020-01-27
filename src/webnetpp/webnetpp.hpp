@@ -301,10 +301,10 @@ public:
 private:
 	static void accept_req(size_t id, webnetpp *app)
 	{
+		auto t1 = std::chrono::high_resolution_clock::now();
+		int &new_socket = app->clients[id];
 		try
 		{
-			auto t1 = std::chrono::high_resolution_clock::now();
-			int &new_socket = app->clients[id];
 			char buffer[8196] = {0};
 			int valread = recv(new_socket, buffer, 8196, 0);
 			// app->logger << "Accepted data:\n" << buffer << "\n--------- END-OF-DATA ------------\n";
