@@ -1,32 +1,27 @@
 name: Code quality control
-
-on:
+on: 
   push:
   pull_request:
     types: [opened]
 
 jobs:
-  actions-commit-linter-cli:
+  build:
+    name: cppcheck
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: severgroup-tt/actions-commit-linter-cli@v1.0.0
+      - name: cppcheck
+        uses: deep5050/cppcheck-action@main
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN}}
 
-  c-cpp-lint-action:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: C/C++ Lint Action
-        uses: shenxianpeng/cpp-linter-action@master
-        id: linter
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
+      - name: publish report    
+        uses: mikeal/publish-to-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          style: file
-
-      - name: Fail fast?!
-        if: steps.linter.outputs.checks-failed > 0
-        run: |
-          echo "Some files failed the linting checks!"
-        # for actual deployment
-        # run: exit 1
+          BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }} # your branch name goes here
