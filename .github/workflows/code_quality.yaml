@@ -14,6 +14,19 @@ jobs:
         uses: deep5050/cppcheck-action@main
         with:
           github_token: ${{ secrets.GITHUB_TOKEN}}
+          check_library: disable
+          skip_preprocessor: disable
+          enable: all
+          exclude_check: ./lib
+          inconclusive: enable
+          inline_suppression: disable
+          force_language: auto-detect
+          force: disable
+          max_ctu_depth: 4
+          platform: unspecified
+          std: c++17
+          output_file: ./cppcheck_report.txt
+          other_options: disable
 
       - name: Extract branch name
         shell: bash
