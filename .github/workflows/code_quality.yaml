@@ -1,19 +1,32 @@
 name: cpp-linter
 
-# Triggers the workflow on push or pull request events
 on:
   push:
   pull_request:
     types: [opened]
+
 jobs:
-  cpp-linter:
-    name: cpp-linter
+  lint:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - uses: severgroup-tt/actions-commit-linter-cli@v1.0.0
+
+  cpp-linter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
       - name: C/C++ Lint Action
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: shenxianpeng/cpp-linter-action@master
+        id: linter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          style: 'llvm'
-          repo-root: './src/'
+          style: file
+
+      - name: Fail fast?!
+        if: steps.linter.outputs.checks-failed > 0
+        run: |
+          echo "Some files failed the linting checks!"
+        # for actual deployment
+        # run: exit 1
