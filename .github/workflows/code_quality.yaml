@@ -6,13 +6,13 @@ on:
     types: [opened]
 
 jobs:
-  lint:
+  actions-commit-linter-cli:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: severgroup-tt/actions-commit-linter-cli@v1.0.0
 
-  cpp-linter:
+  c-cpp-lint-action:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
