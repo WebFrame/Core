@@ -16,5 +16,4 @@ jobs:
         uses: shenxianpeng/cpp-linter-action@master
         with:
           style: 'llvm'
-          tiny-checks: 'tidy-checks'
           repo-root: './src/'
