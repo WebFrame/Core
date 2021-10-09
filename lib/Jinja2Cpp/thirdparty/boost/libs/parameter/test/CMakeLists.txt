@@ -1,49 +1,37 @@
-include(BCMTest)
+# Copyright 2019 Mike Dev
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt
+#
+# NOTE: CMake support for Boost.Parameter is currently experimental at best
+#       and the interface is likely to change in the future
 
-find_package(boost_static_assert)
-find_package(boost_tuple)
-find_package(boost_bind)
-find_package(boost_timer)
-find_package(boost_assert)
-find_package(boost_graph)
+# TODO: Also process literate tests
+file(GLOB test_files *.cpp)
 
-bcm_test_link_libraries(boost_parameter
-boost::static_assert
-boost::tuple
-boost::bind
-boost::timer
-boost::assert
-boost::graph
-)
+# remove some test for which the dependencies are not yet available or have
+# special requirements
+# TODO: enable more tests
+list(FILTER test_files EXCLUDE REGEX
+    efficiency|deduced_unmatched_arg|python_test|duplicates)
 
-# Copyright David Abrahams, Daniel Wallin 2006. Distributed under the
-# Boost Software License, Version 1.0. (See accompanying file
-# LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+# Attach all our tests to the `tests` target, to enable
+# `cmake --build . --target tests`
+if(NOT TARGET tests)
+  add_custom_target(tests)
+endif()
 
-# Boost Parameter Library test Jamfile
+foreach(file IN LISTS test_files)
 
+    get_filename_component(core_name ${file} NAME_WE)
+    set(test_name boost_parameter-test-${core_name})
 
+    add_executable(${test_name} EXCLUDE_FROM_ALL ${file})
+    add_dependencies(tests ${test_name})
 
+    # add Boost.Parameter and any libraries that are only needed by the tests
+    # (none at the moment)
+    target_link_libraries(${test_name} Boost::parameter)
 
-bcm_test(NAME basics SOURCES basics.cpp)
-bcm_test(NAME sfinae SOURCES sfinae.cpp)
-bcm_test(NAME macros SOURCES macros.cpp)
-bcm_test(NAME earwicker SOURCES earwicker.cpp)
-bcm_test(NAME tutorial SOURCES tutorial.cpp)
-bcm_test(NAME singular SOURCES singular.cpp)
-bcm_test(NAME mpl SOURCES mpl.cpp)
-bcm_test(NAME preprocessor SOURCES preprocessor.cpp)
-bcm_test(NAME preprocessor_deduced SOURCES preprocessor_deduced.cpp)
-bcm_test(NAME efficiency SOURCES efficiency.cpp)
-bcm_test(NAME maybe SOURCES maybe.cpp)
-bcm_test(NAME deduced SOURCES deduced.cpp)
-bcm_test(NAME optional_deduced_sfinae SOURCES optional_deduced_sfinae.cpp)
-bcm_test(NAME deduced_dependent_predicate SOURCES deduced_dependent_predicate.cpp)
-bcm_test(NAME normalized_argument_types SOURCES normalized_argument_types.cpp)
-bcm_test(NAME ntp SOURCES ntp.cpp COMPILE_ONLY)
-bcm_test(NAME unwrap_cv_reference SOURCES unwrap_cv_reference.cpp COMPILE_ONLY)
-bcm_test(NAME duplicates SOURCES duplicates.cpp COMPILE_ONLY WILL_FAIL)
-bcm_test(NAME deduced_unmatched_arg SOURCES deduced_unmatched_arg.cpp COMPILE_ONLY WILL_FAIL)
-bcm_test(NAME compose SOURCES compose.cpp COMPILE_ONLY)
+    add_test(NAME ${test_name} COMMAND ${test_name})
 
-
+endforeach()

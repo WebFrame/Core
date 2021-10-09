@@ -1,6 +1,6 @@
 // Copyright 2011-2012 Renato Tegon Forti.
 // Copyright 2014 Renato Tegon Forti, Antony Polukhin.
-// Copyright 2015-2016 Antony Polukhin.
+// Copyright 2015-2021 Antony Polukhin.
 //
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE_1_0.txt
@@ -28,7 +28,7 @@ typedef boost::shared_ptr<do_share_res_t> (do_share_t)(
             std::vector<int>* v5
         );
 
-void refcountable_test(boost::filesystem::path shared_library_path) {
+void refcountable_test(boost::dll::fs::path shared_library_path) {
     using namespace boost::dll;
     using namespace boost::fusion;
 
@@ -36,12 +36,20 @@ void refcountable_test(boost::filesystem::path shared_library_path) {
 
     {
         boost::function<say_hello_func> sz2
-            = import<say_hello_func>(shared_library_path, "say_hello");
+            = import_symbol<say_hello_func>(shared_library_path, "say_hello");
 
         sz2();
         sz2();
         sz2();
     }
+
+
+#if defined(__GNUC__) && __GNUC__ >= 4 && defined(__ELF__)
+    {
+        const int the_answer = import_symbol<int(int)>(shared_library_path, "protected_function")(0);
+        BOOST_TEST_EQ(the_answer, 42);
+    }
+#endif
 
     {
         boost::function<std::size_t(const std::vector<int>&)> sz
@@ -74,7 +82,7 @@ void refcountable_test(boost::filesystem::path shared_library_path) {
     }
 
     {
-        boost::shared_ptr<int> i = import<int>(shared_library_path, "integer_g");
+        boost::shared_ptr<int> i = import_symbol<int>(shared_library_path, "integer_g");
         BOOST_TEST(*i == 100);
 
         boost::shared_ptr<int> i2;
@@ -97,7 +105,7 @@ void refcountable_test(boost::filesystem::path shared_library_path) {
     }
 
     {
-        boost::shared_ptr<const int> i = import<const int>(shared_library_path, "const_integer_g");
+        boost::shared_ptr<const int> i = import_symbol<const int>(shared_library_path, "const_integer_g");
         BOOST_TEST(*i == 777);
 
         boost::shared_ptr<const int> i2 = i;
@@ -124,7 +132,7 @@ extern "C" int BOOST_SYMBOL_EXPORT exef() {
 int main(int argc, char* argv[]) {
     using namespace boost::dll;
 
-    boost::filesystem::path shared_library_path = b2_workarounds::first_lib_from_argv(argc, argv);
+    boost::dll::fs::path shared_library_path = b2_workarounds::first_lib_from_argv(argc, argv);
     BOOST_TEST(shared_library_path.string().find("test_library") != std::string::npos);
     BOOST_TEST(b2_workarounds::is_shared_library(shared_library_path));
 
@@ -183,7 +191,7 @@ int main(int argc, char* argv[]) {
     int& reference_to_internal_integer = sl.get<int&>("reference_to_internal_integer");
     BOOST_TEST(reference_to_internal_integer == 0xFF0000);
 
-#ifndef BOOST_NO_RVALUE_REFERENCES
+#ifndef BOOST_NO_CXX11_RVALUE_REFERENCES
     int&& rvalue_reference_to_internal_integer = sl.get<int&&>("rvalue_reference_to_internal_integer");
     BOOST_TEST(rvalue_reference_to_internal_integer == 0xFF0000);
 #endif

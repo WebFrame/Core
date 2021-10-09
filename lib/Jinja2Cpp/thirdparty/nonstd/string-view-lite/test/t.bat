@@ -5,6 +5,7 @@
 
 set      unit=string_view
 set unit_file=string-view
+set unit_prfx=nssv
 
 :: if no std is given, use compiler default
 
@@ -17,9 +18,9 @@ echo VC%version%: %args%
 set UCAP=%unit%
 call :toupper UCAP
 
-set unit_select=-D%unit%_CONFIG_SELECT_%UCAP%=%unit%_%UCAP%_DEFAULT
-::set unit_select=-D%unit%_CONFIG_SELECT_%UCAP%=%unit%_%UCAP%_NONSTD
-::set unit_select=-D%unit%_CONFIG_SELECT_%UCAP%=%unit%_%UCAP%_STD
+set unit_select=-D%unit_prfx%_CONFIG_SELECT_%UCAP%=%unit_prfx%_%UCAP%_DEFAULT
+::set unit_select=-D%unit_prfx%_CONFIG_SELECT_%UCAP%=%unit_prfx%_%UCAP%_NONSTD
+::set unit_select=-D%unit_prfx%_CONFIG_SELECT_%UCAP%=%unit_prfx%_%UCAP%_STD
 
 set unit_config=^
     -Dnssv_CONFIG_STD_SV_OPERATOR=1 ^
@@ -30,9 +31,16 @@ set msvc_defines=^
     -D_CRT_SECURE_NO_WARNINGS ^
     -D_SCL_SECURE_NO_WARNINGS
 
+::    -Dnssv_CONFIG_NO_EXCEPTIONS=1
+::    -Dnssv_CONFIG_STD_SV_OPERATOR=1
+::    -Dnssv_CONFIG_CONVERSION_STD_STRING=1
+::    -Dnssv_CONFIG_CONVERSION_STD_STRING_CLASS_METHODS=1
+::    -Dnssv_CONFIG_CONVERSION_STD_STRING_FREE_FUNCTIONS=1
+::    -Dnssv_CONFIG_NO_STREAM_INSERTION=1
+
 set CppCoreCheckInclude=%VCINSTALLDIR%\Auxiliary\VS\include
 
-cl -W3 -EHsc %std% %unit_select% %unit_config% %msvc_defines% -I"%CppCoreCheckInclude%" -I../include %unit_file%-main.t.cpp %unit_file%.t.cpp && %unit_file%-main.t.exe
+cl -nologo -W3 -EHsc %std% %unit_select% %unit_config% %msvc_defines% -I"%CppCoreCheckInclude%" -Ilest -I../include -I. %unit_file%-main.t.cpp %unit_file%.t.cpp && %unit_file%-main.t.exe
 endlocal & goto :EOF
 
 :: subroutines:

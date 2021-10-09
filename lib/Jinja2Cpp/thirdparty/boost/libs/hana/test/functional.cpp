@@ -22,6 +22,7 @@ template <int i = 0>
 struct undefined { };
 
 struct move_only {
+    move_only() = default;
     move_only(move_only&&) = default;
     move_only(move_only const&) = delete;
 };
@@ -170,14 +171,14 @@ int main() {
             f(g(h(ct_eq<0>{})), ct_eq<1>{}, ct_eq<2>{})
         ));
 
-        auto h = [capture = move_only{}](int) { return 1; };
+        auto h = [capture = move_only{}](int) { (void)capture; return 1; };
         auto i = [](int) { return 1; };
         hana::compose(std::move(h), i)(1);
 
         {
             // Compose move-only functions.
-            auto f = [capture = move_only{}] (int) { return 1; };
-            auto g = [capture = move_only{}] (int) { return 1; };
+            auto f = [capture = move_only{}](int) { (void)capture; return 1; };
+            auto g = [capture = move_only{}](int) { (void)capture; return 1; };
             auto c = hana::compose(std::move(f), std::move(g)); (void)c;
         }
     }

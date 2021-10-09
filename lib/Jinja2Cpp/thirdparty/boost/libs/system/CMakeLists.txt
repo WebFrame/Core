@@ -1,33 +1,24 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_system)
+# Copyright 2018-2020 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.16)
 
-find_package(boost_assert)
-find_package(boost_core)
-find_package(boost_config)
-find_package(boost_predef)
+project(boost_system VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-bcm_setup_version(VERSION 1.64.0)
+add_library(boost_system INTERFACE)
+add_library(Boost::system ALIAS boost_system)
 
-add_library(boost_system 
-src/error_code.cpp
+target_include_directories(boost_system INTERFACE include)
+
+target_link_libraries(boost_system
+  INTERFACE
+    Boost::config
+    Boost::winapi
 )
-set_property(TARGET boost_system PROPERTY EXPORT_NAME system)
 
-target_link_libraries(boost_system PUBLIC boost::assert)
-target_link_libraries(boost_system PUBLIC boost::core)
-target_link_libraries(boost_system PUBLIC boost::config)
-target_link_libraries(boost_system PUBLIC boost::predef)
+if(BUILD_TESTING)
 
+  add_subdirectory(test)
 
-
-target_include_directories(boost_system PRIVATE include)
-
-bcm_deploy(TARGETS boost_system INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
 endif()

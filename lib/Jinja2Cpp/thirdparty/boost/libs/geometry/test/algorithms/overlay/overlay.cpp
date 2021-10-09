@@ -3,8 +3,8 @@
 
 // Copyright (c) 2015 Barend Gehrels, Amsterdam, the Netherlands.
 
-// This file was modified by Oracle on 2017.
-// Modifications copyright (c) 2017, Oracle and/or its affiliates.
+// This file was modified by Oracle on 2017-2020.
+// Modifications copyright (c) 2017-2020, Oracle and/or its affiliates.
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Use, modification and distribution is subject to the Boost Software License,
@@ -25,7 +25,7 @@
 #endif
 
 #include <geometry_test_common.hpp>
-
+#include <algorithms/check_validity.hpp>
 
 #include <boost/geometry.hpp>
 #include <boost/geometry/algorithms/detail/overlay/debug_turn_info.hpp>
@@ -80,7 +80,15 @@ struct map_visitor
                     m_mapper.map(turn.point, "fill:rgb(255,128,0);"
                             "stroke:rgb(0,0,0);stroke-width:1", 3);
                     break;
-                case 2 :
+                case 11 :
+                    m_mapper.map(turn.point, "fill:rgb(92,255,0);" // Greenish
+                            "stroke:rgb(0,0,0);stroke-width:1", 3);
+                    break;
+                case 21 :
+                    m_mapper.map(turn.point, "fill:rgb(0,128,255);" // Blueish
+                            "stroke:rgb(0,0,0);stroke-width:1", 3);
+                    break;
+                case 3 :
                     label_turn(index, turn);
                     break;
             }
@@ -238,10 +246,15 @@ struct map_visitor
                     result = true;
                 }
             }
-        }
-        if (! turn.operations[index].enriched.startable)
-        {
-            os << "$";
+
+            os << " {" << turn.operations[index].enriched.region_id
+               << (turn.operations[index].enriched.isolated ? " ISO" : "")
+               << "}";
+
+            if (! turn.operations[index].enriched.startable)
+            {
+                os << "$";
+            }
         }
 
         return result;
@@ -259,27 +272,45 @@ struct map_visitor
         bool lab1 = label_operation(turn, 0, out);
         out << " / ";
         bool lab2 = label_operation(turn, 1, out);
-        if (turn.switch_source)
+        if (turn.discarded)
         {
-            out << "#";
+            out << "!";
+        }
+        if (turn.has_colocated_both)
+        {
+            out << "+";
+        }
+        bool const self_turn = bg::detail::overlay::is_self_turn<bg::overlay_union>(turn);
+        if (self_turn)
+        {
+            out << "@";
         }
 
-        std::string style =  "fill:rgb(0,0,0);font-family:Arial;font-size:8px";
-        if (turn.colocated)
+        std::string font8 = "font-family:Arial;font-size:6px";
+        std::string font6 = "font-family:Arial;font-size:4px";
+        std::string style =  "fill:rgb(0,0,255);" + font8;
+        if (self_turn)
         {
-            style =  "fill:rgb(255,0,0);font-family:Arial;font-size:8px";
+            if (turn.discarded)
+            {
+                style =  "fill:rgb(128,28,128);" + font6;
+            }
+            else
+            {
+                style =  "fill:rgb(255,0,255);" + font8;
+            }
         }
         else if (turn.discarded)
         {
-            style =  "fill:rgb(92,92,92);font-family:Arial;font-size:6px";
+            style =  "fill:rgb(92,92,92);" + font6;
         }
         else if (turn.cluster_id != -1)
         {
-            style =  "fill:rgb(0,0,255);font-family:Arial;font-size:8px";
+            style =  "fill:rgb(0,0,255);" + font8;
         }
         else if (! lab1 || ! lab2)
         {
-            style =  "fill:rgb(0,0,255);font-family:Arial;font-size:6px";
+            style =  "fill:rgb(0,0,255);" + font6;
         }
 
         add_text(turn, out.str(), style);
@@ -289,7 +320,7 @@ struct map_visitor
     void add_text(Turn const& turn, std::string const& text, std::string const& style)
     {
         int const margin = 5;
-        int const lineheight = 8;
+        int const lineheight = 6;
         double const half = 0.5;
         double const ten = 10;
 
@@ -333,10 +364,18 @@ void test_overlay(std::string const& caseid,
     bg::correct(g2);
 
 #if defined(TEST_WITH_SVG)
+    bool const ccw = bg::point_order<Geometry>::value == bg::counterclockwise;
+    bool const open = bg::closure<Geometry>::value == bg::open;
+
     std::ostringstream filename;
     filename << "overlay"
         << "_" << caseid
         << "_" << string_from_type<typename bg::coordinate_type<Geometry>::type>::name()
+        << (ccw ? "_ccw" : "")
+        << (open ? "_open" : "")
+#if defined(BOOST_GEOMETRY_USE_RESCALING)
+        << "_rescaled"
+#endif
         << ".svg";
 
     std::ofstream svg(filename.str().c_str());
@@ -358,14 +397,19 @@ void test_overlay(std::string const& caseid,
     typedef typename boost::range_value<Geometry>::type geometry_out;
     typedef bg::detail::overlay::overlay
         <
-            Geometry, Geometry, false, OverlayType == bg::overlay_difference,
-            false, geometry_out,
+            Geometry, Geometry,
+            bg::detail::overlay::do_reverse<bg::point_order<Geometry>::value>::value,
+            OverlayType == bg::overlay_difference
+            ? ! bg::detail::overlay::do_reverse<bg::point_order<Geometry>::value>::value
+            : bg::detail::overlay::do_reverse<bg::point_order<Geometry>::value>::value,
+            bg::detail::overlay::do_reverse<bg::point_order<Geometry>::value>::value,
+            geometry_out,
             OverlayType
         > overlay;
 
-    typedef typename bg::strategy::intersection::services::default_strategy
+    typedef typename bg::strategies::relate::services::default_strategy
         <
-            typename bg::cs_tag<Geometry>::type
+            Geometry, Geometry
         >::type strategy_type;
 
     strategy_type strategy;
@@ -388,6 +432,12 @@ void test_overlay(std::string const& caseid,
     Geometry result;
     overlay::apply(g1, g2, robust_policy, std::back_inserter(result),
                    strategy, visitor);
+
+    std::string message;
+    bool const valid = check_validity<Geometry>::apply(result, caseid, g1, g2, message);
+    BOOST_CHECK_MESSAGE(valid,
+        "overlay: " << caseid << " not valid: " << message
+        << " type: " << (type_for_assert_message<Geometry, Geometry>()));
 
     BOOST_CHECK_CLOSE(bg::area(result), expected_area, 0.001);
     BOOST_CHECK_MESSAGE((bg::num_interior_rings(result) == expected_hole_count),
@@ -420,11 +470,11 @@ void test_overlay(std::string const& caseid,
 #define TEST_UNION_WITH(caseid, index1, index2, area, clips, holes) (test_overlay<multi_polygon, bg::overlay_union>) \
     ( #caseid "_union" #index1 "_" #index2, caseid[index1], caseid[index2], area, clips, holes)
 
-template <typename T>
+template <typename T, bool Clockwise>
 void test_all()
 {
     typedef bg::model::point<T, 2, bg::cs::cartesian> point_type;
-    typedef bg::model::polygon<point_type> polygon;
+    typedef bg::model::polygon<point_type, Clockwise> polygon;
     typedef bg::model::multi_polygon<polygon> multi_polygon;
 
     TEST_UNION(case_multi_simplex, 14.58, 1, 0);
@@ -468,6 +518,7 @@ void test_all()
 
 int test_main(int, char* [])
 {
-    test_all<double>();
+    test_all<double, true>();
+//    test_all<double, false>();
     return 0;
  }

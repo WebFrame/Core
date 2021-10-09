@@ -20,9 +20,9 @@ echo %gpp% %version%: %std% %args%
 set UCAP=%unit%
 call :toupper UCAP
 
-set unit_select=-D%unit%_CONFIG_SELECT_%UCAP%=%unit%_%UCAP%_DEFAULT
-::set unit_select=-D%unit%_CONFIG_SELECT_%UCAP%=%unit%_%UCAP%_NONSTD
-::set unit_select=-D%unit%_CONFIG_SELECT_%UCAP%=%unit%_%UCAP%_STD
+set unit_select=-D%unit_prfx%_CONFIG_SELECT_%UCAP%=%unit_prfx%_%UCAP%_DEFAULT
+::set unit_select=-D%unit_prfx%_CONFIG_SELECT_%UCAP%=%unit_prfx%_%UCAP%_NONSTD
+::set unit_select=-D%unit_prfx%_CONFIG_SELECT_%UCAP%=%unit_prfx%_%UCAP%_STD
 
 set unit_config=^
     -Dnssv_CONFIG_STD_SV_OPERATOR=1 ^
@@ -31,9 +31,9 @@ set unit_config=^
 
 rem -flto / -fwhole-program
 set  optflags=-O2
-set warnflags=-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wno-padded -Wno-missing-noreturn
+set warnflags=-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wshadow -Wno-padded -Wno-missing-noreturn
 
-%gpp% -std=%std% %optflags% %warnflags% %unit_select% %unit_config% -o %unit_file%-main.t.exe -I../include %unit_file%-main.t.cpp %unit_file%.t.cpp && %unit_file%-main.t.exe
+%gpp% -std=%std% %optflags% %warnflags% %unit_select% %unit_config% -o %unit_file%-main.t.exe -isystem lest -I../include -I. %unit_file%-main.t.cpp %unit_file%.t.cpp && %unit_file%-main.t.exe
 
 endlocal & goto :EOF
 

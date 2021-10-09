@@ -1,39 +1,23 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_type_index)
+# Copyright 2019 Mike Dev
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.20)
+project(boost_type_index VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-find_package(boost_core)
-find_package(boost_static_assert)
-find_package(boost_mpl)
-find_package(boost_smart_ptr)
-find_package(boost_type_traits)
-find_package(boost_config)
-find_package(boost_throw_exception)
-find_package(boost_preprocessor)
+add_library(boost_type_index INTERFACE)
+add_library(Boost::type_index ALIAS boost_type_index)
 
-bcm_setup_version(VERSION 1.64.0)
+target_include_directories(boost_type_index INTERFACE include)
 
-add_library(boost_type_index INTERFACE
+target_link_libraries(boost_type_index
+    INTERFACE
+        Boost::config
+        Boost::container_hash
+        Boost::core
+        Boost::preprocessor
+        Boost::smart_ptr
+        Boost::static_assert
+        Boost::throw_exception
+        Boost::type_traits
 )
-set_property(TARGET boost_type_index PROPERTY EXPORT_NAME type_index)
-
-target_link_libraries(boost_type_index INTERFACE boost::core)
-target_link_libraries(boost_type_index INTERFACE boost::static_assert)
-target_link_libraries(boost_type_index INTERFACE boost::mpl)
-target_link_libraries(boost_type_index INTERFACE boost::smart_ptr)
-target_link_libraries(boost_type_index INTERFACE boost::type_traits)
-target_link_libraries(boost_type_index INTERFACE boost::config)
-target_link_libraries(boost_type_index INTERFACE boost::throw_exception)
-target_link_libraries(boost_type_index INTERFACE boost::preprocessor)
-
-
-
-
-bcm_deploy(TARGETS boost_type_index INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
-endif()

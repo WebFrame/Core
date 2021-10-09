@@ -12,20 +12,20 @@
 #include <boost/version.hpp>
 #include <boost/config/warning_disable.hpp>
 #include <boost/detail/lightweight_test.hpp>
-#include <boost/math/concepts/real_concept.hpp>
 
 #include <boost/spirit/include/karma_char.hpp>
 #include <boost/spirit/include/karma_numeric.hpp>
 #include <boost/spirit/include/karma_generate.hpp>
 #include <boost/spirit/include/karma_directive.hpp>
-#include <boost/spirit/include/karma_phoenix_attributes.hpp>
-
-#include <boost/spirit/include/phoenix_core.hpp>
-#include <boost/spirit/include/phoenix_operator.hpp>
-#include <boost/spirit/include/phoenix_statement.hpp>
 
 #include <boost/limits.hpp>
 #include "test.hpp"
+
+#ifndef BOOST_NO_CXX11_SFINAE_EXPR
+# include <boost/math/concepts/real_concept.hpp>
+#else
+# define BOOST_SPIRIT_NO_MATH_REAL_CONCEPT
+#endif
 
 using namespace spirit_test;
 
@@ -46,7 +46,7 @@ struct fixed_policy : boost::spirit::karma::real_policies<T>
 {
     typedef boost::spirit::karma::real_policies<T> base_type;
 
-    //  we want the numbers always to be in scientific format
+    //  we want the numbers always to be in fixed format
     static int floatfield(T) { return base_type::fmtflags::fixed; }
 };
 

@@ -1,13 +1,20 @@
 // Boost.Geometry
 // Unit Test
 
-// Copyright (c) 2016 Oracle and/or its affiliates.
+// Copyright (c) 2016-2019 Oracle and/or its affiliates.
 
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
+
+// Copyright (c) 2018 Adeel Ahmad, Islamabad, Pakistan.
+
+// Contributed and/or modified by Adeel Ahmad, as part of Google Summer of Code 2018 program
 
 // Use, modification and distribution is subject to the Boost Software License,
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
+
+
+#include <sstream>
 
 #include "test_formula.hpp"
 #include "inverse_cases.hpp"
@@ -16,15 +23,7 @@
 #include <boost/geometry/formulas/thomas_inverse.hpp>
 #include <boost/geometry/formulas/andoyer_inverse.hpp>
 
-template <typename Result>
-void check_inverse(Result const& result, expected_result const& expected, expected_result const& reference, double reference_error)
-{
-    check_one(result.distance, expected.distance, reference.distance, reference_error);
-    check_one(result.azimuth, expected.azimuth, reference.azimuth, reference_error, true);
-    check_one(result.reverse_azimuth, expected.reverse_azimuth, reference.reverse_azimuth, reference_error, true);
-    check_one(result.reduced_length, expected.reduced_length, reference.reduced_length, reference_error);
-    check_one(result.geodesic_scale, expected.geodesic_scale, reference.geodesic_scale, reference_error);
-}
+#include <boost/geometry/srs/spheroid.hpp>
 
 void test_all(expected_results const& results)
 {
@@ -45,19 +44,19 @@ void test_all(expected_results const& results)
     result_v = vi_t::apply(lon1r, lat1r, lon2r, lat2r, spheroid);
     result_v.azimuth *= r2d;
     result_v.reverse_azimuth *= r2d;
-    check_inverse(result_v, results.vincenty, results.reference, 0.0000001);
+    check_inverse("vincenty", results, result_v, results.vincenty, results.reference, 0.0000001);
 
     typedef bg::formula::thomas_inverse<double, true, true, true, true, true> th_t;
     result_t = th_t::apply(lon1r, lat1r, lon2r, lat2r, spheroid);
     result_t.azimuth *= r2d;
     result_t.reverse_azimuth *= r2d;
-    check_inverse(result_t, results.thomas, results.reference, 0.00001);
+    check_inverse("thomas", results, result_t, results.thomas, results.reference, 0.00001);
 
     typedef bg::formula::andoyer_inverse<double, true, true, true, true, true> an_t;
     result_a = an_t::apply(lon1r, lat1r, lon2r, lat2r, spheroid);
     result_a.azimuth *= r2d;
     result_a.reverse_azimuth *= r2d;
-    check_inverse(result_a, results.andoyer, results.reference, 0.001);
+    check_inverse("andoyer", results, result_a, results.andoyer, results.reference, 0.001);
 }
 
 int test_main(int, char*[])

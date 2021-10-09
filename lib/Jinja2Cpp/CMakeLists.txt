@@ -19,14 +19,25 @@ set (JINJA2CPP_DEPS_MODE "internal" CACHE STRING "Jinja2Cpp dependency managemen
 option(JINJA2CPP_BUILD_TESTS "Build Jinja2Cpp unit tests" ${JINJA2CPP_IS_MAIN_PROJECT})
 option(JINJA2CPP_STRICT_WARNINGS "Enable additional warnings and treat them as errors" ON)
 option(JINJA2CPP_BUILD_SHARED "Build shared linkage version of Jinja2Cpp" OFF)
+option(JINJA2CPP_PIC "Control -fPIC option for library build" OFF)
+option(JINJA2CPP_VERBOSE "Add extra debug output to the build scripts" OFF)
+
+if (DEFINED BUILD_SHARED_LIBS)
+    set(JINJA2CPP_BUILD_SHARED ${BUILD_SHARED_LIBS})
+endif ()
+
+if (JINJA2CPP_BUILD_SHARED)
+    set(JINJA2CPP_PIC ON)
+    set(JINJA2CPP_MSVC_RUNTIME_TYPE "/MD")
+endif ()
 
 if (NOT JINJA2CPP_DEPS_MODE)
-    set (JINJA2CPP_DEPS_MODE "internal")
+    set(JINJA2CPP_DEPS_MODE "internal")
 endif ()
 
 if (JINJA2CPP_IS_MAIN_PROJECT OR NOT CMAKE_CXX_STANDARD)
-    set (JINJA2CPP_CXX_STANDARD 14 CACHE STRING "Jinja2Cpp C++ standard to build with. C++14 is default")
-    set (CMAKE_CXX_STANDARD ${JINJA2CPP_CXX_STANDARD})
+    set(JINJA2CPP_CXX_STANDARD 14 CACHE STRING "Jinja2Cpp C++ standard to build with. C++14 is default")
+    set(CMAKE_CXX_STANDARD ${JINJA2CPP_CXX_STANDARD})
 endif ()
 
 if (NOT JINJA2CPP_CXX_STANDARD)
@@ -69,8 +80,14 @@ if(NOT ${JINJA2CPP_WITH_SANITIZERS} STREQUAL "none")
 endif()
 
 if (UNIX)
-    set(GCC_CXX_FLAGS ${GCC_CXX_FLAGS} -fPIC)
-    set(CLANG_CXX_FLAGS ${CLANG_CXX_FLAGS} -fPIC)
+    if (JINJA2CPP_PIC OR CONAN_CMAKE_POSITION_INDEPENDENT_CODE)
+        add_compile_options(-fPIC)
+    endif ()
+
+    if (DEFINED CONAN_SHARED_LINKER_FLAGS)
+        set(GCC_CXX_FLAGS ${GCC_CXX_FLAGS} -Wl,${CONAN_SHARED_LINKER_FLAGS})
+        set(CLANG_CXX_FLAGS ${CLANG_CXX_FLAGS} -Wl,${CONAN_SHARED_LINKER_FLAGS})
+    endif ()
 else ()
     set(GCC_CXX_FLAGS ${GCC_CXX_FLAGS} "-Wa,-mbig-obj" -O1)
     if (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
@@ -78,7 +95,6 @@ else ()
     endif ()
     add_definitions(-DBOOST_ALL_NO_LIB)
     set(MSVC_CXX_FLAGS ${MSVC_CXX_FLAGS} /wd4503 /bigobj)
-    # MSVC
 
     if (CMAKE_BUILD_TYPE MATCHES "Debug" AND JINJA2CPP_MSVC_RUNTIME_TYPE)
         set(JINJA2CPP_MSVC_RUNTIME_TYPE "${JINJA2CPP_MSVC_RUNTIME_TYPE}d")
@@ -110,8 +126,10 @@ endif()
 
 if (JINJA2CPP_BUILD_SHARED)
     set(LIB_LINK_TYPE SHARED)
+    message(STATUS "Jinja2C++ library type: SHARED")
 else()
     set(LIB_LINK_TYPE STATIC)
+    message(STATUS "Jinja2C++ library type: STATIC")
 endif()
 
 include(collect_sources)
@@ -183,7 +201,11 @@ elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "MSVC")
     target_compile_options(${LIB_TARGET_NAME} PRIVATE ${MSVC_CXX_FLAGS})
 endif ()
 
-target_compile_definitions(${LIB_TARGET_NAME} PUBLIC BOOST_SYSTEM_NO_DEPRECATED BOOST_ERROR_CODE_HEADER_ONLY)
+target_compile_definitions(${LIB_TARGET_NAME} PUBLIC -DBOOST_SYSTEM_NO_DEPRECATED -DBOOST_ERROR_CODE_HEADER_ONLY)
+
+if (JINJA2CPP_BUILD_SHARED)
+    target_compile_definitions(${LIB_TARGET_NAME} PRIVATE -DJINJA2CPP_BUILD_AS_SHARED PUBLIC -DJINJA2CPP_LINK_AS_SHARED)
+endif ()
 
 set_target_properties(${LIB_TARGET_NAME} PROPERTIES
         VERSION ${PROJECT_VERSION}
@@ -197,14 +219,15 @@ set_target_properties(${LIB_TARGET_NAME} PROPERTIES
 
 set_property(TARGET ${LIB_TARGET_NAME} PROPERTY PUBLIC_HEADER ${PublicHeaders} ${JINJA2CPP_EXTRA_PUBLIC_HEADERS})
 
-configure_file(jinja2cpp.pc.in jinja2cpp.pc @ONLY)
+configure_file(jinja2cpp.pc.in ${CMAKE_BINARY_DIR}/jinja2cpp.pc @ONLY)
 
 if (JINJA2CPP_BUILD_TESTS)
     enable_testing()
 
     CollectSources(TestSources TestHeaders ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/test)
     add_executable(jinja2cpp_tests ${TestSources} ${TestHeaders})
-    target_link_libraries(jinja2cpp_tests gtest gtest_main nlohmann_json ${LIB_TARGET_NAME} ${EXTRA_TEST_LIBS} ${JINJA2CPP_PRIVATE_LIBS})
+    target_link_libraries(jinja2cpp_tests gtest gtest_main
+        nlohmann_json::nlohmann_json ${LIB_TARGET_NAME} ${EXTRA_TEST_LIBS} ${JINJA2CPP_PRIVATE_LIBS})
 
     set_target_properties(jinja2cpp_tests PROPERTIES
             CXX_STANDARD ${JINJA2CPP_CXX_STANDARD}

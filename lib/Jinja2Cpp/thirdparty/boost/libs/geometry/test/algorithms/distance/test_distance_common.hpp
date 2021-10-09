@@ -1,9 +1,10 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 // Unit Test
 
-// Copyright (c) 2014-2015, Oracle and/or its affiliates.
+// Copyright (c) 2014-2017, Oracle and/or its affiliates.
 
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
+// Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
 // Licensed under the Boost Software License version 1.0.
 // http://www.boost.org/users/license.html
@@ -37,6 +38,8 @@
 #include <boost/geometry/algorithms/distance.hpp>
 #include <boost/geometry/algorithms/comparable_distance.hpp>
 
+#include <boost/geometry/strategies/strategies.hpp>
+
 #include <from_wkt.hpp>
 #include <string_from_type.hpp>
 
@@ -61,8 +64,6 @@ void test_empty_input(Geometry1 const& geometry1, Geometry2 const& geometry2)
     BOOST_CHECK_MESSAGE(false, "A empty_input_exception should have been thrown" );
 }
 #endif // BOOST_GEOMETRY_TEST_DISTANCE_HPP
-
-
 
 //========================================================================
 
@@ -534,24 +535,46 @@ struct test_distance_of_geometries
         base::apply(segment, box, expected_distance,
                     expected_comparable_distance, strategy, is_finite);
 
-        comparable_strategy cstrategy =
-            bg::strategy::distance::services::get_comparable
-                <
-                    Strategy
-                >::apply(strategy);
+        auto strategies = bg::strategies::distance::services::strategy_converter<Strategy>::get(strategy);
+        auto cstrategies = bg::strategies::distance::detail::make_comparable(strategies);
+
+        // TODO: these algorithms are used only here. Remove them?
 
         distance_result_type distance_generic =
             bg::detail::distance::segment_to_box_2D_generic
                 <
-                    Segment, Box, Strategy
-                >::apply(segment, box, strategy);
+                    Segment, Box, decltype(strategies), false
+                >::apply(segment, box, strategies);
 
         comparable_distance_result_type comparable_distance_generic =
             bg::detail::distance::segment_to_box_2D_generic
                 <
-                    Segment, Box, comparable_strategy
-                >::apply(segment, box, cstrategy);
+                    Segment, Box, decltype(cstrategies), false
+                >::apply(segment, box, cstrategies);
 
+        check_equal
+            <
+                distance_result_type
+            >::apply(distance_generic, expected_distance, is_finite);
+
+        check_equal
+            <
+                comparable_distance_result_type
+            >::apply(comparable_distance_generic,
+                     expected_comparable_distance,
+                     is_finite);
+
+        distance_generic =
+            bg::detail::distance::segment_to_box_2D_generic
+                <
+                    Segment, Box, decltype(strategies), true
+                >::apply(segment, box, strategies);
+
+        comparable_distance_generic =
+            bg::detail::distance::segment_to_box_2D_generic
+                <
+                    Segment, Box, decltype(cstrategies), true
+                >::apply(segment, box, cstrategies);
 
         check_equal
             <

@@ -1,4 +1,4 @@
-// Copyright 2017-2019 by Martin Moene
+// Copyright 2017-2020 by Martin Moene
 //
 // https://github.com/martinmoene/string-view-lite
 //
@@ -42,7 +42,9 @@
 
 namespace lest {
 
+#if ! nssv_CONFIG_NO_STREAM_INSERTION
 using ::nonstd::operator<<;
+#endif
 
 } // namespace lest
 

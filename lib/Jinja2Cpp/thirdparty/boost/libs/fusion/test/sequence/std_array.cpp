@@ -6,9 +6,10 @@
 // at http://www.boost.org/LICENSE_1_0.txt)
 //
 #include <boost/config.hpp>
+
 #ifdef BOOST_NO_CXX11_HDR_ARRAY
-int main() {}
-#else
+#   error "does not meet requirements"
+#endif
 
 #ifdef BOOST_MSVC
 #pragma warning(disable:4180)
@@ -32,6 +33,8 @@ int main()
 
     BOOST_MPL_ASSERT((traits::is_sequence<array_type>));
     BOOST_MPL_ASSERT_NOT((traits::is_view<array_type>));
+    BOOST_STATIC_ASSERT(traits::is_sequence<array_type>::value);
+    BOOST_STATIC_ASSERT(!traits::is_view<array_type>::value);
 
     array_type arr = {{1,2,3}};
 
@@ -46,4 +49,3 @@ int main()
 
     return boost::report_errors();
 }
-#endif

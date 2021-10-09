@@ -11,7 +11,7 @@ cmake_minimum_required( VERSION 3.5 FATAL_ERROR )
 
 project(
     expected_lite
-    VERSION 0.3.0
+    VERSION 0.5.0
 #   DESCRIPTION "Expected objects in C++11 and later in a single-file header-only library"
 #   HOMEPAGE_URL "https://github.com/martinmoene/expected-lite"
     LANGUAGES CXX )
@@ -119,6 +119,12 @@ install(
 install(
     DIRECTORY   "include/"
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+)
+
+export(
+    EXPORT       ${package_target}
+    NAMESPACE    ${package_nspace}::
+    FILE         "${CMAKE_CURRENT_BINARY_DIR}/${package_name}-targets.cmake"
 )
 
 # end of file

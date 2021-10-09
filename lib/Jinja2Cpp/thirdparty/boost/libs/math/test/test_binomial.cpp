@@ -36,7 +36,7 @@ using boost::math::binomial_distribution;
 
 #define BOOST_TEST_MAIN
 #include <boost/test/unit_test.hpp> // for test_main
-#include <boost/test/floating_point_comparison.hpp> // for BOOST_CHECK_CLOSE
+#include <boost/test/tools/floating_point_comparison.hpp> // for BOOST_CHECK_CLOSE
 #include "table_type.hpp"
 
 #include "test_out_of_range.hpp"
@@ -100,7 +100,7 @@ void test_spot(
       if(k > 0)
       {
          // estimate success ratio:
-         // Note lower bound uses a different formual internally
+         // Note lower bound uses a different formula internally
          // from upper bound, have to adjust things to prevent
          // fencepost errors:
          BOOST_CHECK_CLOSE(
@@ -220,15 +220,15 @@ template <class RealType> // Any floating-point type RealType.
 void test_spots(RealType T)
 {
   // Basic sanity checks, test data is to double precision only
-  // so set tolerance to 100eps expressed as a persent, or
-  // 100eps of type double expressed as a persent, whichever
+  // so set tolerance to 100eps expressed as a percent, or
+  // 100eps of type double expressed as a percent, whichever
   // is the larger.
 
   RealType tolerance = (std::max)
       (boost::math::tools::epsilon<RealType>(),
       static_cast<RealType>(std::numeric_limits<double>::epsilon()));
   tolerance *= 100 * 1000;
-  RealType tol2 = boost::math::tools::epsilon<RealType>() * 5 * 100;  // 5 eps as a persent
+  RealType tol2 = boost::math::tools::epsilon<RealType>() * 5 * 100;  // 5 eps as a percent
 
   cout << "Tolerance for type " << typeid(T).name()  << " is " << tolerance << " %" << endl;
 
@@ -642,12 +642,6 @@ void test_spots(RealType T)
   for(unsigned i = 0; i < binomial_quantile_data.size(); ++i)
   {
      using namespace boost::math::policies;
-     typedef policy<discrete_quantile<boost::math::policies::real> > P1;
-     typedef policy<discrete_quantile<integer_round_down> > P2;
-     typedef policy<discrete_quantile<integer_round_up> > P3;
-     typedef policy<discrete_quantile<integer_round_outwards> > P4;
-     typedef policy<discrete_quantile<integer_round_inwards> > P5;
-     typedef policy<discrete_quantile<integer_round_nearest> > P6;
      RealType tol = boost::math::tools::epsilon<RealType>() * 500;
      if(!boost::is_floating_point<RealType>::value)
         tol *= 10;  // no lanczos approximation implies less accuracy
@@ -656,6 +650,7 @@ void test_spots(RealType T)
      //
      // Check full real value first:
      //
+     typedef policy<discrete_quantile<boost::math::policies::real> > P1;
      binomial_distribution<RealType, P1> p1(binomial_quantile_data[i][0], binomial_quantile_data[i][1]);
      x = quantile(p1, binomial_quantile_data[i][2]);
      BOOST_CHECK_CLOSE_FRACTION(x, (RealType)binomial_quantile_data[i][3], tol);
@@ -666,6 +661,7 @@ void test_spots(RealType T)
      //
      // Now with round down to integer:
      //
+     typedef policy<discrete_quantile<integer_round_down> > P2;
      binomial_distribution<RealType, P2> p2(binomial_quantile_data[i][0], binomial_quantile_data[i][1]);
      x = quantile(p2, binomial_quantile_data[i][2]);
      BOOST_CHECK_EQUAL(x, (RealType)floor(binomial_quantile_data[i][3]));
@@ -676,6 +672,7 @@ void test_spots(RealType T)
      //
      // Now with round up to integer:
      //
+     typedef policy<discrete_quantile<integer_round_up> > P3;
      binomial_distribution<RealType, P3> p3(binomial_quantile_data[i][0], binomial_quantile_data[i][1]);
      x = quantile(p3, binomial_quantile_data[i][2]);
      BOOST_CHECK_EQUAL(x, (RealType)ceil(binomial_quantile_data[i][3]));
@@ -686,6 +683,7 @@ void test_spots(RealType T)
      //
      // Now with round to integer "outside":
      //
+     typedef policy<discrete_quantile<integer_round_outwards> > P4;
      binomial_distribution<RealType, P4> p4(binomial_quantile_data[i][0], binomial_quantile_data[i][1]);
      x = quantile(p4, binomial_quantile_data[i][2]);
      BOOST_CHECK_EQUAL(x, (RealType)(binomial_quantile_data[i][2] < 0.5f ? floor(binomial_quantile_data[i][3]) : ceil(binomial_quantile_data[i][3])));
@@ -696,6 +694,7 @@ void test_spots(RealType T)
      //
      // Now with round to integer "inside":
      //
+     typedef policy<discrete_quantile<integer_round_inwards> > P5;
      binomial_distribution<RealType, P5> p5(binomial_quantile_data[i][0], binomial_quantile_data[i][1]);
      x = quantile(p5, binomial_quantile_data[i][2]);
      BOOST_CHECK_EQUAL(x, (RealType)(binomial_quantile_data[i][2] < 0.5f ? ceil(binomial_quantile_data[i][3]) : floor(binomial_quantile_data[i][3])));
@@ -706,6 +705,7 @@ void test_spots(RealType T)
      //
      // Now with round to nearest integer:
      //
+     typedef policy<discrete_quantile<integer_round_nearest> > P6;
      binomial_distribution<RealType, P6> p6(binomial_quantile_data[i][0], binomial_quantile_data[i][1]);
      x = quantile(p6, binomial_quantile_data[i][2]);
      BOOST_CHECK_EQUAL(x, (RealType)(floor(binomial_quantile_data[i][3] + 0.5f)));
@@ -765,7 +765,7 @@ Output is:
   Tolerance for type double is 2.22045e-011 %
   Tolerance for type long double is 2.22045e-011 %
   Tolerance for type class boost::math::concepts::real_concept is 2.22045e-011 %
-  
+
   *** No errors detected
 
 ========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========

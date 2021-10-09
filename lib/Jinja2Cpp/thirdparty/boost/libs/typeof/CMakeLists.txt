@@ -1,33 +1,18 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_typeof)
+# Copyright 2018 Mike Dev
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.20)
+project(boost_typeof VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-find_package(boost_core)
-find_package(boost_mpl)
-find_package(boost_type_traits)
-find_package(boost_preprocessor)
-find_package(boost_config)
+add_library(boost_typeof INTERFACE)
+add_library(Boost::typeof ALIAS boost_typeof)
 
-bcm_setup_version(VERSION 1.64.0)
+target_include_directories(boost_typeof INTERFACE include)
 
-add_library(boost_typeof INTERFACE
+target_link_libraries(boost_typeof
+    INTERFACE
+        Boost::config
+        Boost::preprocessor
+        Boost::type_traits
 )
-set_property(TARGET boost_typeof PROPERTY EXPORT_NAME typeof)
-
-target_link_libraries(boost_typeof INTERFACE boost::core)
-target_link_libraries(boost_typeof INTERFACE boost::mpl)
-target_link_libraries(boost_typeof INTERFACE boost::type_traits)
-target_link_libraries(boost_typeof INTERFACE boost::preprocessor)
-target_link_libraries(boost_typeof INTERFACE boost::config)
-
-
-
-
-bcm_deploy(TARGETS boost_typeof INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
-endif()

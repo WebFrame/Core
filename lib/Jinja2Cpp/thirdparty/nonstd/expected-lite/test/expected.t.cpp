@@ -70,7 +70,7 @@ struct OracleVal
 {
     State s;
     int i;
-    OracleVal(int i = 0) : s(sValueConstructed), i(i) {}
+    OracleVal(int i_ = 0) : s(sValueConstructed), i(i_) {}
 
     bool operator==( OracleVal const & other ) const { return s==other.s && i==other.i; }
 };
@@ -539,8 +539,8 @@ CASE( "make_unexpected_from_current_exception(): Allows to create an unexpected_
 
 CASE( "unexpected: C++17 and later provide unexpected_type as unexpected" )
 {
-#if nsel_CPP17_OR_GREATER && nsel_COMPILER_MSVC_VERSION > 141
-    unexpected<Oracle> u;
+#if nsel_CPP17_OR_GREATER || nsel_COMPILER_MSVC_VERSION > 141
+    nonstd::unexpected<int> u{7};
 #else
     EXPECT( !!"unexpected is not available (no C++17)." );
 #endif
@@ -1705,6 +1705,15 @@ CASE( "make_expected_from_call(): void return type" "[.deprecated]" )
 #endif
 }
 
+CASE( "tweak header: reads tweak header if supported " "[tweak]" )
+{
+#if expected_HAVE_TWEAK_HEADER
+    EXPECT( EXPECTED_TWEAK_VALUE == 42 );
+#else
+    EXPECT( !!"Tweak header is not available (expected_HAVE_TWEAK_HEADER: 0)." );
+#endif
+}
+
 // -----------------------------------------------------------------------
 // expected: issues
 
@@ -1724,30 +1733,50 @@ CASE( "issue-15" )
 }
 
 // issue #29, https://github.com/martinmoene/expected-lite/issues/29
+// issue #32, https://github.com/martinmoene/expected-lite/issues/32
 
-struct issue_xx
+namespace issue_32 {
+
+enum class Error
 {
-    issue_xx() {}
-    issue_xx( issue_xx const & ) {}
-    issue_xx & operator=( issue_xx const & ) { return *this; }
-
-#if 1
-    issue_xx( issue_xx && ) {}
-    issue_xx & operator=( issue_xx && ) { return *this; }
-#else
-    issue_xx( issue_xx && ) = delete;
-    issue_xx & operator=( issue_xx && ) = delete;
-#endif
+    Bad
 };
 
-CASE( "issue-xx" )
+class MyNonMoveableObject
 {
-    issue_xx ix;
-    nonstd::expected< issue_xx, int > a = ix;
-//    nonstd::expected< issue_xx, int > b;
+public:
+    MyNonMoveableObject() = default;
+    MyNonMoveableObject( MyNonMoveableObject const &  ) = default;
+    MyNonMoveableObject( MyNonMoveableObject       && ) = delete;
+    MyNonMoveableObject& operator=( MyNonMoveableObject const  &) = default;
+    MyNonMoveableObject& operator=( MyNonMoveableObject       &&) = delete;
 
-    //b = a;
+    ~MyNonMoveableObject() = default;
+};
+
+nonstd::expected< MyNonMoveableObject, Error > create_copyable()
+{
+    return MyNonMoveableObject{};
 }
+
+class MyNonCopyableObject
+{
+public:
+    MyNonCopyableObject() = default;
+    MyNonCopyableObject( MyNonCopyableObject const &  ) = delete;
+    MyNonCopyableObject( MyNonCopyableObject       && ) = default;
+    MyNonCopyableObject& operator=( MyNonCopyableObject const &  ) = delete;
+    MyNonCopyableObject& operator=( MyNonCopyableObject       && ) = default;
+
+    ~MyNonCopyableObject() = default;
+};
+
+nonstd::expected< MyNonCopyableObject, Error > create_moveable()
+{
+    return MyNonCopyableObject{};
+}
+
+} // namespace issue_32
 
 // -----------------------------------------------------------------------
 //  using as optional

@@ -1,105 +1,125 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_serialization)
+# Copyright 2020, 2021 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# https://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.16)
 
-find_package(boost_predef)
-find_package(boost_move)
-find_package(boost_io)
-find_package(boost_array)
-find_package(boost_unordered)
-find_package(boost_utility)
-find_package(boost_static_assert)
-find_package(boost_iterator)
-find_package(boost_detail)
-find_package(boost_type_traits)
-find_package(boost_smart_ptr)
-find_package(boost_config)
-find_package(boost_function)
-find_package(boost_core)
-find_package(boost_mpl)
-find_package(boost_variant)
-find_package(boost_assert)
-find_package(boost_preprocessor)
-find_package(boost_integer)
-find_package(boost_optional)
-find_package(boost_spirit)
+project(boost_serialization VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-bcm_setup_version(VERSION 1.64.0)
-
-add_library(boost_serialization 
-src/basic_archive.cpp
-src/xml_grammar.cpp
-src/xml_wiarchive.cpp
-src/basic_oarchive.cpp
-src/singleton.cpp
-src/basic_oserializer.cpp
-src/polymorphic_oarchive.cpp
-src/text_woarchive.cpp
-src/extended_type_info.cpp
-src/xml_wgrammar.cpp
-src/binary_wiarchive.cpp
-src/basic_pointer_iserializer.cpp
-src/basic_iarchive.cpp
-src/basic_xml_archive.cpp
-src/stl_port.cpp
-src/codecvt_null.cpp
-src/extended_type_info_typeid.cpp
-src/binary_woarchive.cpp
-src/basic_pointer_oserializer.cpp
-src/basic_serializer_map.cpp
-src/text_wiarchive.cpp
-src/xml_iarchive.cpp
-src/basic_text_woprimitive.cpp
-src/basic_iserializer.cpp
-src/binary_oarchive.cpp
-src/basic_text_iprimitive.cpp
-src/xml_oarchive.cpp
-src/xml_archive_exception.cpp
-src/void_cast.cpp
-src/xml_woarchive.cpp
-src/binary_iarchive.cpp
-src/basic_text_wiprimitive.cpp
-src/archive_exception.cpp
-src/extended_type_info_no_rtti.cpp
-src/polymorphic_iarchive.cpp
-src/text_iarchive.cpp
-src/utf8_codecvt_facet.cpp
-src/text_oarchive.cpp
-src/basic_text_oprimitive.cpp
+add_library(boost_serialization
+  src/archive_exception.cpp
+  src/basic_archive.cpp
+  src/basic_iarchive.cpp
+  src/basic_iserializer.cpp
+  src/basic_oarchive.cpp
+  src/basic_oserializer.cpp
+  src/basic_pointer_iserializer.cpp
+  src/basic_pointer_oserializer.cpp
+  src/basic_serializer_map.cpp
+  src/basic_text_iprimitive.cpp
+  src/basic_text_oprimitive.cpp
+  src/basic_xml_archive.cpp
+  src/binary_iarchive.cpp
+  src/binary_oarchive.cpp
+  src/codecvt_null.cpp
+  src/extended_type_info.cpp
+  src/extended_type_info_no_rtti.cpp
+  src/extended_type_info_typeid.cpp
+  src/polymorphic_binary_iarchive.cpp
+  src/polymorphic_binary_oarchive.cpp
+  src/polymorphic_iarchive.cpp
+  src/polymorphic_oarchive.cpp
+  src/polymorphic_text_iarchive.cpp
+  src/polymorphic_text_oarchive.cpp
+  src/polymorphic_xml_iarchive.cpp
+  src/polymorphic_xml_oarchive.cpp
+  src/stl_port.cpp
+  src/text_iarchive.cpp
+  src/text_oarchive.cpp
+  src/utf8_codecvt_facet.cpp
+  src/void_cast.cpp
+  src/xml_archive_exception.cpp
+  src/xml_grammar.cpp
+  src/xml_iarchive.cpp
+  src/xml_oarchive.cpp
 )
-set_property(TARGET boost_serialization PROPERTY EXPORT_NAME serialization)
 
-target_link_libraries(boost_serialization PUBLIC boost::predef)
-target_link_libraries(boost_serialization PUBLIC boost::move)
-target_link_libraries(boost_serialization PUBLIC boost::io)
-target_link_libraries(boost_serialization PUBLIC boost::array)
-target_link_libraries(boost_serialization PUBLIC boost::unordered)
-target_link_libraries(boost_serialization PUBLIC boost::utility)
-target_link_libraries(boost_serialization PUBLIC boost::static_assert)
-target_link_libraries(boost_serialization PUBLIC boost::iterator)
-target_link_libraries(boost_serialization PUBLIC boost::detail)
-target_link_libraries(boost_serialization PUBLIC boost::type_traits)
-target_link_libraries(boost_serialization PUBLIC boost::smart_ptr)
-target_link_libraries(boost_serialization PUBLIC boost::config)
-target_link_libraries(boost_serialization PUBLIC boost::function)
-target_link_libraries(boost_serialization PUBLIC boost::core)
-target_link_libraries(boost_serialization PUBLIC boost::mpl)
-target_link_libraries(boost_serialization PUBLIC boost::variant)
-target_link_libraries(boost_serialization PUBLIC boost::assert)
-target_link_libraries(boost_serialization PUBLIC boost::preprocessor)
-target_link_libraries(boost_serialization PUBLIC boost::integer)
-target_link_libraries(boost_serialization PUBLIC boost::optional)
-target_link_libraries(boost_serialization PUBLIC boost::spirit)
+add_library(boost_wserialization
+  src/basic_text_wiprimitive.cpp
+  src/basic_text_woprimitive.cpp
+  src/binary_wiarchive.cpp
+  src/binary_woarchive.cpp
+  src/polymorphic_text_wiarchive.cpp
+  src/polymorphic_text_woarchive.cpp
+  src/polymorphic_xml_wiarchive.cpp
+  src/polymorphic_xml_woarchive.cpp
+  src/text_wiarchive.cpp
+  src/text_woarchive.cpp
+  src/xml_wgrammar.cpp
+  src/xml_wiarchive.cpp
+  src/xml_woarchive.cpp
+)
 
+add_library(Boost::serialization ALIAS boost_serialization)
+add_library(Boost::wserialization ALIAS boost_wserialization)
 
+target_include_directories(boost_serialization PUBLIC include)
+target_include_directories(boost_wserialization PUBLIC include)
 
-target_include_directories(boost_serialization PRIVATE include)
+target_link_libraries(boost_serialization
+  PUBLIC
+    Boost::array
+    Boost::assert
+    Boost::config
+    Boost::core
+    Boost::detail
+    Boost::integer
+    Boost::io
+    Boost::iterator
+    Boost::move
+    Boost::mpl
+    Boost::optional
+    Boost::predef
+    Boost::preprocessor
+    Boost::smart_ptr
+    Boost::spirit
+    Boost::static_assert
+    Boost::type_traits
+    Boost::unordered
+    Boost::utility
+    Boost::variant
+  PRIVATE
+    Boost::function
+)
 
-bcm_deploy(TARGETS boost_serialization INCLUDE include NAMESPACE boost::)
+target_link_libraries(boost_wserialization PUBLIC boost_serialization)
 
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
+target_compile_definitions(boost_serialization
+  PUBLIC BOOST_SERIALIZATION_NO_LIB
+  # Source files already define BOOST_SERIALIZATION_SOURCE
+  # PRIVATE BOOST_SERIALIZATION_SOURCE
+)
+
+target_compile_definitions(boost_wserialization
+  PUBLIC BOOST_SERIALIZATION_NO_LIB
+  # Source files already define BOOST_SERIALIZATION_SOURCE
+  # PRIVATE BOOST_SERIALIZATION_SOURCE
+)
+
+if(BUILD_SHARED_LIBS)
+  target_compile_definitions(boost_serialization PUBLIC BOOST_SERIALIZATION_DYN_LINK)
+  target_compile_definitions(boost_wserialization PUBLIC BOOST_SERIALIZATION_DYN_LINK)
+else()
+  target_compile_definitions(boost_serialization PUBLIC BOOST_SERIALIZATION_STATIC_LINK)
+  target_compile_definitions(boost_wserialization PUBLIC BOOST_SERIALIZATION_STATIC_LINK)
+endif()
+
+if(BOOST_SUPERPROJECT_VERSION AND NOT CMAKE_VERSION VERSION_LESS 3.13)
+  boost_install(TARGETS boost_serialization boost_wserialization VERSION ${BOOST_SUPERPROJECT_VERSION} HEADER_DIRECTORY include)
+endif()
+
+if(BUILD_TESTING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
+
+  add_subdirectory(test)
+
 endif()

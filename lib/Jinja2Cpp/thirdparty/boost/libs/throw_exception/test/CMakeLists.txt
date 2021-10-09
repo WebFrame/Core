@@ -1,24 +1,17 @@
-include(BCMTest)
+# Copyright 2018, 2019 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
 
-find_package(boost_core)
+include(BoostTestJamfile OPTIONAL RESULT_VARIABLE HAVE_BOOST_TEST)
 
-bcm_test_link_libraries(boost_throw_exception
-boost::core
-)
+if(HAVE_BOOST_TEST)
 
-# Boost Exception Library test Jamfile
-#
-# Copyright (c) 2006-2009 Emil Dotchevski and Reverge Studios, Inc.
-#
-# Distributed under the Boost Software License, Version 1.0. (See accompanying
-# file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+boost_test_jamfile(FILE Jamfile.v2 LINK_LIBRARIES Boost::throw_exception Boost::core Boost::exception)
 
+endif()
 
+#run throw_from_library_test.cpp lib1_throw lib2_throw lib3_throw : : : <link>static : throw_from_library_static ;
+#run throw_from_library_test.cpp lib1_throw lib2_throw lib3_throw : : : <link>shared : throw_from_library_shared ;
 
-bcm_test(NAME test_throw_exception_test SOURCES throw_exception_test.cpp)
-bcm_test(NAME test_throw_exception_no_exceptions_test SOURCES throw_exception_no_exceptions_test.cpp)
-bcm_test(NAME test_throw_exception_no_integration_test SOURCES throw_exception_no_integration_test.cpp)
-bcm_test(NAME test_throw_exception_no_both_test SOURCES throw_exception_no_both_test.cpp)
-
-bcm_test(NAME test_throw_exception_fail SOURCES throw_exception_fail.cpp COMPILE_ONLY WILL_FAIL)
-
+#run throw_exception_nx_test.cpp : : : <exception-handling>off ;
+#run throw_exception_nx_test2.cpp : : : <exception-handling>off ;

@@ -1,6 +1,6 @@
 # variant lite: A single-file header-only version of a C++17-like variant, a type-safe union for C++98, C++11 and later
 
-[![Language](https://img.shields.io/badge/C%2B%2B-98/11/14/17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) [![License](https://img.shields.io/badge/license-BSL-blue.svg)](https://opensource.org/licenses/BSL-1.0) [![Build Status](https://travis-ci.org/martinmoene/variant-lite.svg?branch=master)](https://travis-ci.org/martinmoene/variant-lite) [![Build status](https://ci.appveyor.com/api/projects/status/w2dgn3fxyrd6vcq8?svg=true)](https://ci.appveyor.com/project/martinmoene/variant-lite) [![Version](https://badge.fury.io/gh/martinmoene%2Fvariant-lite.svg)](https://github.com/martinmoene/variant-lite/releases) [![Latest download](https://img.shields.io/badge/latest-download-blue.svg)](https://raw.githubusercontent.com/martinmoene/variant-lite/master/include/nonstd/variant.hpp) [![Conan](https://img.shields.io/badge/on-conan-blue.svg)](https://bintray.com/martinmoene/nonstd-lite/variant-lite%3Anonstd-lite/_latestVersion) [![Try it online](https://img.shields.io/badge/on-wandbox-blue.svg)](https://wandbox.org/permlink/tpG9nmapo2mUKUCo)
+[![Language](https://img.shields.io/badge/C%2B%2B-98/11/14/17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) [![License](https://img.shields.io/badge/license-BSL-blue.svg)](https://opensource.org/licenses/BSL-1.0) [![Build Status](https://travis-ci.org/martinmoene/variant-lite.svg?branch=master)](https://travis-ci.org/martinmoene/variant-lite) [![Build status](https://ci.appveyor.com/api/projects/status/w2dgn3fxyrd6vcq8?svg=true)](https://ci.appveyor.com/project/martinmoene/variant-lite) [![Version](https://badge.fury.io/gh/martinmoene%2Fvariant-lite.svg)](https://github.com/martinmoene/variant-lite/releases) [![Latest download](https://img.shields.io/badge/latest-download-blue.svg)](https://raw.githubusercontent.com/martinmoene/variant-lite/master/include/nonstd/variant.hpp) [![Conan](https://img.shields.io/badge/on-conan-blue.svg)](https://conan.io/center/variant-lite) [![Try it online](https://img.shields.io/badge/on-wandbox-blue.svg)](https://wandbox.org/permlink/tpG9nmapo2mUKUCo) [![Try it on godbolt online](https://img.shields.io/badge/on-godbolt-blue.svg)](https://godbolt.org/z/WY7HhQ)
 
 **Contents**  
 - [Example usage](#example-usage)
@@ -54,7 +54,7 @@ In a nutshell
 
 **Features and properties of variant lite** are ease of installation (single header), freedom of dependencies other than the standard library and control over object alignment (if needed).  *variant lite* shares the approach to in-place tags with [any-lite](https://github.com/martinmoene/any-lite), [expected-lite](https://github.com/martinmoene/expected-lite)  and with [optional-lite](https://github.com/martinmoene/optional-lite) and these libraries can be used together.
 
-**Limitations of variant lite** are the requirement for the alternative types to be of different types and the limit on the number of alternative types and the number of visitor arguments. The maximum number of types and visitor arguments are configurable via [script generate_header.py](script/generate_header.py) (default: 16 types, 5 visitor arguments). Move construction, move assignment and emplacement require C++11 and are not supported when compiling under C++98. *variant lite* does not provide allocator-extended constructors.
+**Limitations of variant lite** concern the number of alternative types and the number of visitor arguments. The maximum number of types and visitor arguments are configurable via [script generate_header.py](script/generate_header.py) (default: 16 types, 5 visitor arguments). With C++98, the alternative types are required to be of different type and there's no move construction, move assignment and emplacement. *variant lite* does not provide allocator-extended constructors.
 
 
 License
@@ -71,20 +71,38 @@ Installation
 ------------
 *variant lite* is a single-file header-only library. Put `variant.hpp` in the [include](include) folder directly into the project source tree or somewhere reachable from your project.
 
-Or, if you use the [conan package manager](https://www.conan.io/), follow these steps:
+Or, if you use the [conan package manager](https://www.conan.io/), you might follow these steps:
 
-1. Add *nonstd-lite* to the conan remotes:
+1. Create source file `./main.cpp`, e.g. with the contents of the example code above.
 
-        conan remote add nonstd-lite https://api.bintray.com/conan/martinmoene/nonstd-lite
+2. Create `./conanfile.txt` file with  a reference to *variant-lite* in the *requires* section:
+    ```Conan
+    [requires]
+    variant-lite/1.2.2  # variant-lite/2.0.0 when available
 
-2. Add a reference to *variant-lite* to the *requires* section of your project's `conanfile.txt` file:
+    [generators]
+    cmake
+    ```
 
-        [requires]
-        variant-lite/[~=0]@nonstd-lite/testing
+3. Create `./CMakeLists.txt`:
+    ```CMake
+    cmake_minimum_required(VERSION 3.1)
+    project(variant-example CXX)
 
-3. Run conan's install command:
+    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+    conan_basic_setup()
 
-        conan install
+    add_executable(${PROJECT_NAME} main.cpp)
+    target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS})
+    ```
+
+4. Run the following commands:
+    ```Text
+    mkdir build && cd build
+    conan install .. --settings arch=x86 --settings compiler=gcc
+    cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
+    cmake --build . --config Release
+    ```
 
 
 Synopsis
@@ -187,6 +205,10 @@ The maximum number of types thevariant can hold as configured via script [genera
 The maximum number of visitor arguments as configured via script [generate_header.py](script/generate_header.py).
 
 ### Configuration macros
+
+#### Tweak header
+
+If the compiler supports [`__has_include()`](https://en.cppreference.com/w/cpp/preprocessor/include), *variant lite* supports the [tweak header](https://vector-of-bool.github.io/2020/10/04/lib-configuration.html) mechanism. Provide your *tweak header* as `nonstd/variant.tweak.hpp` in a folder in the include-search-path. In the tweak header, provide definitions as documented below, like `#define boolean_CPLUSPLUS 201103L`.
 
 #### Standard selection macro
 \-D<b>variant\_CPLUSPLUS</b>=199711L  
@@ -376,6 +398,7 @@ The version of *variant lite* is available via tag `[.version]`. The following t
 variant: Disallows non-default constructible as first type
 variant: Allows non-default constructible as second and later type (first: int)
 variant: Allows non-default constructible as second and later type (first: monostate)
+variant: Allows multiple identical types (C++11)
 variant: Allows to default-construct variant
 variant: Allows to copy-construct from variant
 variant: Allows to move-construct from variant (C++11)
@@ -411,6 +434,7 @@ variant: Allows to in-place move-construct elements from intializer-list based o
 variant: Allows to in-place copy-construct elements from intializer-list based on index (C++11)
 variant: Allows to in-place move-construct elements from intializer-list based on index (C++11)
 variant: Allows to copy-emplace element based on type (C++11)
+variant: Disallows to copy-emplace non-unique element type on type (C++11)
 variant: Allows to move-emplace element based on type (C++11)
 variant: Allows to copy-emplace element based on index (C++11)
 variant: Allows to move-emplace element based on index (C++11)
@@ -441,4 +465,5 @@ variant_alternative<>: Allows to select type by index
 variant_alternative_t<>: Allows to select type by index (C++11)
 variant_alternative_T(): Allows to select type by index (non-standard: macro)
 std::hash<>: Allows to obtain hash (C++11)
+tweak header: reads tweak header if supported [tweak]
 ```

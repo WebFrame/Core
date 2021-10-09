@@ -3,7 +3,7 @@
 *
 * Distributed under the Boost Software License, Version 1.0.
 * See accompanying file LICENSE_1_0.txt or copy at
-* http://www.boost.org/LICENSE_1_0.txt
+* https://www.boost.org/LICENSE_1_0.txt
 */
 /*
 * This is a part of the test for a workaround for MSVC 12 (VS2013) optimizer bug
@@ -18,7 +18,7 @@
 #include "test_msvc_simd_bug981648.hpp"
 extern void mp_grid_update_marker_parameters(headerProperty* header_prop, my_obj &current_marker);
 static my_obj g_my_obj;
-int main(int argc, char* argv[])
+int main(void)
 {
 my_obj *p = &g_my_obj;
 p->m_uuid = uuid();

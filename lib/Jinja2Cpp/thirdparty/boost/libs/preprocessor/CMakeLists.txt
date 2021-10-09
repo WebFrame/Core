@@ -1,23 +1,25 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_preprocessor)
+# Copyright 2019 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.16)
 
+project(boost_preprocessor VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-bcm_setup_version(VERSION 1.64.0)
+add_library(boost_preprocessor INTERFACE)
+add_library(Boost::preprocessor ALIAS boost_preprocessor)
 
-add_library(boost_preprocessor INTERFACE
-)
-set_property(TARGET boost_preprocessor PROPERTY EXPORT_NAME preprocessor)
+target_include_directories(boost_preprocessor INTERFACE include)
 
+if(BOOST_SUPERPROJECT_VERSION)
 
+  include(BoostInstall)
+  boost_install(TARGETS boost_preprocessor HEADER_DIRECTORY include/)
 
+endif()
 
+if(BUILD_TESTING)
 
-bcm_deploy(TARGETS boost_preprocessor INCLUDE include NAMESPACE boost::)
+  add_subdirectory(test)
 
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
 endif()

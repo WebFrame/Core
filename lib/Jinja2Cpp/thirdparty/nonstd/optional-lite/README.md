@@ -1,6 +1,6 @@
 # optional lite: A single-file header-only version of a C++17-like optional, a nullable object for C++98, C++11 and later
 
-[![Language](https://img.shields.io/badge/C%2B%2B-98/11-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) [![License](https://img.shields.io/badge/license-BSL-blue.svg)](https://opensource.org/licenses/BSL-1.0) [![Build Status](https://travis-ci.org/martinmoene/optional-lite.svg?branch=master)](https://travis-ci.org/martinmoene/optional-lite) [![Build status](https://ci.appveyor.com/api/projects/status/1oq5gjm7bufrv6ib?svg=true)](https://ci.appveyor.com/project/martinmoene/optional-lite) [![Version](https://badge.fury.io/gh/martinmoene%2Foptional-lite.svg)](https://github.com/martinmoene/optional-lite/releases) [![download](https://img.shields.io/badge/latest-download-blue.svg)](https://raw.githubusercontent.com/martinmoene/optional-lite/master/include/nonstd/optional.hpp) [![Conan](https://img.shields.io/badge/on-conan-blue.svg)](https://bintray.com/martinmoene/nonstd-lite/optional-lite%3Anonstd-lite/_latestVersion) [![Try it online](https://img.shields.io/badge/on-wandbox-blue.svg)](https://wandbox.org/permlink/bfZdDT4WerPNZi6b)
+[![Language](https://img.shields.io/badge/C%2B%2B-98/11-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) [![License](https://img.shields.io/badge/license-BSL-blue.svg)](https://opensource.org/licenses/BSL-1.0) [![Build Status](https://travis-ci.org/martinmoene/optional-lite.svg?branch=master)](https://travis-ci.org/martinmoene/optional-lite) [![Build status](https://ci.appveyor.com/api/projects/status/1oq5gjm7bufrv6ib?svg=true)](https://ci.appveyor.com/project/martinmoene/optional-lite) [![Version](https://badge.fury.io/gh/martinmoene%2Foptional-lite.svg)](https://github.com/martinmoene/optional-lite/releases) [![download](https://img.shields.io/badge/latest-download-blue.svg)](https://raw.githubusercontent.com/martinmoene/optional-lite/master/include/nonstd/optional.hpp) [![Conan](https://img.shields.io/badge/on-conan-blue.svg)](https://conan.io/center/optional-lite) [![Try it online](https://img.shields.io/badge/on-wandbox-blue.svg)](https://wandbox.org/permlink/bfZdDT4WerPNZi6b) [![Try it on godbolt online](https://img.shields.io/badge/on-godbolt-blue.svg)](https://godbolt.org/z/3tecRa)
 
 **Contents**  
 - [Example usage](#example-usage)
@@ -40,7 +40,7 @@ optional<int> to_int( char const * const text )
 
 int main( int argc, char * argv[] )
 {
-    char * text = argc > 1 ? argv[1] : "42";
+    char const * text = argc > 1 ? argv[1] : "42";
 
     optional<int> oi = to_int( text );
 
@@ -80,20 +80,38 @@ Installation
 
 *optional lite* is a single-file header-only library. Put `optional.hpp` in the [include](include) folder directly into the project source tree or somewhere reachable from your project.
 
-Or, if you use the [conan package manager](https://www.conan.io/), follow these steps:
+Or, if you use the [conan package manager](https://www.conan.io/), you might follow these steps:
 
-1. Add *nonstd-lite* to the conan remotes:
+1. Create source file `./main.cpp`, e.g. with the contents of the example code above.
 
-        conan remote add nonstd-lite https://api.bintray.com/conan/martinmoene/nonstd-lite
+2. Create `./conanfile.txt` file with  a reference to *variant-lite* in the *requires* section:
+    ```Conan
+    [requires]
+    optional-lite/3.2.0  # 3.3.0 when available
 
-2. Add a reference to *optional-lite* to the *requires* section of your project's `conanfile.txt` file:
+    [generators]
+    cmake
+    ```
 
-        [requires]
-        optional-lite/3.1.1@nonstd-lite/testing
+3. Create `./CMakeLists.txt`:
+    ```CMake
+    cmake_minimum_required(VERSION 3.1)
+    project(optional-example CXX)
 
-3. Run conan's install command:
+    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+    conan_basic_setup()
 
-        conan install
+    add_executable(${PROJECT_NAME} main.cpp)
+    target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS})
+    ```
+
+4. Run the following commands:
+    ```Text
+    mkdir build && cd build
+    conan install .. --settings arch=x86 --settings compiler=gcc
+    cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release
+    cmake --build . --config Release
+    ```
 
 
 Synopsis
@@ -205,6 +223,10 @@ Synopsis
 
 ### Configuration
 
+#### Tweak header
+
+If the compiler supports [`__has_include()`](https://en.cppreference.com/w/cpp/preprocessor/include), *optional lite* supports the [tweak header](https://vector-of-bool.github.io/2020/10/04/lib-configuration.html) mechanism. Provide your *tweak header* as `nonstd/optional.tweak.hpp` in a folder in the include-search-path. In the tweak header, provide definitions as documented below, like `#define optional_CPLUSPLUS 201103L`.
+
 #### Standard selection macro
 \-D<b>optional\_CPLUSPLUS</b>=199711L  
 Define this macro to override the auto-detection of the supported C++ standard, if your compiler does not set the `__cplusplus` macro correctly.
@@ -267,7 +289,7 @@ Windows   | Clang/LLVM | ?        |
 GNU/Linux | Clang/LLVM | 3.5.0, 3.6.0, 7.0.0 |
 &nbsp;    | GCC        | 4.8.4, 5, 6, 8 |
 &nbsp;    | ICC        | 19       |
-OS X      | ?          | ?        |
+macOS     | Xcode      | 8.3, 9, 10, 11 |
 
 
 Building the tests
@@ -442,9 +464,11 @@ optional: Allows to obtain moved-value or moved-default via value_or() (C++11)
 optional: Throws bad_optional_access at disengaged access
 optional: Throws bad_optional_access with non-empty what()
 optional: Allows to reset content
+optional: Ensure object is destructed only once (C++11)
+optional: Ensure balanced construction-destruction (C++98)
 optional: Allows to swaps engage state and values (non-member)
-optional: Provides relational operators
-optional: Provides mixed-type relational operators
+optional: Provides relational operators (non-member)
+optional: Provides mixed-type relational operators (non-member)
 make_optional: Allows to copy-construct optional
 make_optional: Allows to move-construct optional (C++11)
 make_optional: Allows to in-place copy-construct optional from arguments (C++11)
@@ -452,4 +476,5 @@ make_optional: Allows to in-place move-construct optional from arguments (C++11)
 make_optional: Allows to in-place copy-construct optional from initializer-list and arguments (C++11)
 make_optional: Allows to in-place move-construct optional from initializer-list and arguments (C++11)
 std::hash<>: Allows to obtain hash (C++11)
+tweak header: reads tweak header if supported [tweak]
 ```

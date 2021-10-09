@@ -7,6 +7,8 @@
 #include <any>
 #include <stdexcept>
 #include <utility>
+#include <webnetpp/http_codes.hpp>
+#include <webnetpp/mime.hpp>
 
 namespace webnetpp
 {
@@ -95,17 +97,6 @@ namespace webnetpp
 				return *this;
 			}
 	};
- 
-	const std::map < std::string, std::string > codes_reason {
-		{"100", "Continue"}, {"101", "Switching Protocols"}, 
-		{"200", "OK"}, {"201", "Created"}, {"202", "Accepted"}, {"203", "Non-Authoritative Information"}, {"204", "No Content"}, {"205", "Reset Content"}, {"206", "Partial Content"}, 
-		{"300", "Multiple Choices"}, {"301", "Moved Permanently"}, {"302", "Found"}, {"303", "See Other"}, {"304", "Not Modified"}, {"305", "Use Proxy"}, {"307", "Temporary Redirect"}, 
-		{"400", "Bad Request"}, {"401", "Unauthorized"}, {"402", "Payment Required"}, {"403", "Forbidden"}, {"404", "Not Found"}, {"405", "Method Not Allowed"}, {"406", "Not Acceptable"}, {"407", "Proxy Authentication Required"}, {"408", "Request Time-out"}, {"409", "Conflict"}, {"410", "Gone"}, {"411", "Length Required"}, {"412", "Precondition Failed"}, {"413", "Request Entity Too Large"}, {"414", "Request-URI Too Large"}, {"415", "Unsupported Media Type"}, {"416", "Requested range not satisfiable"}, {"417", "Expectation Failed"},
-		{"500", "Internal Server Error"}, {"501", "Not Implemented"}, {"502", "Bad Gateway"}, {"503", "Service Unavailable"}, {"504", "Gateway Time-out"}, {"505", "HTTP Version not supported"}
-	};
-	const std::map < std::string, std::string > mime_types = { 
-		#include <webnetpp/mime.hpp>
-	};
 
 	struct status_line
 	{
@@ -128,7 +119,7 @@ namespace webnetpp
 
 		std::string to_string () const
 		{
-			return "HTTP/" + this->http + " " + this->code + " " + (codes_reason.find (this->code)->second) + end_line;
+			return "HTTP/" + this->http + " " + this->code + " " + std::string(http_codes::get_reason_by_code(this->code.c_str())) + end_line;
 		}
 	};
 
@@ -141,9 +132,15 @@ namespace webnetpp
 		public:
 			response (std::string html): 
 				response(status_line ("1.1", "200"), {{"Content-type", "text/html"}}, html)
-			{
-			}
-			response (status_line s = status_line ("1.1", "204"), std::map < std::string, std::string > m = {}, std::string _body = "") : status (s), header (m), body (_body)
+			{}
+			response (std::string http, std::string html): 
+				response(status_line (http, "200"), {{"Content-type", "text/html"}}, html)
+			{}
+			response (status_line status, std::string html): 
+				response(status, {{"Content-type", "text/html"}}, html)
+			{}
+			response (status_line s = status_line ("1.1", "204"), std::map < std::string, std::string > m = {}, std::string _body = ""): 
+				status (s), header (m), body (_body)
 			{}
 
 			std::string to_string () const
@@ -153,7 +150,7 @@ namespace webnetpp
 					res += x.first + ": " + x.second + end_line;
 				res += end_line;
 				res += body;
-				return std::move (res);
+				return res;
 			}
 
 			response& set_http (std::string h)
@@ -295,14 +292,14 @@ namespace webnetpp
 
 			std::string to_string () const
 			{
-				std::string res = webnetpp::to_string (m) + " " + uri + " HTTP/" + http + end_line;
+				std::string res = webnetpp::to_string(m) + " " + uri + " HTTP/" + http + end_line;
 				for (auto& x : request_params)
 					res += x.first + ": " + x.second + end_line;
 				for (auto& x : header)
 					res += x.first + ": " + x.second + end_line;
 				res += end_line;
 				res += body;
-				return std::move (res);
+				return res;
 			}
 	};
 }

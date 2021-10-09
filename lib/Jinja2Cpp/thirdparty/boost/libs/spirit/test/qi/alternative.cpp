@@ -28,6 +28,11 @@
 #include <vector>
 #include "test.hpp"
 
+#ifdef _MSC_VER
+// bogus https://developercommunity.visualstudio.com/t/buggy-warning-c4709/471956
+# pragma warning(disable: 4709) // comma operator within array index expression
+#endif
+
 struct test_action
 {
     test_action(char last)
@@ -240,12 +245,15 @@ main()
     }
 
     {
+#ifdef SPIRIT_NO_COMPILE_CHECK
         //compile test only (bug_march_10_2011_8_35_am)
+        // TODO: does not work as intended with std <= c++03
         typedef boost::variant<double, std::string> value_type;
 
         using boost::spirit::qi::rule;
         using boost::spirit::qi::eps;
         rule<std::string::const_iterator, value_type()> r1 = r1 | eps;
+#endif
     }
 
     {

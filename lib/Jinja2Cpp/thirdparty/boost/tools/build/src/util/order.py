@@ -1,7 +1,7 @@
 #  Copyright (C) 2003 Vladimir Prus
 #  Use, modification, and distribution is subject to the Boost Software
-#  License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy
-#  at http://www.boost.org/LICENSE_1_0.txt)
+#  License, Version 1.0. (See accompanying file LICENSE.txt or copy
+#  at https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 class Order:
     """Allows ordering arbitrary objects with regard to arbitrary binary relation.
@@ -75,7 +75,7 @@ class Order:
             # No problem with placing first.
             result.append (obj)
 
-            # Remove all containts where 'obj' comes first,
+            # Remove all contains where 'obj' comes first,
             # since they are already satisfied.
             constraints = self.__remove_satisfied (constraints, obj)
 

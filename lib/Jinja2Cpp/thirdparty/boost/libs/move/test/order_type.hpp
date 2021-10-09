@@ -14,6 +14,7 @@
 
 #include <boost/config.hpp>
 #include <boost/move/core.hpp>
+#include <boost/move/detail/iterator_traits.hpp>
 #include <cstddef>
 #include <cstdio>
 
@@ -75,6 +76,9 @@ struct order_move_type
    std::size_t key;
    std::size_t val;
 
+   static const std::size_t moved_constr_mark = std::size_t(-1);
+   static const std::size_t moved_assign_mark = std::size_t(-2);
+
    order_move_type()
       : key(0u), val(0u)
    {}
@@ -104,8 +108,8 @@ struct order_move_type
 
 struct order_type_less
 {
-   template<class T>
-   bool operator()(const T &a, T const &b) const
+   template<class T, class U>
+   bool operator()(const T &a, U const &b) const
    {  return a < b;   }
 };
 
@@ -164,6 +168,108 @@ inline bool is_buffer(T *elements, std::size_t element_count)
    }
    return true;
 }
+
+
+//size_type iterator
+template <class T, class D>
+class randit
+{
+   public:
+   typedef std::random_access_iterator_tag   iterator_category;
+   typedef T                                 value_type;
+   typedef D                                 difference_type;
+   typedef T*                                pointer;
+   typedef T&                                reference;
+
+   private:
+   T* m_ptr;
+
+   public:
+   explicit randit(T* ptr)
+      : m_ptr(ptr)
+   {}
+
+   public:
+
+   //Constructors
+   randit()
+      : m_ptr()   //Value initialization to achieve "null iterators" (N3644)
+   {}
+
+   randit(const randit& other)
+      :  m_ptr(other.m_ptr)
+   {}
+
+   randit & operator=(const randit& other)
+   {  m_ptr = other.m_ptr;   return *this;  }
+
+   //T* like operators
+   reference operator*()   const
+   {  return *m_ptr;  }
+
+   pointer operator->()  const
+   {  return m_ptr;  }
+
+   reference operator[](difference_type off) const
+   {  return m_ptr[off];  }
+
+   //Increment / Decrement
+   randit& operator++()
+   {  ++m_ptr;  return *this; }
+
+   randit operator++(int)
+   {  return randit(m_ptr++); }
+
+   randit& operator--()
+   {  --m_ptr; return *this;  }
+
+   randit operator--(int)
+   {  return randit(m_ptr--); }
+
+   //Arithmetic
+   randit& operator+=(difference_type off)
+   {  m_ptr += off; return *this;   }
+
+   randit& operator-=(difference_type off)
+   {  m_ptr -= off; return *this;   }
+
+   friend randit operator+(const randit &x, difference_type off)
+   {  return randit(x.m_ptr+off);  }
+
+   friend randit operator+(difference_type off, randit right)
+   {  right.m_ptr += off;  return right; }
+
+   friend randit operator-(randit left, difference_type off)
+   {  left.m_ptr -= off;  return left; }
+
+   friend difference_type operator-(const randit &left, const randit& right)
+   {  return difference_type(left.m_ptr - right.m_ptr);   }
+
+   //Comparison operators
+   friend bool operator==   (const randit& l, const randit& r)
+   {  return l.m_ptr == r.m_ptr;  }
+
+   friend bool operator!=   (const randit& l, const randit& r)
+   {  return l.m_ptr != r.m_ptr;  }
+
+   friend bool operator<    (const randit& l, const randit& r)
+   {  return l.m_ptr < r.m_ptr;  }
+
+   friend bool operator<=   (const randit& l, const randit& r)
+   {  return l.m_ptr <= r.m_ptr;  }
+
+   friend bool operator>    (const randit& l, const randit& r)
+   {  return l.m_ptr > r.m_ptr;  }
+
+   friend bool operator>=   (const randit& l, const randit& r)
+   {  return l.m_ptr >= r.m_ptr;  }
+};
+
+struct less_int
+{
+   bool operator()(int l, int r)
+   {  return l < r;  }
+};
 
 
 #endif   //BOOST_MOVE_TEST_ORDER_TYPE_HPP

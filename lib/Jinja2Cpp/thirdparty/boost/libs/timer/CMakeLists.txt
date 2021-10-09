@@ -1,38 +1,45 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_timer)
+# Copyright 2018, 2019 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.16)
 
-find_package(boost_core)
-find_package(boost_chrono)
-find_package(boost_system)
-find_package(boost_io)
-find_package(boost_config)
-find_package(boost_throw_exception)
+project(boost_timer VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-bcm_setup_version(VERSION 1.64.0)
-
-add_library(boost_timer 
-src/auto_timers_construction.cpp
-src/cpu_timer.cpp
+add_library(boost_timer
+    src/auto_timers_construction.cpp
+    src/cpu_timer.cpp
 )
-set_property(TARGET boost_timer PROPERTY EXPORT_NAME timer)
 
-target_link_libraries(boost_timer PUBLIC boost::core)
-target_link_libraries(boost_timer PUBLIC boost::chrono)
-target_link_libraries(boost_timer PUBLIC boost::system)
-target_link_libraries(boost_timer PUBLIC boost::io)
-target_link_libraries(boost_timer PUBLIC boost::config)
-target_link_libraries(boost_timer PUBLIC boost::throw_exception)
+add_library(Boost::timer ALIAS boost_timer)
 
+target_include_directories(boost_timer PUBLIC include)
 
+target_compile_definitions(boost_timer
+  PUBLIC
+    BOOST_TIMER_NO_LIB
+)
 
-target_include_directories(boost_timer PRIVATE include)
+if(BUILD_SHARED_LIBS)
+  target_compile_definitions(boost_timer PUBLIC BOOST_TIMER_DYN_LINK)
+else()
+  target_compile_definitions(boost_timer PUBLIC BOOST_TIMER_STATIC_LINK)
+endif()
 
-bcm_deploy(TARGETS boost_timer INCLUDE include NAMESPACE boost::)
+target_link_libraries(boost_timer
+  PUBLIC
+    Boost::config
+    Boost::core
+    Boost::system
+  PRIVATE
+    Boost::chrono
+    Boost::io
+    Boost::predef
+    Boost::throw_exception
+)
 
-if(BOOST_CMAKE_BUILD_TESTS)
+if(BUILD_TESTING)
+
     add_subdirectory(test)
+
 endif()

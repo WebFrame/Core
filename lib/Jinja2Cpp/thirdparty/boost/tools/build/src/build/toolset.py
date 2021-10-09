@@ -5,7 +5,7 @@
 # Copyright 2005 Rene Rivera
 # Copyright 2002, 2003, 2004, 2005, 2006 Vladimir Prus
 # Distributed under the Boost Software License, Version 1.0.
-# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
+# (See accompanying file LICENSE.txt or https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 """ Support for toolset definition.
 """
@@ -71,7 +71,7 @@ def reset ():
     # not including any rules in that module.
     __flags = {}
 
-    # A cache for varaible settings. The key is generated from the rule name and the properties.
+    # A cache for variable settings. The key is generated from the rule name and the properties.
     __stv = {}
 
 reset ()
@@ -114,7 +114,7 @@ def flags(rule_or_module, variable_name, condition, values = []):
                           are allowed. If left empty, the flag will
                           always used.
 
-                          Propery sets may use value-less properties
+                          Property sets may use value-less properties
                           ('<a>'  vs. '<a>value') to match absent
                           properties. This allows to separately match
 

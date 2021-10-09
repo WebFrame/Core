@@ -2,7 +2,7 @@
 
 # Copyright 2003 Vladimir Prus
 # Distributed under the Boost Software License, Version 1.0.
-# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
+# (See accompanying file LICENSE.txt or https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 # This tests the "existing" and "updated" modifiers on actions.
 
@@ -38,12 +38,12 @@ t.run_build_system("-ffile.jam")
 t.fail_test(string.strip(t.read("list")) != "a-1")
 t.rm(["a-3", "list"])
 
-code = string.replace(code, "existing", "updated")
+code = code.replace("existing", "updated")
 t.write("file.jam", code)
 t.run_build_system("-ffile.jam")
 t.fail_test(string.strip(t.read("list")) != "a-3")
 
-code = string.replace(code, "updated", "existing updated")
+code = code.replace("updated", "existing updated")
 t.write("file.jam", code)
 t.run_build_system("-ffile.jam")
 t.fail_test(string.strip(t.read("list")) != "a-1 a-3")

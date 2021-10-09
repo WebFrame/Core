@@ -1,104 +1,176 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_python)
+# Copyright 2020, 2021 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# https://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.14...3.20)
 
-find_package(boost_function)
-find_package(boost_core)
-find_package(boost_static_assert)
-find_package(boost_iterator)
-find_package(boost_tuple)
-find_package(boost_bind)
-find_package(boost_mpl)
-find_package(boost_smart_ptr)
-find_package(boost_detail)
-find_package(boost_property_map)
-find_package(boost_type_traits)
-find_package(boost_graph)
-find_package(boost_preprocessor)
-find_package(boost_conversion)
-find_package(boost_foreach)
-find_package(boost_integer)
-find_package(boost_lexical_cast)
-find_package(boost_config)
-find_package(boost_numeric_conversion)
-find_package(boost_utility)
+project(boost_python VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-bcm_setup_version(VERSION 1.64.0)
+find_package(Python REQUIRED COMPONENTS Development OPTIONAL_COMPONENTS NumPy)
 
-add_library(boost_python 
-src/str.cpp
-src/exec.cpp
-src/object_operators.cpp
-src/tuple.cpp
-src/dict.cpp
-src/wrapper.cpp
-src/list.cpp
-src/object_protocol.cpp
-src/module.cpp
-src/import.cpp
-src/numeric.cpp
-src/errors.cpp
-src/long.cpp
-src/slice.cpp
-)
-set_property(TARGET boost_python PROPERTY EXPORT_NAME python)
-
-target_link_libraries(boost_python PUBLIC boost::function)
-target_link_libraries(boost_python PUBLIC boost::core)
-target_link_libraries(boost_python PUBLIC boost::static_assert)
-target_link_libraries(boost_python PUBLIC boost::iterator)
-target_link_libraries(boost_python PUBLIC boost::tuple)
-target_link_libraries(boost_python PUBLIC boost::bind)
-target_link_libraries(boost_python PUBLIC boost::mpl)
-target_link_libraries(boost_python PUBLIC boost::smart_ptr)
-target_link_libraries(boost_python PUBLIC boost::detail)
-target_link_libraries(boost_python PUBLIC boost::property_map)
-target_link_libraries(boost_python PUBLIC boost::type_traits)
-target_link_libraries(boost_python PUBLIC boost::graph)
-target_link_libraries(boost_python PUBLIC boost::preprocessor)
-target_link_libraries(boost_python PUBLIC boost::conversion)
-target_link_libraries(boost_python PUBLIC boost::foreach)
-target_link_libraries(boost_python PUBLIC boost::integer)
-target_link_libraries(boost_python PUBLIC boost::lexical_cast)
-target_link_libraries(boost_python PUBLIC boost::config)
-target_link_libraries(boost_python PUBLIC boost::numeric_conversion)
-target_link_libraries(boost_python PUBLIC boost::utility)
-
-find_package(PythonLibs)
-target_link_libraries(boost_python PUBLIC ${PYTHON_LIBRARIES})
-target_include_directories(boost_python PUBLIC ${PYTHON_INCLUDE_DIRS})
-
-target_sources(boost_python PRIVATE
-    src/converter/arg_to_python_base.cpp
-    src/converter/builtin_converters.cpp
-    src/converter/from_python.cpp
-    src/converter/registry.cpp
-    src/converter/type_id.cpp
-    src/object/class.cpp
-    src/object/enum.cpp
-    src/object/function.cpp
-    src/object/function_doc_signature.cpp
-    src/object/inheritance.cpp
-    src/object/iterator.cpp
-    src/object/life_support.cpp
-    src/object/pickle_support.cpp
-    src/object/stl_iterator.cpp
-    src/object_operators.cpp
-    src/object_protocol.cpp
-)
-
-if(NOT BUILD_SHARED_LIBS)
-target_compile_definitions(boost_python PUBLIC BOOST_PYTHON_STATIC_LIB)
+if(Python_NumPy_FOUND)
+  message(STATUS "Boost.Python: using Python ${Python_VERSION} with NumPy at ${Python_NumPy_INCLUDE_DIRS}")
+else()
+  message(STATUS "Boost.Python: using Python ${Python_VERSION} without NumPy")
 endif()
 
+# boost_pythonXY
 
-target_include_directories(boost_python PRIVATE include)
+set(_pyver ${Python_VERSION_MAJOR}${Python_VERSION_MINOR})
+set(_boost_python boost_python${_pyver})
 
-bcm_deploy(TARGETS boost_python INCLUDE include NAMESPACE boost::)
+add_library(${_boost_python}
+  src/dict.cpp
+  src/errors.cpp
+  src/exec.cpp
+  src/import.cpp
+  src/list.cpp
+  src/long.cpp
+  src/module.cpp
+  src/object_operators.cpp
+  src/object_protocol.cpp
+  src/slice.cpp
+  src/str.cpp
+  src/tuple.cpp
+  src/wrapper.cpp
+  src/converter/from_python.cpp
+  src/converter/registry.cpp
+  src/converter/type_id.cpp
+  src/converter/builtin_converters.cpp
+  src/converter/arg_to_python_base.cpp
+  src/object/enum.cpp
+  src/object/class.cpp
+  src/object/function.cpp
+  src/object/inheritance.cpp
+  src/object/life_support.cpp
+  src/object/pickle_support.cpp
+  src/object/iterator.cpp
+  src/object/stl_iterator.cpp
+  src/object_protocol.cpp
+  src/object_operators.cpp
+  src/object/function_doc_signature.cpp
+)
 
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
+add_library(Boost::python${_pyver} ALIAS ${_boost_python})
+
+target_include_directories(${_boost_python} PUBLIC include)
+
+target_link_libraries(${_boost_python}
+  PUBLIC
+    Boost::align
+    Boost::bind
+    Boost::config
+    Boost::conversion
+    Boost::core
+    Boost::detail
+    Boost::foreach
+    Boost::function
+    Boost::iterator
+    Boost::lexical_cast
+    Boost::mpl
+    Boost::numeric_conversion
+    Boost::preprocessor
+    Boost::smart_ptr
+    Boost::static_assert
+    Boost::tuple
+    Boost::type_traits
+    Boost::utility
+
+    Python::Module
+
+  PRIVATE
+    Boost::graph
+    Boost::integer
+    Boost::property_map
+)
+
+target_compile_definitions(${_boost_python}
+  PUBLIC BOOST_PYTHON_NO_LIB
+  PRIVATE BOOST_PYTHON_SOURCE
+)
+
+if(BUILD_SHARED_LIBS)
+  target_compile_definitions(${_boost_python} PUBLIC BOOST_PYTHON_DYN_LINK)
+else()
+  target_compile_definitions(${_boost_python} PUBLIC BOOST_PYTHON_STATIC_LINK BOOST_PYTHON_STATIC_LIB)
+endif()
+
+# Boost::python alias
+
+add_library(boost_python INTERFACE)
+add_library(Boost::python ALIAS boost_python)
+target_link_libraries(boost_python INTERFACE Boost::python${_pyver})
+
+# Installation
+
+if(BOOST_SUPERPROJECT_VERSION AND NOT CMAKE_VERSION VERSION_LESS 3.13)
+  boost_install(TARGETS ${_boost_python} boost_python VERSION ${BOOST_SUPERPROJECT_VERSION} HEADER_DIRECTORY include)
+endif()
+
+if(Python_NumPy_FOUND)
+
+# boost_numpyXY
+
+set(_boost_numpy boost_numpy${_pyver})
+
+add_library(${_boost_numpy}
+  src/numpy/dtype.cpp
+  src/numpy/matrix.cpp
+  src/numpy/ndarray.cpp
+  src/numpy/numpy.cpp
+  src/numpy/scalars.cpp
+  src/numpy/ufunc.cpp
+)
+
+add_library(Boost::numpy${_pyver} ALIAS ${_boost_numpy})
+
+target_include_directories(${_boost_numpy} PUBLIC include)
+
+target_link_libraries(${_boost_numpy}
+  PUBLIC
+    Boost::config
+    Boost::core
+    Boost::detail
+    Boost::mpl
+    Boost::python
+    Boost::smart_ptr
+
+    Python::NumPy
+)
+
+target_compile_definitions(${_boost_numpy}
+  PUBLIC BOOST_NUMPY_NO_LIB
+  PRIVATE BOOST_NUMPY_SOURCE
+)
+
+if(BUILD_SHARED_LIBS)
+  target_compile_definitions(${_boost_numpy} PUBLIC BOOST_NUMPY_DYN_LINK)
+else()
+  target_compile_definitions(${_boost_numpy} PUBLIC BOOST_NUMPY_STATIC_LINK BOOST_NUMPY_STATIC_LIB)
+endif()
+
+# Boost::numpy alias
+
+add_library(boost_numpy INTERFACE)
+add_library(Boost::numpy ALIAS boost_numpy)
+target_link_libraries(boost_numpy INTERFACE Boost::numpy${_pyver})
+
+# Installation
+
+if(BOOST_SUPERPROJECT_VERSION AND NOT CMAKE_VERSION VERSION_LESS 3.13)
+  boost_install(TARGETS ${_boost_numpy} boost_numpy VERSION ${BOOST_SUPERPROJECT_VERSION})
+endif()
+
+endif()
+
+unset(_pyver)
+unset(_boost_python)
+unset(_boost_numpy)
+
+# Testing
+
+if(BUILD_TESTING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
+
+  add_subdirectory(test)
+
 endif()

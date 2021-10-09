@@ -11,7 +11,7 @@ cmake_minimum_required( VERSION 3.5 FATAL_ERROR )
 
 project(
     optional_lite
-    VERSION 3.2.0
+    VERSION 3.4.0
 #   DESCRIPTION "A C++17-like optional, a nullable object for C++98, C++11 and later in a single-file header-only library"
 #   HOMEPAGE_URL "https://github.com/martinmoene/optional-lite"
     LANGUAGES CXX )
@@ -118,6 +118,12 @@ install(
 install(
     DIRECTORY   "include/"
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+)
+
+export(
+    EXPORT       ${package_target}
+    NAMESPACE    ${package_nspace}::
+    FILE         "${CMAKE_CURRENT_BINARY_DIR}/${package_name}-targets.cmake"
 )
 
 # end of file

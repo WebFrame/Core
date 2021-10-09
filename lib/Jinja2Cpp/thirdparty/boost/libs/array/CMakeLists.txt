@@ -1,33 +1,20 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_array)
+# Copyright 2018 Mike Dev
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.20)
+project(boost_array VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-find_package(boost_assert)
-find_package(boost_core)
-find_package(boost_static_assert)
-find_package(boost_config)
-find_package(boost_throw_exception)
+add_library(boost_array INTERFACE)
+add_library(Boost::array ALIAS boost_array)
 
-bcm_setup_version(VERSION 1.64.0)
+target_include_directories(boost_array INTERFACE include)
 
-add_library(boost_array INTERFACE
+target_link_libraries(boost_array
+    INTERFACE
+        Boost::assert
+        Boost::config
+        Boost::core
+        Boost::static_assert
+        Boost::throw_exception
 )
-set_property(TARGET boost_array PROPERTY EXPORT_NAME array)
-
-target_link_libraries(boost_array INTERFACE boost::assert)
-target_link_libraries(boost_array INTERFACE boost::core)
-target_link_libraries(boost_array INTERFACE boost::static_assert)
-target_link_libraries(boost_array INTERFACE boost::config)
-target_link_libraries(boost_array INTERFACE boost::throw_exception)
-
-
-
-
-bcm_deploy(TARGETS boost_array INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
-endif()

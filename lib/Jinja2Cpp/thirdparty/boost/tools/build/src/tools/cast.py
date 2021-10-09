@@ -2,8 +2,8 @@
 # Base revision: 64432.
 # Copyright 2005-2010 Vladimir Prus.
 # Distributed under the Boost Software License, Version 1.0. (See
-# accompanying file LICENSE_1_0.txt or copy at
-# http://www.boost.org/LICENSE_1_0.txt)
+# accompanying file LICENSE.txt or copy at
+# https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 # Defines main target 'cast', used to change type for target. For example, in Qt
 # library one wants two kinds of CPP files -- those that just compiled and those
@@ -13,7 +13,7 @@
 #
 #    exe main : main.cpp [ cast _ moccable-cpp : widget.cpp ] ;
 #
-# Boost.Build will assing target type CPP to both main.cpp and widget.cpp. Then,
+# Boost.Build will assign target type CPP to both main.cpp and widget.cpp. Then,
 # the cast rule will change target type of widget.cpp to MOCCABLE-CPP, and Qt
 # support will run the MOC tool as part of the build process.
 #

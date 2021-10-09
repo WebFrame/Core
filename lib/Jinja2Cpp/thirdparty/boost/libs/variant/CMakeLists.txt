@@ -1,53 +1,33 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_variant)
+# Copyright 2019 Mike Dev
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt
+#
+# NOTE: CMake support for Boost.Variant is currently experimental at best
+#       and the interface is likely to change in the future
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required( VERSION 3.5 )
+project( BoostVariant LANGUAGES CXX )
 
-find_package(boost_core)
-find_package(boost_static_assert)
-find_package(boost_bind)
-find_package(boost_mpl)
-find_package(boost_move)
-find_package(boost_detail)
-find_package(boost_functional)
-find_package(boost_assert)
-find_package(boost_type_traits)
-find_package(boost_type_index)
-find_package(boost_preprocessor)
-find_package(boost_config)
-find_package(boost_throw_exception)
-find_package(boost_math)
-find_package(boost_utility)
+add_library( boost_variant INTERFACE )
+add_library( Boost::variant ALIAS boost_variant )
 
-bcm_setup_version(VERSION 1.64.0)
+target_include_directories( boost_variant INTERFACE include )
 
-add_library(boost_variant INTERFACE
+target_link_libraries( boost_variant
+    INTERFACE
+        Boost::assert
+        Boost::bind
+        Boost::config
+        Boost::container_hash
+        Boost::core
+        Boost::detail
+        Boost::integer
+        Boost::move
+        Boost::mpl
+        Boost::preprocessor
+        Boost::static_assert
+        Boost::throw_exception
+        Boost::type_index
+        Boost::type_traits
+        Boost::utility
 )
-set_property(TARGET boost_variant PROPERTY EXPORT_NAME variant)
-
-target_link_libraries(boost_variant INTERFACE boost::core)
-target_link_libraries(boost_variant INTERFACE boost::static_assert)
-target_link_libraries(boost_variant INTERFACE boost::bind)
-target_link_libraries(boost_variant INTERFACE boost::mpl)
-target_link_libraries(boost_variant INTERFACE boost::move)
-target_link_libraries(boost_variant INTERFACE boost::detail)
-target_link_libraries(boost_variant INTERFACE boost::functional)
-target_link_libraries(boost_variant INTERFACE boost::assert)
-target_link_libraries(boost_variant INTERFACE boost::type_traits)
-target_link_libraries(boost_variant INTERFACE boost::type_index)
-target_link_libraries(boost_variant INTERFACE boost::preprocessor)
-target_link_libraries(boost_variant INTERFACE boost::config)
-target_link_libraries(boost_variant INTERFACE boost::throw_exception)
-target_link_libraries(boost_variant INTERFACE boost::math)
-target_link_libraries(boost_variant INTERFACE boost::utility)
-
-
-
-
-bcm_deploy(TARGETS boost_variant INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
-endif()

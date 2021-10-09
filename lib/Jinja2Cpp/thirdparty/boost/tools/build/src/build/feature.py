@@ -5,7 +5,7 @@
 # Copyright 2002, 2006 Rene Rivera
 # Copyright 2002, 2003, 2004, 2005, 2006 Vladimir Prus
 # Distributed under the Boost Software License, Version 1.0.
-# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
+# (See accompanying file LICENSE.txt or https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 import re
 
@@ -437,7 +437,7 @@ def validate_value_string (f, value_string):
 """ Extends the given subfeature with the subvalues.  If the optional
     value-string is provided, the subvalues are only valid for the given
     value of the feature. Thus, you could say that
-    <target-platform>mingw is specifc to <toolset>gcc-2.95.2 as follows:
+    <target-platform>mingw is specific to <toolset>gcc-2.95.2 as follows:
 
           extend-subfeature toolset gcc-2.95.2 : target-platform : mingw ;
 

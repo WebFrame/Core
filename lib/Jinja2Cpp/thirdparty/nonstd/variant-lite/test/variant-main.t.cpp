@@ -36,8 +36,10 @@ CASE( "variant configuration" "[.variant][.config]" )
     variant_PRESENT( variant_VARIANT_STD );
     variant_PRESENT( variant_CONFIG_SELECT_VARIANT );
     variant_PRESENT( variant_CONFIG_NO_EXCEPTIONS );
+#if !variant_USES_STD_VARIANT
     variant_PRESENT( variant_CONFIG_MAX_TYPE_COUNT );
     variant_PRESENT( variant_CONFIG_MAX_VISITOR_ARG_COUNT );
+#endif
     variant_PRESENT( variant_CPLUSPLUS );
 }
 
@@ -66,6 +68,7 @@ CASE( "Presence of C++ language features" "[.stdlanguage]" )
     variant_PRESENT( variant_HAVE_CONSTEXPR_14 );
     variant_PRESENT( variant_HAVE_NOEXCEPT );
     variant_PRESENT( variant_HAVE_NULLPTR );
+    variant_PRESENT( variant_HAVE_OVERRIDE );
 #endif
 }
 
@@ -76,7 +79,12 @@ CASE( "Presence of C++ library features" "[.stdlibrary]" )
 #else
     variant_PRESENT( variant_HAVE_CONDITIONAL );
     variant_PRESENT( variant_HAVE_REMOVE_CV );
+    variant_PRESENT( variant_HAVE_ENABLE_IF );
+    variant_PRESENT( variant_HAVE_IS_SAME );
     variant_PRESENT( variant_HAVE_TYPE_TRAITS );
+    variant_PRESENT( variant_HAVE_TR1_TYPE_TRAITS );
+    variant_PRESENT( variant_HAVE_TR1_ADD_POINTER );
+    variant_PRESENT( variant_HAVE_STD_ADD_POINTER );
     variant_PRESENT( variant_HAS_CPP0X );
 #endif
 

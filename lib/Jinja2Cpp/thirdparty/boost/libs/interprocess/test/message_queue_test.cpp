@@ -8,7 +8,6 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#include <boost/interprocess/detail/config_begin.hpp>
 #include <boost/interprocess/ipc/message_queue.hpp>
 #include <boost/interprocess/managed_external_buffer.hpp>
 #include <boost/interprocess/managed_heap_memory.hpp>
@@ -20,14 +19,17 @@
 #include <boost/intrusive/detail/minimal_pair_header.hpp>
 #include <boost/intrusive/detail/minimal_less_equal_header.hpp>
 
+#include <boost/move/unique_ptr.hpp>
+
 #include <cstddef>
 #include <memory>
 #include <iostream>
 #include <vector>
-#include <stdexcept>
+#include <exception>
 #include <limits>
 
 #include "get_process_id_name.hpp"
+#include "named_creation_template.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                                                            //
@@ -251,7 +253,7 @@ bool test_buffer_overflow()
 {
    boost::interprocess::message_queue::remove(test::get_process_id_name());
    {
-      std::auto_ptr<boost::interprocess::message_queue>
+      boost::movelib::unique_ptr<boost::interprocess::message_queue>
          ptr(new boost::interprocess::message_queue
                (create_only, test::get_process_id_name(), 10, 10));
       pmessage_queue = ptr.get();
@@ -349,26 +351,86 @@ bool test_multi_sender_receiver()
    return ret;
 }
 
+class msg_queue_named_test_wrapper
+   : public test::named_sync_deleter<message_queue>, public message_queue
+{
+   public:
+
+   msg_queue_named_test_wrapper(create_only_t)
+      :  message_queue(create_only, test::get_process_id_name(), 10, 10)
+   {}
+
+   msg_queue_named_test_wrapper(open_only_t)
+      :  message_queue(open_only, test::get_process_id_name())
+   {}
+
+   msg_queue_named_test_wrapper(open_or_create_t)
+      :  message_queue(open_or_create, test::get_process_id_name(), 10, 10)
+   {}
+
+   ~msg_queue_named_test_wrapper()
+   {}
+};
+
+#if defined(BOOST_INTERPROCESS_WCHAR_NAMED_RESOURCES)
+
+class msg_queue_named_test_wrapper_w
+   : public test::named_sync_deleter_w<message_queue>, public message_queue
+{
+   public:
+
+   template <class CharT>
+   msg_queue_named_test_wrapper_w(create_only_t)
+      :  message_queue(create_only, test::get_process_id_wname(), 10, 10)
+   {}
+
+   msg_queue_named_test_wrapper_w(open_only_t)
+      :  message_queue(open_only, test::get_process_id_wname())
+   {}
+
+   msg_queue_named_test_wrapper_w(open_or_create_t)
+      :  message_queue(open_or_create, test::get_process_id_wname(), 10, 10)
+   {}
+
+   ~msg_queue_named_test_wrapper_w()
+   {}
+};
+
+#endif   //defined(BOOST_INTERPROCESS_WCHAR_NAMED_RESOURCES)
+
 
 int main ()
 {
-   if(!test_priority_order()){
-      return 1;
-   }
+   int ret = 0;
+   try{
+      message_queue::remove(test::get_process_id_name());
+      test::test_named_creation<msg_queue_named_test_wrapper>();
+      #if defined(BOOST_INTERPROCESS_WCHAR_NAMED_RESOURCES)
+      test::test_named_creation<msg_queue_named_test_wrapper>();
+      #endif
 
-   if(!test_serialize_db()){
-      return 1;
-   }
+      if(!test_priority_order()){
+         return 1;
+      }
 
-   if(!test_buffer_overflow()){
-      return 1;
-   }
+      if(!test_serialize_db()){
+         return 1;
+      }
 
-   if(!test_multi_sender_receiver()){
-      return 1;
-   }
+      if(!test_buffer_overflow()){
+         return 1;
+      }
 
-   return 0;
+      if(!test_multi_sender_receiver()){
+         return 1;
+      }
+   }
+   catch (std::exception &ex) {
+      std::cout << ex.what() << std::endl;
+      ret = 1;
+   }
+   
+   message_queue::remove(test::get_process_id_name());
+   return ret;
 }
 
-#include <boost/interprocess/detail/config_end.hpp>

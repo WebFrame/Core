@@ -470,7 +470,29 @@ void test_unwind()
                 i = 7;
         });
     }
-    BOOST_CHECK_EQUAL( ( int) 0, i);
+    {
+        BOOST_CHECK_EQUAL( ( int) 0, value1);
+        auto * coro = new coro::coroutine< void >::pull_type(
+            [](coro::coroutine< void >::push_type & coro) mutable {
+                X x;
+                coro();
+            });
+        BOOST_CHECK_EQUAL( ( int) 7, value1);
+        delete coro;
+        BOOST_CHECK_EQUAL( ( int) 0, value1);
+    }
+    {
+        BOOST_CHECK_EQUAL( ( int) 0, value1);
+        auto * coro = new coro::coroutine< void >::push_type(
+            [](coro::coroutine< void >::pull_type & coro) mutable {
+                X x;
+                coro();
+            });
+        ( * coro)();
+        BOOST_CHECK_EQUAL( ( int) 7, value1);
+        delete coro;
+        BOOST_CHECK_EQUAL( ( int) 0, value1);
+    }
 }
 
 void test_exceptions()
@@ -496,14 +518,11 @@ void test_exceptions()
 void test_input_iterator()
 {
     {
-        using std::begin;
-        using std::end;
-
         std::vector< int > vec;
         coro::coroutine< int >::pull_type coro( f16);
-        coro::coroutine< int >::pull_type::iterator e = end( coro);
+        coro::coroutine< int >::pull_type::iterator e = std::end( coro);
         for (
-            coro::coroutine< int >::pull_type::iterator i = begin( coro);
+            coro::coroutine< int >::pull_type::iterator i = std::begin( coro);
             i != e; ++i)
         { vec.push_back( * i); }
         BOOST_CHECK_EQUAL( ( std::size_t)5, vec.size() );

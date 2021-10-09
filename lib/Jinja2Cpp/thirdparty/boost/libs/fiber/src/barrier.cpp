@@ -21,7 +21,7 @@ namespace fibers {
 barrier::barrier( std::size_t initial) :
     initial_{ initial },
     current_{ initial_ } {
-    if ( 0 == initial) {
+    if ( BOOST_UNLIKELY( 0 == initial) ) {
         throw fiber_error{ std::make_error_code( std::errc::invalid_argument),
                            "boost fiber: zero initial barrier count" };
     }
@@ -37,9 +37,9 @@ barrier::wait() {
         lk.unlock(); // no pessimization
         cond_.notify_all();
         return true;
-    } else {
-        cond_.wait( lk, [&]{ return cycle != cycle_; });
     }
+
+    cond_.wait( lk, [&]{ return cycle != cycle_; });
     return false;
 }
 

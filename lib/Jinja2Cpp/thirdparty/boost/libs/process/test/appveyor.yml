@@ -17,12 +17,13 @@ init:
 os: Visual Studio 2015
 configuration: Debug
 platform: x64
+build: off
 
 ###############################################################################################################
 # From this point and below code is same for all the Boost libs
 ###############################################################################################################
 
-version: 1.61.{build}-{branch}
+version: 1.69.{build}-{branch}
  
 # branches to build
 branches:
@@ -66,9 +67,11 @@ build_script:
 after_build:
 before_test:
 test_script:
-  - ..\..\..\b2.exe address-model=64 architecture=x86 cxxflags="-DBOOST_TRAVISCI_BUILD" -sBOOST_BUILD_PATH=.
+  - ..\..\..\b2.exe address-model=64 architecture=x86 cxxflags="-DBOOST_TRAVISCI_BUILD" -sBOOST_BUILD_PATH=. --boost-process-report-ci
 
 after_test:
 on_success:
 on_failure:
 on_finish:
+  - curl -s https://report.ci/upload.py | python - --name "Windows test run" --root_dir=%BOOST%
+

@@ -12,7 +12,7 @@
 using namespace nonstd;
 
 namespace {
-    
+
 using lest::to_string;
 
 // ensure comparison of pointers for lest:
@@ -23,6 +23,10 @@ const void * test_nullptr = nullptr;
 #else
 const void * test_nullptr = variant_nullptr;
 #endif
+
+// half-open range [lo..hi):
+// Note: variant_BETWEEN() is not be available when std::variant is used:
+#define variant_t_BETWEEN( v, lo, hi ) ( (lo) <= (v) && (v) < (hi) )
 
 // The following tracer code originates as Oracle from Optional by
 // Andrzej Krzemienski, https://github.com/akrzemi1/Optional.
@@ -139,7 +143,7 @@ bool BlowCopyMoveConstruct::blow = true;
 
 struct BlowCopyMoveAssign
 {
-    ~BlowCopyMoveAssign() {};
+    ~BlowCopyMoveAssign() {}
     BlowCopyMoveAssign() {}
     BlowCopyMoveAssign( BlowCopyMoveAssign const & ) {}
     BlowCopyMoveAssign & operator=( BlowCopyMoveAssign const & ) { throw 42; return *this; }
@@ -187,6 +191,7 @@ CASE( "variant: Disallows non-default constructible as first type" )
 CASE( "variant: Allows non-default constructible as second and later type (first: int)" )
 {
     variant<int, NoDefaultConstruct> var;
+    (void) var;
 
     EXPECT( true );
 }
@@ -194,8 +199,21 @@ CASE( "variant: Allows non-default constructible as second and later type (first
 CASE( "variant: Allows non-default constructible as second and later type (first: monostate)" )
 {
     variant<monostate, NoDefaultConstruct> var;
+    (void) var;
 
     EXPECT( true );
+}
+
+CASE( "variant: Allows multiple identical types (C++11)" )
+{
+#if variant_CPP11_OR_GREATER
+    variant<monostate, int, int> var;
+    (void) var;
+
+    EXPECT( true );
+#else
+    EXPECT( !!"variant: multiple identical types are not available (no C++11)" );
+#endif
 }
 
 CASE( "variant: Allows to default-construct variant" )
@@ -501,6 +519,7 @@ CASE( "variant: Allows to move-construct from element (C++11)" )
 
 CASE( "variant: Allows to convert-copy-construct from element" )
 {
+#if !( defined(_MSC_VER) && variant_t_BETWEEN(_MSC_VER, 1920, 1930 ) && variant_USES_STD_VARIANT )
     int i = 7;
 
     variant<double, std::string> var1(  i );
@@ -511,17 +530,24 @@ CASE( "variant: Allows to convert-copy-construct from element" )
 
     EXPECT( var2.index() == 0u              );
     EXPECT( get<0>(var2) == lest::approx(7) );
+#else
+    EXPECT( !!"variant: no convert-copy-construct from element with std::variant (VS2019/VC142/1920)" );
+#endif
 }
 
 CASE( "variant: Allows to convert-move-construct from element (C++11)" )
 {
 #if variant_CPP11_OR_GREATER
+#if !( defined(_MSC_VER) && variant_t_BETWEEN(_MSC_VER, 1920, 1930 ) && variant_USES_STD_VARIANT )
     struct Int { operator int() { return 7; } };
 
     variant<double, std::string> var( Int{} );
 
     EXPECT( var.index() == 0u              );
     EXPECT( get<0>(var) == lest::approx(7) );
+#else
+    EXPECT( !!"variant: no convert-copy-construct from element with std::variant (VS2019/VC142/1920)" );
+#endif
 #else
     EXPECT( !!"variant: move-construction is not available (no C++11)" );
 #endif
@@ -877,6 +903,19 @@ CASE( "variant: Allows to copy-emplace element based on type (C++11)" )
 #endif
 }
 
+CASE( "variant: Disallows to copy-emplace non-unique element type on type (C++11)" )
+{
+#if variant_CPP11_OR_GREATER
+    variant<monostate, int, int> var;
+    //var.emplace<int>(7);
+    (void) var;
+
+    EXPECT( true );
+#else
+    EXPECT( !!"variant: multiple identical types are not available (no C++11)" );
+#endif
+}
+
 CASE( "variant: Allows to move-emplace element based on type (C++11)" )
 {
 #if variant_CPP11_OR_GREATER
@@ -1071,7 +1110,11 @@ struct GenericVisitor1
     }
 };
 
+#if variant_USES_STD_VARIANT
+CASE( "variant: Allows to visit contents (args: 1)" )
+#else
 CASE( "variant: Allows to visit contents (args: 1; configured max args: " + to_string(variant_CONFIG_MAX_VISITOR_ARG_COUNT) + ")" )
+#endif
 {
     typedef variant< int, std::string > var_t;
     var_t vi = 7;
@@ -1098,7 +1141,11 @@ struct GenericVisitor2
     }
 };
 
+#if variant_USES_STD_VARIANT
+CASE( "variant: Allows to visit contents (args: 2)" )
+#else
 CASE( "variant: Allows to visit contents (args: 2; configured max args: " + to_string(variant_CONFIG_MAX_VISITOR_ARG_COUNT) + ")" )
+#endif
 {
     typedef variant< int, std::string > var_t;
     var_t vi = 7;
@@ -1124,7 +1171,11 @@ struct GenericVisitor3
     }
 };
 
+#if variant_USES_STD_VARIANT
+CASE( "variant: Allows to visit contents (args: 3)" )
+#else
 CASE( "variant: Allows to visit contents (args: 3; configured max args: " + to_string(variant_CONFIG_MAX_VISITOR_ARG_COUNT) + ")" )
+#endif
 {
     typedef variant< int, std::string, double > var_t;
     var_t vi = 7;
@@ -1164,10 +1215,17 @@ struct RVRefTestVisitor
     }
 
     template< typename U >
-    std::string operator()( U && ) const
+    std::string operator()( U && val) const
     {
+#if variant_USES_STD_VARIANT
+        std::ostringstream os;
+        os << val;
+        return os.str();
+#else
         static_assert( std::is_const<U>::value, "Wrong branch!" );
+        (void) val;
         return ">>> Broken branch! <<<";
+#endif
     }
 };
 
@@ -1201,7 +1259,11 @@ struct Unwrapper
 
 #endif
 
+#if variant_USES_STD_VARIANT
+CASE( "variant: Allows to visit contents, rvalue reference (args: 1)" )
+#else
 CASE( "variant: Allows to visit contents, rvalue reference (args: 1; configured max args: " + to_string(variant_CONFIG_MAX_VISITOR_ARG_COUNT) + ")" )
+#endif
 {
 #if variant_CPP14_OR_GREATER
     typedef std::shared_ptr< std::string > string_ptr_t;
@@ -1280,7 +1342,7 @@ CASE( "variant: Allows to get pointer to element or NULL by index" )
 
 CASE( "variant: Allows to compare variants" )
 {
-    variant<int, double> v = 3, w = 7;
+    variant<int, char> v = 3, w = 7;
 
     EXPECT( v == v );
     EXPECT( v != w );
@@ -1329,6 +1391,7 @@ CASE( "variant: Allows to swap variants, different index (non-member)" )
 CASE( "monostate: Allows to make variant default-constructible" )
 {
     variant<monostate, NoDefaultConstruct> var;
+    (void) var;
 
     EXPECT( true );
 }
@@ -1355,7 +1418,11 @@ namespace {
     struct t8{};
 }
 
+#if variant_USES_STD_VARIANT
+CASE( "variant_size<>: Allows to obtain number of element types" )
+#else
 CASE( "variant_size<>: Allows to obtain number of element types (configured max types: " + to_string(variant_CONFIG_MAX_TYPE_COUNT) + ")" )
+#endif
 {
     typedef variant<t1> var1;
     typedef variant<t1, t2> var2;
@@ -1376,7 +1443,11 @@ CASE( "variant_size<>: Allows to obtain number of element types (configured max 
 //  EXPECT( 8u == to_size_t( variant_size<var8>::value ) );
 }
 
+#if variant_USES_STD_VARIANT
+CASE( "variant_size_v<>: Allows to obtain number of element types (C++14)" )
+#else
 CASE( "variant_size_v<>: Allows to obtain number of element types (C++14; configured max types: " + to_string(variant_CONFIG_MAX_TYPE_COUNT) + ")" )
+#endif
 {
 #if variant_CPP14_OR_GREATER
     typedef variant<t1> var1;
@@ -1401,7 +1472,11 @@ CASE( "variant_size_v<>: Allows to obtain number of element types (C++14; config
 #endif
 }
 
+#if variant_USES_STD_VARIANT
+CASE( "variant_size_V(): Allows to obtain number of element types (non-standard: macro)" )
+#else
 CASE( "variant_size_V(): Allows to obtain number of element types (non-standard: macro; configured max types: " + to_string(variant_CONFIG_MAX_TYPE_COUNT) + ")" )
+#endif
 {
     typedef variant<t1> var1;
     typedef variant<t1, t2> var2;
@@ -1602,6 +1677,39 @@ CASE("max_index(): should not cause erroneous bad_variant_access in get()" "[.is
     {
         EXPECT( !!"max_index(): test is not available (sizeof(int) != 4)" );
     }
+}
+
+namespace issue_39 {
+
+    struct tag_t {};
+
+    struct myvisitor
+    {
+        const std::string& operator()(const int&) const { throw std::exception(); }
+        const std::string& operator()(const tag_t&) const { throw std::exception(); }
+        const std::string& operator()(const std::string& s) const { return s; }
+    };
+}
+
+CASE("visitor: Visitors can't return references, but they can with std::variant" "[.issue-39]")
+{
+    using namespace issue_39;
+
+#if variant_CPP11_OR_GREATER
+    nonstd::variant<int, tag_t, std::string> v("hello");
+    nonstd::visit( myvisitor(), v );
+#else
+    EXPECT( !!"visitor: references cannot be used yet with C++98 (no C++11)" );
+#endif
+}
+
+CASE( "tweak header: reads tweak header if supported " "[tweak]" )
+{
+#if variant_HAVE_TWEAK_HEADER
+    EXPECT( VARIANT_TWEAK_VALUE == 42 );
+#else
+    EXPECT( !!"Tweak header is not available (variant_HAVE_TWEAK_HEADER: 0)." );
+#endif
 }
 
 // end of file

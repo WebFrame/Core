@@ -5,7 +5,7 @@
 
 // Distributed under the Boost Software License, Version 1.0. (See
 // accompanying file LICENSE_1_0.txt or copy at
-// http://www.boost.org/LICENSE_1_0.txt)
+// https://www.boost.org/LICENSE_1_0.txt)
 
 //  libs/uuid/test/test_uuid.cpp  -------------------------------//
 
@@ -100,7 +100,7 @@ int main(int, char*[])
             , { 0xf0, boost::uuids::uuid::variant_future }
             };
         for (size_t i=0; i<sizeof(tests)/sizeof(Test); i++) {
-            uuid u = {};
+            uuid u = { {} };
             u.data[8] = tests[i].octet7; // note that octet7 is array index 8
 
             BOOST_TEST_EQ(u.variant(), tests[i].variant);

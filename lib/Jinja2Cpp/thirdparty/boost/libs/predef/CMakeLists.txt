@@ -1,23 +1,38 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_predef)
+# Copyright Mike Dev 2018
+# Copyright Rene Rivera 2018
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at
+# http://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+# NOTE:
+#   CMake support for Boost.Predef is currently experimental at best and the
+#   interface is likely to change in the future
+#
+# This file provides minimal cmake support (no unit-tests,
+# no installation) for integration into a "host" cmake project
+# via the "add_subdirectory( <path-to-boost-predef> )" command.
+#
+# Other cmake targets can then use the public target name
+# "Boost::predef" in order to express their dependency
+# on this library. I.e:
+#
+# target_link_libraries( <my-exe/lib> PUBLIC Boost::predef )
 
+# Only need the basic minimum of project, add_library, and
+# target_include_directories commands.
+cmake_minimum_required( VERSION 3.0 )
 
-bcm_setup_version(VERSION 1.64.0)
+# Don't set VERSION, as that's a pita to keep up to date with the version
+# header. And don't set LANGUAGES as we are multi-language and header
+# only, so it's irrelevant.
+project( BoostPredef )
 
-add_library(boost_predef INTERFACE
-)
-set_property(TARGET boost_predef PROPERTY EXPORT_NAME predef)
+# Simple INTERFACE, and header only, library target.
+add_library( boost_predef INTERFACE )
 
+# The only usage requirement is include dir for consumers.
+target_include_directories( boost_predef INTERFACE include )
 
-
-
-
-bcm_deploy(TARGETS boost_predef INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
-endif()
+# Add an alias to be compatible with consumers that may have used the
+# FindBoost script.
+add_library( Boost::predef ALIAS boost_predef )

@@ -27,13 +27,16 @@
 #include <string>
 #include <istream>
 #if defined(BOOST_WINDOWS_API)
-#   include <Windows.h>
+#   include <windows.h>
 typedef boost::asio::windows::stream_handle pipe_end;
 #elif defined(BOOST_POSIX_API)
 typedef boost::asio::posix::stream_descriptor pipe_end;
 #endif
 
 namespace bp = boost::process;
+
+BOOST_AUTO_TEST_SUITE( bind_stdout_stderr );
+
 
 BOOST_AUTO_TEST_CASE(sync_io, *boost::unit_test::timeout(2))
 {
@@ -85,10 +88,10 @@ struct read_handler
 BOOST_AUTO_TEST_CASE(async_io, *boost::unit_test::timeout(2))
 {
     using boost::unit_test::framework::master_test_suite;
-    boost::asio::io_service io_service;
+    boost::asio::io_context io_context;
 
-    bp::async_pipe p1(io_service);
-    bp::async_pipe p2(io_service);
+    bp::async_pipe p1(io_context);
+    bp::async_pipe p2(io_context);
 
     std::error_code ec;
     bp::child c(
@@ -108,7 +111,7 @@ BOOST_AUTO_TEST_CASE(async_io, *boost::unit_test::timeout(2))
     boost::asio::async_read_until(p2, buffer2, '\n',
         read_handler(buffer2));
 
-    io_service.run();
+    io_context.run();
 }
 
 BOOST_AUTO_TEST_CASE(nul, *boost::unit_test::timeout(2))
@@ -131,3 +134,5 @@ BOOST_AUTO_TEST_CASE(nul, *boost::unit_test::timeout(2))
     BOOST_CHECK_EQUAL(EXIT_SUCCESS, exit_code);
 #endif
 }
+
+BOOST_AUTO_TEST_SUITE_END();

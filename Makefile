@@ -16,6 +16,9 @@ WARNING_FLAGS=-Wall -Wno-long-long -pedantic -fconcepts
 
 all: build build_test run_tests clean
 
+install:
+	cd ./lib && rm -rf Jinja2Cpp && git clone https://github.com/jinja2cpp/Jinja2Cpp && cd Jinja2Cpp && mkdir .jinja2cpp-build && cd .jinja2cpp-build && cmake ../ -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../.jinja2cpp-install -DJINJA2CPP_BUILD_TESTS=OFF -DJINJA2CPP_DEPS_MODE=internal -DJINJA2CPP_CXX_STANDARD=17 && cmake --build . --config Release --target install
+
 build:
 	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./src/main.cpp -o ./bin/main.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(JINJA2CPP) $(JINJA2CPP_DEFINES)
 

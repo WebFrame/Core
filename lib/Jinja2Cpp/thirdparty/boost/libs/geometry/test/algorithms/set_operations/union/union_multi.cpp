@@ -33,14 +33,17 @@
     (test_one<Polygon, MultiPolygon, MultiPolygon>) \
     ( #caseid, caseid[0], caseid[1], clips, holes, points, area)
 
+#define TEST_UNION_IGNORE(caseid, clips, holes, points, area) \
+   { ut_settings ignore_validity; ignore_validity.set_test_validity(false); \
+     test_one<Polygon, MultiPolygon, MultiPolygon> \
+     (#caseid, caseid[0], caseid[1], \
+     clips, holes, points, area, ignore_validity); }
+
+
 template <typename Ring, typename Polygon, typename MultiPolygon>
 void test_areal()
 {
-    ut_settings ignore_validity;
-    ignore_validity.test_validity = false;
-
-    // Some output is only invalid for CCW
-    bool const ccw = bg::point_order<Polygon>::value == bg::counterclockwise;
+    using ct = typename bg::coordinate_type<Ring>::type;
 
     test_one<Polygon, MultiPolygon, MultiPolygon>("simplex_multi",
         case_multi_simplex[0], case_multi_simplex[1],
@@ -72,7 +75,6 @@ void test_areal()
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_58_multi_a",
         case_58_multi[0], case_58_multi[3],
         2, 0, 21, 19.83333333);
-
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_58_multi_b",
         case_58_multi[1], case_58_multi[2],
         1, 3, 17, 48.333333);
@@ -110,7 +112,7 @@ void test_areal()
         1, 0, 13, 6);
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_101_multi",
         case_101_multi[0], case_101_multi[1],
-        1, 3, 35, 22.25);
+        1, 3, 32, 22.25);
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_103_multi",
         case_103_multi[0], case_103_multi[1],
         1, 0, 7, 25);
@@ -122,7 +124,7 @@ void test_areal()
         1, 0, 5, 25);
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_106_multi",
         case_106_multi[0], case_106_multi[1],
-        1, 0, 12, 25);
+        1, 0, 5, 25);
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_107_multi",
         case_107_multi[0], case_107_multi[1],
         1, 0, 15, 6.75);
@@ -130,14 +132,7 @@ void test_areal()
         case_108_multi[0], case_108_multi[1],
         1, 1, 20, 22.75);
 
-    // Should have 2 holes
-    // To make it valid, it is necessary to calculate and use self turns
-    // for each input. Now the two holes are connected because a turn is missing
-    // there.
-    test_one<Polygon, MultiPolygon, MultiPolygon>("case_109_multi",
-        case_109_multi[0], case_109_multi[1],
-        1, 1, 14, 1400,
-        ignore_validity);
+    TEST_UNION(case_109_multi, 1, 2, 14, 1400);
 
     // Should have 9 holes, they are all separate and touching
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_110_multi",
@@ -173,43 +168,58 @@ void test_areal()
        2, 0, 26, 44);
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_120_multi",
        case_120_multi[0], case_120_multi[1],
-       1, 1, 20, 35);
+       1, 1, 17, 35);
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_121_multi",
        case_121_multi[0], case_121_multi[1],
-       1, 1, 21, 25.5);
+       1, 1, 14, 25.5);
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_122_multi",
        case_122_multi[0], case_122_multi[1],
-       1, 1, 28, 29.5);
+       1, 1, 14, 29.5);
 
     TEST_UNION(case_123_multi, 1, 0, 11, 2.75);
     TEST_UNION(case_124_multi, 1, 0, 9, 2.75);
+    TEST_UNION(case_125_multi, 1, 0, 9, 2.75);
+    TEST_UNION(case_126_multi, 1, 2, 27, 52.0);
+
+    TEST_UNION(case_131_multi, 1, 2, 15, 14.0);
+
+    // SQL Server returns: MULTIPOLYGON (((4 4, 5.5 4.5, 6 6, 4.5 5.5, 4 4)), ((2 2, 3.5 2.5, 4 4, 2.5 3.5, 2 2)), ((0 0, 8 0, 8 8, 0 8, 0 0), (2 2, 2 4, 4 4, 4 6, 6 6, 6 4, 4 4, 4 2, 2 2)))
+    // Which is one self-connected hole with two island polygons in both parts, basically identical to what Boost.Geometry delivers
+
+    // PostGIS returns: MULTIPOLYGON(((0 0,0 8,8 8,8 0,0 0),(4 6,4 4,6 4,6 6,4 6)),((2 2,2.5 3.5,4 4,3.5 2.5,2 2),(4 4,2 4,2 2,4 2,4 4)),((4 4,4.5 5.5,6 6,5.5 4.5,4 4)))
+    // Which seems wrong because the second hole is part of a smaller polygon (?)
+    // ("POSTGIS="2.1.7 r13414" GEOS="3.5.0dev-CAPI-1.9.0 r4057")
+    TEST_UNION(case_132_multi, 3, 2, 26, 60.0);
+
+    TEST_UNION(case_133_multi, 2, 1, -1, 64.625);
+    TEST_UNION(case_134_multi, 1, 2, -1, 66.0);
+    TEST_UNION(case_135_multi, 1, 2, -1, 22.0);
+    TEST_UNION(case_136_multi, 1, 2, -1, 22.0);
+    TEST_UNION(case_137_multi, 1, 2, -1, 22.0);
+    TEST_UNION(case_138_multi, 2, 1, -1, 65.225);
+    TEST_UNION(case_139_multi, 2, 1, -1, 64.953);
+    TEST_UNION(case_140_multi, 2, 1, -1, 64.953);
+    TEST_UNION(case_141_multi, 1, 0, -1, 100.0);
 
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_recursive_boxes_1",
         case_recursive_boxes_1[0], case_recursive_boxes_1[1],
-        1, 1, 36, 97.0);
+        1, 1, 16, 97.0);
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_recursive_boxes_2",
         case_recursive_boxes_2[0], case_recursive_boxes_2[1],
-        1, 0, 14, 100.0); // Area from SQL Server
+        1, 0, 5, 100.0); // Area from SQL Server
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_recursive_boxes_3",
         case_recursive_boxes_3[0], case_recursive_boxes_3[1],
-        17, 6, 166, 56.5); // Area from SQL Server
+        17, 6, 154, 56.5); // Area from SQL Server
 
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_recursive_boxes_4",
         case_recursive_boxes_4[0], case_recursive_boxes_4[1],
-        1, 2, 42, 96.75);
+        1, 2, 26, 96.75);
 
-    // Should have 10 holes.
-    // For making #5 valid, it is necessary to calculate and use self turns
-    // for each input. Now one hole is connected to another hole because a turn
-    // missing there.
-    test_one<Polygon, MultiPolygon, MultiPolygon>("case_recursive_boxes_5",
-        case_recursive_boxes_5[0], case_recursive_boxes_5[1],
-        3, 9, 115, 70.0,
-        ignore_validity);
+    TEST_UNION(case_recursive_boxes_5, 3, 10, 98, 70.0);
 
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_recursive_boxes_6",
         case_recursive_boxes_6[0], case_recursive_boxes_6[1],
-        1, 3, 25, 24.0);
+        1, 3, 17, 24.0);
 
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_recursive_boxes_7",
         case_recursive_boxes_7[0], case_recursive_boxes_7[1],
@@ -221,7 +231,7 @@ void test_areal()
 
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_recursive_boxes_9",
         case_recursive_boxes_9[0], case_recursive_boxes_9[1],
-        1, 1, 16, 8.25);
+        1, 1, 11, 8.25);
 
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_recursive_boxes_10",
         case_recursive_boxes_10[0], case_recursive_boxes_10[1],
@@ -240,30 +250,12 @@ void test_areal()
         case_recursive_boxes_14[0], case_recursive_boxes_14[1],
             5, 0, -1, 4.5);
 
-    // Invalid versions of 12/13/14
-    test_one<Polygon, MultiPolygon, MultiPolygon>("case_recursive_boxes_12_invalid",
-        case_recursive_boxes_12_invalid[0], case_recursive_boxes_12_invalid[1],
-            6, 0, -1, 6.0);
+    // 12, 13, 14 with invalid input. To make then valid it is necessary
+    // to break regions at self-intersection points (postponed)
 
-    if (! ccw)
-    {
-        // Handling this invalid input delivers invalid results for CCW
-        test_one<Polygon, MultiPolygon, MultiPolygon>("case_recursive_boxes_13_invalid",
-            case_recursive_boxes_13_invalid[0], case_recursive_boxes_13_invalid[1],
-                3, 0, -1, 10.25);
-    }
-    else
-    {
-        test_one<Polygon, MultiPolygon, MultiPolygon>("case_recursive_boxes_13_invalid",
-            case_recursive_boxes_13_invalid[0], case_recursive_boxes_13_invalid[1],
-                2, 0, -1, 10.25,
-                ignore_validity);
-    }
-
-    test_one<Polygon, MultiPolygon, MultiPolygon>("case_recursive_boxes_14_invalid",
-        case_recursive_boxes_14_invalid[0], case_recursive_boxes_14_invalid[1],
-            5, 0, -1, 4.5);
-
+    TEST_UNION_IGNORE(case_recursive_boxes_12_invalid, 5, 0, -1, 6.0);
+    TEST_UNION_IGNORE(case_recursive_boxes_13_invalid, 2, 0, -1, 10.25);
+    TEST_UNION_IGNORE(case_recursive_boxes_14_invalid, 4, 0, -1, 4.5);
 
     test_one<Polygon, MultiPolygon, MultiPolygon>("case_recursive_boxes_15",
         case_recursive_boxes_15[0], case_recursive_boxes_15[1],
@@ -338,6 +330,53 @@ void test_areal()
         case_recursive_boxes_38[0], case_recursive_boxes_38[1],
             2, 1, -1, 14.0);
 
+    TEST_UNION(case_recursive_boxes_46, 1, 4, 51, 33.0);
+    TEST_UNION(case_recursive_boxes_47, 1, 0, -1, 22.0);
+    TEST_UNION(case_recursive_boxes_48, 1, 1, -1, 10.0);
+    TEST_UNION(case_recursive_boxes_49, 1, 3, -1, 59.0);
+    TEST_UNION(case_recursive_boxes_50, 7, 4, -1, 68.0);
+    TEST_UNION(case_recursive_boxes_51, 2, 6, -1, 75.0);
+    TEST_UNION(case_recursive_boxes_52, 2, 6, -1, 77.0);
+    TEST_UNION(case_recursive_boxes_53, 1, 1, -1, 24.75);
+    TEST_UNION(case_recursive_boxes_54, 1, 2, -1, 22.5);
+    TEST_UNION(case_recursive_boxes_55, 3, 1, -1, 15.5);
+    TEST_UNION(case_recursive_boxes_56, 5, 1, -1, 7.75);
+    TEST_UNION(case_recursive_boxes_57, 3, 4, -1, 19.75);
+    TEST_UNION(case_recursive_boxes_58, 6, 1, -1, 6.25);
+    TEST_UNION(case_recursive_boxes_59, 1, 3, -1, 21.75);
+    TEST_UNION(case_recursive_boxes_60, 3, 0, -1, 20.5);
+    TEST_UNION(case_recursive_boxes_61, 1, 1, -1, 23.5);
+    TEST_UNION(case_recursive_boxes_62, 2, 3, -1, 21.25);
+    TEST_UNION(case_recursive_boxes_63, 2, 3, -1, 44.0);
+    TEST_UNION(case_recursive_boxes_64, 1, 2, -1, 24.5);
+    TEST_UNION(case_recursive_boxes_65, 1, 1, -1, 24.5);
+    TEST_UNION(case_recursive_boxes_66, 1, 1, -1, 24.75);
+    TEST_UNION(case_recursive_boxes_67, 4, 0, -1, 14.75);
+    TEST_UNION(case_recursive_boxes_68, 1, 4, -1, 22.5);
+    TEST_UNION(case_recursive_boxes_69, 4, 0, -1, 16.25);
+    TEST_UNION(case_recursive_boxes_70, 1, 0, -1, 25.0);
+    TEST_UNION(case_recursive_boxes_71, 4, 2, -1, 15.75);
+    TEST_UNION(case_recursive_boxes_72, 10, 0, -1, 15.0);
+    TEST_UNION(case_recursive_boxes_73, 1, 2, -1, 24.25);
+    TEST_UNION(case_recursive_boxes_74, 1, 1, -1, 24.75);
+    TEST_UNION(case_recursive_boxes_75, 1, 2, -1, 23.25);
+    TEST_UNION(case_recursive_boxes_76, 1, 0, -1, 24.5);
+    TEST_UNION(case_recursive_boxes_77, 8, 1, -1, 13.5);
+    TEST_UNION(case_recursive_boxes_78, 2, 5, -1, 18.0);
+    TEST_UNION(case_recursive_boxes_79, 1, 2, -1, 14.75);
+
+    // No hole should be generated (but rescaling generates one hole)
+    TEST_UNION(case_recursive_boxes_80, 2, BG_IF_RESCALED(bg_if_mp<ct>(0, 1), 0), -1, 1.5);
+
+    TEST_UNION(case_recursive_boxes_81, 5, 0, -1, 15.5);
+    TEST_UNION(case_recursive_boxes_82, 2, 2, -1, 20.25);
+    TEST_UNION(case_recursive_boxes_83, 3, 1, -1, 20.75);
+    TEST_UNION(case_recursive_boxes_84, 4, 1, -1, 17.5);
+    TEST_UNION(case_recursive_boxes_85, 9, 0, -1, 8.0);
+    TEST_UNION(case_recursive_boxes_86, 3, 0, -1, 3.0);
+    TEST_UNION(case_recursive_boxes_87, 8, 0, -1, 4.5);
+    TEST_UNION(case_recursive_boxes_88, 5, 1, -1, 15.0);
+
     test_one<Polygon, MultiPolygon, MultiPolygon>("ggl_list_20120915_h2_a",
          ggl_list_20120915_h2[0], ggl_list_20120915_h2[1],
          1, 0, 12, 23.0); // Area from SQL Server
@@ -347,16 +386,18 @@ void test_areal()
 
     test_one<Polygon, MultiPolygon, MultiPolygon>("ggl_list_20140212_sybren",
          ggl_list_20140212_sybren[0], ggl_list_20140212_sybren[1],
-         2, 0, 16, 0.002471626);
+         2, bg_if_mp<ct>(1, 0), -1, 0.002471626);
 
-    test_one<Polygon, MultiPolygon, MultiPolygon>("ticket_9081",
-        ticket_9081[0], ticket_9081[1],
-#if defined(BOOST_GEOMETRY_NO_ROBUSTNESS)
-        3,
-#else
-        4,
-#endif
-        0, 31, 0.2187385);
+    {
+        // Generates either 4 or 3 output polygons
+        // With rescaling the result is invalid.
+        ut_settings settings;
+        settings.set_test_validity(BG_IF_RESCALED(false, true));
+        test_one<Polygon, MultiPolygon, MultiPolygon>("ticket_9081",
+            ticket_9081[0], ticket_9081[1],
+            BG_IF_RESCALED(bg_if_mp<ct>(3, 4), 3), 0, -1, 0.2187385,
+            settings);
+    }
 
     test_one<Polygon, MultiPolygon, MultiPolygon>("ticket_10803",
         ticket_10803[0], ticket_10803[1],
@@ -364,33 +405,58 @@ void test_areal()
     test_one<Polygon, MultiPolygon, MultiPolygon>("ticket_11984",
         ticket_11984[0], ticket_11984[1],
         1, 2, 134, 60071.08077);
-
     test_one<Polygon, MultiPolygon, MultiPolygon>("ticket_12118",
         ticket_12118[0], ticket_12118[1],
-        1, 1, 27, 2221.38713);
+        1, -1, 27, 2221.38713);
 
-#if defined(BOOST_GEOMETRY_ENABLE_FAILING_TESTS) || defined(BOOST_GEOMETRY_NO_ROBUSTNESS)
+#if defined(BOOST_GEOMETRY_TEST_FAILURES) || ! defined(BOOST_GEOMETRY_USE_RESCALING)
     // No output if rescaling is done
     test_one<Polygon, MultiPolygon, MultiPolygon>("ticket_12125",
         ticket_12125[0], ticket_12125[1],
         1, 0, -1, 575.831180350007);
 #endif
 
-    // TODO: solve validity, it needs calculating self-turns
-    // Should have 1 hole
-    test_one<Polygon, MultiPolygon, MultiPolygon>("mysql_23023665_7",
-        mysql_23023665_7[0], mysql_23023665_7[1],
-        1, 0, -1, 99.19494,
-        ignore_validity);
-    // Should have 2 holes
-    test_one<Polygon, MultiPolygon, MultiPolygon>("mysql_23023665_8",
-        mysql_23023665_8[0], mysql_23023665_8[1],
-        1, 1, -1, 1400.0,
-        ignore_validity);
+    TEST_UNION(ticket_12503, 42, 1, -1, 945.625);
+
+#if ! defined(BOOST_GEOMETRY_USE_RESCALING) || defined(BOOST_GEOMETRY_TEST_FAILURES)
+    // Failure with rescaling
+    TEST_UNION(issue_630_a, 1, 0, -1, 2.200326);
+#endif
+    TEST_UNION(issue_630_b, 1, 0, -1, 1.675976);
+#if ! defined(BOOST_GEOMETRY_USE_KRAMER_RULE) || defined(BOOST_GEOMETRY_TEST_FAILURES)
+    // Failure with Kramer rule, it doesn't generate any output
+    TEST_UNION(issue_630_c, 1, 0, -1, 1.670367);
+#endif
+
+#if ! defined(BOOST_GEOMETRY_USE_RESCALING) || defined(BOOST_GEOMETRY_TEST_FAILURES)
+    // With rescaling the small polygon is added on top of the outer polygon
+    TEST_UNION(issue_643, 1, 0, -1, 80.0);
+#endif
+
+    // It returns 3 polygons, the first with an interior
+    // This is correct (the difference, resulting in the same spatial coverage,
+    // generates only one polygon with two interiors)
+    TEST_UNION(issue_869_b, 3, 1, -1, 3600);
+
+    TEST_UNION(issue_888_34, 15, 0, -1, 0.3017459);
+    TEST_UNION(issue_888_37, 52, 3, -1, 0.4033294);
+
+#if defined(BOOST_GEOMETRY_USE_KRAMER_RULE)
+    // Two polygons, should ideally be merged
+    TEST_UNION(mail_2019_01_21_johan, 2, 0, -1, 0.00058896);
+#else
+    // Correct: one polygon
+    TEST_UNION(mail_2019_01_21_johan, 1, 0, -1, 0.00058896);
+#endif
+
+    TEST_UNION(mysql_23023665_7, 1, 1, -1, 99.19494);
+    TEST_UNION(mysql_23023665_8, 1, 2, -1, 1400.0);
 
     test_one<Polygon, MultiPolygon, MultiPolygon>("mysql_23023665_9",
         mysql_23023665_9[0], mysql_23023665_9[1],
         1, 9, -1, 1250.0);
+
+    TEST_UNION(mysql_regression_1_65_2017_08_31, 3, 0, -1, 181.966397646608);
 }
 
 // Test cases (generic)
@@ -411,30 +477,27 @@ void test_specific()
     typedef bg::model::polygon<Point, ClockWise, Closed> polygon;
     typedef bg::model::multi_polygon<polygon> multi_polygon;
 
-    ut_settings settings;
-    settings.test_validity = true;
-
     test_one<polygon, multi_polygon, multi_polygon>("ticket_10803",
         ticket_10803[0], ticket_10803[1],
-        1, 0, 9, 2664270, settings);
+        1, 0, 9, 2664270);
 }
 
 
 int test_main(int, char* [])
 {
-    test_all<bg::model::d2::point_xy<double>, true, true>();
-    test_all<bg::model::d2::point_xy<double>, false, false>();
-
-    test_specific<bg::model::d2::point_xy<int>, false, false>();
+    BoostGeometryWriteTestConfiguration();
+    test_all<bg::model::d2::point_xy<default_test_type>, true, true>();
 
 #if ! defined(BOOST_GEOMETRY_TEST_ONLY_ONE_TYPE)
+    test_all<bg::model::d2::point_xy<double>, false, false>();
     test_all<bg::model::d2::point_xy<float>, true, true>();
+    test_all<bg::model::d2::point_xy<mp_test_type>, true, true>();
 
-#if defined(HAVE_TTMATH)
-    std::cout << "Testing TTMATH" << std::endl;
-    test_all<bg::model::d2::point_xy<ttmath_big> >();
+    test_specific<bg::model::d2::point_xy<int>, false, false>();
 #endif
 
+#if defined(BOOST_GEOMETRY_TEST_FAILURES)
+    BoostGeometryWriteExpectedFailures(9, 0, 1, 0);
 #endif
 
     return 0;

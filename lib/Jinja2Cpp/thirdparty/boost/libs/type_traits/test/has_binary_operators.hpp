@@ -3,6 +3,10 @@
 //  Boost Software License, Version 1.0. (See accompanying file
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
+// It would be nice to get rid of the unnamed namespace here,
+// but for now we just turn off inspection reporting :(
+// boostinspect:nounnamed
+
 #ifndef TT_HAS_BINARY_OPERATORS_HPP
 #define TT_HAS_BINARY_OPERATORS_HPP
 
@@ -47,21 +51,21 @@ struct internal_comma2 { ret_with_comma2 operator BOOST_TT_TRAIT_OP (const inter
 struct external_comma2 { };
 ret_with_comma2 operator BOOST_TT_TRAIT_OP (const external_comma2&, const external_comma2&){ return ret_with_comma2(); }
 
-struct returns_int { int operator BOOST_TT_TRAIT_OP (const returns_int&); };
+struct returns_int { int operator BOOST_TT_TRAIT_OP (const returns_int&)const; };
 
-struct returns_void { void operator BOOST_TT_TRAIT_OP (const returns_void&); };
+struct returns_void { void operator BOOST_TT_TRAIT_OP (const returns_void&)const; };
 
-struct returns_void_star { void *operator BOOST_TT_TRAIT_OP (const returns_void_star&); };
+struct returns_void_star { void *operator BOOST_TT_TRAIT_OP (const returns_void_star&)const; };
 
-struct returns_double { double operator BOOST_TT_TRAIT_OP (const returns_double&); };
+struct returns_double { double operator BOOST_TT_TRAIT_OP (const returns_double&)const; };
 
 struct ret1 { };
 struct convertible_to_ret1 { operator ret1 () const; };
-struct returns_convertible_to_ret1 { convertible_to_ret1 operator BOOST_TT_TRAIT_OP (const returns_convertible_to_ret1&); };
+struct returns_convertible_to_ret1 { convertible_to_ret1 operator BOOST_TT_TRAIT_OP (const returns_convertible_to_ret1&)const; };
 
 struct convertible_to_ret2 { };
 struct ret2 { ret2(const convertible_to_ret2); };
-struct returns_convertible_to_ret2 { convertible_to_ret2 operator BOOST_TT_TRAIT_OP (const returns_convertible_to_ret2&); };
+struct returns_convertible_to_ret2 { convertible_to_ret2 operator BOOST_TT_TRAIT_OP (const returns_convertible_to_ret2&)const; };
 
 class Base1 { };
 class Derived1 : public Base1 { };
@@ -85,6 +89,14 @@ struct D { };
 inline bool operator BOOST_TT_TRAIT_OP (const C&, void*) { return true; }
 inline bool operator BOOST_TT_TRAIT_OP (void*, const D&) { return true; }
 inline bool operator BOOST_TT_TRAIT_OP (const C&, const D&) { return true; }
+
+struct private_op { private: void operator BOOST_TT_TRAIT_OP (const private_op&) {} };
+
+struct ambiguous_A 
+{ 
+};
+inline bool operator BOOST_TT_TRAIT_OP (const ambiguous_A&, const ambiguous_A&) { return true; }
+struct ambiguous_B { operator ambiguous_A()const { return ambiguous_A(); } };
 
 //class internal_private { ret operator BOOST_TT_TRAIT_OP (const internal_private&) const; };
 
@@ -144,6 +156,17 @@ void common() {
    TEST_TR(Derived2, bool, true);
 // compile time error
 // TEST_T(internal_private, false);
+#if defined(BOOST_TT_HAS_ACCURATE_BINARY_OPERATOR_DETECTION)
+// There are some things that pass that wouldn't otherwise do so:
+#if !BOOST_WORKAROUND(BOOST_MSVC, < 1910)
+   TEST_TR(private_op, bool, false);
+   TEST_T(private_op, false);
+#endif
+   TEST_TR(ambiguous_A, bool, true);
+   TEST_T(ambiguous_A, true);
+   TEST_TR(ambiguous_B, bool, true);
+   TEST_T(ambiguous_B, true);
+#endif
 }
 
 }

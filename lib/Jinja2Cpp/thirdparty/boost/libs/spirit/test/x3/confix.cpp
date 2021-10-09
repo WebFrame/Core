@@ -21,6 +21,10 @@ int main()
     namespace x3 = boost::spirit::x3;
     using namespace spirit_test;
 
+    BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(x3::confix('(', ')'));
+    BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(x3::confix("[", "]"));
+    BOOST_SPIRIT_ASSERT_CONSTEXPR_CTORS(x3::confix("/*", "*/"));
+
     {
         const auto comment = x3::confix("/*", "*/");
 
@@ -35,8 +39,9 @@ int main()
                 test_attr(" /* 123 */ ", comment[x3::uint_], value, x3::space));
             BOOST_TEST(value == 123);
 
+            using x3::_attr;
             value = 0;
-            const auto lambda = [&value](auto& ctx ){ value = x3::_attr(ctx) + 1; };
+            const auto lambda = [&value](auto& ctx ){ value = _attr(ctx) + 1; };
             BOOST_TEST(test_attr("/*123*/", comment[x3::uint_][lambda], value));
             BOOST_TEST(value == 124);
         }

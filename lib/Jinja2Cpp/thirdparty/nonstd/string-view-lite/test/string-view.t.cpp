@@ -1,4 +1,4 @@
-// Copyright 2017-2019 Martin Moene
+// Copyright 2017-2020 Martin Moene
 //
 // https://github.com/martinmoene/string-view-lite
 //
@@ -373,6 +373,17 @@ CASE( "string_view: Allows to lexically compare to another string_view via compa
 CASE( "string_view: Allows to compare empty string_views as equal via compare(), (1)" )
 {
     EXPECT( string_view().compare( string_view() ) == 0 );
+}
+
+CASE( "string_view: Allows to constexpr-compare string_views via compare(), (1) (C++14)" )
+{
+#if nssv_HAVE_CONSTEXPR_14
+    static_assert( string_view( "hello" ).compare( string_view( "hello" ) ) == 0, "" );
+    static_assert( string_view( "hello" ).compare( string_view( "world" ) ) <  0, "" );
+    static_assert( string_view( "world" ).compare( string_view( "hello" ) ) >  0, "" );
+#else
+    EXPECT( !!"C++14 constexpr is not available (no C++14)" );
+#endif
 }
 
 CASE( "string_view: Allows to compare a sub string to another string_view via compare(), (2)" )
@@ -989,7 +1000,7 @@ CASE( "string_view: Allows to create a string_view via literal \"_sv\", using na
 
 // 24.4.3 Non-member comparison functions:
 
-CASE( "string_view: Allows to compare a string_view with another string_view" )
+CASE( "string_view: Allows to compare a string_view with another string_view via comparison operators" )
 {
     char s[] = "hello";
     char t[] = "world";
@@ -1009,10 +1020,8 @@ CASE( "string_view: Allows to compare a string_view with another string_view" )
     EXPECT( tv >  sv );
 }
 
-CASE( "string_view: Allows to compare a string_view with an object with implicit conversion to string_view" )
+CASE( "string_view: Allows to compare a string_view with an object with implicit conversion to string_view via comparison operators" )
 {
-#if nssv_CPP11_OR_GREATER
-#if _MSC_VER != 1900
     char s[] = "hello";
     string_view sv( s );
 
@@ -1022,40 +1031,36 @@ CASE( "string_view: Allows to compare a string_view with an object with implicit
     EXPECT( sv != "world"       );
     EXPECT(       "world" != sv );
 
+    EXPECT( sv <  "world"       );
+    EXPECT(       "aloha" <  sv );
+
     EXPECT( sv <= "hello"       );
     EXPECT(       "hello" <= sv );
     EXPECT( sv <= "world"       );
     EXPECT(       "aloha" <= sv );
 
-    EXPECT( sv <  "world"       );
-    EXPECT(       "aloha" <  sv );
+    EXPECT( sv >  "aloha"       );
+    EXPECT(       "world"  >  sv );
 
     EXPECT( sv >= "hello"       );
     EXPECT(       "hello" >= sv );
     EXPECT( sv >= "aloha"       );
     EXPECT(       "world" >= sv );
-
-    EXPECT( sv >  "aloha"       );
-    EXPECT(       "world"  >  sv );
-#else
-    EXPECT( !!"Comparison for types with implicit conversion to string_view not available (insufficient C++11 support of MSVC)." );
-#endif
-#else
-    EXPECT( !!"Comparison for types with implicit conversion to string_view not available (no C++11)." );
-#endif
 }
 
-CASE( "string_view: Allows to compare empty string_view-s as equal" )
+CASE( "string_view: Allows to compare empty string_view-s as equal via compare() and via operator==()" )
 {
     string_view a, b;
 
     EXPECT( a == b );
+    EXPECT( a.compare( b ) == 0 );
 }
 
 // 24.4.4 Inserters and extractors:
 
 CASE ( "operator<<: Allows printing a string_view to an output stream" )
 {
+#if ! nssv_CONFIG_NO_STREAM_INSERTION
     std::ostringstream oss;
     char s[] = "hello";
     string_view sv( s );
@@ -1066,6 +1071,9 @@ CASE ( "operator<<: Allows printing a string_view to an output stream" )
         << std::setfill('.') << std::left << std::setw(10) << sv;
 
     EXPECT( oss.str() == "hello\n     hello\nhello\nhello....." );
+#else
+    EXPECT( !!"standard streams are not available (nssv_CONFIG_NO_STREAM_INSERTION is defined)" );
+#endif
 }
 
 // 24.4.5 Hash support (C++11):
@@ -1218,6 +1226,15 @@ CASE( "to_string_view(): convert from std::string via to_string_view() " "[exten
     EXPECT( sv.compare( s ) == 0  );
 #else
     EXPECT( !!"Conversion to/from std::string is not available (nssv_CONFIG_CONVERSION_STD_STRING_FREE_FUNCTIONS=0)." );
+#endif
+}
+
+CASE( "tweak header: reads tweak header if supported " "[tweak]" )
+{
+#if nssv_HAVE_TWEAK_HEADER
+    EXPECT( STRING_VIEW_TWEAK_VALUE == 42 );
+#else
+    EXPECT( !!"Tweak header is not available (nssv_HAVE_TWEAK_HEADER: 0)." );
 #endif
 }
 

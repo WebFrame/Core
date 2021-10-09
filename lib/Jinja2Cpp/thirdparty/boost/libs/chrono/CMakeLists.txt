@@ -1,57 +1,54 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_chrono)
+# Copyright 2020, 2021 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# https://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.16)
 
-find_package(boost_core)
-find_package(boost_static_assert)
-find_package(boost_ratio)
-find_package(boost_predef)
-find_package(boost_winapi)
-find_package(boost_mpl)
-find_package(boost_move)
-find_package(boost_system)
-find_package(boost_assert)
-find_package(boost_type_traits)
-find_package(boost_typeof)
-find_package(boost_integer)
-find_package(boost_config)
-find_package(boost_throw_exception)
-find_package(boost_utility)
+project(boost_chrono VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-bcm_setup_version(VERSION 1.64.0)
-
-add_library(boost_chrono 
-src/chrono.cpp
-src/thread_clock.cpp
-src/process_cpu_clocks.cpp
+add_library(boost_chrono
+  src/chrono.cpp
+  src/process_cpu_clocks.cpp
+  src/thread_clock.cpp
 )
-set_property(TARGET boost_chrono PROPERTY EXPORT_NAME chrono)
 
-target_link_libraries(boost_chrono PUBLIC boost::core)
-target_link_libraries(boost_chrono PUBLIC boost::static_assert)
-target_link_libraries(boost_chrono PUBLIC boost::ratio)
-target_link_libraries(boost_chrono PUBLIC boost::predef)
-target_link_libraries(boost_chrono PUBLIC boost::winapi)
-target_link_libraries(boost_chrono PUBLIC boost::mpl)
-target_link_libraries(boost_chrono PUBLIC boost::move)
-target_link_libraries(boost_chrono PUBLIC boost::system)
-target_link_libraries(boost_chrono PUBLIC boost::assert)
-target_link_libraries(boost_chrono PUBLIC boost::type_traits)
-target_link_libraries(boost_chrono PUBLIC boost::typeof)
-target_link_libraries(boost_chrono PUBLIC boost::integer)
-target_link_libraries(boost_chrono PUBLIC boost::config)
-target_link_libraries(boost_chrono PUBLIC boost::throw_exception)
-target_link_libraries(boost_chrono PUBLIC boost::utility)
+add_library(Boost::chrono ALIAS boost_chrono)
 
+target_include_directories(boost_chrono PUBLIC include)
 
+target_link_libraries(boost_chrono
+  PUBLIC
+    Boost::assert
+    Boost::config
+    Boost::core
+    Boost::integer
+    Boost::move
+    Boost::mpl
+    Boost::predef
+    Boost::ratio
+    Boost::static_assert
+    Boost::system
+    Boost::throw_exception
+    Boost::type_traits
+    Boost::typeof
+    Boost::utility
+    Boost::winapi
+)
 
-target_include_directories(boost_chrono PRIVATE include)
+target_compile_definitions(boost_chrono
+  PUBLIC BOOST_CHRONO_NO_LIB
+  # Source files already define BOOST_CHRONO_SOURCE
+  # PRIVATE BOOST_CHRONO_SOURCE
+)
 
-bcm_deploy(TARGETS boost_chrono INCLUDE include NAMESPACE boost::)
+if(BUILD_SHARED_LIBS)
+  target_compile_definitions(boost_chrono PUBLIC BOOST_CHRONO_DYN_LINK)
+else()
+  target_compile_definitions(boost_chrono PUBLIC BOOST_CHRONO_STATIC_LINK)
+endif()
 
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
+if(BUILD_TESTING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
+
+  add_subdirectory(test)
+
 endif()

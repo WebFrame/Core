@@ -1,5 +1,5 @@
 //
-// Copyright Antony Polukhin, 2015-2016.
+// Copyright 2015-2021 Antony Polukhin.
 //
 // Distributed under the Boost Software License, Version 1.0. (See
 // accompanying file LICENSE_1_0.txt or copy at
@@ -7,14 +7,10 @@
 
 #include <boost/type_index/ctti_type_index.hpp>
 
-#include <boost/functional/hash.hpp>
-#include <boost/lexical_cast.hpp>
 #include <algorithm>
 #include <string>
 
 #include <boost/core/lightweight_test.hpp>
-#define BOOST_TEST_LE(x, y) BOOST_TEST(x <= y)
-#define BOOST_TEST_GE(x, y) BOOST_TEST(x >= y)
 
 const char* hello1 = "Hello word";
 const char* hello1_end = hello1 + sizeof("Hello word");
@@ -93,9 +89,19 @@ void constexpr_test() {
     using namespace boost::typeindex;
 
     BOOST_CXX14_CONSTEXPR ctti_type_index t_int0 = ctti_type_index::type_id<int>();
+    (void)t_int0;
+
     BOOST_CXX14_CONSTEXPR ctti_type_index t_short0 = ctti_type_index::type_id<short>();
+    (void)t_short0;
+
     BOOST_CXX14_CONSTEXPR ctti_type_index t_int1 = ctti_type_index::type_id<int>();
+    (void)t_int1;
+
     BOOST_CXX14_CONSTEXPR ctti_type_index t_short1 = ctti_type_index::type_id<short>();
+    (void)t_short1;
+
+// Following tests are known to fail on _MSC_VER == 1916.
+#if !defined(_MSC_VER) || _MSC_VER > 1916
 
     BOOST_CXX14_CONSTEXPR bool same0 = (t_int0 == t_int1);
     BOOST_TEST(same0);
@@ -137,6 +143,8 @@ void constexpr_test() {
 
     BOOST_CXX14_CONSTEXPR bool not_in_namespace = !is_boost_namespace<std::string>();
     BOOST_TEST(not_in_namespace);
+
+#endif // #if !defined(_MSC_VER) || _MSC_VER > 1916
 }
 
 

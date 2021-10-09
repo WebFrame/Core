@@ -1,7 +1,7 @@
 # Copyright 2003, 2004, 2006 Vladimir Prus
 # Distributed under the Boost Software License, Version 1.0.
-# (See accompanying file LICENSE_1_0.txt or copy at
-# http://www.boost.org/LICENSE_1_0.txt)
+# (See accompanying file LICENSE.txt or copy at
+# https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 # This module defines the 'alias' rule and the associated target class.
 #
@@ -24,6 +24,7 @@
 #
 
 import "class" : new ;
+import param ;
 import project ;
 import property-set ;
 import targets ;
@@ -57,6 +58,9 @@ class alias-target-class : basic-target
 rule alias ( name : sources * : requirements * : default-build * :
     usage-requirements * )
 {
+    param.handle-named-params
+        sources requirements default-build usage-requirements ;
+
     local project = [ project.current ] ;
 
     targets.main-target-alternative

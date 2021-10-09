@@ -2,7 +2,7 @@
 
 # Copyright 2013 Steven Watanabe
 # Distributed under the Boost Software License, Version 1.0.
-# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
+# (See accompanying file LICENSE.txt or https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 # Tests that action sources are not reordered
 
@@ -74,8 +74,8 @@ t.write("file2.c", "")
 t.write("file3.c", "")
 
 t.run_build_system()
-t.expect_addition("bin/$toolset/debug/check.order-test")
-t.expect_content("bin/$toolset/debug/check.order-test", """\
+t.expect_addition("bin/check.order-test")
+t.expect_content("bin/check.order-test", """\
 file2.c
 file1.c
 file3.c

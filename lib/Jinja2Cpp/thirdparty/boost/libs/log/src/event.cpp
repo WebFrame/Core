@@ -34,8 +34,13 @@
 // Some Android NDKs (Google NDK and older Crystax.NET NDK versions) don't define SYS_futex
 #if defined(SYS_futex)
 #define BOOST_LOG_SYS_FUTEX SYS_futex
-#else
+#elif defined(__NR_futex)
 #define BOOST_LOG_SYS_FUTEX __NR_futex
+// riscv32 defines a different system call instead of __NR_futex
+#elif defined(__NR_futex_time64)
+#define BOOST_LOG_SYS_FUTEX __NR_futex_time64
+#else
+#error "Unable to find a suitable futex"
 #endif
 
 #if defined(FUTEX_WAIT_PRIVATE)
@@ -95,7 +100,7 @@ BOOST_LOG_API void futex_based_event::wait()
     {
         while (true)
         {
-            if (::syscall(BOOST_LOG_SYS_FUTEX, &m_state.storage(), BOOST_LOG_FUTEX_WAIT, 0, NULL, NULL, 0) == 0)
+            if (::syscall(BOOST_LOG_SYS_FUTEX, &m_state.value(), BOOST_LOG_FUTEX_WAIT, 0, NULL, NULL, 0) == 0)
             {
                 // Another thread has set the event while sleeping
                 break;
@@ -122,7 +127,7 @@ BOOST_LOG_API void futex_based_event::set_signalled()
 {
     if (m_state.exchange(1, boost::memory_order_release) == 0)
     {
-        if (BOOST_UNLIKELY(::syscall(BOOST_LOG_SYS_FUTEX, &m_state.storage(), BOOST_LOG_FUTEX_WAKE, 1, NULL, NULL, 0) < 0))
+        if (BOOST_UNLIKELY(::syscall(BOOST_LOG_SYS_FUTEX, &m_state.value(), BOOST_LOG_FUTEX_WAKE, 1, NULL, NULL, 0) < 0))
         {
             const int err = errno;
             BOOST_LOG_THROW_DESCR_PARAMS(system_error, "Failed to wake threads blocked on the futex", (err));

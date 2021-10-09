@@ -16,13 +16,13 @@
 
 #include <boost/move/unique_ptr.hpp>
 #include <boost/container/vector.hpp>
-#include <boost/timer/timer.hpp>
 
 #include "order_type.hpp"
 #include "random_shuffle.hpp"
 
 #include <boost/move/algo/adaptive_sort.hpp>
 #include <boost/move/core.hpp>
+#include <cstdlib>
 
 template<class T>
 bool test_random_shuffled(std::size_t const element_count, std::size_t const num_keys, std::size_t const num_iter)
@@ -39,7 +39,7 @@ bool test_random_shuffled(std::size_t const element_count, std::size_t const num
 
    std::srand(0);
 
-   for (std::size_t i = 0; i != num_iter; ++i)
+   for (std::size_t it = 0; it != num_iter; ++it)
    {
       ::random_shuffle(elements.get(), elements.get() + element_count);
       for(std::size_t i = 0; i < (num_keys ? num_keys : element_count); ++i){
@@ -54,15 +54,27 @@ bool test_random_shuffled(std::size_t const element_count, std::size_t const num
       if (!is_order_type_ordered(elements.get(), element_count))
       {
          std::cout <<  "\n ERROR\n";
-         throw int(0);
+         std::abort();
       }
    }
    return true;
 }
 
+void instantiate_smalldiff_iterators()
+{
+   typedef randit<int, short> short_rand_it_t;
+   boost::movelib::adaptive_sort(short_rand_it_t(), short_rand_it_t(), less_int());
+
+   typedef randit<int, signed char> schar_rand_it_t;
+   boost::movelib::adaptive_sort(schar_rand_it_t(), schar_rand_it_t(), less_int());
+}
+
 int main()
 {
+   instantiate_smalldiff_iterators();
+
    const std::size_t NIter = 100;
+   test_random_shuffled<order_move_type>(10001, 3,   NIter);
    test_random_shuffled<order_move_type>(10001, 65,   NIter);
    test_random_shuffled<order_move_type>(10001, 101,  NIter);
    test_random_shuffled<order_move_type>(10001, 1023, NIter);

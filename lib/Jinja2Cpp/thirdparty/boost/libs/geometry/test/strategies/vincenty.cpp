@@ -5,8 +5,8 @@
 // Copyright (c) 2008-2012 Bruno Lalande, Paris, France.
 // Copyright (c) 2009-2012 Mateusz Loskot, London, UK.
 
-// This file was modified by Oracle on 2014, 2015, 2016.
-// Modifications copyright (c) 2014-2016 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2014, 2015, 2016, 2017.
+// Modifications copyright (c) 2014-2017 Oracle and/or its affiliates.
 
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -22,20 +22,17 @@
 
 #include <boost/concept_check.hpp>
 
-#include <boost/geometry/strategies/geographic/distance_vincenty.hpp>
-#include <boost/geometry/strategies/geographic/side_vincenty.hpp>
+#include <boost/geometry/algorithms/assign.hpp>
+#include <boost/geometry/algorithms/distance.hpp>
 #include <boost/geometry/formulas/vincenty_inverse.hpp>
 #include <boost/geometry/formulas/vincenty_direct.hpp>
-
-#include <boost/geometry/core/srs.hpp>
-#include <boost/geometry/strategies/strategies.hpp>
-#include <boost/geometry/algorithms/assign.hpp>
 #include <boost/geometry/geometries/point.hpp>
-#include <test_common/test_point.hpp>
+#include <boost/geometry/srs/spheroid.hpp>
+#include <boost/geometry/strategies/concepts/distance_concept.hpp>
+#include <boost/geometry/strategies/geographic/distance_vincenty.hpp>
+#include <boost/geometry/strategies/geographic/side_vincenty.hpp>
 
-#ifdef HAVE_TTMATH
-#  include <boost/geometry/extensions/contrib/ttmath_stub.hpp>
-#endif
+#include <test_common/test_point.hpp>
 
 template <typename T>
 void normalize_deg(T & deg)
@@ -163,9 +160,10 @@ void test_vincenty(double lon1, double lat1, double lon2, double lat2,
         //check_deg("direct_az21_deg", direct_az21_deg, az21_deg, tolerance, error);
     }
 
-    // distance strategy
+    // distance strategies
     {
         typedef bg::strategy::distance::vincenty<Spheroid> vincenty_type;
+        typedef bg::strategy::distance::geographic<bg::strategy::vincenty, Spheroid> geographic_type;
 
         BOOST_CONCEPT_ASSERT(
             (
@@ -173,6 +171,7 @@ void test_vincenty(double lon1, double lat1, double lon2, double lat2,
             );
 
         vincenty_type vincenty(spheroid);
+        geographic_type geographic(spheroid);
         typedef typename bg::strategy::distance::services::return_type<vincenty_type, P1, P2>::type return_type;
 
         P1 p1;
@@ -182,6 +181,7 @@ void test_vincenty(double lon1, double lat1, double lon2, double lat2,
         bg::assign_values(p2, lon2, lat2);
         
         BOOST_CHECK_CLOSE(vincenty.apply(p1, p2), return_type(expected_distance), tolerance);
+        BOOST_CHECK_CLOSE(geographic.apply(p1, p2), return_type(expected_distance), tolerance);
         BOOST_CHECK_CLOSE(bg::distance(p1, p2, vincenty), return_type(expected_distance), tolerance);
     }
 }
@@ -212,8 +212,10 @@ void test_side(double lon1, double lat1,
     typedef bg::srs::spheroid<rtype> stype;
 
     typedef bg::strategy::side::vincenty<stype> strategy_type;
+    typedef bg::strategy::side::geographic<bg::strategy::vincenty, stype> strategy2_type;
 
     strategy_type strategy;
+    strategy2_type strategy2;
 
     PS p1, p2;
     P p;
@@ -223,8 +225,10 @@ void test_side(double lon1, double lat1,
     bg::assign_values(p, lon, lat);
 
     int side = strategy.apply(p1, p2, p);
+    int side2 = strategy2.apply(p1, p2, p);
 
     BOOST_CHECK_EQUAL(side, expected_side);
+    BOOST_CHECK_EQUAL(side2, expected_side);
 }
 
 template <typename P1, typename P2>
@@ -273,7 +277,7 @@ void test_all()
 
     test_vincenty<P1, P2>(0, 0, 0, 50, 5540.847042, 0, 180, gda_spheroid); // N
     test_vincenty<P1, P2>(0, 0, 0, -50, 5540.847042, 180, 0, gda_spheroid); // S
-    test_vincenty<P1, P2>(0, 0, 50, 0, 	5565.974540, 90, -90, gda_spheroid); // E
+    test_vincenty<P1, P2>(0, 0, 50, 0, 5565.974540, 90, -90, gda_spheroid); // E
     test_vincenty<P1, P2>(0, 0, -50, 0, 5565.974540, -90, 90, gda_spheroid); // W
     
     test_vincenty<P1, P2>(0, 0, 50, 50, 7284.879297, azimuth(32,51,55.87), azimuth(237,24,50.12), gda_spheroid); // NE
@@ -311,12 +315,6 @@ int test_main(int, char* [])
     test_all<bg::model::point<double, 2, bg::cs::geographic<bg::degree> > >();
     test_all<bg::model::point<float, 2, bg::cs::geographic<bg::degree> > >();
     test_all<bg::model::point<int, 2, bg::cs::geographic<bg::degree> > >();
-
-#if defined(HAVE_TTMATH)
-    test_all<bg::model::point<ttmath::Big<1,4>, 2, bg::cs::geographic<bg::degree> > >();
-    test_all<bg::model::point<ttmath_big, 2, bg::cs::geographic<bg::degree> > >();
-#endif
-
 
     return 0;
 }

@@ -1,21 +1,15 @@
-include(BCMTest)
+# Copyright 2018, 2019 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
 
-find_package(boost_core)
+include(BoostTestJamfile OPTIONAL RESULT_VARIABLE HAVE_BOOST_TEST)
 
-bcm_test_link_libraries(boost_assert
-boost::core
-)
+if(HAVE_BOOST_TEST)
 
-bcm_test(NAME assert_test SOURCES assert_test.cpp)
-bcm_test(NAME current_function_test SOURCES current_function_test.cpp)
-bcm_test(NAME verify_test SOURCES verify_test.cpp)
-bcm_test(NAME assert_is_void_test SOURCES assert_is_void_test.cpp)
+boost_test_jamfile(FILE Jamfile.v2 LINK_LIBRARIES Boost::assert Boost::core)
 
-# expansion tests are in exp/ so that there is a backslash in the path on Windows
-bcm_test(NAME assert_exp_test SOURCES exp/assert_exp_test.cpp)
-bcm_test(NAME assert_msg_exp_test SOURCES exp/assert_msg_exp_test.cpp)
-bcm_test(NAME verify_exp_test SOURCES exp/verify_exp_test.cpp)
-bcm_test(NAME verify_msg_exp_test SOURCES exp/verify_msg_exp_test.cpp)
-bcm_test(NAME assert_test2 SOURCES assert_test2.cpp)
-bcm_test(NAME assert_msg_test2 SOURCES assert_msg_test2.cpp)
+if(BOOST_SUPERPROJECT_VERSION)
+  boost_test(SOURCES check_cmake_version.cpp ARGUMENTS ${PROJECT_VERSION} LINK_LIBRARIES Boost::core Boost::config)
+endif()
 
+endif()

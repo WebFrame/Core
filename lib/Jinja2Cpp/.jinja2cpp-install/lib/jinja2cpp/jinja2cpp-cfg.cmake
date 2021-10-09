@@ -4,7 +4,7 @@ if("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" LESS 2.5)
    message(FATAL_ERROR "CMake >= 2.6.0 required")
 endif()
 cmake_policy(PUSH)
-cmake_policy(VERSION 2.6)
+cmake_policy(VERSION 2.6...3.19)
 #----------------------------------------------------------------
 # Generated CMake target import file.
 #----------------------------------------------------------------
@@ -62,7 +62,7 @@ add_library(jinja2cpp STATIC IMPORTED)
 set_target_properties(jinja2cpp PROPERTIES
   INTERFACE_COMPILE_DEFINITIONS "BOOST_SYSTEM_NO_DEPRECATED;BOOST_ERROR_CODE_HEADER_ONLY"
   INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
-  INTERFACE_LINK_LIBRARIES "nonstd::expected-lite;nonstd::variant-lite;nonstd::optional-lite;nonstd::string-view-lite;\$<LINK_ONLY:boost::variant>;\$<LINK_ONLY:boost::filesystem>;\$<LINK_ONLY:boost::algorithm>;\$<LINK_ONLY:fmt::fmt-header-only>;\$<LINK_ONLY:RapidJson>"
+  INTERFACE_LINK_LIBRARIES "nonstd::expected-lite;nonstd::variant-lite;nonstd::optional-lite;nonstd::string-view-lite;\$<LINK_ONLY:Boost::variant>;\$<LINK_ONLY:Boost::filesystem>;\$<LINK_ONLY:Boost::algorithm>;\$<LINK_ONLY:Boost::lexical_cast>;\$<LINK_ONLY:fmt::fmt-header-only>;\$<LINK_ONLY:RapidJson>"
 )
 
 if(CMAKE_VERSION VERSION_LESS 3.0.0)
@@ -98,10 +98,10 @@ but not all the files it references.
 endforeach()
 unset(_IMPORT_CHECK_TARGETS)
 
-# Make sure the targets which have been exported in some other 
+# Make sure the targets which have been exported in some other
 # export set exist.
 unset(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE_targets)
-foreach(_target "nonstd::expected-lite" "nonstd::variant-lite" "nonstd::optional-lite" "nonstd::string-view-lite" "boost::variant" "boost::filesystem" "boost::algorithm" "fmt::fmt-header-only" )
+foreach(_target "nonstd::expected-lite" "nonstd::variant-lite" "nonstd::optional-lite" "nonstd::string-view-lite" "Boost::variant" "Boost::filesystem" "Boost::algorithm" "Boost::lexical_cast" "fmt::fmt-header-only" )
   if(NOT TARGET "${_target}" )
     set(${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE_targets "${${CMAKE_FIND_PACKAGE_NAME}_NOT_FOUND_MESSAGE_targets} ${_target}")
   endif()

@@ -2,6 +2,11 @@
 // Unit Test Helper
 
 // Copyright (c) 2010-2015 Barend Gehrels, Amsterdam, the Netherlands.
+
+// This file was modified by Oracle on 2020.
+// Modifications copyright (c) 2020 Oracle and/or its affiliates.
+// Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
+
 // Use, modification and distribution is subject to the Boost Software License,
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
@@ -25,6 +30,7 @@
 
 #include <boost/foreach.hpp>
 #include <boost/geometry/io/svg/svg_mapper.hpp>
+#include <boost/geometry/algorithms/intersection.hpp>
 
 
 inline char piece_type_char(bg::strategy::buffer::piece_type const& type)
@@ -107,9 +113,8 @@ private :
         namespace bgdb = boost::geometry::detail::buffer;
         typedef typename boost::range_value<Turns const>::type turn_type;
         typedef typename turn_type::point_type point_type;
-        typedef typename turn_type::robust_point_type robust_point_type;
 
-        std::map<robust_point_type, int, bg::less<robust_point_type> > offsets;
+        std::map<point_type, int, bg::less<point_type> > offsets;
 
         for (typename boost::range_iterator<Turns const>::type it =
             boost::begin(turns); it != boost::end(turns); ++it)
@@ -122,20 +127,11 @@ private :
             bool is_good = true;
             char color = 'g';
             std::string fill = "fill:rgb(0,255,0);";
-            switch(it->location)
+            if (! it->is_turn_traversable)
             {
-                case bgdb::inside_buffer :
-                    fill = "fill:rgb(255,0,0);";
-                    color = 'r';
-                    is_good = false;
-                    break;
-                case bgdb::location_discard :
-                    fill = "fill:rgb(0,0,255);";
-                    color = 'b';
-                    is_good = false;
-                    break;
-                default:
-                    ; // to avoid "enumeration value not handled" warning
+                fill = "fill:rgb(255,0,0);";
+                color = 'r';
+                is_good = false;
             }
             if (it->blocked())
             {
@@ -162,36 +158,27 @@ private :
 
     //              If you want to see travel information
                     << std::endl
-                    << " nxt " << it->operations[0].enriched.travels_to_ip_index
-                    << "/" << it->operations[1].enriched.travels_to_ip_index
-                    << " or " << it->operations[0].enriched.next_ip_index
-                    << "/" << it->operations[1].enriched.next_ip_index
+                    << " nxt " << it->operations[0].enriched.get_next_turn_index()
+                    << "/" << it->operations[1].enriched.get_next_turn_index()
                     //<< " frac " << it->operations[0].fraction
 
-    //                If you want to see (robust)point coordinates (e.g. to find duplicates)
+    //                If you want to see point coordinates (e.g. to find duplicates)
                     << std::endl << std::setprecision(16) << bg::wkt(it->point)
-                    << std::endl  << bg::wkt(it->robust_point)
 
                     << std::endl;
                 out << " " << bg::method_char(it->method)
                     << ":" << bg::operation_char(it->operations[0].operation)
                     << "/" << bg::operation_char(it->operations[1].operation);
                 out << " "
-                    << (it->count_on_offsetted > 0 ? "b" : "") // b: offsetted border
-#if ! defined(BOOST_GEOMETRY_BUFFER_USE_SIDE_OF_INTERSECTION)
-                    << (it->count_within_near_offsetted > 0 ? "n" : "")
-#endif
-                    << (it->count_within > 0 ? "w" : "")
-                    << (it->count_on_helper > 0 ? "h" : "")
-                    << (it->count_on_multi > 0 ? "m" : "")
+                    << (it->is_turn_traversable ? "" : "w")
                     ;
 
-                offsets[it->get_robust_point()] += 10;
-                int offset = offsets[it->get_robust_point()];
+                offsets[it->point] += 10;
+                int offset = offsets[it->point];
 
                 m_mapper.text(it->point, out.str(), "fill:rgb(0,0,0);font-family='Arial';font-size:9px;", 5, offset);
 
-                offsets[it->get_robust_point()] += 25;
+                offsets[it->point] += 25;
             }
         }
     }
@@ -203,6 +190,7 @@ private :
     {
         typedef typename boost::range_value<Pieces const>::type piece_type;
         typedef typename boost::range_value<OffsettedRings const>::type ring_type;
+        typedef typename bg::point_type<ring_type>::type point_type;
 
         for(typename boost::range_iterator<Pieces const>::type it = boost::begin(pieces);
             it != boost::end(pieces);
@@ -215,26 +203,17 @@ private :
                 continue;
             }
 
-            ring_type corner;
-
-
             ring_type const& ring = offsetted_rings[seg_id.multi_index];
 
-            std::copy(boost::begin(ring) + seg_id.segment_index,
-                    boost::begin(ring) + piece.last_segment_index,
-                    std::back_inserter(corner));
-            std::copy(boost::begin(piece.helper_points),
-                    boost::end(piece.helper_points),
-                    std::back_inserter(corner));
-
-            if (corner.empty())
-            {
-                continue;
-            }
+#if 0 // Does not compile (SVG is not enabled by default)
             if (m_zoom && bg::disjoint(corner, m_alternate_box))
             {
                 continue;
             }
+#endif
+
+            // NOTE: ring is returned by copy here
+            auto const& corner = piece.m_piece_border.get_full_ring();
 
             if (m_zoom && do_pieces)
             {
@@ -254,7 +233,7 @@ private :
                     std::cerr << "Error for piece " << piece.index << std::endl;
                 }
             }
-            else if (do_pieces)
+            else if (do_pieces && ! corner.empty())
             {
                 std::string style = "opacity:0.3;stroke:rgb(0,0,0);stroke-width:1;";
                 m_mapper.map(corner,
@@ -266,11 +245,19 @@ private :
             if (do_indices)
             {
                 // Label starting piece_index / segment_index
-                typedef typename bg::point_type<ring_type>::type point_type;
 
                 std::ostringstream out;
-                out << piece.index << " (" << piece_type_char(piece.type) << ") " << piece.first_seg_id.segment_index << ".." << piece.last_segment_index - 1;
-                point_type label_point = bg::return_centroid<point_type>(corner);
+                out << piece.index
+                    << (piece.is_flat_start ? " FS" : "")
+                    << (piece.is_flat_end ? " FE" : "")
+                    << " (" << piece_type_char(piece.type) << ") "
+                    << piece.first_seg_id.segment_index
+                    << ".." << piece.beyond_last_segment_index - 1
+                       ;
+                point_type label_point
+                        = corner.empty()
+                        ? piece.m_label_point
+                        : bg::return_centroid<point_type>(corner);
 
                 if ((piece.type == bg::strategy::buffer::buffered_concave
                      || piece.type == bg::strategy::buffer::buffered_flat_end)
@@ -330,8 +317,9 @@ public :
         bg::assign_inverse(m_alternate_box);
     }
 
-    template <typename Mapper, typename Visitor, typename Envelope>
-    void prepare(Mapper& mapper, Visitor& visitor, Envelope const& envelope, double box_buffer_distance)
+    template <typename Mapper, typename Visitor, typename Envelope, typename DistanceType>
+    void prepare(Mapper& mapper, Visitor& visitor, Envelope const& envelope,
+                 const DistanceType& box_buffer_distance)
     {
 #ifdef BOOST_GEOMETRY_BUFFER_TEST_SVG_USE_ALTERNATE_BOX
         // Create a zoomed-in view
@@ -380,13 +368,13 @@ public :
         }
     }
 
-    template <typename Mapper, typename Geometry, typename RescalePolicy>
-    void map_self_ips(Mapper& mapper, Geometry const& geometry, RescalePolicy const& rescale_policy)
+    template <typename Mapper, typename Geometry, typename Strategy, typename RescalePolicy>
+    void map_self_ips(Mapper& mapper, Geometry const& geometry, Strategy const& strategy, RescalePolicy const& rescale_policy)
     {
         typedef bg::detail::overlay::turn_info
         <
             Point,
-            typename bg::segment_ratio_type<Point, RescalePolicy>::type
+            typename bg::detail::segment_ratio_type<Point, RescalePolicy>::type
         > turn_info;
 
         std::vector<turn_info> turns;
@@ -395,7 +383,7 @@ public :
         bg::self_turns
             <
                 bg::detail::overlay::assign_null_policy
-            >(geometry, rescale_policy, turns, policy);
+            >(geometry, strategy, rescale_policy, turns, policy);
 
         BOOST_FOREACH(turn_info const& turn, turns)
         {

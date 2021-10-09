@@ -35,7 +35,7 @@
 #include <istream>
 #include <cstdlib>
 #if defined(BOOST_WINDOWS_API)
-#   include <Windows.h>
+#   include <windows.h>
 typedef boost::asio::windows::stream_handle pipe_end;
 #elif defined(BOOST_POSIX_API)
 #   include <sys/wait.h>
@@ -46,7 +46,7 @@ typedef boost::asio::posix::stream_descriptor pipe_end;
 namespace fs = boost::filesystem;
 namespace bp = boost::process;
 
-BOOST_AUTO_TEST_CASE(exit_code, *boost::unit_test::timeout(5))
+BOOST_AUTO_TEST_CASE(system_exit_code, *boost::unit_test::timeout(5))
 {
     using boost::unit_test::framework::master_test_suite;
 
@@ -67,15 +67,15 @@ BOOST_AUTO_TEST_CASE(implicit_async_io, *boost::unit_test::timeout(2))
 
     std::future<std::string> fut;
     std::error_code ec;
-    bp::system(
+    int res = bp::system(
         master_test_suite().argv[1],
         "test", "--echo-stdout", "abc",
         bp::std_out > fut,
         ec
     );
     BOOST_REQUIRE(!ec);
-
     BOOST_REQUIRE(fut.valid());
+    BOOST_CHECK_EQUAL(res, 0);
     BOOST_CHECK(boost::starts_with(
             fut.get(), "abc"));
 }

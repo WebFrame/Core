@@ -970,14 +970,21 @@ CASE( "optional: Allows to obtain moved-value or moved-default via value_or() (C
     SETUP( "" ) {
         optional<int> d;
         optional<int> e( 42 );
+        optional<std::string> ds;
+        optional<std::string> es("77");
 
     SECTION("for l-values") {
-        EXPECT( d.value_or( 7 ) ==  7 );
-        EXPECT( e.value_or( 7 ) == 42 );
+        EXPECT(  d.value_or( 7 ) ==   7  );
+        EXPECT(  e.value_or( 7 ) ==  42  );
+        EXPECT( ds.value_or("7") ==  "7" );
+        EXPECT( es.value_or("7") == "77" );
+        EXPECT_NOT( es->empty() );  // see issue-60
     }
     SECTION("for r-values") {
-        EXPECT( std::move( d ).value_or( 7 ) ==  7 );
-        EXPECT( std::move( e ).value_or( 7 ) == 42 );
+        EXPECT( std::move(  d ).value_or( 7 ) ==   7  );
+        EXPECT( std::move(  e ).value_or( 7 ) ==  42  );
+        EXPECT( std::move( ds ).value_or("7") ==  "7" );
+        EXPECT( std::move( es ).value_or("7") == "77" );
     }}
 #else
     EXPECT( !!"optional: move-semantics are not available (no C++11)" );
@@ -1029,6 +1036,83 @@ CASE( "optional: Allows to reset content" )
     a.reset();
 
     EXPECT_NOT( a.has_value() );
+}
+
+// desctruction:
+
+namespace destruction {
+
+struct S
+{
+    static void reset() { ctor_count() = 0; dtor_count() = 0; }
+    static int & ctor_count() { static int i = 0; return i; }
+    static int & dtor_count() { static int i = 0; return i; }
+
+    S( int /*i*/             ) { ++ctor_count(); }
+    S( char /*c*/, int /*i*/ ) { ++ctor_count(); }
+    S( S const &             ) { ++ctor_count(); }
+#if optional_CPP11_OR_GREATER
+    S( S&& ) {}
+#endif
+  ~S() { ++dtor_count(); }
+};
+} // namespace destruct
+
+CASE( "optional: Ensure object is destructed only once (C++11)" )
+{
+#if optional_CPP11_OR_GREATER
+    using destruction::S;
+
+    SETUP( "- Reset ctor & dtor counts" ) {
+
+        S::reset();
+
+    SECTION( "- Destruction with direct initialize (C++11)" )
+    {
+        {
+            optional<S> s( 7 );
+
+            EXPECT( s.has_value()        );
+            EXPECT( S::dtor_count() == 0 );
+        }
+        EXPECT( S::dtor_count() == 1 );
+    }
+    SECTION( "- Destruction with emplace (C++11)" )
+    {
+        {
+            optional<S> s;
+
+            EXPECT( S::dtor_count() == 0 );
+
+            s.emplace( 'c', 42 );
+
+            EXPECT( S::dtor_count() == 0 );
+        }
+        EXPECT( S::dtor_count() == 1 );
+    }}
+#else
+        EXPECT( !!"optional: in-place construction is not available (no C++11)" );
+#endif
+}
+
+CASE( "optional: Ensure balanced construction-destruction (C++98)" )
+{
+    using destruction::S;
+
+    SETUP( "- Reset ctor & dtor counts" ) {
+
+        S::reset();
+
+    SECTION( "- Destruction with direct initialize (C++98)" )
+    {
+        {
+            optional<S> s( 7 );
+
+            EXPECT( s.has_value() );
+            EXPECT( S::ctor_count() == S::dtor_count() + 1 );
+        }
+        EXPECT( S::ctor_count() == S::dtor_count() );
+    }}
 }
 
 //
@@ -1130,12 +1214,12 @@ void relop( lest::env & lest_env )
     }
 }
 
-CASE( "optional: Provides relational operators" )
+CASE( "optional: Provides relational operators (non-member)" )
 {
     relop<int, int, int>( lest_env );
 }
 
-CASE( "optional: Provides mixed-type relational operators" )
+CASE( "optional: Provides mixed-type relational operators (non-member)" )
 {
     relop<char, int, long>( lest_env );
 }
@@ -1250,6 +1334,14 @@ CASE( "std::hash<>: Allows to obtain hash (C++11)" )
 #endif
 }
 
+CASE( "tweak header: reads tweak header if supported " "[tweak]" )
+{
+#if optional_HAVE_TWEAK_HEADER
+    EXPECT( OPTIONAL_TWEAK_VALUE == 42 );
+#else
+    EXPECT( !!"Tweak header is not available (optional_HAVE_TWEAK_HEADER: 0)." );
+#endif
+}
 
 //
 // Negative tests:
@@ -1339,32 +1431,140 @@ CASE( "optional: isocpp-lib: CH 3, p0032r2 -- let's not have too clever tags" "[
 #endif
 }
 
-namespace issue18 {
+#if optional_CPP11_110
+namespace issue_61 {
 
-struct S
+// A: copy & move constructable/assignable
+struct A
 {
-    static int & dtor_count() { static int i = 0; return i; }
-    S( char /*c*/, int /*i*/ ) {}
-    ~S() { ++dtor_count(); }
-};
-} // issue18
-
-CASE( "optional: emplace does not construct in-place (destructor called while 'emplacing')" "[.issue-18]" )
-{
-#if optional_CPP11_OR_GREATER
-    using issue18::S;
-    {
-        nonstd::optional<S> os;
-
-        EXPECT( S::dtor_count() == 0 );
-
-        os.emplace( 'c', 42 );
-
-        EXPECT( S::dtor_count() == 0 );
-    }
-    EXPECT( S::dtor_count() == 1 );
+#if optional_CPP11_140
+    A() = default;
+    A(const A &) = default;
+    A& operator=(const A &) = default;
+    A(A &&) = default;
+    A& operator=(A &&) = default;
 #else
-    EXPECT( !!"optional: in-place construction is not available (no C++11)" );
+    A() {}
+    A(const A &) {}
+    A& operator=(const A &) { return *this; }
+#endif
+};
+
+// B: not copy & not move constructable/assignable
+
+struct B
+{
+#if optional_CPP11_140
+    B() = default;
+    B(const B &) = delete;
+    B& operator=(const B &) = delete;
+    B(B &&) = delete;
+    B& operator=(B &&) = delete;
+#else
+    B() {}
+private:
+    B(const B &) {}
+    B& operator=(const B &) { return *this; }
+#endif
+};
+} // issue_61
+#endif
+
+CASE( "optional: Invalid copy/move constructible/assignable detection" "[.issue-61-print]" )
+{
+#if !optional_CPP11_110
+    std::cout << "Note: Test requires C++11/VS2012 or newer, only works from VS2015.\n";
+#else
+    using issue_61::A;
+    using issue_61::B;
+
+    std::cout << "Copy constructible: "
+        << "\n" << std::is_copy_constructible<A>::value
+        << "  " << std::is_copy_constructible<nonstd::optional<A>>::value
+        << "\n" << std::is_copy_constructible<B>::value
+        << "  " << std::is_copy_constructible<nonstd::optional<B>>::value
+        << std::endl;
+
+    std::cout << "Move constructible: "
+        << "\n" << std::is_move_constructible<A>::value
+        << "  " << std::is_move_constructible<nonstd::optional<A>>::value
+        << "\n" << std::is_move_constructible<B>::value
+        << "  " << std::is_move_constructible<nonstd::optional<B>>::value
+        << std::endl;
+
+    std::cout << "Copy assignable: "
+        << "\n" << std::is_copy_assignable<A>::value
+        << "  " << std::is_copy_assignable<nonstd::optional<A>>::value
+        << "\n" << std::is_copy_assignable<B>::value
+        << "  " << std::is_copy_assignable<nonstd::optional<B>>::value
+        << std::endl;
+
+    std::cout << "Move assignable: "
+        << "\n" << std::is_move_assignable<A>::value
+        << "  " << std::is_move_assignable<nonstd::optional<A>>::value
+        << "\n" << std::is_move_assignable<B>::value
+        << "  " << std::is_move_assignable<nonstd::optional<B>>::value
+        << std::endl;
+#endif
+}
+
+CASE( "optional: Invalid copy/move constructible/assignable detection - Copy constructible" "[.issue-61-test]" )
+{
+#if optional_CPP11_140
+    using issue_61::A;
+    using issue_61::B;
+
+    EXPECT( std::is_copy_constructible<A>::value );
+    EXPECT( std::is_copy_constructible<nonstd::optional<A>>::value );
+
+    EXPECT_NOT( std::is_copy_constructible<B>::value );
+    EXPECT_NOT( std::is_copy_constructible<nonstd::optional<B>>::value );
+#else
+#endif
+}
+
+CASE( "optional: Invalid copy/move constructible/assignable detection - Move constructible" "[.issue-61-test]" )
+{
+#if optional_CPP11_140
+    using issue_61::A;
+    using issue_61::B;
+
+    EXPECT( std::is_move_constructible<A>::value );
+    EXPECT( std::is_move_constructible<nonstd::optional<A>>::value );
+
+    EXPECT_NOT( std::is_move_constructible<B>::value );
+    EXPECT_NOT( std::is_move_constructible<nonstd::optional<B>>::value );
+#else
+#endif
+}
+
+CASE( "optional: Invalid copy/move constructible/assignable detection - Copy assignable" "[.issue-61-test]" )
+{
+#if optional_CPP11_140
+    using issue_61::A;
+    using issue_61::B;
+
+    EXPECT( std::is_copy_assignable<A>::value );
+    EXPECT( std::is_copy_assignable<nonstd::optional<A>>::value );
+
+    EXPECT_NOT( std::is_copy_assignable<B>::value );
+    EXPECT_NOT( std::is_copy_assignable<nonstd::optional<B>>::value );
+#else
+#endif
+}
+
+CASE( "optional: Invalid copy/move constructible/assignable detection - Move assignable" "[.issue-61-test]" )
+{
+#if optional_CPP11_140
+    using issue_61::A;
+    using issue_61::B;
+
+    EXPECT( std::is_move_assignable<A>::value );
+    EXPECT( std::is_move_assignable<nonstd::optional<A>>::value );
+
+    EXPECT_NOT( std::is_move_assignable<B>::value );
+    EXPECT_NOT( std::is_move_assignable<nonstd::optional<B>>::value );
+#else
 #endif
 }
 
