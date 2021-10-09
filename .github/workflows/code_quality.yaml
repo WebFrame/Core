@@ -1,28 +1,18 @@
-name: cppcheck-action
-on: [push]
+name: cpp-linter
 
+# Triggers the workflow on push or pull request events
+on:
+  push:
+  pull_request:
+    types: [opened]
 jobs:
-  build:
-    name: cppcheck
+  cpp-linter:
+    name: cpp-linter
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: cppcheck
-        uses: deep5050/cppcheck-action@main
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN}}
-          check_library: disable
-          skip_preprocessor: disable
-          enable: all
-          exclude_check: ./lib
-          inconclusive: enable
-          inline_suppression: disable 
-          force: disable
-          std: c++17
-          output_file: ./cppcheck_report.txt
-
-      - name: publish report    
-        uses: mikeal/publish-to-github-action@master
+      - name: C/C++ Lint Action
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH_NAME: '${GITHUB_REF##*/}'
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: shenxianpeng/cpp-linter-action@master
+        with:
+          style: 'file'
