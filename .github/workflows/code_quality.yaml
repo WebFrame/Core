@@ -16,14 +16,10 @@ jobs:
           enable: all
           exclude_check: ./lib
           inconclusive: enable
-          inline_suppression: disable
-          force_language: 
+          inline_suppression: disable 
           force: disable
-          max_ctu_depth: 
-          platform:
           std: c++17
           output_file: ./cppcheck_report.txt
-          other_options:
 
       - name: publish report    
         uses: mikeal/publish-to-github-action@master
