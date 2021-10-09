@@ -1,31 +1,27 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_move)
+# Copyright 2018 Mike Dev
+# Copyright 2019 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.16)
 
-find_package(boost_assert)
-find_package(boost_core)
-find_package(boost_static_assert)
-find_package(boost_config)
+project(boost_move VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-bcm_setup_version(VERSION 1.64.0)
+add_library(boost_move INTERFACE)
+add_library(Boost::move ALIAS boost_move)
 
-add_library(boost_move INTERFACE
+target_include_directories(boost_move INTERFACE include)
+
+target_link_libraries(boost_move
+  INTERFACE
+    Boost::assert
+    Boost::config
+    Boost::core
+    Boost::static_assert
 )
-set_property(TARGET boost_move PROPERTY EXPORT_NAME move)
 
-target_link_libraries(boost_move INTERFACE boost::assert)
-target_link_libraries(boost_move INTERFACE boost::core)
-target_link_libraries(boost_move INTERFACE boost::static_assert)
-target_link_libraries(boost_move INTERFACE boost::config)
+if(BUILD_TESTING)
 
+  add_subdirectory(test)
 
-
-
-bcm_deploy(TARGETS boost_move INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
 endif()

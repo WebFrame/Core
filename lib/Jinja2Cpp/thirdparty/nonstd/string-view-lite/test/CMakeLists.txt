@@ -16,6 +16,7 @@ set( PACKAGE   ${unit_name}-lite )
 set( PROGRAM   ${unit_name}-lite )
 set( SOURCES   ${unit_name}-main.t.cpp ${unit_name}.t.cpp )
 set( HEADER    "nonstd/string_view.hpp" )
+set( TWEAKD    "." )
 
 message( STATUS "Subproject '${PROJECT_NAME}', programs '${PROGRAM}-*'")
 
@@ -68,7 +69,7 @@ elseif( CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang" )
     set( HAS_STD_FLAGS  TRUE )
     set( HAS_CPP98_FLAG TRUE )
 
-    set( OPTIONS     -Wall -Wextra -Wconversion -Wsign-conversion -Wno-missing-braces -Wno-unnamed-type-template-args -fno-elide-constructors )
+    set( OPTIONS     -Wall -Wextra -Wconversion -Wsign-conversion -Wshadow -Wno-missing-braces -Wno-unnamed-type-template-args -fno-elide-constructors )
     set( DEFINITIONS ${DEFCMN} )
 
     # GNU: available -std flags depends on version
@@ -139,6 +140,8 @@ function( make_target target std )
     message( STATUS "Make target: '${std}'" )
 
     add_executable            ( ${target} ${SOURCES} )
+    target_include_directories( ${target} SYSTEM  PRIVATE lest )
+    target_include_directories( ${target} PRIVATE ${TWEAKD} )
     target_link_libraries     ( ${target} PRIVATE ${PACKAGE} )
     target_compile_options    ( ${target} PRIVATE ${OPTIONS} )
     target_compile_definitions( ${target} PRIVATE ${DEFINITIONS} )

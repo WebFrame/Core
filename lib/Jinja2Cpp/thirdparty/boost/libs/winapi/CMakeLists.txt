@@ -1,27 +1,19 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_winapi)
+# Copyright 2018 Peter Dimov
+# Copyright 2018 Andrey Semashev
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.20)
 
-find_package(boost_config)
-find_package(boost_predef)
+project(boost_winapi VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-bcm_setup_version(VERSION 1.64.0)
+add_library(boost_winapi INTERFACE)
+add_library(Boost::winapi ALIAS boost_winapi)
 
-add_library(boost_winapi INTERFACE
+target_include_directories(boost_winapi INTERFACE include)
+
+target_link_libraries(boost_winapi
+    INTERFACE
+        Boost::config
+        Boost::predef
 )
-set_property(TARGET boost_winapi PROPERTY EXPORT_NAME winapi)
-
-target_link_libraries(boost_winapi INTERFACE boost::config)
-target_link_libraries(boost_winapi INTERFACE boost::predef)
-
-
-
-
-bcm_deploy(TARGETS boost_winapi INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
-endif()

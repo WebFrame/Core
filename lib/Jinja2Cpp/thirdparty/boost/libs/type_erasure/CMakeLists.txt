@@ -1,49 +1,53 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_type_erasure)
+# Copyright 2020, 2021 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# https://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.16)
 
-find_package(boost_core)
-find_package(boost_thread)
-find_package(boost_iterator)
-find_package(boost_typeof)
-find_package(boost_mpl)
-find_package(boost_assert)
-find_package(boost_fusion)
-find_package(boost_type_traits)
-find_package(boost_preprocessor)
-find_package(boost_config)
-find_package(boost_throw_exception)
-find_package(boost_smart_ptr)
+project(boost_type_erasure VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-bcm_setup_version(VERSION 1.64.0)
-
-add_library(boost_type_erasure 
-src/dynamic_binding.cpp
+add_library(boost_type_erasure
+  src/dynamic_binding.cpp
 )
-set_property(TARGET boost_type_erasure PROPERTY EXPORT_NAME type_erasure)
 
-target_link_libraries(boost_type_erasure PUBLIC boost::core)
-target_link_libraries(boost_type_erasure PUBLIC boost::thread)
-target_link_libraries(boost_type_erasure PUBLIC boost::iterator)
-target_link_libraries(boost_type_erasure PUBLIC boost::typeof)
-target_link_libraries(boost_type_erasure PUBLIC boost::mpl)
-target_link_libraries(boost_type_erasure PUBLIC boost::assert)
-target_link_libraries(boost_type_erasure PUBLIC boost::fusion)
-target_link_libraries(boost_type_erasure PUBLIC boost::type_traits)
-target_link_libraries(boost_type_erasure PUBLIC boost::preprocessor)
-target_link_libraries(boost_type_erasure PUBLIC boost::config)
-target_link_libraries(boost_type_erasure PUBLIC boost::throw_exception)
-target_link_libraries(boost_type_erasure PUBLIC boost::smart_ptr)
+add_library(Boost::type_erasure ALIAS boost_type_erasure)
 
+target_include_directories(boost_type_erasure PUBLIC include)
 
+target_link_libraries(boost_type_erasure
+  PUBLIC
+    Boost::assert
+    Boost::config
+    Boost::core
+    Boost::fusion
+    Boost::iterator
+    Boost::mp11
+    Boost::mpl
+    Boost::preprocessor
+    Boost::smart_ptr
+    Boost::throw_exception
+    Boost::type_traits
+    Boost::typeof
+    Boost::vmd
+  PRIVATE
+    Boost::thread
+)
 
-target_include_directories(boost_type_erasure PRIVATE include)
+target_compile_definitions(boost_type_erasure
+  PUBLIC BOOST_TYPE_ERASURE_NO_LIB
+  # Source files already define BOOST_TYPE_ERASURE_SOURCE
+  # PRIVATE BOOST_TYPE_ERASURE_SOURCE
+)
 
-bcm_deploy(TARGETS boost_type_erasure INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
+if(BUILD_SHARED_LIBS)
+  target_compile_definitions(boost_type_erasure PUBLIC BOOST_TYPE_ERASURE_DYN_LINK)
+else()
+  target_compile_definitions(boost_type_erasure PUBLIC BOOST_TYPE_ERASURE_STATIC_LINK)
 endif()
+
+if(BUILD_TESTING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
+
+  add_subdirectory(test)
+
+endif()
+

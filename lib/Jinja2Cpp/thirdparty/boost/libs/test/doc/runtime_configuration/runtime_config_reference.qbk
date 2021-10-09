@@ -111,11 +111,14 @@ If option ['catch_system_errors] has value "no" the __UTF__ does not attempt to 
 within an IDE or to get a coredump for a stack analysis. See
 [link ref_usage_recommendations usage recommendations] pages for more details.
 
+[note If the __UTF__ detects that the current process is being run under a debugger, the `catch_system_errors` is
+ automatically disabled.]
+
 [h4 Acceptable values]
 
 [link boolean_param_value Boolean] with default value [*no].
 
-[note The __UTF__ can be built with flag BOOST_TEST_DEFAULTS_TO_CORE_DUMP in which case default changes to [*yes]]
+[note The __UTF__ can be built with flag `BOOST_TEST_DEFAULTS_TO_CORE_DUMP` in which case default changes to [*yes]]
 
 [h4 Command line syntax]
 
@@ -131,12 +134,12 @@ within an IDE or to get a coredump for a stack analysis. See
 [/ ###############################################################################################]
 [section:color_output `color_output`]
 
-The __UTF__ is able to produce color output on systems which support it. To enable this behavior, set this option to
-`yes`. By default the framework does not produce color output.
+The __UTF__ is able to produce color output on systems which support it. To disable this behavior, set this option to
+`no`. By default the framework produces color output.
 
 [h4 Acceptable values]
 
-[link boolean_param_value Boolean] with default value [*no].
+[link boolean_param_value Boolean] with default value [*yes].
 
 [h4 Command line syntax]
 
@@ -281,7 +284,7 @@ The following /deliberately/ complicated example illustrates the purpose of the 
 directive. The SVG generated from the produced Graphviz/dot file can be downloaded
 [@images/boost_runtime_list_content.svg here].
 
-[bt_example boost_runtime_list_content..`--list_content` illustration..run-fail]
+[bt_example boost_runtime_list_content..`--list_content` illustration..run]
 
 [$images/boost_runtime_list_content.png [width 70%]]
 
@@ -466,7 +469,7 @@ Case sensitive [link regular_param_value string]:
 ]
 
 [note For JUnit and if not specified, the log file is generated after the name of the
- [link boost_test.tests_organization.test_suite.master_test_suite master test suite].]
+ [link boost_test.tests_organization.test_tree.master_test_suite master test suite].]
 
 [h4 Command line syntax]
 
@@ -509,6 +512,7 @@ log_sink      ::= 'stdout' | 'stderr' | filename
 ```
 
 Examples:
+
 * `--logger=HRF,all` will set the `all` log level for the `HRF` log format, and will use the default sink associated to `HRF` (`stdout`)
 * `--logger=JUNIT,,somefile.xml:HRF,warning` will use the default log level associated to the `JUNIT` log format, and will use the file `somefile.xml`
   as the log sink. It will also enable the `HRF` format with log level `warning`. The corresponding sink will be set to the `HRF` default (`stdout`).

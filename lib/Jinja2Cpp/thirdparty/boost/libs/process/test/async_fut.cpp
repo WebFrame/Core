@@ -24,6 +24,8 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 
+BOOST_AUTO_TEST_SUITE( async );
+
 
 using namespace std;
 
@@ -34,7 +36,7 @@ BOOST_AUTO_TEST_CASE(async_out_future, *boost::unit_test::timeout(2))
 
     using boost::unit_test::framework::master_test_suite;
 
-    boost::asio::io_service io_service;
+    boost::asio::io_context io_context;
 
 
     std::error_code ec;
@@ -52,13 +54,13 @@ BOOST_AUTO_TEST_CASE(async_out_future, *boost::unit_test::timeout(2))
         "test", "--prefix-once", "test",
         bp::std_in  < in_buf > fut_in,
         bp::std_out > fut,
-        io_service,
+        io_context,
         ec
     );
     BOOST_REQUIRE(!ec);
 
 
-    io_service.run();
+    io_context.run();
 
     BOOST_REQUIRE(fut.valid());
     BOOST_REQUIRE(fut_in.valid());
@@ -75,3 +77,30 @@ BOOST_AUTO_TEST_CASE(async_out_future, *boost::unit_test::timeout(2))
 }
 
 
+BOOST_AUTO_TEST_CASE(emtpy_out, *boost::unit_test::timeout(2))
+{
+    using boost::unit_test::framework::master_test_suite;
+
+    boost::asio::io_context io_context;
+
+
+    std::error_code ec;
+    std::future<std::string> fut;
+
+    bp::spawn(
+        master_test_suite().argv[1],
+        "test", "--exit-code", "0",
+        bp::std_out > fut,
+        io_context,
+        ec
+    );
+    BOOST_REQUIRE(!ec);
+
+
+    io_context.run();
+
+    BOOST_REQUIRE(fut.valid());
+    BOOST_CHECK_EQUAL(fut.get(), "");
+}
+
+BOOST_AUTO_TEST_SUITE_END();

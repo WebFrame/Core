@@ -1,73 +1,117 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_iostreams)
+# Copyright 2020, 2021 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# https://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.16)
 
-find_package(boost_regex)
-find_package(boost_core)
-find_package(boost_static_assert)
-find_package(boost_function)
-find_package(boost_bind)
-find_package(boost_mpl)
-find_package(boost_random)
-find_package(boost_detail)
-find_package(boost_assert)
-find_package(boost_range)
-find_package(boost_type_traits)
-find_package(boost_preprocessor)
-find_package(boost_smart_ptr)
-find_package(boost_integer)
-find_package(boost_config)
-find_package(boost_throw_exception)
-find_package(boost_utility)
+project(boost_iostreams VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-bcm_setup_version(VERSION 1.64.0)
-
-add_library(boost_iostreams 
-src/gzip.cpp
-src/file_descriptor.cpp
-src/mapped_file.cpp
+add_library(boost_iostreams
+  src/file_descriptor.cpp
+  src/mapped_file.cpp
 )
-set_property(TARGET boost_iostreams PROPERTY EXPORT_NAME iostreams)
 
-target_link_libraries(boost_iostreams PUBLIC boost::regex)
-target_link_libraries(boost_iostreams PUBLIC boost::core)
-target_link_libraries(boost_iostreams PUBLIC boost::static_assert)
-target_link_libraries(boost_iostreams PUBLIC boost::function)
-target_link_libraries(boost_iostreams PUBLIC boost::bind)
-target_link_libraries(boost_iostreams PUBLIC boost::mpl)
-target_link_libraries(boost_iostreams PUBLIC boost::random)
-target_link_libraries(boost_iostreams PUBLIC boost::detail)
-target_link_libraries(boost_iostreams PUBLIC boost::assert)
-target_link_libraries(boost_iostreams PUBLIC boost::range)
-target_link_libraries(boost_iostreams PUBLIC boost::type_traits)
-target_link_libraries(boost_iostreams PUBLIC boost::preprocessor)
-target_link_libraries(boost_iostreams PUBLIC boost::smart_ptr)
-target_link_libraries(boost_iostreams PUBLIC boost::integer)
-target_link_libraries(boost_iostreams PUBLIC boost::config)
-target_link_libraries(boost_iostreams PUBLIC boost::throw_exception)
-target_link_libraries(boost_iostreams PUBLIC boost::utility)
+function(boost_iostreams_option name description package version found target source)
 
-find_package(ZLIB)
-find_package(BZip2)
+  find_package(${package} ${version} QUIET)
 
-if(ZLIB_FOUND)
-target_link_libraries(boost_iostreams PUBLIC ZLIB::ZLIB)
-target_sources(boost_iostreams PRIVATE src/zlib.cpp)
+  if(${found} AND TARGET ${target})
+
+    option(${name} ${description} ON)
+
+  else()
+
+    option(${name} ${description} OFF)
+
+  endif()
+
+  if(${name})
+
+    find_package(${package} ${version} REQUIRED)
+    target_sources(boost_iostreams PRIVATE ${source})
+    target_link_libraries(boost_iostreams PRIVATE ${target})
+
+  endif()
+
+endfunction()
+
+boost_iostreams_option(BOOST_IOSTREAMS_ENABLE_ZLIB "Boost.Iostreams: Enable ZLIB support" ZLIB "" ZLIB_FOUND ZLIB::ZLIB src/zlib.cpp)
+boost_iostreams_option(BOOST_IOSTREAMS_ENABLE_BZIP2 "Boost.Iostreams: Enable BZip2 support" BZip2 "" BZIP2_FOUND BZip2::BZip2 src/bzip2.cpp)
+boost_iostreams_option(BOOST_IOSTREAMS_ENABLE_LZMA "Boost.Iostreams: Enable LZMA support" LibLZMA "" LIBLZMA_FOUND LibLZMA::LibLZMA src/lzma.cpp)
+boost_iostreams_option(BOOST_IOSTREAMS_ENABLE_ZSTD "Boost.Iostreams: Enable Zstd support" Zstd "1.0" ZSTD_FOUND Zstd::Zstd src/zstd.cpp)
+
+include(CheckCXXSourceCompiles)
+
+function(iostreams_check var source incs libs defs)
+
+  set(CMAKE_REQUIRED_INCLUDES "${incs}")
+  list(APPEND CMAKE_REQUIRED_INCLUDES "${CMAKE_CURRENT_SOURCE_DIR}/build")
+  set(CMAKE_REQUIRED_LIBRARIES "${libs}")
+  set(CMAKE_REQUIRED_DEFINITIONS "${defs}")
+  check_cxx_source_compiles("#include \"${source}\"" ${var})
+  set(${var} ${${var}} PARENT_SCOPE)
+
+endfunction()
+
+set(_lzma_mt "")
+
+if(BOOST_IOSTREAMS_ENABLE_LZMA)
+
+  iostreams_check(BOOST_IOSTREAMS_HAS_LZMA_CPUTHREADS has_lzma_cputhreads.cpp "" "LibLZMA::LibLZMA" "")
+
+  if(BOOST_IOSTREAMS_HAS_LZMA_CPUTHREADS)
+    set(_lzma_mt " (multithreaded)")
+  else()
+    target_compile_definitions(boost_iostreams PRIVATE BOOST_IOSTREAMS_LZMA_NO_MULTITHREADED=1)
+  endif()
+
 endif()
 
-if(BZip2_FOUND)
-target_link_libraries(boost_iostreams PUBLIC BZip2::BZip2)
-target_sources(boost_iostreams PRIVATE src/bzip2.cpp)
+message(STATUS "Boost.Iostreams: ZLIB ${BOOST_IOSTREAMS_ENABLE_ZLIB}, BZip2 ${BOOST_IOSTREAMS_ENABLE_BZIP2}, LZMA ${BOOST_IOSTREAMS_ENABLE_LZMA}${_lzma_mt}, Zstd ${BOOST_IOSTREAMS_ENABLE_ZSTD}")
+
+unset(_lzma_mt)
+
+add_library(Boost::iostreams ALIAS boost_iostreams)
+
+target_include_directories(boost_iostreams PUBLIC include)
+
+target_link_libraries(boost_iostreams
+  PUBLIC
+    Boost::assert
+    Boost::config
+    Boost::core
+    Boost::detail
+    Boost::function
+    Boost::integer
+    Boost::iterator
+    Boost::mpl
+    Boost::preprocessor
+    Boost::random
+    Boost::range
+    Boost::regex
+    Boost::smart_ptr
+    Boost::static_assert
+    Boost::throw_exception
+    Boost::type_traits
+    Boost::utility
+  PRIVATE
+    Boost::numeric_conversion
+)
+
+target_compile_definitions(boost_iostreams
+  PUBLIC BOOST_IOSTREAMS_NO_LIB
+  # Source files already define BOOST_IOSTREAMS_SOURCE
+  # PRIVATE BOOST_IOSTREAMS_SOURCE
+)
+
+if(BUILD_SHARED_LIBS)
+  target_compile_definitions(boost_iostreams PUBLIC BOOST_IOSTREAMS_DYN_LINK)
+else()
+  target_compile_definitions(boost_iostreams PUBLIC BOOST_IOSTREAMS_STATIC_LINK)
 endif()
 
+if(BUILD_TESTING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
 
-target_include_directories(boost_iostreams PRIVATE include)
+  add_subdirectory(test)
 
-bcm_deploy(TARGETS boost_iostreams INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
 endif()

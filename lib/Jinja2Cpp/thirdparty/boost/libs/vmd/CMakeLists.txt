@@ -1,25 +1,16 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_vmd)
+# Copyright 2018 Mike Dev
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.20)
+project(boost_vmd VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES NONE)
 
-find_package(boost_preprocessor)
+add_library(boost_vmd INTERFACE)
+add_library(Boost::vmd ALIAS boost_vmd)
 
-bcm_setup_version(VERSION 1.64.0)
+target_include_directories(boost_vmd INTERFACE include)
 
-add_library(boost_vmd INTERFACE
+target_link_libraries(boost_vmd
+    INTERFACE
+        Boost::preprocessor
 )
-set_property(TARGET boost_vmd PROPERTY EXPORT_NAME vmd)
-
-target_link_libraries(boost_vmd INTERFACE boost::preprocessor)
-
-
-
-
-bcm_deploy(TARGETS boost_vmd INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
-endif()

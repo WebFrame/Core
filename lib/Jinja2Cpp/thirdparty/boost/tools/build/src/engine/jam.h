@@ -7,8 +7,8 @@
 /* This file is ALSO:
  * Copyright 2001-2004 David Abrahams.
  * Distributed under the Boost Software License, Version 1.0.
- * (See accompanying file LICENSE_1_0.txt or copy at
- * http://www.boost.org/LICENSE_1_0.txt)
+ * (See accompanying file LICENSE.txt or copy at
+ * https://www.bfgroup.xyz/b2/LICENSE.txt)
  */
 
 /*
@@ -17,6 +17,8 @@
 
 #ifndef JAM_H_VP_2003_08_01
 #define JAM_H_VP_2003_08_01
+
+#include "config.h"
 
 #ifdef HAVE_PYTHON
 #include <Python.h>
@@ -86,6 +88,7 @@
 #define SPLITPATH ';'
 #define MAXLINE (undefined__see_execnt_c)  /* max chars per command line */
 #define USE_EXECNT
+#define USE_PATHNT
 #define PATH_DELIM '\\'
 
 /* AS400 cross-compile from NT. */
@@ -129,6 +132,7 @@
 #define SPLITPATH ';'
 #define MAXLINE 996  /* max chars per command line */
 #define USE_EXECUNIX
+#define USE_PATHNT
 #define PATH_DELIM '\\'
 
 #endif  /* #ifdef MINGW */
@@ -143,6 +147,7 @@
 #define OSMAJOR "UNIX=true"
 #define USE_EXECUNIX
 #define USE_FILEUNIX
+#define USE_PATHUNIX
 #define PATH_DELIM '/'
 
 #ifdef _AIX
@@ -187,6 +192,10 @@
     #define OSMINOR "OS=DGUX"
     #define OS_DGUX
 #endif
+#ifdef __GNU__
+    #define OSMINOR "OS=HURD"
+    #define OS_HURD
+#endif
 #ifdef __hpux
     #define OSMINOR "OS=HPUX"
     #define OS_HPUX
@@ -212,7 +221,8 @@
     #define OS_ISC
     #define NO_VFORK
 #endif
-#ifdef linux
+#if defined(linux) || defined(__linux) || \
+    defined(__linux__) || defined(__gnu_linux__)
     #define OSMINOR "OS=LINUX"
     #define OS_LINUX
 #endif
@@ -409,7 +419,11 @@
 #endif
 
 #ifdef __mips__
-    #define OSPLAT "OSPLAT=MIPS"
+  #if _MIPS_SIM == _MIPS_SIM_ABI64
+    #define OSPLAT "OSPLAT=MIPS64"
+  #elif _MIPS_SIM == _MIPS_SIM_ABI32
+    #define OSPLAT "OSPLAT=MIPS32"
+  #endif
 #endif
 
 #if defined( __arm__ ) || \
@@ -452,7 +466,6 @@
 #define MAXSYM   1024  /* longest symbol in the environment */
 #define MAXJPATH 1024  /* longest filename */
 
-#define MAXJOBS  256   /* internally enforced -j limit */
 #define MAXARGC  32    /* words in $(JAMSHELL) */
 
 /* Jam private definitions below. */

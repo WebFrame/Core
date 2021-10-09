@@ -12,12 +12,15 @@ if(MSVC)
             set (THIRDPARTY_RUNTIME_TYPE "/MD")
         endif()
     endif ()
+    message(STATUS "Selected Jinja2C++ thirdparty libraries runtime type: '${THIRDPARTY_RUNTIME_TYPE}'")
 endif ()
 
 function(update_submodule submodule)
     find_package(Git REQUIRED)
-    execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init thirdparty/${submodule}
-        WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}")
+    execute_process(
+        COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive thirdparty/${submodule}
+        WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
+    )
 endfunction()
 
 function(imported_target_alias ALIAS)
@@ -64,7 +67,8 @@ if(JINJA2CPP_BUILD_TESTS)
 endif()
 
 if (NOT DEFINED JINJA2_PRIVATE_LIBS_INT)
-    set(JINJA2CPP_PRIVATE_LIBS ${JINJA2CPP_PRIVATE_LIBS} boost_variant boost_filesystem boost_algorithm fmt RapidJson)
+    set(JINJA2CPP_PRIVATE_LIBS ${JINJA2CPP_PRIVATE_LIBS} Boost::variant
+        Boost::filesystem Boost::algorithm Boost::lexical_cast fmt RapidJson)
 else ()
     set (JINJA2CPP_PRIVATE_LIBS ${JINJA2_PRIVATE_LIBS_INT})
 endif ()

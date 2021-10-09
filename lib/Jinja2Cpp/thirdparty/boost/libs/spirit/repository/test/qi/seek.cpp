@@ -1,9 +1,9 @@
-/*//////////////////////////////////////////////////////////////////////////////
+/*=============================================================================
     Copyright (c) 2011 Jamboree
 
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-//////////////////////////////////////////////////////////////////////////////*/
+=============================================================================*/
 
 
 #include <vector>
@@ -96,6 +96,9 @@ int main()
             && b
         );
     }
+
+    // past the end regression GH#658
+    BOOST_TEST(!test(" ", seek['x'], space));
 
     return boost::report_errors();
 }

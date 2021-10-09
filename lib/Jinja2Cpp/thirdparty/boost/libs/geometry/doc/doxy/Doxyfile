@@ -55,6 +55,7 @@ ALIASES                = qbk{1}="\xmlonly <qbk>\1</qbk> \endxmlonly" \
                          tparam_box_or_segment="Any type fulfilling a Box Concept or a Segment Concept" \
                          tparam_calculation="numeric type for calculation (e.g. high precision); if [*void] then it is extracted automatically from the coordinate type and (if necessary) promoted to floating point" \
                          tparam_radius="numeric type for radius (of sphere, earth)" \
+                         tparam_radius_or_sphere="numeric type for radius (of sphere, earth) or sphere model" \
                          tparam_container="container type, for example std::vector, std::deque" \
                          tparam_dimension_required="Dimension, this template parameter is required. Should contain \\[0 .. n-1\\] for an n-dimensional geometry" \
                          tparam_functor="Function or class with operator()" \
@@ -182,18 +183,23 @@ INPUT                  = . .. ../../../../boost/geometry/core \
                          ../../../../boost/geometry/algorithms/detail \
                          ../../../../boost/geometry/algorithms/detail/buffer \
                          ../../../../boost/geometry/algorithms/detail/comparable_distance \
+                         ../../../../boost/geometry/algorithms/detail/convex_hull \
+                         ../../../../boost/geometry/algorithms/detail/covered_by \
                          ../../../../boost/geometry/algorithms/detail/disjoint \
                          ../../../../boost/geometry/algorithms/detail/distance \
                          ../../../../boost/geometry/algorithms/detail/envelope \
                          ../../../../boost/geometry/algorithms/detail/equals \
                          ../../../../boost/geometry/algorithms/detail/expand \
                          ../../../../boost/geometry/algorithms/detail/intersection \
+                         ../../../../boost/geometry/algorithms/detail/intersects \
                          ../../../../boost/geometry/algorithms/detail/is_simple \
                          ../../../../boost/geometry/algorithms/detail/is_valid \
+                         ../../../../boost/geometry/algorithms/detail/overlaps \
                          ../../../../boost/geometry/algorithms/detail/overlay \
                          ../../../../boost/geometry/algorithms/detail/relate \
                          ../../../../boost/geometry/algorithms/detail/relation \
                          ../../../../boost/geometry/algorithms/detail/sections \
+                         ../../../../boost/geometry/algorithms/detail/touches \
                          ../../../../boost/geometry/algorithms/detail/turns \
                          ../../../../boost/geometry/algorithms/detail/within \
                          ../../../../boost/geometry/arithmetic \
@@ -202,10 +208,12 @@ INPUT                  = . .. ../../../../boost/geometry/core \
                          ../../../../boost/geometry/geometries/adapted \
                          ../../../../boost/geometry/geometries/register \
                          ../../../../boost/geometry/iterators \
+                         ../../../../boost/geometry/io/dsv \
                          ../../../../boost/geometry/io/wkt \
                          ../../../../boost/geometry/io/svg \
                          ../../../../boost/geometry/policies \
                          ../../../../boost/geometry/policies/relate \
+                         ../../../../boost/geometry/srs \
                          ../../../../boost/geometry/strategies \
                          ../../../../boost/geometry/strategies/concepts \
                          ../../../../boost/geometry/strategies/agnostic \
@@ -213,6 +221,9 @@ INPUT                  = . .. ../../../../boost/geometry/core \
                          ../../../../boost/geometry/strategies/spherical \
                          ../../../../boost/geometry/strategies/geographic \
                          ../../../../boost/geometry/strategies/transform \
+                         ../../../../boost/geometry/strategy/cartesian \
+                         ../../../../boost/geometry/strategy/geographic \
+                         ../../../../boost/geometry/strategy/spherical \
                          ../../../../boost/geometry/util \
                          ../../../../boost/geometry/views \
                          ./doxygen_input/pages \
@@ -307,9 +318,9 @@ EXPAND_ONLY_PREDEF     = YES
 SEARCH_INCLUDES        = YES
 INCLUDE_PATH           = 
 INCLUDE_FILE_PATTERNS  = 
-PREDEFINED             = BOOST_CONCEPT_REQUIRES(x)= \
-                         BOOST_CONCEPT_ASSERT(x) = \
-                         BOOST_STATIC_ASSERT(x) = \
+PREDEFINED             = BOOST_CONCEPT_REQUIRES(x) \
+                         BOOST_CONCEPT_ASSERT(x) \
+                         BOOST_STATIC_ASSERT(x) \
                          DOXYGEN_SHOULD_SKIP_THIS \
                          DOXYGEN_NO_DISPATCH \
                          DOXYGEN_NO_IMPL \

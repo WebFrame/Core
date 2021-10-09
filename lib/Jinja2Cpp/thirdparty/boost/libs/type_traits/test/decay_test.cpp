@@ -4,15 +4,15 @@
 //  Boost Software License, Version 1.0. (See accompanying file 
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include "test.hpp"
-#include "check_type.hpp"
-#include "check_integral_constant.hpp"
 #ifdef TEST_STD
 #  include <type_traits>
 #else
 #  include <boost/type_traits/decay.hpp>
 #  include <boost/type_traits/is_same.hpp>
 #endif
+#include "test.hpp"
+#include "check_type.hpp"
+#include "check_integral_constant.hpp"
 #include <iostream>
 #include <string>
 #include <utility>
@@ -145,7 +145,7 @@ TT_TEST_BEGIN(decay)
    /*
    int array[10];
    std::pair<int*,int*> p5 = boost::make_pair( array, array );
-#ifndef __BORLANDC__
+#ifndef BOOST_BORLANDC
    std::pair<int(*)(void), int(*)(int)> p6 = boost::make_pair(boost::proc1, boost::proc2);
    p6.first();
    p6.second(1);

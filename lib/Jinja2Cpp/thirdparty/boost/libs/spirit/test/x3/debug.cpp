@@ -66,13 +66,11 @@ main()
     using boost::spirit::x3::int_;
     using boost::spirit::x3::alpha;
 
-    //~ namespace phx = boost::phoenix;
-
     { // basic tests
 
-        auto a = rule<class a>("a") = 'a';
-        auto b = rule<class b>("b") = 'b';
-        auto c = rule<class c>("c") = 'c';
+        auto a = rule<class a_id>("a") = 'a';
+        auto b = rule<class b_id>("b") = 'b';
+        auto c = rule<class c_id>("c") = 'c';
 
         {
             auto start = *(a | b | c);
@@ -91,9 +89,9 @@ main()
 
     { // basic tests w/ skipper
 
-        auto a = rule<class a>("a") = 'a';
-        auto b = rule<class b>("b") = 'b';
-        auto c = rule<class c>("c") = 'c';
+        auto a = rule<class a_id>("a") = 'a';
+        auto b = rule<class b_id>("b") = 'b';
+        auto c = rule<class c_id>("c") = 'c';
 
         {
             auto start = *(a | b | c);
@@ -135,7 +133,7 @@ main()
     {
         symbols<my_attribute> a{{{ "a", my_attribute{} }}};
 
-        auto b = rule<struct b, my_attribute>("b") = a;
+        auto b = rule<struct b_id, my_attribute>("b") = a;
 
         my_attribute attr;
 

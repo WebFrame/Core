@@ -12,10 +12,9 @@
 
 #include <assert.h>
 #include "bitset_test.hpp"
-#include "boost/dynamic_bitset/dynamic_bitset.hpp"
-#include "boost/limits.hpp"
-#include "boost/config.hpp"
-
+#include <boost/dynamic_bitset/dynamic_bitset.hpp>
+#include <boost/limits.hpp>
+#include <boost/config.hpp>
 
 template <typename Block>
 void run_test_cases( BOOST_EXPLICIT_TEMPLATE_TYPE(Block) )
@@ -478,6 +477,14 @@ void run_test_cases( BOOST_EXPLICIT_TEMPLATE_TYPE(Block) )
     Tests::operator_less_than(a, b);
   }
   {
+    boost::dynamic_bitset<Block> a(std::string("101")), b(std::string("11"));
+    Tests::operator_less_than(a, b);
+  }
+  {
+    boost::dynamic_bitset<Block> a(std::string("10")), b(std::string("111"));
+    Tests::operator_less_than(a, b);
+  }
+  {
     boost::dynamic_bitset<Block> a(long_string), b(long_string);
     Tests::operator_less_than(a, b);
   }
@@ -491,7 +498,7 @@ void run_test_cases( BOOST_EXPLICIT_TEMPLATE_TYPE(Block) )
     b[long_string.size()/2].flip();
     Tests::operator_less_than(a, b);
   }
-  // check for consistency with ulong behaviour
+  // check for consistency with ulong behaviour when the sizes are equal
   {
     boost::dynamic_bitset<Block> a(3, 4ul), b(3, 5ul);
     assert(a < b);
@@ -502,6 +509,31 @@ void run_test_cases( BOOST_EXPLICIT_TEMPLATE_TYPE(Block) )
   }
   {
     boost::dynamic_bitset<Block> a(3, 5ul), b(3, 4ul);
+    assert(!(a < b));
+  }
+  // when the sizes are not equal lexicographic compare does not necessarily correspond to ulong behavior
+  {
+    boost::dynamic_bitset<Block> a(4, 4ul), b(3, 5ul);
+    assert(a < b);
+  }
+  {
+    boost::dynamic_bitset<Block> a(3, 4ul), b(4, 5ul);
+    assert(!(a < b));
+  }
+  {
+    boost::dynamic_bitset<Block> a(4, 4ul), b(3, 4ul);
+    assert(a < b);
+  }
+  {
+    boost::dynamic_bitset<Block> a(3, 4ul), b(4, 4ul);
+    assert(!(a < b));
+  }
+  {
+    boost::dynamic_bitset<Block> a(4, 5ul), b(3, 4ul);
+    assert(a < b);
+  }
+  {
+    boost::dynamic_bitset<Block> a(3, 5ul), b(4, 4ul);
     assert(!(a < b));
   }
   //=====================================================================
@@ -766,8 +798,9 @@ void run_test_cases( BOOST_EXPLICIT_TEMPLATE_TYPE(Block) )
   }
 }
 
+
 int
-test_main(int, char*[])
+main()
 {
   run_test_cases<unsigned char>();
   run_test_cases<unsigned short>();
@@ -777,5 +810,5 @@ test_main(int, char*[])
   run_test_cases< ::boost::ulong_long_type>();
 # endif
 
-  return 0;
+  return boost::report_errors();
 }

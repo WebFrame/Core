@@ -17,7 +17,7 @@
 #include "smart_ptr.hpp"
 #include "common_functors.hpp"
 #include <vector>
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include "test_macros.hpp"
 #include "test_container.hpp"
 #include <typeinfo>
@@ -273,7 +273,7 @@ template < class ListType, typename ValueContainer >
 void test_list< ListType, ValueContainer >
    ::test_swap(ValueContainer& values)
 {
-   {
+   {  //splice between two lists
       list_type testlist1 (values.begin(), values.begin() + 2);
       list_type testlist2;
       testlist2.insert (testlist2.end(), values.begin() + 2, values.begin() + 5);
@@ -308,6 +308,41 @@ void test_list< ListType, ValueContainer >
       BOOST_TEST (testlist1.size() == 1);
       BOOST_TEST (&testlist1.front() == &values[3]);
    }
+
+   {  //splice in the same list
+      list_type testlist1 (values.begin(), values.begin() + 5);
+
+      {  int init_values [] = { 1, 2, 3, 4, 5 };
+         TEST_INTRUSIVE_SEQUENCE( init_values, testlist1.begin() );  }
+
+      //nop 1
+      testlist1.splice (testlist1.begin(), testlist1, testlist1.begin(), ++testlist1.begin());
+      {  int init_values [] = { 1, 2, 3, 4, 5 };
+         TEST_INTRUSIVE_SEQUENCE( init_values, testlist1.begin() );  }
+
+      //nop 2
+      testlist1.splice (++testlist1.begin(), testlist1, testlist1.begin(), ++testlist1.begin());
+      {  int init_values [] = { 1, 2, 3, 4, 5 };
+         TEST_INTRUSIVE_SEQUENCE( init_values, testlist1.begin() );  }
+
+      //nop 3
+      testlist1.splice (testlist1.begin(), testlist1, ++testlist1.begin(), ++testlist1.begin());
+      {  int init_values [] = { 1, 2, 3, 4, 5 };
+         TEST_INTRUSIVE_SEQUENCE( init_values, testlist1.begin() );  }
+
+      testlist1.splice (testlist1.begin(), testlist1, ++testlist1.begin(), ++++testlist1.begin());
+      {  int init_values [] = { 2, 1, 3, 4, 5 };
+         TEST_INTRUSIVE_SEQUENCE( init_values, testlist1.begin() );  }
+
+      testlist1.splice (testlist1.begin(), testlist1, ++testlist1.begin(), ++++++testlist1.begin());
+      {  int init_values [] = { 1, 3, 2, 4, 5 };
+         TEST_INTRUSIVE_SEQUENCE( init_values, testlist1.begin() );  }
+
+      testlist1.splice (++++++++testlist1.begin(), testlist1, testlist1.begin(), ++++testlist1.begin());
+      {  int init_values [] = { 2, 4, 1, 3, 5 };
+         TEST_INTRUSIVE_SEQUENCE( init_values, testlist1.begin() );  }
+   }
+
    {
       list_type testlist1 (values.begin(), values.begin() + 2);
       list_type testlist2 (values.begin() + 3, values.begin() + 5);

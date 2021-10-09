@@ -118,6 +118,29 @@ BOOST_AUTO_TEST_CASE(compare,  *boost::unit_test::timeout(5))
     BOOST_TEST_PASSPOINT();
 }
 
+BOOST_AUTO_TEST_CASE(wcompare,  *boost::unit_test::timeout(5))
+{
+    auto nat = boost::this_process::wenvironment();
+    bp::wenvironment env = nat;
+
+    {
+        BOOST_CHECK_EQUAL(nat.size(), env.size());
+        auto ni = nat.begin();
+        auto ei = env.begin();
+
+        while ((ni != nat.end()) &&(ei != env.end()))
+        {
+            BOOST_CHECK_EQUAL(ni->get_name(),  ei->get_name());
+            BOOST_CHECK_EQUAL(ni->to_string(), ei->to_string());
+            ni++; ei++;
+        }
+    }
+
+    BOOST_TEST_PASSPOINT();
+    env.clear();
+    BOOST_TEST_PASSPOINT();
+}
+
 BOOST_AUTO_TEST_CASE(insert_remove,  *boost::unit_test::timeout(5))
 {
     bp::environment env(boost::this_process::environment());
@@ -217,20 +240,20 @@ BOOST_AUTO_TEST_CASE(clear_empty,  *boost::unit_test::timeout(5))
     BOOST_CHECK_EQUAL(std::distance(env.begin(), env.end()), 3u);
     BOOST_CHECK_EQUAL(std::distance(env.cbegin(), env.cend()), 3u);
 
-    env.erase("a");
+    env.erase("c");
     BOOST_CHECK_EQUAL(env.size(), 2u);
-    BOOST_CHECK_EQUAL(env.count("a"), 0u);
+    BOOST_CHECK_EQUAL(env.at("a").to_string(), "1");
     BOOST_CHECK_EQUAL(env.at("b").to_string(), "2");
-    BOOST_CHECK_EQUAL(env.at("c").to_string(), "3");
+    BOOST_CHECK_EQUAL(env.count("c"), 0u);
 
     BOOST_CHECK_EQUAL(std::distance(env.begin(), env.end()), 2u);
     BOOST_CHECK_EQUAL(std::distance(env.cbegin(), env.cend()), 2u);
 
     env.erase("b");
     BOOST_CHECK_EQUAL(env.size(), 1u);
-    BOOST_CHECK_EQUAL(env.count("a"), 0u);
+    BOOST_CHECK_EQUAL(env.at("a").to_string(), "1");
     BOOST_CHECK_EQUAL(env.count("b"), 0u);
-    BOOST_CHECK_EQUAL(env.at("c").to_string(), "3");
+    BOOST_CHECK_EQUAL(env.count("c"), 0u);
 
     BOOST_CHECK_EQUAL(std::distance(env.begin(), env.end()), 1u);
     BOOST_CHECK_EQUAL(std::distance(env.cbegin(), env.cend()), 1u);

@@ -1,5 +1,5 @@
-prefix=D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/build/...jinja2cpp-install
-exec_prefix=D:/Users/atsve/OneDrive/Documents/GitHub/Core/lib/Jinja2Cpp/build/...jinja2cpp-install
+prefix=C:/Users/Coder of worlds/Documents/GitHub/WebFrame/Lib/lib/Jinja2Cpp/.jinja2cpp-install
+exec_prefix=C:/Users/Coder of worlds/Documents/GitHub/WebFrame/Lib/lib/Jinja2Cpp/.jinja2cpp-install
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 

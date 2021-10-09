@@ -30,7 +30,7 @@ using boost::math::constants::one_div_root_two;
 
 #define BOOST_TEST_MAIN
 #include <boost/test/unit_test.hpp> // for test_main
-#include <boost/test/floating_point_comparison.hpp> // for BOOST_CHECK_CLOSE_FRACTION
+#include <boost/test/tools/floating_point_comparison.hpp> // for BOOST_CHECK_CLOSE_FRACTION
 
 #include <cmath>
 
@@ -92,7 +92,7 @@ void test_ignore_policy(RealType)
     if (std::numeric_limits<RealType>::has_quiet_NaN)
     {
       // Demonstrate output of PDF with infinity,
-      // but strin goutput from NaN is platform dependent, so can't use BOOST_CHECK.
+      // but string output from NaN is platform dependent, so can't use BOOST_CHECK.
       if (std::numeric_limits<RealType>::has_infinity)
       {
         //std::cout << "pdf(ignore_error_arcsine(-1, +1), std::numeric_limits<RealType>::infinity()) = " << pdf(ignore_error_arcsine(-1, +1), std::numeric_limits<RealType>::infinity()) << std::endl;
@@ -119,7 +119,7 @@ void test_ignore_policy(RealType)
       // NaN constructors.
       BOOST_CHECK((boost::math::isnan)(mean(ignore_error_arcsine(2, nan))));
       BOOST_CHECK((boost::math::isnan)(mean(ignore_error_arcsine(nan, nan))));
-      BOOST_CHECK((boost::math::isnan)(mean(ignore_error_arcsine(nan, 2)))); 
+      BOOST_CHECK((boost::math::isnan)(mean(ignore_error_arcsine(nan, 2))));
 
       // Variance
       BOOST_CHECK((boost::math::isnan)(variance(ignore_error_arcsine(nan, 0))));
@@ -138,7 +138,7 @@ void test_ignore_policy(RealType)
       BOOST_CHECK((boost::math::isnan)(skewness(ignore_error_arcsine(2, 0))));
       BOOST_CHECK((boost::math::isnan)(skewness(ignore_error_arcsine(3, 0))));
 
-      // Kurtosis 
+      // Kurtosis
       BOOST_CHECK((boost::math::isnan)(kurtosis(ignore_error_arcsine(nan, 0))));
       BOOST_CHECK((boost::math::isnan)(kurtosis(ignore_error_arcsine(-1, nan))));
       BOOST_CHECK((boost::math::isnan)(kurtosis(ignore_error_arcsine(0, 0))));
@@ -159,7 +159,7 @@ void test_ignore_policy(RealType)
       BOOST_CHECK((boost::math::isnan)(kurtosis_excess(ignore_error_arcsine(4, 0))));
     } // has_quiet_NaN
 
-    // 
+    //
     BOOST_CHECK(boost::math::isfinite(mean(ignore_error_arcsine(0, std::numeric_limits<RealType>::epsilon()))));
 
     check_support<arcsine_distribution<RealType> >(arcsine_distribution<RealType>(0, 1));
@@ -233,12 +233,6 @@ void test_spots(RealType)
       (boost::math::tools::epsilon<RealType>(),
       static_cast<RealType>(std::numeric_limits<double>::epsilon())); // 0 if real_concept.
 
-    RealType max_value = boost::math::tools::max_value<RealType>();
-    RealType epsilon = boost::math::tools::epsilon<RealType>();
-
-    //cout << "Boost::math::tools::epsilon = " << boost::math::tools::epsilon<RealType>() << endl;
-    //cout << "std::numeric_limits::epsilon = " << std::numeric_limits<RealType>::epsilon() << endl;
-
     tolerance *= 2; // Note: NO * 100 because tolerance is a fraction, NOT %.
     cout << "tolerance = " << tolerance << endl;
 
@@ -273,7 +267,7 @@ void test_spots(RealType)
 
     // PDF
     // pdf of x = 1/4 is same as reflected value at x = 3/4.
-    // N[PDF[arcsinedistribution[0, 1], 0.25], 50] 
+    // N[PDF[arcsinedistribution[0, 1], 0.25], 50]
     // N[PDF[arcsinedistribution[0, 1], 0.75], 50]
     // 0.73510519389572273268176866441729258852984864048885
 
@@ -323,7 +317,7 @@ void test_spots(RealType)
     BOOST_CHECK_CLOSE_FRACTION(quantile(arcsine_01, static_cast<RealType>(0.25L)), static_cast<RealType>(0.14644660940672624L), tolerance);
     BOOST_CHECK_CLOSE_FRACTION(quantile(arcsine_01, static_cast<RealType>(0.5L)), 0.5, 2 * tolerance);  // probability = 0.5, x = 0.5
     BOOST_CHECK_CLOSE_FRACTION(quantile(arcsine_01, static_cast<RealType>(0.75L)), static_cast<RealType>(0.85355339059327373L), tolerance);
-    
+
     // N[CDF[arcsinedistribution[0, 1], 0.05], 50]  == 0.14356629312870627075094188477505571882161519989741
     BOOST_CHECK_CLOSE_FRACTION(quantile(arcsine_01, static_cast<RealType>(0.14356629312870627075094188477505571882161519989741L)), 0.05, tolerance);
 
@@ -383,7 +377,7 @@ void test_spots(RealType)
       static_cast<RealType>(0.95), // Random variate  x
       static_cast<RealType>(0.85643370687129372924905811522494428117838480010259L), // Probability of result (CDF of arcsine), P
       static_cast<RealType>(0.14356629312870627075094188477505571882161519989741L),  // Complement of CDF Q = 1 - P
-      tolerance * 4); // Test tolerance (slightly inceased compared to x < 0.5 above).
+      tolerance * 4); // Test tolerance (slightly increased compared to x < 0.5 above).
 
     test_spot(
       static_cast<RealType>(0),   // lo or a
@@ -466,7 +460,7 @@ void test_spots(RealType)
     BOOST_MATH_CHECK_THROW(quantile(dist, -1), std::domain_error);
     BOOST_MATH_CHECK_THROW(quantile(complement(dist, -1)), std::domain_error);
 
-    // Various combinations of bad contructor and member function parameters.
+    // Various combinations of bad constructor and member function parameters.
     BOOST_MATH_CHECK_THROW(pdf(boost::math::arcsine_distribution<RealType>(0, 1), -1), std::domain_error);
     BOOST_MATH_CHECK_THROW(pdf(boost::math::arcsine_distribution<RealType>(-1, 1), +2), std::domain_error);
     BOOST_MATH_CHECK_THROW(quantile(boost::math::arcsine_distribution<RealType>(1, 1), -1), std::domain_error);
@@ -543,7 +537,7 @@ void test_spots(RealType)
 
     arcsine as; // Using typedef for default standard arcsine.
 
-    // 
+    //
     BOOST_CHECK_EQUAL(as.x_min(), 0); //
     BOOST_CHECK_EQUAL(as.x_max(), 1);
     BOOST_CHECK_EQUAL(mean(as), 0.5); // 1 / (1 + 1) = 1/2 exactly.
@@ -561,7 +555,7 @@ void test_spots(RealType)
     test_spots(0.0); // Test double.
     #ifndef BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
       test_spots(0.0L); // Test long double.
-      #if !BOOST_WORKAROUND(__BORLANDC__, BOOST_TESTED_AT(0x582))
+      #if !BOOST_WORKAROUND(BOOST_BORLANDC, BOOST_TESTED_AT(0x582))
         test_spots(boost::math::concepts::real_concept(0.)); // Test real concept.
       #endif
     #endif
@@ -577,7 +571,7 @@ Version 12.0.30110.00 Update 1
   1>  Description: Autorun "J:\Cpp\MathToolkit\test\Math_test\Debug\test_arcsine.exe"
   1>  Running 1 test case...
   1>  Platform: Win32
-  1>  Compiler: Microsoft Visual C++ version 12.0  ???? MSVC says 2013 
+  1>  Compiler: Microsoft Visual C++ version 12.0  ???? MSVC says 2013
   1>  STL     : Dinkumware standard library version 610
   1>  Boost   : 1.56.0
 
@@ -609,6 +603,3 @@ Version 12.0.30110.00 Update 1
   RUN SUCCESSFUL (total time: 141ms)
 
   */
-
-
-

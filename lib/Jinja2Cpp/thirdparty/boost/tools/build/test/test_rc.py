@@ -2,8 +2,8 @@
 
 # Copyright 2012 Jurko Gospodnetic
 # Distributed under the Boost Software License, Version 1.0.
-# (See accompanying file LICENSE_1_0.txt or copy at
-# http://www.boost.org/LICENSE_1_0.txt)
+# (See accompanying file LICENSE.txt or copy at
+# https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 # Tests rc toolset behaviour.
 
@@ -34,7 +34,7 @@ def included_resource_newer_than_rc_script():
     #   affected by any local (mis)configuration..
     t = BoostBuild.Tester(["-d4", "--debug-configuration",
         "--ignore-site-config", "--user-config=", "toolset=%s" % toolsetName],
-        pass_d0=False, pass_toolset=False, use_test_config=False,
+        pass_toolset=False, use_test_config=False,
         translate_suffixes=False)
 
     # Prepare a dummy toolset so we do not get errors in case the default one
@@ -113,7 +113,7 @@ set_generated_obj_suffix('cygwin')
 
     # Prepare project source files.
     t.write("jamroot.jam", """\
-ECHO {{{ [ modules.peek : XXX ] [ modules.peek : NOEXEC ] }}} ;
+ECHO "{{{" [ modules.peek : XXX ] [ modules.peek : NOEXEC ] "}}}" ;
 obj xxx : xxx.rc ;
 """)
     t.write("xxx.rc", '1 MESSAGETABLE "xxx.bin"\n')

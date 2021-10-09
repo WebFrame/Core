@@ -5,7 +5,7 @@
 # Copyright 2006 Rene Rivera
 # Copyright 2002, 2003, 2004, 2005, 2006 Vladimir Prus
 # Distributed under the Boost Software License, Version 1.0.
-# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
+# (See accompanying file LICENSE.txt or https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 import re
 import sys
@@ -427,7 +427,7 @@ def validate_property_sets (sets):
 
 def evaluate_conditionals_in_context (properties, context):
     """ Removes all conditional properties which conditions are not met
-        For those with met conditions, removes the condition. Properies
+        For those with met conditions, removes the condition. Properties
         in conditions are looked up in 'context'
     """
     if __debug__:

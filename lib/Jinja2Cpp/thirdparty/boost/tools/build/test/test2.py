@@ -3,7 +3,7 @@
 # Copyright 2002, 2003 Dave Abrahams
 # Copyright 2002, 2003 Vladimir Prus
 # Distributed under the Boost Software License, Version 1.0.
-# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
+# (See accompanying file LICENSE.txt or https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 import BoostBuild
 
@@ -11,7 +11,7 @@ t = BoostBuild.Tester()
 
 t.set_tree("test2")
 
-file_list = 'bin/$toolset/debug/' * \
+file_list = 'bin/$toolset/debug*/' * \
     BoostBuild.List("foo foo.o")
 
 t.run_build_system("-sBOOST_BUILD_PATH=" + t.original_workdir + "/..")

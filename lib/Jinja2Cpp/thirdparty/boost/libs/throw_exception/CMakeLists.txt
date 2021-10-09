@@ -1,27 +1,23 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_throw_exception)
+# Copyright 2019 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.16)
+project(boost_throw_exception VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-find_package(boost_assert)
-find_package(boost_config)
+add_library(boost_throw_exception INTERFACE)
+add_library(Boost::throw_exception ALIAS boost_throw_exception)
 
-bcm_setup_version(VERSION 1.64.0)
+target_include_directories(boost_throw_exception INTERFACE include)
 
-add_library(boost_throw_exception INTERFACE
+target_link_libraries(boost_throw_exception
+  INTERFACE
+    Boost::assert
+    Boost::config
 )
-set_property(TARGET boost_throw_exception PROPERTY EXPORT_NAME throw_exception)
 
-target_link_libraries(boost_throw_exception INTERFACE boost::assert)
-target_link_libraries(boost_throw_exception INTERFACE boost::config)
+if(BUILD_TESTING)
 
+  add_subdirectory(test)
 
-
-
-bcm_deploy(TARGETS boost_throw_exception INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
 endif()

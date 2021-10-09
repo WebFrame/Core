@@ -17,7 +17,7 @@
 #include "common_functors.hpp"
 #include <vector>
 #include <set>
-#include <boost/detail/lightweight_test.hpp>
+#include <boost/core/lightweight_test.hpp>
 #include "test_macros.hpp"
 #include "test_container.hpp"
 #include "unordered_test_common.hpp"
@@ -45,6 +45,7 @@ struct rebinder
          , incremental<Incremental>
          , typename common_t::holder_opt
          , typename common_t::key_of_value_opt
+         , size_type<unsigned short>
          , Option1
          , Option2
          > type;

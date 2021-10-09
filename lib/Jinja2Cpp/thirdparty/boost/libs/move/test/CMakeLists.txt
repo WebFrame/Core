@@ -1,29 +1,19 @@
-include(BCMTest)
+# Copyright 2018, 2019 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
 
-find_package(boost_container)
-find_package(boost_timer)
+include(BoostTest OPTIONAL RESULT_VARIABLE HAVE_BOOST_TEST)
 
-bcm_test_link_libraries(boost_move
-boost::container
-boost::timer
-)
+if(NOT HAVE_BOOST_TEST)
+  return()
+endif()
 
-##############################################################################
-##
-## (C) Copyright Ion Gaztanaga 2008-2009 Distributed under the Boost
-## Software License, Version 1.0. (See accompanying file
-## LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-##
-##
-##############################################################################
+file(GLOB tests RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} *.cpp)
 
-file(GLOB TEST_FILES *.cpp)
-foreach(FILEB ${TEST_FILES})
-    get_filename_component(NAME ${FILEB} NAME_WE)
-    bcm_test(NAME move-${NAME} SOURCES ${FILEB})
+set(BOOST_TEST_LINK_LIBRARIES Boost::move Boost::config Boost::container Boost::core Boost::static_assert)
+
+foreach(test IN LISTS tests)
+
+  boost_test(SOURCES ${test})
+
 endforeach()
-
-
-
-
-

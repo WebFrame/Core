@@ -3,15 +3,11 @@
 //  Distributed under the Boost Software License, Version 1.0. (See accompanying 
 //  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-// #define BOOST_SPIRIT_LEXERTL_DEBUG
-
 #include <boost/detail/lightweight_test.hpp>
 #include <boost/spirit/include/phoenix_object.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
-#include <boost/spirit/include/phoenix_statement.hpp>
-#include <boost/spirit/include/phoenix_stl.hpp>
+#include <boost/spirit/include/phoenix_container.hpp>
 #include <boost/spirit/include/lex_lexertl.hpp>
-#include <boost/foreach.hpp>
 
 using namespace boost::spirit;
 
@@ -52,7 +48,7 @@ struct handle_whitespace
     template <typename Iterator>
     unsigned int get_indent(Iterator& start, Iterator& end)
     {
-        return std::distance(start, end);
+        return static_cast<unsigned int>(std::distance(start, end));
     }
 
     template <typename Iterator>
@@ -81,9 +77,8 @@ struct handle_whitespace
 
     std::stack<unsigned int>& indents_;
 
-private:
     // silence MSVC warning C4512: assignment operator could not be generated
-    handle_whitespace& operator= (handle_whitespace const&);
+    BOOST_DELETED_FUNCTION(handle_whitespace& operator= (handle_whitespace const&));
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -119,13 +114,13 @@ template <typename Token>
 inline 
 bool test_tokens(token_data const* d, std::vector<Token> const& tokens)
 {
-    BOOST_FOREACH(Token const& t, tokens)
+    for (std::size_t i = 0, len = tokens.size(); i < len; ++i)
     {
         if (d->id == -1)
             return false;           // reached end of expected data
 
-        typename Token::token_value_type const& value (t.value());
-        if (t.id() != static_cast<std::size_t>(d->id))        // token id must match
+        typename Token::token_value_type const& value (tokens[i].value());
+        if (tokens[i].id() != static_cast<std::size_t>(d->id))        // token id must match
             return false;
         if (value.which() != 1)     // must have an integer value 
             return false;

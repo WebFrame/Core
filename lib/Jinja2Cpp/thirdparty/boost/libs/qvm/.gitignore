@@ -8,3 +8,8 @@
 vcxproj.bat
 vcxproj.exe
 *.opensdf
+/doc/html/**
+/.vscode/c_cpp_properties.json
+/bld/*
+/test/qvm.hpp
+/test/qvm_lite.hpp

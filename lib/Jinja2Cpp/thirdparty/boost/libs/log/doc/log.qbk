@@ -2,7 +2,7 @@
     [quickbook 1.5]
     [version v2]
     [authors [Semashev, Andrey]]
-    [copyright 2007 - 2016 Andrey Semashev]
+    [copyright 2007 - 2021 Andrey Semashev]
     [license
         Distributed under the Boost Software License, Version 1.0.
         (See accompanying file LICENSE_1_0.txt or copy at
@@ -38,7 +38,9 @@
 [def __boost_optional__ [@http://www.boost.org/doc/libs/release/libs/optional/index.html Boost.Optional]]
 [def __boost_variant__ [@http://www.boost.org/doc/libs/release/doc/html/variant.html Boost.Variant]]
 [def __boost_intrusive__ [@http://www.boost.org/doc/libs/release/doc/html/intrusive.html Boost.Intrusive]]
+[def __boost_range__ [@http://www.boost.org/doc/libs/release/libs/range/index.html Boost.Range]]
 [def __boost_iostreams__ [@http://www.boost.org/doc/libs/release/libs/iostreams/doc/index.html Boost.IOStreams]]
+[def __boost_fusion__ [@http://www.boost.org/doc/libs/release/libs/fusion/index.html Boost.Fusion]]
 [def __boost_mpl__ [@http://www.boost.org/doc/libs/release/libs/mpl/doc/index.html Boost.MPL]]
 [def __boost_exception__ [@http://www.boost.org/doc/libs/release/libs/exception/doc/boost-exception.html Boost.Exception]]
 [def __boost_scope_exit__ [@http://www.boost.org/doc/libs/release/libs/scope_exit/doc/html/index.html Boost.ScopeExit]]
@@ -51,17 +53,19 @@
 [def __boost_utility__ [@http://www.boost.org/doc/libs/release/libs/utility/utility.htm Boost.Utility]]
 [def __boost_quickbook__ [@http://www.boost.org/doc/libs/release/doc/html/quickbook.html Boost.Quickbook]]
 
-[template ticket[key] '''<ulink url="https://svn.boost.org/trac/boost/ticket/'''[key]'''">#'''[key]'''</ulink>''']
+[template ticket[key]'''<ulink url="https://svn.boost.org/trac/boost/ticket/'''[key]'''">#'''[key]'''</ulink>''']
+[template github_issue[key]'''<ulink url="https://github.com/boostorg/log/issues/'''[key]'''">GH#'''[key]'''</ulink>''']
+[template pull_request[key]'''<ulink url="https://github.com/boostorg/log/pull/'''[key]'''">PR#'''[key]'''</ulink>''']
 
 [/ Auto-generated macros that refer to Reference sections /]
-[include top_level_reference.qbk]
-[include core_reference.qbk]
-[include attributes_reference.qbk]
-[include expressions_reference.qbk]
-[include sources_reference.qbk]
-[include sinks_reference.qbk]
-[include utility_reference.qbk]
-[include support_reference.qbk]
+[include tmp/top_level_reference.qbk]
+[include tmp/core_reference.qbk]
+[include tmp/attributes_reference.qbk]
+[include tmp/expressions_reference.qbk]
+[include tmp/sources_reference.qbk]
+[include tmp/sinks_reference.qbk]
+[include tmp/utility_reference.qbk]
+[include tmp/support_reference.qbk]
 
 [/ Code samples /]
 [import ../example/doc/tutorial_trivial.cpp]
@@ -108,6 +112,7 @@
 [import ../example/doc/util_dynamic_type_disp.cpp]
 [import ../example/doc/util_manip_to_log.cpp]
 [import ../example/doc/util_ipc_reliable_mq_writer.cpp]
+[import ../example/doc/util_setup_settings.cpp]
 [import ../example/doc/extension_stat_collector.cpp]
 [import ../example/doc/extension_app_launcher.cpp]
 [import ../example/doc/extension_record_tagger.cpp]
@@ -178,7 +183,7 @@ Boost.Log should be compatible with all hardware architectures supported by Boos
 
 [heading Notes for GCC users]
 
-GCC versions since 4.5 support link time optimization (LTO), when most of optimizations and binary code generation happens at linking stage. This allows to perform more advanced optimizations and produce faster code. Unfortunately, it does not play well with projects containing source files that need to be compiled with different compiler options. Boost.Log is one of such projects, some parts of its sources contain optimizations for modern CPUs and will not run on older CPUs. Enabling LTO for Boost.Log will produce binaries incompatible with older CPUs (GCC bugs [@https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61043 61043], [@https://gcc.gnu.org/bugzilla/show_bug.cgi?id=77845 77845]), which will likely result in crashes in run time. For this reason LTO is not supported in Boost.Log.
+GCC versions since 4.5 support link time optimization (LTO), when most of optimizations and binary code generation happen at linking stage. This allows to perform more advanced optimizations and produce faster code. Unfortunately, it does not play well with projects containing source files that need to be compiled with different compiler options. Boost.Log is one of such projects, some parts of its sources contain optimizations for modern CPUs and will not run on older CPUs. Enabling LTO for Boost.Log will produce binaries incompatible with older CPUs (GCC bugs [@https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61043 61043], [@https://gcc.gnu.org/bugzilla/show_bug.cgi?id=77845 77845]), which will likely result in crashes at run time. For this reason LTO is not supported in Boost.Log.
 
 There is a GCC [@http://gcc.gnu.org/bugzilla/show_bug.cgi?id=60607 bug] which may cause compilation failures when `-march=native` command line argument is used. It is recommended to avoid using `-march=native` argument (or `instruction-set=native` bjam property) and instead explicitly specify the target CPU (e.g. `instruction-set=sandy-bridge`).
 
@@ -253,6 +258,8 @@ The library provides the `BOOST_LOG_USE_COMPILER_TLS` configuration macro that a
 
 Note that the `BOOST_LOG_USE_COMPILER_TLS` macro only controls use of TLS in Boost.Log but not in other libraries used by Boost.Log. For example, __boost_asio__ uses compiler-supplied TLS by default. In order to build Boost.Log binaries completely free from use of compiler-supplied TLS, this feature has to be disabled in those other libraries as well (in case of __boost_asio__ this can be achieved by defining `BOOST_ASIO_DISABLE_THREAD_KEYWORD_EXTENSION` when building and using Boost).
 
+Also note that enabling builtin compiler support for TLS does not remove the dependency on __boost_thread__ or lower level OS threading primitives, including those implementing TLS. The purpose of using compiler intrinsics for TLS is better performance rather than reducing dependencies.
+
 [heading Notes about native `wchar_t` support]
 
 Some compilers, most notably MSVC, have an option to disable the native `wchar_t` type, emulating it with a typedef for one of the standard integral types. From the C++ language perspective this behavior is not conforming but it may be useful for compatibility with some legacy code which is difficult to update.
@@ -312,14 +319,14 @@ Here are definitions of some terms that will be used widely throughout the docum
 
 [section:reference Reference]
 
-[xinclude top_level_reference.xml]
-[xinclude core_reference.xml]
-[xinclude attributes_reference.xml]
-[xinclude expressions_reference.xml]
-[xinclude sources_reference.xml]
-[xinclude sinks_reference.xml]
-[xinclude utility_reference.xml]
-[xinclude support_reference.xml]
+[xinclude tmp/top_level_reference.xml]
+[xinclude tmp/core_reference.xml]
+[xinclude tmp/attributes_reference.xml]
+[xinclude tmp/expressions_reference.xml]
+[xinclude tmp/sources_reference.xml]
+[xinclude tmp/sinks_reference.xml]
+[xinclude tmp/utility_reference.xml]
+[xinclude tmp/support_reference.xml]
 
 [endsect]
 

@@ -1,35 +1,21 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_pool)
+# Copyright 2018 Mike Dev
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.20)
+project(boost_pool VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-find_package(boost_thread)
-find_package(boost_assert)
-find_package(boost_type_traits)
-find_package(boost_integer)
-find_package(boost_config)
-find_package(boost_throw_exception)
+add_library(boost_pool INTERFACE)
+add_library(Boost::pool ALIAS boost_pool)
 
-bcm_setup_version(VERSION 1.64.0)
+target_include_directories(boost_pool INTERFACE include)
 
-add_library(boost_pool INTERFACE
+target_link_libraries(boost_pool
+    INTERFACE
+        Boost::assert
+        Boost::config
+        Boost::integer
+        Boost::throw_exception
+        Boost::type_traits
+        Boost::winapi
 )
-set_property(TARGET boost_pool PROPERTY EXPORT_NAME pool)
-
-target_link_libraries(boost_pool INTERFACE boost::thread)
-target_link_libraries(boost_pool INTERFACE boost::assert)
-target_link_libraries(boost_pool INTERFACE boost::type_traits)
-target_link_libraries(boost_pool INTERFACE boost::integer)
-target_link_libraries(boost_pool INTERFACE boost::config)
-target_link_libraries(boost_pool INTERFACE boost::throw_exception)
-
-
-
-
-bcm_deploy(TARGETS boost_pool INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
-endif()

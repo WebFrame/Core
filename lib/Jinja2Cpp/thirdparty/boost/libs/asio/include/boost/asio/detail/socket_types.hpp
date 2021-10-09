@@ -2,7 +2,7 @@
 // detail/socket_types.hpp
 // ~~~~~~~~~~~~~~~~~~~~~~~
 //
-// Copyright (c) 2003-2017 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+// Copyright (c) 2003-2021 Christopher M. Kohlhoff (chris at kohlhoff dot com)
 //
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -57,7 +57,12 @@
 # include <boost/asio/detail/old_win_sdk_compat.hpp>
 #else
 # include <sys/ioctl.h>
-# if !defined(__SYMBIAN32__)
+# if (defined(__MACH__) && defined(__APPLE__)) \
+   || defined(__FreeBSD__) || defined(__NetBSD__) \
+   || defined(__OpenBSD__) || defined(__linux__) \
+   || defined(__EMSCRIPTEN__)
+#  include <poll.h>
+# elif !defined(__SYMBIAN32__)
 #  include <sys/poll.h>
 # endif
 # include <sys/types.h>
@@ -148,6 +153,7 @@ typedef int signed_size_type;
 # define BOOST_ASIO_OS_DEF_SO_DONTROUTE 0x10
 # define BOOST_ASIO_OS_DEF_SO_KEEPALIVE 0x8
 # define BOOST_ASIO_OS_DEF_SO_LINGER 0x80
+# define BOOST_ASIO_OS_DEF_SO_OOBINLINE 0x100
 # define BOOST_ASIO_OS_DEF_SO_SNDBUF 0x1001
 # define BOOST_ASIO_OS_DEF_SO_RCVBUF 0x1002
 # define BOOST_ASIO_OS_DEF_SO_SNDLOWAT 0x1003
@@ -201,6 +207,7 @@ typedef unsigned long ioctl_arg_type;
 typedef u_long u_long_type;
 typedef u_short u_short_type;
 typedef int signed_size_type;
+struct sockaddr_un_type { u_short sun_family; char sun_path[108]; };
 # define BOOST_ASIO_OS_DEF(c) BOOST_ASIO_OS_DEF_##c
 # define BOOST_ASIO_OS_DEF_AF_UNSPEC AF_UNSPEC
 # define BOOST_ASIO_OS_DEF_AF_INET AF_INET
@@ -232,6 +239,7 @@ typedef int signed_size_type;
 # define BOOST_ASIO_OS_DEF_SO_DONTROUTE SO_DONTROUTE
 # define BOOST_ASIO_OS_DEF_SO_KEEPALIVE SO_KEEPALIVE
 # define BOOST_ASIO_OS_DEF_SO_LINGER SO_LINGER
+# define BOOST_ASIO_OS_DEF_SO_OOBINLINE SO_OOBINLINE
 # define BOOST_ASIO_OS_DEF_SO_SNDBUF SO_SNDBUF
 # define BOOST_ASIO_OS_DEF_SO_RCVBUF SO_RCVBUF
 # define BOOST_ASIO_OS_DEF_SO_SNDLOWAT SO_SNDLOWAT
@@ -347,6 +355,7 @@ typedef int signed_size_type;
 # define BOOST_ASIO_OS_DEF_SO_DONTROUTE SO_DONTROUTE
 # define BOOST_ASIO_OS_DEF_SO_KEEPALIVE SO_KEEPALIVE
 # define BOOST_ASIO_OS_DEF_SO_LINGER SO_LINGER
+# define BOOST_ASIO_OS_DEF_SO_OOBINLINE SO_OOBINLINE
 # define BOOST_ASIO_OS_DEF_SO_SNDBUF SO_SNDBUF
 # define BOOST_ASIO_OS_DEF_SO_RCVBUF SO_RCVBUF
 # define BOOST_ASIO_OS_DEF_SO_SNDLOWAT SO_SNDLOWAT

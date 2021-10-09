@@ -14,11 +14,16 @@
 #include <boost/spirit/include/karma_action.hpp>
 #include <boost/spirit/include/karma_generate.hpp>
 #include <boost/spirit/include/karma_operator.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/lambda/lambda.hpp>
 
 #include <sstream>
 #include "test.hpp"
+
+#ifdef _MSC_VER
+// bogus https://developercommunity.visualstudio.com/t/buggy-warning-c4709/471956
+# pragma warning(disable: 4709) // comma operator within array index expression
+#endif
 
 using namespace spirit_test;
 using boost::spirit::unused_type;
@@ -73,6 +78,7 @@ int main()
     }
 
     {
+        using namespace boost::placeholders;
         BOOST_TEST(test("42", int_[boost::bind(&read1, _1)]));
         BOOST_TEST(test_delimited("42 ", int_[boost::bind(&read1, _1)], ' '));
         BOOST_TEST(test("42", int_[boost::bind(&read2, _1, _2)]));
@@ -108,6 +114,7 @@ int main()
     }
 
     {
+        using namespace boost::placeholders;
         BOOST_TEST(test("{42}", '{' << int_[boost::bind(&read1, _1)] << '}'));
         BOOST_TEST(test_delimited("{ 42 } ", 
             '{' << int_[boost::bind(&read1, _1)] << '}', ' '));

@@ -1,33 +1,21 @@
+# Copyright 2018 Glen Joseph Fernandes
+# (glenjofe@gmail.com)
+#
+# Distributed under the Boost Software License, Version 1.0.
+# (http://www.boost.org/LICENSE_1_0.txt)
+
 cmake_minimum_required(VERSION 3.5)
-project(boost_align)
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+project(BoostAlign LANGUAGES CXX)
 
-find_package(boost_core)
-find_package(boost_static_assert)
-find_package(boost_assert)
-find_package(boost_config)
-find_package(boost_throw_exception)
+add_library(boost_align INTERFACE)
 
-bcm_setup_version(VERSION 1.64.0)
+add_library(Boost::align ALIAS boost_align)
 
-add_library(boost_align INTERFACE
-)
-set_property(TARGET boost_align PROPERTY EXPORT_NAME align)
+target_include_directories(boost_align INTERFACE include)
 
-target_link_libraries(boost_align INTERFACE boost::core)
-target_link_libraries(boost_align INTERFACE boost::static_assert)
-target_link_libraries(boost_align INTERFACE boost::assert)
-target_link_libraries(boost_align INTERFACE boost::config)
-target_link_libraries(boost_align INTERFACE boost::throw_exception)
-
-
-
-
-bcm_deploy(TARGETS boost_align INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
-endif()
+target_link_libraries(boost_align INTERFACE
+    Boost::assert
+    Boost::config
+    Boost::core
+    Boost::static_assert)

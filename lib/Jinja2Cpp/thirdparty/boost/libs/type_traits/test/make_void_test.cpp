@@ -1,20 +1,19 @@
 /*
 Copyright 2017 Glen Joseph Fernandes
-<glenjofe -at- gmail.com>
+(glenjofe@gmail.com)
 
 Distributed under the Boost Software License,
 Version 1.0. (See accompanying file LICENSE_1_0.txt
 or copy at http://www.boost.org/LICENSE_1_0.txt)
 */
 
-#include "test.hpp"
-#include "check_type.hpp"
-
 #ifdef TEST_STD
 #include <type_traits>
 #else
 #include <boost/type_traits/make_void.hpp>
 #endif
+#include "test.hpp"
+#include "check_type.hpp"
 
 TT_TEST_BEGIN(make_void)
 

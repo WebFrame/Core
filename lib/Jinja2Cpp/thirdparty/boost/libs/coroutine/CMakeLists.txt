@@ -1,55 +1,60 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_coroutine)
+# Copyright 2020, 2021 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# https://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.16)
 
-find_package(boost_core)
-find_package(boost_exception)
-find_package(boost_thread)
-find_package(boost_move)
-find_package(boost_system)
-find_package(boost_assert)
-find_package(boost_range)
-find_package(boost_type_traits)
-find_package(boost_context)
-find_package(boost_config)
-find_package(boost_throw_exception)
-find_package(boost_utility)
+project(boost_coroutine VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-bcm_setup_version(VERSION 1.64.0)
-
-add_library(boost_coroutine 
-src/exceptions.cpp
-)
-set_property(TARGET boost_coroutine PROPERTY EXPORT_NAME coroutine)
-
-target_link_libraries(boost_coroutine PUBLIC boost::core)
-target_link_libraries(boost_coroutine PUBLIC boost::exception)
-target_link_libraries(boost_coroutine PUBLIC boost::thread)
-target_link_libraries(boost_coroutine PUBLIC boost::move)
-target_link_libraries(boost_coroutine PUBLIC boost::system)
-target_link_libraries(boost_coroutine PUBLIC boost::assert)
-target_link_libraries(boost_coroutine PUBLIC boost::range)
-target_link_libraries(boost_coroutine PUBLIC boost::type_traits)
-target_link_libraries(boost_coroutine PUBLIC boost::context)
-target_link_libraries(boost_coroutine PUBLIC boost::config)
-target_link_libraries(boost_coroutine PUBLIC boost::throw_exception)
-target_link_libraries(boost_coroutine PUBLIC boost::utility)
-
-target_sources(boost_coroutine PRIVATE src/detail/coroutine_context.cpp)
-if(WIN32)
-target_sources(boost_coroutine PRIVATE src/windows/stack_traits.cpp)
+if(WIN32 AND NOT CMAKE_CXX_PLATFORM_ID MATCHES "Cygwin")
+  set(STACK_TRAITS_SOURCES
+    src/windows/stack_traits.cpp
+  )
 else()
-target_sources(boost_coroutine PRIVATE src/posix/stack_traits.cpp)
+  set(STACK_TRAITS_SOURCES
+    src/posix/stack_traits.cpp
+  )
 endif()
 
+add_library(boost_coroutine
+  src/detail/coroutine_context.cpp
+  src/exceptions.cpp
+  ${STACK_TRAITS_SOURCES}
+)
 
-target_include_directories(boost_coroutine PRIVATE include)
+add_library(Boost::coroutine ALIAS boost_coroutine)
 
-bcm_deploy(TARGETS boost_coroutine INCLUDE include NAMESPACE boost::)
+target_include_directories(boost_coroutine PUBLIC include)
 
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
+target_link_libraries(boost_coroutine
+  PUBLIC
+    Boost::assert
+    Boost::config
+    Boost::context
+    Boost::core
+    Boost::exception
+    Boost::move
+    Boost::system
+    Boost::throw_exception
+    Boost::type_traits
+    Boost::utility
+  PRIVATE
+    Boost::thread
+)
+
+target_compile_definitions(boost_coroutine
+  PUBLIC BOOST_COROUTINE_NO_LIB
+  PRIVATE BOOST_COROUTINE_SOURCE BOOST_COROUTINES_SOURCE
+)
+
+if(BUILD_SHARED_LIBS)
+  target_compile_definitions(boost_coroutine PUBLIC BOOST_COROUTINE_DYN_LINK BOOST_COROUTINES_DYN_LINK)
+else()
+  target_compile_definitions(boost_coroutine PUBLIC BOOST_COROUTINE_STATIC_LINK)
+endif()
+
+if(BUILD_TESTING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
+
+  add_subdirectory(test)
+
 endif()

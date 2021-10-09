@@ -3,8 +3,8 @@
 # Copyright 2005 David Abrahams
 # Copyright 2008, 2012 Jurko Gospodnetic
 # Distributed under the Boost Software License, Version 1.0.
-# (See accompanying file LICENSE_1_0.txt or copy at
-# http://www.boost.org/LICENSE_1_0.txt)
+# (See accompanying file LICENSE.txt or copy at
+# https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 # Tests the build step timing facilities.
 
@@ -118,15 +118,15 @@ time my-time : my-exe ;
 """)
 
     t.run_build_system()
-    t.expect_addition("bin/$toolset/debug/aaa.obj")
-    t.expect_addition("bin/$toolset/debug/my-exe.exe")
-    t.expect_addition("bin/$toolset/debug/my-time.time")
+    t.expect_addition("bin/$toolset/debug*/aaa.obj")
+    t.expect_addition("bin/$toolset/debug*/my-exe.exe")
+    t.expect_addition("bin/$toolset/debug*/my-time.time")
 
-    t.expect_content_lines("bin/$toolset/debug/my-time.time",
+    t.expect_content_lines("bin/$toolset/debug*/my-time.time",
         "user: *[0-9] seconds")
-    t.expect_content_lines("bin/$toolset/debug/my-time.time",
+    t.expect_content_lines("bin/$toolset/debug*/my-time.time",
         "system: *[0-9] seconds")
-    t.expect_content_lines("bin/$toolset/debug/my-time.time",
+    t.expect_content_lines("bin/$toolset/debug*/my-time.time",
         "clock: *[0-9] seconds")
 
     t.cleanup()
@@ -156,12 +156,12 @@ time "my time" : "my exe" ;
 """)
 
     t.run_build_system()
-    t.expect_addition("bin/$toolset/debug/aaa bbb.obj")
-    t.expect_addition("bin/$toolset/debug/my exe.exe")
-    t.expect_addition("bin/$toolset/debug/my time.time")
+    t.expect_addition("bin/$toolset/debug*/aaa bbb.obj")
+    t.expect_addition("bin/$toolset/debug*/my exe.exe")
+    t.expect_addition("bin/$toolset/debug*/my time.time")
 
-    t.expect_content_lines("bin/$toolset/debug/my time.time", "user: *")
-    t.expect_content_lines("bin/$toolset/debug/my time.time", "system: *")
+    t.expect_content_lines("bin/$toolset/debug*/my time.time", "user: *")
+    t.expect_content_lines("bin/$toolset/debug*/my time.time", "system: *")
 
     t.cleanup()
 

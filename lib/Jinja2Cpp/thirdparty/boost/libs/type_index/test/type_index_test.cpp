@@ -1,5 +1,5 @@
 //
-// Copyright Antony Polukhin, 2012-2015.
+// Copyright 2012-2021 Antony Polukhin.
 //
 // Distributed under the Boost Software License, Version 1.0. (See
 // accompanying file LICENSE_1_0.txt or copy at
@@ -7,13 +7,9 @@
 
 #include <boost/type_index.hpp>
 
-#include <boost/functional/hash.hpp>
 #include <boost/lexical_cast.hpp>
 
 #include <boost/core/lightweight_test.hpp>
-#define BOOST_TEST_LE(x, y) BOOST_TEST(x <= y)
-#define BOOST_TEST_GE(x, y) BOOST_TEST(x >= y)
-
 
 namespace my_namespace1 {
     class my_class{};

@@ -2,14 +2,14 @@
 
 # Copyright 2012. Jurko Gospodnetic
 # Distributed under the Boost Software License, Version 1.0.
-# (See accompanying file LICENSE_1_0.txt or copy at
-# http://www.boost.org/LICENSE_1_0.txt)
+# (See accompanying file LICENSE.txt or copy at
+# https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 # Test correct "-p" option handling.
 
 import BoostBuild
 
-t = BoostBuild.Tester(["-d1"], pass_d0=False, pass_toolset=False)
+t = BoostBuild.Tester(["-d1"], pass_toolset=False)
 
 t.write("file.jam", """\
 prefix = "echo \\"" ;
@@ -24,7 +24,7 @@ actions go
     $(prefix)stdout$(suffix)
     $(prefix)stderr$(suffix) 1>&2
 }
-ECHO {{{ $(XXX) }}} ;
+ECHO "{{{" $(XXX) "}}}" ;
 ALWAYS all ;
 go all ;
 """)

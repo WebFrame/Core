@@ -257,7 +257,10 @@ basic_iarchive_impl::reset_object_address(
             break;
     }
     for(; i < m_moveable_objects.end; ++i){
-        void const * const this_address = object_id_vector[i].address;
+        const aobject & ao = object_id_vector[i];
+        if(ao.loaded_as_pointer)
+            continue;
+        void const * const this_address = ao.address;
         // calculate displacement from this level
         // warning - pointer arithmetic on void * is in herently non-portable
         // but expected to work on all platforms in current usage
@@ -424,7 +427,7 @@ basic_iarchive_impl::load_pointer(
     class_id_type cid;
     load(ar, cid);
 
-    if(NULL_POINTER_TAG == cid){
+    if(BOOST_SERIALIZATION_NULL_POINTER_TAG == cid){
         t = NULL;
         return bpis_ptr;
     }
@@ -459,6 +462,12 @@ basic_iarchive_impl::load_pointer(
     cobject_id & co = cobject_id_vector[i];
     bpis_ptr = co.bpis_ptr;
 
+    if (bpis_ptr == NULL) {
+        boost::serialization::throw_exception(
+            archive_exception(archive_exception::unregistered_class)
+        );
+    }
+
     load_preamble(ar, co);
 
     // extra line to evade borland issue
@@ -487,11 +496,10 @@ basic_iarchive_impl::load_pointer(
         m_pending.version = co.file_version;
 
         // predict next object id to be created
-        const unsigned int ui = object_id_vector.size();
+        const size_t ui = object_id_vector.size();
 
         serialization::state_saver<object_id_type> w_end(m_moveable_objects.end);
 
-        
         // add to list of serialized objects so that we can properly handle
         // cyclic strucures
         object_id_vector.push_back(aobject(t, cid));
@@ -578,7 +586,7 @@ basic_iarchive::delete_created_pointers()
     pimpl->delete_created_pointers();
 }
 
-BOOST_ARCHIVE_DECL boost::archive::library_version_type
+BOOST_ARCHIVE_DECL boost::serialization::library_version_type
 basic_iarchive::get_library_version() const{
     return pimpl->m_archive_library_version;
 }

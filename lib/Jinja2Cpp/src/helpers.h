@@ -1,5 +1,5 @@
-#ifndef HELPERS_H
-#define HELPERS_H
+#ifndef JINJA2CPP_SRC_HELPERS_H
+#define JINJA2CPP_SRC_HELPERS_H
 
 #include <nonstd/string_view.hpp>
 #include <jinja2cpp/string_helpers.h>
@@ -15,10 +15,27 @@ struct MultiStringLiteral
     const char* charValue;
     const wchar_t* wcharValue;
 
-    template<typename CharT>
-    auto GetValue() const
+    constexpr MultiStringLiteral(const char* val, const wchar_t* wval)
+        : charValue(val)
+        , wcharValue(wval)
     {
-        auto memPtr = SelectMemberPtr<CharT, &MultiStringLiteral::charValue, &MultiStringLiteral::wcharValue>::GetPtr();
+    }
+
+    template<typename CharT>
+    constexpr auto GetValue() const
+    {
+#if __cplusplus < 202002L
+        return GetValueStr<CharT>();
+#else
+        constexpr auto memPtr = SelectMemberPtr<CharT, &MultiStringLiteral::charValue, &MultiStringLiteral::wcharValue>::GetPtr();
+        return nonstd::basic_string_view<CharT>(this->*memPtr);
+#endif
+    }
+
+    template<typename CharT>
+    constexpr auto GetValueStr() const
+    {
+        constexpr auto memPtr = SelectMemberPtr<CharT, &MultiStringLiteral::charValue, &MultiStringLiteral::wcharValue>::GetPtr();
         return std::basic_string<CharT>(this->*memPtr);
     }
 
@@ -28,13 +45,13 @@ struct MultiStringLiteral
     template<const char* (MultiStringLiteral::*charMemPtr), const wchar_t* (MultiStringLiteral::*wcharMemPtr)>
     struct SelectMemberPtr<char, charMemPtr, wcharMemPtr>
     {
-        static auto GetPtr() {return charMemPtr;}
+        static constexpr auto GetPtr() {return charMemPtr;}
     };
 
     template<const char* (MultiStringLiteral::*charMemPtr), const wchar_t* (MultiStringLiteral::*wcharMemPtr)>
     struct SelectMemberPtr<wchar_t, charMemPtr, wcharMemPtr>
     {
-        static auto GetPtr() {return wcharMemPtr;}
+        static constexpr auto GetPtr() {return wcharMemPtr;}
     };
 
     template<typename CharT>
@@ -97,6 +114,6 @@ Sequence CompileEscapes(Sequence s)
    return s;
 }
 
-} // jinja2
+} // namespace jinja2
 
-#endif // HELPERS_H
+#endif // JINJA2CPP_SRC_HELPERS_H

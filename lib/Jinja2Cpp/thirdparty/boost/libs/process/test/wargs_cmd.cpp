@@ -24,7 +24,7 @@
 namespace bp = boost::process;
 
 
-BOOST_AUTO_TEST_CASE(args, *boost::unit_test::timeout(2))
+BOOST_AUTO_TEST_CASE(wargs, *boost::unit_test::timeout(2))
 {
     using boost::unit_test::framework::master_test_suite;
 
@@ -33,14 +33,13 @@ BOOST_AUTO_TEST_CASE(args, *boost::unit_test::timeout(2))
     std::error_code ec;
     bp::child c(
         master_test_suite().argv[1],
-        L"test", "--echo-argv", L"hello thingy", "\"stuff\"", static_cast<const wchar_t*>(L"  spa ce  "),
+        L"test", "--echo-argv", L"hello thingy", "\"stuff\"", static_cast<const wchar_t*>(L"  spa\" ce  "),
         bp::std_out>is,
         ec
     );
     if (ec)
         std::cout << "EC: " << ec.message() << std::endl;
     BOOST_REQUIRE(!ec);
-    return ;
 
     std::string s;
 
@@ -63,14 +62,14 @@ BOOST_AUTO_TEST_CASE(args, *boost::unit_test::timeout(2))
     BOOST_CHECK_EQUAL(s, "\"stuff\"");
 
     std::getline(is, s);
-    s.resize(10);
+    s.resize(11);
 
-    BOOST_CHECK_EQUAL(s, "  spa ce  ");
+    BOOST_CHECK_EQUAL(s, "  spa\" ce  ");
 
 }
 
 
-BOOST_AUTO_TEST_CASE(cmd, *boost::unit_test::timeout(2))
+BOOST_AUTO_TEST_CASE(wcmd, *boost::unit_test::timeout(2))
 {
     using boost::unit_test::framework::master_test_suite;
 
@@ -87,7 +86,7 @@ BOOST_AUTO_TEST_CASE(cmd, *boost::unit_test::timeout(2))
         ec
     );
     BOOST_REQUIRE(!ec);
-    return ;
+
     std::string s;
 
     std::getline(is, s);

@@ -1,29 +1,38 @@
-include(BCMTest)
-
-find_package(boost_crc)
-find_package(boost_lambda)
-
-bcm_test_link_libraries(boost_gil
-boost::crc
-boost::lambda
-)
-
-# Copyright 2008 Lubomir Bourdev and Hailin Jin
+#
+# Copyright (c) 2019 Mateusz Loskot <mateusz at loskot dot net>
 #
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE_1_0.txt or copy at
 # http://www.boost.org/LICENSE_1_0.txt)
+#
 
-# Cmake for building the GIL test app
+foreach(_name
+  test_utility_output_stream)
+  set(_test t_utility_${_name})
+  set(_target test_utility_${_name})
 
-bcm_test(NAME image SOURCES image.cpp sample_image.cpp error_if.cpp)
-target_compile_definitions(image PUBLIC BOOST_GIL_NO_IO _SCL_SECURE_NO_WARNINGS)
-bcm_test(NAME channel SOURCES channel.cpp error_if.cpp)
-target_compile_definitions(channel PUBLIC BOOST_GIL_NO_IO _SCL_SECURE_NO_WARNINGS)
-bcm_test(NAME pixel SOURCES pixel.cpp error_if.cpp)
-target_compile_definitions(pixel PUBLIC BOOST_GIL_NO_IO _SCL_SECURE_NO_WARNINGS)
-bcm_test(NAME pixel_iterator SOURCES pixel_iterator.cpp error_if.cpp)
-target_compile_definitions(pixel_iterator PUBLIC BOOST_GIL_NO_IO _SCL_SECURE_NO_WARNINGS)
-bcm_test(NAME image_io SOURCES image_io.cpp error_if.cpp)
-target_compile_definitions(image_io PUBLIC BOOST_GIL_NO_IO _SCL_SECURE_NO_WARNINGS)
+  add_executable(${_target} "")
+  target_sources(${_target} PRIVATE ${_name}.cpp)
+  target_link_libraries(${_target}
+    PRIVATE
+      gil_compile_options
+      gil_include_directories
+      gil_dependencies)
+  target_compile_definitions(${_target} PRIVATE BOOST_GIL_USE_CONCEPT_CHECK)
+  add_test(NAME ${_test} COMMAND ${_target})
 
+  unset(_name)
+  unset(_target)
+  unset(_test)
+endforeach()
+
+add_subdirectory(core)
+
+add_subdirectory(legacy)
+
+add_subdirectory(extension)
+
+# TODO: Split headers tests into core and extensions, see Jamfile-s
+if(BOOST_GIL_BUILD_HEADER_TESTS)
+  add_subdirectory(header)
+endif()

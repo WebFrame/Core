@@ -1,131 +1,115 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_test)
+# Copyright 2020, 2021 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# https://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.16)
 
-find_package(boost_function)
-find_package(boost_core)
-find_package(boost_exception)
-find_package(boost_iterator)
-find_package(boost_algorithm)
-find_package(boost_static_assert)
-find_package(boost_bind)
-find_package(boost_mpl)
-find_package(boost_detail)
-find_package(boost_timer)
-find_package(boost_assert)
-find_package(boost_type_traits)
-find_package(boost_optional)
-find_package(boost_smart_ptr)
-find_package(boost_io)
-find_package(boost_utility)
-find_package(boost_config)
-find_package(boost_numeric_conversion)
-find_package(boost_preprocessor)
+project(boost_test VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-bcm_setup_version(VERSION 1.64.0)
+# Dependencies (please retain formatting, one target per line, no punct.)
 
-add_library(boost_prg_exec_monitor
-    src/execution_monitor.cpp
-    src/debug.cpp
-    src/cpp_main.cpp
+set(_boost_test_dependencies
+  Boost::algorithm
+  Boost::assert
+  Boost::bind
+  Boost::config
+  Boost::core
+  Boost::detail
+  Boost::exception
+  Boost::function
+  Boost::io
+  Boost::iterator
+  Boost::mpl
+  Boost::numeric_conversion
+  Boost::optional
+  Boost::preprocessor
+  Boost::smart_ptr
+  Boost::static_assert
+  Boost::type_traits
+  Boost::utility
 )
 
-target_include_directories(boost_prg_exec_monitor PRIVATE include)
+# Compiled targets
 
-target_link_libraries(boost_prg_exec_monitor PUBLIC
-  boost::algorithm
-  boost::config
-  boost::detail
-  boost::concept_check
-  boost::exception
-  boost::function
-  boost::type_traits
-)
-set_property(TARGET boost_prg_exec_monitor PROPERTY EXPORT_NAME prg_exec_monitor)
+function(boost_test_add_library name)
 
-add_library(boost_test_exec_monitor STATIC
-    src/compiler_log_formatter.cpp
-    src/debug.cpp
-    src/decorator.cpp
-    src/execution_monitor.cpp
-    src/framework.cpp
-    src/plain_report_formatter.cpp
-    src/progress_monitor.cpp
-    src/results_collector.cpp
-    src/results_reporter.cpp
-    src/test_main.cpp
-    src/test_tools.cpp
-    src/test_tree.cpp
-    src/unit_test_log.cpp
-    src/unit_test_main.cpp
-    src/unit_test_monitor.cpp
-    src/unit_test_parameters.cpp
-    src/junit_log_formatter.cpp
-    src/xml_log_formatter.cpp
-    src/xml_report_formatter.cpp
-)
-set_property(TARGET boost_test_exec_monitor PROPERTY EXPORT_NAME test_exec_monitor)
+  add_library(boost_${name} ${ARGN})
+  add_library(Boost::${name} ALIAS boost_${name})
 
-target_include_directories(boost_test_exec_monitor PRIVATE include)
+  target_include_directories(boost_${name} PUBLIC include)
+  target_link_libraries(boost_${name} PUBLIC ${_boost_test_dependencies})
 
-target_link_libraries(boost_test_exec_monitor PUBLIC
-  boost::numeric_conversion
-  boost::algorithm
-  boost::detail
-  boost::concept_check
-  boost::timer
-  boost::function
-  boost::type_traits
-  boost::io
-  boost::optional
+  target_compile_definitions(boost_${name}
+    PUBLIC BOOST_TEST_NO_LIB
+    # Source files already define BOOST_TEST_SOURCE
+    # PRIVATE BOOST_TEST_SOURCE
+  )
+
+  if(BUILD_SHARED_LIBS)
+    target_compile_definitions(boost_${name} PUBLIC BOOST_TEST_DYN_LINK)
+  else()
+    target_compile_definitions(boost_${name} PUBLIC BOOST_TEST_STATIC_LINK)
+  endif()
+
+endfunction()
+
+boost_test_add_library(prg_exec_monitor
+  src/cpp_main.cpp
+  src/debug.cpp
+  src/execution_monitor.cpp
 )
 
-add_library(boost_unit_test_framework
-    src/compiler_log_formatter.cpp
-    src/debug.cpp
-    src/decorator.cpp
-    src/execution_monitor.cpp
-    src/framework.cpp
-    src/plain_report_formatter.cpp
-    src/progress_monitor.cpp
-    src/results_collector.cpp
-    src/results_reporter.cpp
-    src/test_tools.cpp
-    src/test_tree.cpp
-    src/unit_test_log.cpp
-    src/unit_test_main.cpp
-    src/unit_test_monitor.cpp
-    src/unit_test_parameters.cpp
-    src/junit_log_formatter.cpp
-    src/xml_log_formatter.cpp
-    src/xml_report_formatter.cpp
-)
-set_property(TARGET boost_unit_test_framework PROPERTY EXPORT_NAME unit_test_framework)
-
-target_include_directories(boost_unit_test_framework PRIVATE include)
-
-target_link_libraries(boost_unit_test_framework PUBLIC
-  boost::numeric_conversion
-  boost::concept_check
-  boost::detail
-  boost::algorithm
-  boost::timer
-  boost::function
-  boost::type_traits
-  boost::iterator
-  boost::io
-  boost::optional
-  boost::smart_ptr
+set(SOURCES
+  src/compiler_log_formatter.cpp
+  src/debug.cpp
+  src/decorator.cpp
+  src/execution_monitor.cpp
+  src/framework.cpp
+  src/junit_log_formatter.cpp
+  src/plain_report_formatter.cpp
+  src/progress_monitor.cpp
+  src/results_collector.cpp
+  src/results_reporter.cpp
+  src/test_framework_init_observer.cpp
+  src/test_tools.cpp
+  src/test_tree.cpp
+  src/unit_test_log.cpp
+  src/unit_test_main.cpp
+  src/unit_test_monitor.cpp
+  src/unit_test_parameters.cpp
+  src/xml_log_formatter.cpp
+  src/xml_report_formatter.cpp
 )
 
-add_library(boost::test ALIAS boost_unit_test_framework)
-bcm_shadow_notify(boost::test)
+boost_test_add_library(test_exec_monitor STATIC ${SOURCES} src/test_main.cpp)
+boost_test_add_library(unit_test_framework ${SOURCES})
 
-bcm_deploy(TARGETS boost_prg_exec_monitor boost_test_exec_monitor boost_unit_test_framework INCLUDE include NAMESPACE boost::)
+# Header-only targets
 
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
+function(boost_test_add_included_library name)
+
+  add_library(boost_${name} INTERFACE)
+  add_library(Boost::${name} ALIAS boost_${name})
+
+  target_include_directories(boost_${name} INTERFACE include)
+  target_link_libraries(boost_${name} INTERFACE ${_boost_test_dependencies})
+
+endfunction()
+
+boost_test_add_included_library(included_prg_exec_monitor)
+boost_test_add_included_library(included_test_exec_monitor)
+boost_test_add_included_library(included_unit_test_framework)
+
+# Installation
+
+if(BOOST_SUPERPROJECT_VERSION AND NOT CMAKE_VERSION VERSION_LESS 3.13)
+
+  boost_install(
+    TARGETS
+      boost_prg_exec_monitor boost_test_exec_monitor boost_unit_test_framework
+      boost_included_prg_exec_monitor boost_included_test_exec_monitor boost_included_unit_test_framework
+    VERSION ${BOOST_SUPERPROJECT_VERSION}
+    HEADER_DIRECTORY include
+  )
+
 endif()

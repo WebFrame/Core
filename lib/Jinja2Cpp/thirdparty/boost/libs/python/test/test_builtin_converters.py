@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright David Abrahams 2004. Distributed under the Boost
 # Software License, Version 1.0. (See accompanying
 # file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
@@ -14,7 +15,7 @@ r"""
 
 # Wrappers to simplify tests
 >>> def should_pass(method, values):
-...     result = map(method, values[0])
+...     result = list(map(method, values[0]))
 ...     if result != values[0]:
 ...         print("Got %s but expected %s" % (result, values[0]))
 >>> def test_overflow(method, values):
@@ -74,7 +75,7 @@ False
     test unsigned long values which don't fit in a signed long.
     strip any 'L' characters in case the platform has > 32 bit longs
 
->>> hex(rewrap_value_unsigned_long(0x80000001L)).replace('L','')
+>>> hex(rewrap_value_unsigned_long(long(0x80000001))).replace('L','')
 '0x80000001'
 
 >>> rewrap_value_long_long(42) == 42
@@ -132,9 +133,6 @@ True
 
 >>> print(rewrap_value_wstring(u'yo, wassup?'))
 yo, wassup?
-
->>> print(rewrap_value_wstring(u'\U0001f4a9'))
-\U0001f4a9
 
    test that overloading on unicode works:
 

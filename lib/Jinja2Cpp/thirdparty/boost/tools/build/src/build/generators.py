@@ -6,8 +6,8 @@
 # Copyright Rene Rivera 2006.
 #
 # Distributed under the Boost Software License, Version 1.0.
-#    (See accompanying file LICENSE_1_0.txt or copy at
-#          http://www.boost.org/LICENSE_1_0.txt)
+#    (See accompanying file LICENSE.txt or copy at
+#          https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 #  Manages 'generators' --- objects which can do transformation between different
 #  target types and contain algorithm for finding transformation from sources
@@ -663,7 +663,7 @@ def register (g):
     __generators [id] = g
 
     # A generator can produce several targets of the
-    # same type. We want unique occurence of that generator
+    # same type. We want unique occurrence of that generator
     # in .generators.$(t) in that case, otherwise, it will
     # be tried twice and we'll get false ambiguity.
     for t in sequence.unique(g.target_types()):
@@ -748,7 +748,7 @@ def override (overrider_id, overridee_id):
     """Make generator 'overrider-id' be preferred to
     'overridee-id'. If, when searching for generators
     that could produce a target of certain type,
-    both those generators are amoung viable generators,
+    both those generators are among viable generators,
     the overridden generator is immediately discarded.
 
     The overridden generators are discarded immediately
@@ -1070,7 +1070,7 @@ def find_viable_generators (target_type, prop_set):
     # Generators which override 'all'.
     all_overrides = []
 
-    # Generators which are overriden
+    # Generators which are overridden
     overriden_ids = []
 
     for g in viable_generators:

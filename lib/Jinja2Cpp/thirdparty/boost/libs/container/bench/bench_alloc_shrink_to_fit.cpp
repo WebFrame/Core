@@ -24,27 +24,12 @@
 #include <iostream>  //std::cout, std::endl
 #include <cassert>   //assert
 
-#include <boost/timer/timer.hpp>
-using boost::timer::cpu_timer;
-using boost::timer::cpu_times;
-using boost::timer::nanosecond_type;
+#include <boost/move/detail/nsec_clock.hpp>
+using boost::move_detail::cpu_timer;
+using boost::move_detail::cpu_times;
+using boost::move_detail::nanosecond_type;
 
 namespace bc = boost::container;
-
-typedef std::allocator<int>   StdAllocator;
-typedef bc::allocator<int, 2> AllocatorPlusV2;
-typedef bc::allocator<int, 1> AllocatorPlusV1;
-
-template<class Allocator> struct get_allocator_name;
-
-template<> struct get_allocator_name<StdAllocator>
-{  static const char *get() {  return "StdAllocator";  } };
-
-template<> struct get_allocator_name<AllocatorPlusV2>
-{  static const char *get() {  return "AllocatorPlusV2";  } };
-
-template<> struct get_allocator_name<AllocatorPlusV1>
-{  static const char *get() {  return "AllocatorPlusV1";  } };
 
 class MyInt
 {
@@ -64,6 +49,21 @@ class MyInt
    }
 };
 
+typedef std::allocator<MyInt>   StdAllocator;
+typedef bc::allocator<MyInt, 2> AllocatorPlusV2;
+typedef bc::allocator<MyInt, 1> AllocatorPlusV1;
+
+template<class Allocator> struct get_allocator_name;
+
+template<> struct get_allocator_name<StdAllocator>
+{  static const char *get() {  return "StdAllocator";  } };
+
+template<> struct get_allocator_name<AllocatorPlusV2>
+{  static const char *get() {  return "AllocatorPlusV2";  } };
+
+template<> struct get_allocator_name<AllocatorPlusV1>
+{  static const char *get() {  return "AllocatorPlusV1";  } };
+
 void print_header()
 {
    std::cout   << "Allocator" << ";" << "Iterations" << ";" << "Size" << ";"
@@ -73,7 +73,7 @@ void print_header()
 template<class Allocator>
 void vector_test_template(unsigned int num_iterations, unsigned int num_elements, bool csv_output)
 {
-   typedef typename Allocator::template rebind<MyInt>::other IntAllocator;
+   typedef Allocator IntAllocator;
 
    unsigned int capacity = 0;
    const std::size_t Step = 5;
@@ -84,8 +84,8 @@ void vector_test_template(unsigned int num_iterations, unsigned int num_elements
    timer.resume();
 
    #ifndef NDEBUG
-   typedef bc::container_detail::integral_constant
-      <unsigned, bc::container_detail::version<Allocator>::value> alloc_version;
+   typedef bc::dtl::integral_constant
+      <unsigned, bc::dtl::version<Allocator>::value> alloc_version;
    #endif
 
    for(unsigned int r = 0; r != num_iterations; ++r){
@@ -132,21 +132,25 @@ void vector_test_template(unsigned int num_iterations, unsigned int num_elements
 
 int main(int argc, const char *argv[])
 {
-   #define SINGLE_TEST
-   #ifndef SINGLE_TEST
+   //#define SINGLE_TEST
+   #define SIMPLE_IT
+   #ifdef SINGLE_TEST
+      #ifdef NDEBUG
+      unsigned int numit [] =  { 10 };
+      #else
+      unsigned int numit [] =  { 50 };
+      unsigned int numele[] = { 2000 };
+      #endif
+   #elif defined SIMPLE_IT
+      unsigned int numit [] =  { 3 };
+      unsigned int numele[] = { 2000 };
+   #else
       #ifdef NDEBUG
       unsigned int numit [] =  { 100,   1000, 10000 };
       #else
       unsigned int numit [] =  { 10,   100, 1000 };
       #endif
       unsigned int numele [] = { 10000, 2000, 500   };
-   #else
-      #ifdef NDEBUG
-      unsigned int numit [] =  { 500 };
-      #else
-      unsigned int numit [] =  { 50 };
-      #endif
-      unsigned int numele [] = { 2000   };
    #endif
 
    bool csv_output = argc == 2 && (strcmp(argv[1], "--csv-output") == 0);

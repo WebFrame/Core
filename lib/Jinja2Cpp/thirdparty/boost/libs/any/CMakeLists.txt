@@ -1,37 +1,21 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_any)
+# Copyright 2019 Mike Dev
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required( VERSION 3.5...3.20 )
+project( boost_any VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX )
 
-find_package(boost_core)
-find_package(boost_static_assert)
-find_package(boost_mpl)
-find_package(boost_type_index)
-find_package(boost_type_traits)
-find_package(boost_config)
-find_package(boost_throw_exception)
+add_library( boost_any INTERFACE )
+add_library( Boost::any ALIAS boost_any )
 
-bcm_setup_version(VERSION 1.64.0)
+target_include_directories( boost_any INTERFACE include )
 
-add_library(boost_any INTERFACE
+target_link_libraries( boost_any
+    INTERFACE
+        Boost::config
+        Boost::core
+        Boost::static_assert
+        Boost::throw_exception
+        Boost::type_index
+        Boost::type_traits
 )
-set_property(TARGET boost_any PROPERTY EXPORT_NAME any)
-
-target_link_libraries(boost_any INTERFACE boost::core)
-target_link_libraries(boost_any INTERFACE boost::static_assert)
-target_link_libraries(boost_any INTERFACE boost::mpl)
-target_link_libraries(boost_any INTERFACE boost::type_index)
-target_link_libraries(boost_any INTERFACE boost::type_traits)
-target_link_libraries(boost_any INTERFACE boost::config)
-target_link_libraries(boost_any INTERFACE boost::throw_exception)
-
-
-
-
-bcm_deploy(TARGETS boost_any INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
-endif()

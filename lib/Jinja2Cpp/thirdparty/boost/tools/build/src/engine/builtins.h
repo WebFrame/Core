@@ -7,6 +7,7 @@
 #ifndef JAM_BUILTINS_H
 # define JAM_BUILTINS_H
 
+# include "config.h"
 # include "frames.h"
 
 /*
@@ -65,6 +66,7 @@ LIST *builtin_self_path( FRAME * frame, int flags );
 LIST *builtin_makedir( FRAME * frame, int flags );
 LIST *builtin_readlink( FRAME * frame, int flags );
 LIST *builtin_glob_archive( FRAME * frame, int flags );
+LIST *builtin_debug_print_helper( FRAME * frame, int flags );
 
 void backtrace( FRAME *frame );
 extern int last_update_now_status;

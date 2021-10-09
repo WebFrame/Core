@@ -2,8 +2,8 @@
 
 # Copyright 2008 Jurko Gospodnetic
 # Distributed under the Boost Software License, Version 1.0.
-# (See accompanying file LICENSE_1_0.txt or copy at
-# http://www.boost.org/LICENSE_1_0.txt)
+# (See accompanying file LICENSE.txt or copy at
+# https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 # Tests that properties conditioned on more than one other property work as
 # expected.
@@ -165,7 +165,7 @@ feature.feature ccc : 0 1 : incidental ;
 rule buildRule ( name : targets ? : properties * )
 {
     local ttt = [ feature.get-values toolset                     : $(properties) ] ;
-    local vvv = [ feature.get-values toolset-testToolset:version : $(properties) ] ;
+    local vvv = [ feature.get-values "toolset-testToolset:version" : $(properties) ] ;
     local aaa = [ feature.get-values aaa                         : $(properties) ] ;
     local bbb = [ feature.get-values bbb                         : $(properties) ] ;
     local ccc = [ feature.get-values ccc                         : $(properties) ] ;

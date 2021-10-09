@@ -1,4 +1,4 @@
-// Copyright 2013-2016 Antony Polukhin
+// Copyright 2013-2021 Antony Polukhin
 
 // Distributed under the Boost Software License, Version 1.0.
 // (See the accompanying file LICENSE_1_0.txt
@@ -6,7 +6,7 @@
 
 #include <boost/config.hpp>
 
-#if !defined(BOOST_NO_CXX14_CONSTEXPR) && !defined(BOOST_NO_CXX11_CONSTEXPR) && !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
+#if !defined(BOOST_NO_CXX14_CONSTEXPR) && !defined(BOOST_NO_CXX11_CONSTEXPR) && !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES) && (!defined(_MSC_VER) || (_MSC_VER > 1916))
 
 //[type_index_constexpr14_sort_check_example
 /*`
@@ -55,7 +55,7 @@ constexpr bool is_asc_sorted(types<Lhs, Rhs, TN...>) noexcept {
 
 // Using the newly created `is_asc_sorted` trait:
 template <class... T>
-void do_something(const types<T...>& t) noexcept {
+void do_something(const types<T...>& /*value*/) noexcept {
     static_assert(
         is_asc_sorted( types<T...>() ),
         "T... for do_something(const types<T...>& t) must be sorted ascending"
@@ -68,7 +68,7 @@ int main() {
 }
 //] [/type_index_constexpr14_sort_check_example]
 
-#else // #if !defined(BOOST_NO_CXX14_CONSTEXPR) && !defined(BOOST_NO_CXX11_CONSTEXPR) && !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES)
+#else // #if !defined(BOOST_NO_CXX14_CONSTEXPR) && !defined(BOOST_NO_CXX11_CONSTEXPR) && !defined(BOOST_NO_CXX11_VARIADIC_TEMPLATES) && (!defined(_MSC_VER) || (_MSC_VER > 1916))
 
 int main() {}
 

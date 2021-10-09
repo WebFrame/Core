@@ -1,10 +1,16 @@
-// Copyright 2013-2016 Antony Polukhin
+// Copyright 2013-2021 Antony Polukhin
 
 // Distributed under the Boost Software License, Version 1.0.
 // (See the accompanying file LICENSE_1_0.txt
 // or a copy at <http://www.boost.org/LICENSE_1_0.txt>.)
 
 #include <boost/config.hpp>
+
+#include <cstddef>
+
+template <class T>
+void do_something(const T&) {}
+
 
 #if !defined(BOOST_NO_CXX14_CONSTEXPR) && !defined(BOOST_NO_CXX11_CONSTEXPR)
 // Implementation of this function is not essential for the example
@@ -62,6 +68,7 @@ namespace my_project {
 
             // Actual implementation of the serialization goes below
             // ...
+            do_something(value);
         }
     };
 

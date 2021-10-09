@@ -12,6 +12,7 @@
 // Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
 // http://www.boost.org/LICENSE_1_0.txt)
 
+//#include <boost/geometry/geometry.hpp>
 
 #include <string>
 #include <sstream>
@@ -504,10 +505,6 @@ int test_main(int, char* [])
     test_all<bg::model::d2::point_xy<float> >();
     test_all<bg::model::d2::point_xy<double> >();
 
-#ifdef HAVE_TTMATH
-    test_all<bg::model::d2::point_xy<ttmath_big> >();
-#endif
-
     test_empty_input<bg::model::d2::point_xy<int> >();
 
     // below are the test cases moved here from the distance unit test
@@ -520,11 +517,6 @@ int test_main(int, char* [])
     test_3d<bg::model::point<double, 3, bg::cs::cartesian> >();
 
     test_mixed<bg::model::d2::point_xy<float>, bg::model::d2::point_xy<double> >();
-
-#ifdef HAVE_TTMATH
-    test_2d<bg::model::d2::point_xy<ttmath_big> >();
-    test_mixed<bg::model::d2::point_xy<ttmath_big>, bg::model::d2::point_xy<double> >();
-#endif
 
     test_empty_input<bg::model::d2::point_xy<int> >();
 

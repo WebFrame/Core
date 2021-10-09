@@ -1,39 +1,26 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_endian)
+# Copyright 2019 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.16)
 
-find_package(boost_core)
-find_package(boost_static_assert)
-find_package(boost_predef)
-find_package(boost_system)
-find_package(boost_assert)
-find_package(boost_type_traits)
-find_package(boost_config)
-find_package(boost_utility)
+project(boost_endian VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-bcm_setup_version(VERSION 1.64.0)
+add_library(boost_endian INTERFACE)
+add_library(Boost::endian ALIAS boost_endian)
 
-add_library(boost_endian INTERFACE
+target_include_directories(boost_endian INTERFACE include)
+
+target_link_libraries(boost_endian
+  INTERFACE
+    Boost::config
+    Boost::core
+    Boost::static_assert
+    Boost::type_traits
 )
-set_property(TARGET boost_endian PROPERTY EXPORT_NAME endian)
 
-target_link_libraries(boost_endian INTERFACE boost::core)
-target_link_libraries(boost_endian INTERFACE boost::static_assert)
-target_link_libraries(boost_endian INTERFACE boost::predef)
-target_link_libraries(boost_endian INTERFACE boost::system)
-target_link_libraries(boost_endian INTERFACE boost::assert)
-target_link_libraries(boost_endian INTERFACE boost::type_traits)
-target_link_libraries(boost_endian INTERFACE boost::config)
-target_link_libraries(boost_endian INTERFACE boost::utility)
+if(BUILD_TESTING)
 
+  add_subdirectory(test)
 
-
-
-bcm_deploy(TARGETS boost_endian INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
 endif()

@@ -1,6 +1,6 @@
 # expected lite: expected objects for C++11 and later
 
-[![Language](https://img.shields.io/badge/C%2B%2B-11-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) [![License](https://img.shields.io/badge/license-BSL-blue.svg)](https://opensource.org/licenses/BSL-1.0) [![Build Status](https://travis-ci.org/martinmoene/expected-lite.svg?branch=master)](https://travis-ci.org/martinmoene/expected-lite) [![Build status](https://ci.appveyor.com/api/projects/status/sle31w7obrm8lhe1?svg=true)](https://ci.appveyor.com/project/martinmoene/expected-lite) [![Version](https://badge.fury.io/gh/martinmoene%2Fexpected-lite.svg)](https://github.com/martinmoene/expected-lite/releases) [![download](https://img.shields.io/badge/latest-download-blue.svg)](https://raw.githubusercontent.com/martinmoene/expected-lite/master/include/nonstd/expected.hpp) [![Conan](https://img.shields.io/badge/on-conan-blue.svg)](https://bintray.com/martinmoene/nonstd-lite/expected-lite%3Anonstd-lite/_latestVersion) [![Try it online](https://img.shields.io/badge/on-wandbox-blue.svg)](https://wandbox.org/permlink/MnnwqOtE8ZQ4rRsv)
+[![Language](https://img.shields.io/badge/C%2B%2B-11-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) [![License](https://img.shields.io/badge/license-BSL-blue.svg)](https://opensource.org/licenses/BSL-1.0) [![Build Status](https://travis-ci.org/martinmoene/expected-lite.svg?branch=master)](https://travis-ci.org/martinmoene/expected-lite) [![Build status](https://ci.appveyor.com/api/projects/status/sle31w7obrm8lhe1?svg=true)](https://ci.appveyor.com/project/martinmoene/expected-lite) [![Version](https://badge.fury.io/gh/martinmoene%2Fexpected-lite.svg)](https://github.com/martinmoene/expected-lite/releases) [![download](https://img.shields.io/badge/latest-download-blue.svg)](https://raw.githubusercontent.com/martinmoene/expected-lite/master/include/nonstd/expected.hpp) [![Conan](https://img.shields.io/badge/on-conan-blue.svg)](https://conan.io/center/expected-lite) [![Try it online](https://img.shields.io/badge/on-wandbox-blue.svg)](https://wandbox.org/permlink/MnnwqOtE8ZQ4rRsv) [![Try it on godbolt online](https://img.shields.io/badge/on-godbolt-blue.svg)](https://godbolt.org/z/9BuMZx)
 
 *expected lite* is a single-file header-only library for objects that either represent a valid value or an error that you can pass by value. It is intended for use with C++11 and later. The library is based on the [std:&#58;expected](http://wg21.link/p0323) proposal [1] .
 
@@ -89,14 +89,18 @@ Synopsis
 --------
 
 **Contents**  
-- [Configuration macros](#configuration-macros)
+- [Configuration](#configuration)
 - [Types in namespace nonstd](#types-in-namespace-nonstd)  
 - [Interface of expected](#interface-of-expected)  
 - [Algorithms for expected](#algorithms-for-expected)  
 - [Interface of unexpected_type](#interface-of-unexpected_type)  
 - [Algorithms for unexpected_type](#algorithms-for-unexpected_type)  
 
-### Configuration macros
+### Configuration
+
+#### Tweak header
+
+If the compiler supports [`__has_include()`](https://en.cppreference.com/w/cpp/preprocessor/include), *expected lite* supports the [tweak header](https://vector-of-bool.github.io/2020/10/04/lib-configuration.html) mechanism. Provide your *tweak header* as `nonstd/expected.tweak.hpp` in a folder in the include-search-path. In the tweak header, provide definitions as documented below, like `#define expected_CPLUSPLUS 201103L`.
 
 #### Standard selection macro
 \-D<b>nsel\_CPLUSPLUS</b>=199711L  
@@ -110,6 +114,14 @@ Define this to `nsel_EXPECTED_STD` to select `std::expected` as `nonstd::expecte
 
 -D<b>nsel\_P0323R</b>=7  *(default)*  
 Define this to the proposal revision number to control the presence and behavior of features (see tables). Default is 7 for the latest revision.   
+
+#### Disable C++ exceptions
+-D<b>nsel\_CONFIG\_NO\_EXCEPTIONS</b>=0
+Define this to 1 if you want to compile without exceptions. If not defined, the header tries and detect if exceptions have been disabled (e.g. via `-fno-exceptions` or `/kernel`). Default determined in header.
+
+#### Enable SEH exceptions
+-D<b>nsel\_CONFIG\_NO\_EXCEPTIONS\_SEH</b>=0
+Define this to 1 or 0 to control the use of SEH when C++ exceptions are disabled (see above). If not defined, the header tries and detect if SEH is available if C++ exceptions have been disabled (e.g. via `-fno-exceptions` or `/kernel`). Default determined in header.
 
 #### Enable compilation errors
 \-D<b>nsel\_CONFIG\_CONFIRMS\_COMPILATION\_ERRORS</b>=0  
@@ -283,7 +295,7 @@ Other implementations of expected
 
 Notes and references
 --------------------
-[1] Vicente J. Botet Escriba. [p0323 - A proposal to add a utility class to represent expected object (latest)](http://wg21.link/p0323) (HTML). ([r7](http://wg21.link/p0323r7), [r6](http://wg21.link/p0323r6), [r5](http://wg21.link/p0323r5), [r4](http://wg21.link/p0323r4), [r3](http://wg21.link/p0323r3), [r2](http://wg21.link/p0323r2), [r1](http://wg21.link/n4109), [r0](http://wg21.link/n4015), [draft](https://github.com/viboes/std-make/blob/master/doc/proposal/expected/DXXXXR0_expected.pdf)).
+[1] Vicente J. Botet Escriba. [p0323 - A proposal to add a utility class to represent expected object (latest)](http://wg21.link/p0323) (HTML). ([r9](http://wg21.link/p0323r9), [r8](http://wg21.link/p0323r8), [r7](http://wg21.link/p0323r7), [r6](http://wg21.link/p0323r6), [r5](http://wg21.link/p0323r5), [r4](http://wg21.link/p0323r4), [r3](http://wg21.link/p0323r3), [r2](http://wg21.link/p0323r2), [r1](http://wg21.link/n4109), [r0](http://wg21.link/n4015), [draft](https://github.com/viboes/std-make/blob/master/doc/proposal/expected/DXXXXR0_expected.pdf)).
 
 [2] Vicente J. Botet Escriba. [JASEL: Just a simple experimental library for C++](https://github.com/viboes/std-make). Reference implementation of [expected](https://github.com/viboes/std-make/tree/master/include/experimental/fundamental/v3/expected).
 
@@ -325,7 +337,7 @@ The version of *expected lite* is available via tag `[.version]`. The following 
 
 ### A.2 Expected lite test specification
 
-```
+```Text
 unexpected_type: Disallows default construction
 unexpected_type: Allows to copy-construct from unexpected_type, default
 unexpected_type: Allows to move-construct from unexpected_type, default
@@ -441,4 +453,5 @@ expected<void>: Throws bad_expected_access on value access when disengaged
 operators: Provides expected relational operators
 swap: Allows expected to be swapped
 std::hash: Allows to compute hash value for expected
+tweak header: reads tweak header if supported [tweak]
 ```

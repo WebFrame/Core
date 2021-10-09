@@ -60,10 +60,13 @@ BOOST_HANA_NAMESPACE_BEGIN
     struct product_impl : product_impl<T, when<true>> { };
 
     template <typename R>
-    struct product_t;
+    struct product_t {
+        template <typename Xs>
+        constexpr decltype(auto) operator()(Xs&& xs) const;
+    };
 
     template <typename R = integral_constant_tag<int>>
-    constexpr product_t<R> product{};
+    BOOST_HANA_INLINE_VARIABLE constexpr product_t<R> product{};
 #endif
 BOOST_HANA_NAMESPACE_END
 

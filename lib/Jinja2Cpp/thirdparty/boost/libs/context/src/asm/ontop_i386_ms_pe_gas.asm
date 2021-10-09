@@ -26,16 +26,24 @@
 .file	"ontop_i386_ms_pe_gas.asm"
 .text
 .p2align 4,,15
+
+/* mark as using no unregistered SEH handlers */
+.globl	@feat.00
+.def	@feat.00;	.scl	3;	.type	0;	.endef
+.set    @feat.00,   1
+
 .globl	_ontop_fcontext
 .def	_ontop_fcontext;	.scl	2;	.type	32;	.endef
 _ontop_fcontext:
     /* prepare stack */
     leal  -0x2c(%esp), %esp
 
+#if !defined(BOOST_USE_TSX)
     /* save MMX control- and status-word */
     stmxcsr  (%esp)
     /* save x87 control-word */
     fnstcw  0x4(%esp)
+#endif
 
     /* load NT_TIB */
     movl  %fs:(0x18), %edx
@@ -81,10 +89,12 @@ _ontop_fcontext:
     /* restore ESP (pointing to context-data) from EDX */
     movl  %eax, %esp
 
+#if !defined(BOOST_USE_TSX)
     /* restore MMX control- and status-word */
     ldmxcsr  (%esp)
     /* restore x87 control-word */
     fldcw  0x4(%esp)
+#endif
 
     /* restore NT_TIB into EDX */
     movl  %fs:(0x18), %edx

@@ -10,6 +10,13 @@
 #ifndef BOOST_SYSTEM_LINUX_ERROR_HPP
 #define BOOST_SYSTEM_LINUX_ERROR_HPP
 
+#include <boost/config/pragma_message.hpp>
+
+#if !defined(BOOST_ALLOW_DEPRECATED_HEADERS)
+  BOOST_PRAGMA_MESSAGE("This header is deprecated and is slated for removal."
+  " If you want it retained, please open an issue in github.com/boostorg/system.")
+#endif
+
 //  This header is effectively empty for compiles on operating systems where
 //  it is not applicable.
 
@@ -89,7 +96,7 @@ namespace boost
       };
     }  // namespace linux_error
 
-# ifndef BOOST_SYSTEM_NO_DEPRECATED
+# ifdef BOOST_SYSTEM_ENABLE_DEPRECATED
     namespace Linux = linux_error;
 # endif
 

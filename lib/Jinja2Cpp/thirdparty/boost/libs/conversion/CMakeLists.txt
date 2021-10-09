@@ -1,35 +1,22 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_conversion)
+# Copyright 2019 Mike Dev
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required( VERSION 3.5...3.20 )
+project( boost_conversion VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX )
 
-find_package(boost_assert)
-find_package(boost_type_traits)
-find_package(boost_typeof)
-find_package(boost_config)
-find_package(boost_throw_exception)
-find_package(boost_smart_ptr)
+add_library( boost_conversion INTERFACE )
+add_library( Boost::conversion ALIAS boost_conversion )
 
-bcm_setup_version(VERSION 1.64.0)
+target_include_directories( boost_conversion INTERFACE include )
 
-add_library(boost_conversion INTERFACE
+target_link_libraries( boost_conversion
+    INTERFACE
+        Boost::assert
+        Boost::config
+        Boost::core
+        Boost::smart_ptr
+        Boost::throw_exception
+        Boost::type_traits
+        Boost::typeof
 )
-set_property(TARGET boost_conversion PROPERTY EXPORT_NAME conversion)
-
-target_link_libraries(boost_conversion INTERFACE boost::assert)
-target_link_libraries(boost_conversion INTERFACE boost::type_traits)
-target_link_libraries(boost_conversion INTERFACE boost::typeof)
-target_link_libraries(boost_conversion INTERFACE boost::config)
-target_link_libraries(boost_conversion INTERFACE boost::throw_exception)
-target_link_libraries(boost_conversion INTERFACE boost::smart_ptr)
-
-
-
-
-bcm_deploy(TARGETS boost_conversion INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
-endif()

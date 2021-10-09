@@ -23,25 +23,41 @@ inline void check_result_imp(double, double){}
 inline void check_result_imp(long double, long double){}
 inline void check_result_imp(int, int){}
 inline void check_result_imp(long, long){}
-#ifdef BOOST_HAS_LONG_LONG
-inline void check_result_imp(boost::long_long_type, boost::long_long_type){}
-#endif
+inline void check_result_imp(long long, long long){}
 inline void check_result_imp(bool, bool){}
 
 //
 // If the compiler warns about unused typedefs then enable this:
 //
-#if defined(__GNUC__) && ((__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 7)))
+#if (defined(__GNUC__) && ((__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 7)))) || (defined(__clang__) && __clang_major__ > 4)
 #  define BOOST_MATH_ASSERT_UNUSED_ATTRIBUTE __attribute__((unused))
 #else
 #  define BOOST_MATH_ASSERT_UNUSED_ATTRIBUTE
 #endif
 
+template <class T, class U>
+struct local_is_same 
+{ 
+   enum{ value = false }; 
+};
+template <class T>
+struct local_is_same<T, T> 
+{ 
+   enum{ value = true }; 
+};
+
 template <class T1, class T2>
 inline void check_result_imp(T1, T2)
 {
    // This is a static assertion that should always fail to compile...
-   typedef BOOST_MATH_ASSERT_UNUSED_ATTRIBUTE int static_assertion[sizeof(T1) == 0xFFFF];
+#if defined(__GNUC__) && ((__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)))
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+#endif
+   typedef BOOST_MATH_ASSERT_UNUSED_ATTRIBUTE int static_assertion[local_is_same<T1, T2>::value ? 1 : 0];
+#if defined(__GNUC__) && ((__GNUC__ > 4) || ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 8)))
+#pragma GCC diagnostic pop
+#endif
 }
 
 template <class T1, class T2>
@@ -60,9 +76,7 @@ union max_align_type
    long l;
    double d;
    long double ld;
-#ifdef BOOST_HAS_LONG_LONG
    long long ll;
-#endif
 };
 
 template <class Distribution>

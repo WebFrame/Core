@@ -1,49 +1,51 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_random)
+# Copyright 2020, 2021 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# https://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.16)
 
-find_package(boost_core)
-find_package(boost_static_assert)
-find_package(boost_mpl)
-find_package(boost_system)
-find_package(boost_assert)
-find_package(boost_range)
-find_package(boost_type_traits)
-find_package(boost_integer)
-find_package(boost_config)
-find_package(boost_throw_exception)
-find_package(boost_math)
-find_package(boost_utility)
+project(boost_random VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-bcm_setup_version(VERSION 1.64.0)
-
-add_library(boost_random 
-src/random_device.cpp
+add_library(boost_random
+  src/random_device.cpp
 )
-set_property(TARGET boost_random PROPERTY EXPORT_NAME random)
 
-target_link_libraries(boost_random PUBLIC boost::core)
-target_link_libraries(boost_random PUBLIC boost::static_assert)
-target_link_libraries(boost_random PUBLIC boost::mpl)
-target_link_libraries(boost_random PUBLIC boost::system)
-target_link_libraries(boost_random PUBLIC boost::assert)
-target_link_libraries(boost_random PUBLIC boost::range)
-target_link_libraries(boost_random PUBLIC boost::type_traits)
-target_link_libraries(boost_random PUBLIC boost::integer)
-target_link_libraries(boost_random PUBLIC boost::config)
-target_link_libraries(boost_random PUBLIC boost::throw_exception)
-target_link_libraries(boost_random PUBLIC boost::math)
-target_link_libraries(boost_random PUBLIC boost::utility)
+add_library(Boost::random ALIAS boost_random)
 
+target_include_directories(boost_random PUBLIC include)
 
+target_link_libraries(boost_random
+  PUBLIC
+    Boost::array
+    Boost::assert
+    Boost::config
+    Boost::core
+    Boost::dynamic_bitset
+    Boost::integer
+    Boost::io
+    Boost::range
+    Boost::static_assert
+    Boost::system
+    Boost::throw_exception
+    Boost::type_traits
+    Boost::utility
+)
 
-target_include_directories(boost_random PRIVATE include)
+target_compile_definitions(boost_random
+  PUBLIC BOOST_RANDOM_NO_LIB
+  # Source files already define BOOST_RANDOM_SOURCE
+  # PRIVATE BOOST_RANDOM_SOURCE
+)
 
-bcm_deploy(TARGETS boost_random INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
+if(BUILD_SHARED_LIBS)
+  target_compile_definitions(boost_random PUBLIC BOOST_RANDOM_DYN_LINK)
+else()
+  target_compile_definitions(boost_random PUBLIC BOOST_RANDOM_STATIC_LINK)
 endif()
+
+if(BUILD_TESTING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
+
+  add_subdirectory(test)
+
+endif()
+

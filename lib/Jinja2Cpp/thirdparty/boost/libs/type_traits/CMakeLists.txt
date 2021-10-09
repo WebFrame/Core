@@ -1,29 +1,20 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_type_traits)
+# Copyright 2018 Mike Dev
+# Copyright 2019 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+# We support CMake 3.5, but prefer 3.16 policies and behavior
+cmake_minimum_required(VERSION 3.5...3.16)
 
-find_package(boost_core)
-find_package(boost_static_assert)
-find_package(boost_config)
+project(boost_type_traits VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-bcm_setup_version(VERSION 1.64.0)
+add_library(boost_type_traits INTERFACE)
+add_library(Boost::type_traits ALIAS boost_type_traits)
 
-add_library(boost_type_traits INTERFACE
+target_include_directories(boost_type_traits INTERFACE include)
+
+target_link_libraries(boost_type_traits
+  INTERFACE
+    Boost::config
+    Boost::static_assert
 )
-set_property(TARGET boost_type_traits PROPERTY EXPORT_NAME type_traits)
-
-target_link_libraries(boost_type_traits INTERFACE boost::core)
-target_link_libraries(boost_type_traits INTERFACE boost::static_assert)
-target_link_libraries(boost_type_traits INTERFACE boost::config)
-
-
-
-
-bcm_deploy(TARGETS boost_type_traits INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
-endif()

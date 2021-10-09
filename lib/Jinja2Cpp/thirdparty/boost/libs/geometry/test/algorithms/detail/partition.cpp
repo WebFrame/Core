@@ -1,9 +1,10 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 //
 // Copyright (c) 2007-2015 Barend Gehrels, Amsterdam, the Netherlands.
+// Copyright (c) 2017 Adam Wulkiewicz, Lodz, Poland.
 //
-// This file was modified by Oracle on 2017.
-// Modifications copyright (c) 2017 Oracle and/or its affiliates.
+// This file was modified by Oracle on 2017, 2018.
+// Modifications copyright (c) 2017-2018 Oracle and/or its affiliates.
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 //
 // Use, modification and distribution is subject to the Boost Software License,
@@ -64,7 +65,12 @@ struct ovelaps_box
     template <typename Box, typename InputItem>
     static inline bool apply(Box const& box, InputItem const& item)
     {
-        return ! bg::detail::disjoint::disjoint_box_box(box, item.box);
+        typename bg::strategy::disjoint::services::default_strategy
+            <
+                Box, Box
+            >::type strategy;
+
+        return ! bg::detail::disjoint::disjoint_box_box(box, item.box, strategy);
     }
 };
 
@@ -81,7 +87,7 @@ struct box_visitor
     {}
 
     template <typename Item>
-    inline void apply(Item const& item1, Item const& item2)
+    inline bool apply(Item const& item1, Item const& item2)
     {
         if (bg::intersects(item1.box, item2.box))
         {
@@ -90,40 +96,45 @@ struct box_visitor
             area += bg::area(b);
             count++;
         }
+        return true;
     }
 };
 
 struct point_in_box_visitor
 {
     int count;
+
     point_in_box_visitor()
         : count(0)
     {}
 
     template <typename Point, typename BoxItem>
-    inline void apply(Point const& point, BoxItem const& box_item)
+    inline bool apply(Point const& point, BoxItem const& box_item)
     {
         if (bg::within(point, box_item.box))
         {
             count++;
         }
+        return true;
     }
 };
 
 struct reversed_point_in_box_visitor
 {
     int count;
+
     reversed_point_in_box_visitor()
         : count(0)
     {}
 
     template <typename BoxItem, typename Point>
-    inline void apply(BoxItem const& box_item, Point const& point)
+    inline bool apply(BoxItem const& box_item, Point const& point)
     {
         if (bg::within(point, box_item.box))
         {
             count++;
         }
+        return true;
     }
 };
 
@@ -199,12 +210,13 @@ struct point_visitor
     {}
 
     template <typename Item>
-    inline void apply(Item const& item1, Item const& item2)
+    inline bool apply(Item const& item1, Item const& item2)
     {
         if (bg::equals(item1, item2))
         {
             count++;
         }
+        return true;
     }
 };
 

@@ -17,8 +17,6 @@
 #include <boost/spirit/include/phoenix_core.hpp>
 #include <boost/spirit/include/phoenix_operator.hpp>
 #include <boost/spirit/include/phoenix_statement.hpp>
-#include <boost/spirit/include/phoenix_object.hpp>
-#include <boost/spirit/include/phoenix_stl.hpp>
 
 #include <sstream>
 
@@ -93,9 +91,9 @@ int main()
     std::size_t i = 0;
     for (/**/; it != end2 && i < test_data_size; ++it, ++i)
     {
-        std::stringstream ss;
-        ss << it->id() << "," << *it;
-        BOOST_TEST(ss.str() == test_data[i]);
+        std::stringstream ss2;
+        ss2 << it->id() << "," << *it;
+        BOOST_TEST(ss2.str() == test_data[i]);
     }
     BOOST_TEST(it == end2);
     BOOST_TEST(i == test_data_size);

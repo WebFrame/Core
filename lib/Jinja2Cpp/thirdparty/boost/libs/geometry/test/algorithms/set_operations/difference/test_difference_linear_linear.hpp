@@ -1,6 +1,6 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 
-// Copyright (c) 2014-2017, Oracle and/or its affiliates.
+// Copyright (c) 2014-2020, Oracle and/or its affiliates.
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
 
@@ -12,6 +12,8 @@
 #define BOOST_GEOMETRY_TEST_DIFFERENCE_LINEAR_LINEAR_HPP
 
 #include <limits>
+
+#include <boost/range/value_type.hpp>
 
 #include <boost/geometry/geometry.hpp>
 #include "../test_set_ops_linear_linear.hpp"
@@ -32,7 +34,7 @@ inline void check_result(Geometry1 const& geometry1,
                          MultiLineString const& mls_output,
                          MultiLineString const& mls_diff,
                          std::string const& case_id,
-                         double tolerance)
+                         double tolerance = std::numeric_limits<double>::epsilon())
 {
     BOOST_CHECK_MESSAGE( equals::apply(mls_diff, mls_output, tolerance),
                          "case id: " << case_id

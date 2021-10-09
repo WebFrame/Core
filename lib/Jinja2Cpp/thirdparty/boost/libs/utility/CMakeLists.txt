@@ -1,37 +1,24 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_utility)
+# Copyright 2018 Peter Dimov
+# Copyright 2018 Andrey Semashev
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.20)
 
-find_package(boost_core)
-find_package(boost_static_assert)
-find_package(boost_mpl)
-find_package(boost_type_traits)
-find_package(boost_preprocessor)
-find_package(boost_config)
-find_package(boost_throw_exception)
+project(boost_utility VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-bcm_setup_version(VERSION 1.64.0)
+add_library(boost_utility INTERFACE)
+add_library(Boost::utility ALIAS boost_utility)
 
-add_library(boost_utility INTERFACE
+target_include_directories(boost_utility INTERFACE include)
+
+target_link_libraries(boost_utility
+    INTERFACE
+        Boost::config
+        Boost::core
+        Boost::io
+        Boost::preprocessor
+        Boost::static_assert
+        Boost::throw_exception
+        Boost::type_traits
 )
-set_property(TARGET boost_utility PROPERTY EXPORT_NAME utility)
-
-target_link_libraries(boost_utility INTERFACE boost::core)
-target_link_libraries(boost_utility INTERFACE boost::static_assert)
-target_link_libraries(boost_utility INTERFACE boost::mpl)
-target_link_libraries(boost_utility INTERFACE boost::type_traits)
-target_link_libraries(boost_utility INTERFACE boost::preprocessor)
-target_link_libraries(boost_utility INTERFACE boost::config)
-target_link_libraries(boost_utility INTERFACE boost::throw_exception)
-
-
-
-
-bcm_deploy(TARGETS boost_utility INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
-endif()

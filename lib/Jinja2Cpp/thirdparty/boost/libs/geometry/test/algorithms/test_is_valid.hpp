@@ -1,7 +1,7 @@
 // Boost.Geometry (aka GGL, Generic Geometry Library)
 // Unit Test
 
-// Copyright (c) 2014-2017, Oracle and/or its affiliates.
+// Copyright (c) 2014-2020, Oracle and/or its affiliates.
 
 // Contributed and/or modified by Menelaos Karavelas, on behalf of Oracle
 // Contributed and/or modified by Adam Wulkiewicz, on behalf of Oracle
@@ -17,7 +17,10 @@
 #include <string>
 
 #include <boost/core/ignore_unused.hpp>
-#include <boost/range.hpp>
+#include <boost/range/begin.hpp>
+#include <boost/range/end.hpp>
+#include <boost/range/size.hpp>
+#include <boost/range/value_type.hpp>
 #include <boost/variant/variant.hpp>
 
 #include <boost/geometry/core/closure.hpp>
@@ -325,6 +328,30 @@ struct validity_tester_areal
 };
 
 
+template <bool AllowDuplicates>
+struct validity_tester_geo_areal
+{
+    template <typename Geometry>
+    static inline bool apply(Geometry const& geometry)
+    {
+        bg::is_valid_default_policy<AllowDuplicates> visitor;
+        bg::strategy::intersection::geographic_segments<> s;
+        return bg::is_valid(geometry, visitor, s);
+    }
+
+    template <typename Geometry>
+    static inline std::string reason(Geometry const& geometry)
+    {
+        std::ostringstream oss;
+        bg::failing_reason_policy<AllowDuplicates> visitor(oss);
+        bg::strategy::intersection::geographic_segments<> s;
+        bg::is_valid(geometry, visitor, s);
+        return oss.str();
+    }
+
+};
+
+
 //----------------------------------------------------------------------------
 
 
@@ -376,7 +403,7 @@ public:
                              bool expected_result)
     {
         std::stringstream sstr;
-        sstr << case_id << "-original";
+        sstr << case_id << "-original"; // which is: CCW open
         base_test(sstr.str(), geometry, expected_result);
 
         if ( is_convertible_to_closed<Geometry>::apply(geometry) )

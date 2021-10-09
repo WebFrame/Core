@@ -1,37 +1,32 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_exception)
+# Copyright 2020, 2021 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# https://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.20)
 
-find_package(boost_core)
-find_package(boost_tuple)
-find_package(boost_assert)
-find_package(boost_smart_ptr)
-find_package(boost_config)
-find_package(boost_throw_exception)
+project(boost_exception VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-bcm_setup_version(VERSION 1.64.0)
-
-add_library(boost_exception 
-src/clone_current_exception_non_intrusive.cpp
+add_library(boost_exception STATIC
+  src/clone_current_exception_non_intrusive.cpp
 )
-set_property(TARGET boost_exception PROPERTY EXPORT_NAME exception)
 
-target_link_libraries(boost_exception PUBLIC boost::core)
-target_link_libraries(boost_exception PUBLIC boost::tuple)
-target_link_libraries(boost_exception PUBLIC boost::assert)
-target_link_libraries(boost_exception PUBLIC boost::smart_ptr)
-target_link_libraries(boost_exception PUBLIC boost::config)
-target_link_libraries(boost_exception PUBLIC boost::throw_exception)
+add_library(Boost::exception ALIAS boost_exception)
 
+target_include_directories(boost_exception PUBLIC include)
 
+target_link_libraries(boost_exception
+  PUBLIC
+    Boost::assert
+    Boost::config
+    Boost::core
+    Boost::smart_ptr
+    Boost::throw_exception
+    Boost::tuple
+    Boost::type_traits
+)
 
-target_include_directories(boost_exception PRIVATE include)
+if(BUILD_TESTING AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/CMakeLists.txt")
 
-bcm_deploy(TARGETS boost_exception INCLUDE include NAMESPACE boost::)
+  add_subdirectory(test)
 
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
 endif()

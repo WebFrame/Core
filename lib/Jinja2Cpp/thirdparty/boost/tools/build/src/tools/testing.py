@@ -4,7 +4,7 @@
 # Copyright 2005 Dave Abrahams
 # Copyright 2002, 2003, 2004, 2005, 2010 Vladimir Prus
 # Distributed under the Boost Software License, Version 1.0.
-# (See accompanying file LICENSE_1_0.txt or http://www.boost.org/LICENSE_1_0.txt)
+# (See accompanying file LICENSE.txt or https://www.bfgroup.xyz/b2/LICENSE.txt)
 
 # This module implements regression testing framework. It declares a number of
 # main target rules which perform some action and, if the results are OK,
@@ -57,7 +57,7 @@ import sys
 def init():
     pass
 
-# Feature controling the command used to lanch test programs.
+# Feature controlling the command used to lanch test programs.
 feature.feature("testing.launcher", [], ["free", "optional"])
 
 feature.feature("test-info", [], ["free", "incidental"])

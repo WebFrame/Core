@@ -1,77 +1,129 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_compute)
+# ---------------------------------------------------------------------------
+#  Copyright (c) 2013 Kyle Lutz <kyle.r.lutz@gmail.com>
+#
+#  Distributed under the Boost Software License, Version 1.0
+#  See accompanying file LICENSE_1_0.txt or copy at
+#  http://www.boost.org/LICENSE_1_0.txt
+#
+# ---------------------------------------------------------------------------
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 2.8)
 
-find_package(boost_iterator)
-find_package(boost_property_tree)
-find_package(boost_array)
-find_package(boost_utility)
-find_package(boost_static_assert)
-find_package(boost_uuid)
-find_package(boost_proto)
-find_package(boost_type_traits)
-find_package(boost_smart_ptr)
-find_package(boost_config)
-find_package(boost_function)
-find_package(boost_core)
-find_package(boost_tuple)
-find_package(boost_mpl)
-find_package(boost_assert)
-find_package(boost_fusion)
-find_package(boost_preprocessor)
-find_package(boost_optional)
-find_package(boost_function_types)
-find_package(boost_algorithm)
-find_package(boost_thread)
-find_package(boost_chrono)
-find_package(boost_range)
-find_package(boost_typeof)
-find_package(boost_filesystem)
-find_package(boost_lexical_cast)
-find_package(boost_throw_exception)
+project(BoostCompute)
 
-bcm_setup_version(VERSION 1.64.0)
-
-add_library(boost_compute INTERFACE
-)
-set_property(TARGET boost_compute PROPERTY EXPORT_NAME compute)
-
-target_link_libraries(boost_compute INTERFACE boost::iterator)
-target_link_libraries(boost_compute INTERFACE boost::property_tree)
-target_link_libraries(boost_compute INTERFACE boost::array)
-target_link_libraries(boost_compute INTERFACE boost::utility)
-target_link_libraries(boost_compute INTERFACE boost::static_assert)
-target_link_libraries(boost_compute INTERFACE boost::uuid)
-target_link_libraries(boost_compute INTERFACE boost::proto)
-target_link_libraries(boost_compute INTERFACE boost::type_traits)
-target_link_libraries(boost_compute INTERFACE boost::smart_ptr)
-target_link_libraries(boost_compute INTERFACE boost::config)
-target_link_libraries(boost_compute INTERFACE boost::function)
-target_link_libraries(boost_compute INTERFACE boost::core)
-target_link_libraries(boost_compute INTERFACE boost::tuple)
-target_link_libraries(boost_compute INTERFACE boost::mpl)
-target_link_libraries(boost_compute INTERFACE boost::assert)
-target_link_libraries(boost_compute INTERFACE boost::fusion)
-target_link_libraries(boost_compute INTERFACE boost::preprocessor)
-target_link_libraries(boost_compute INTERFACE boost::optional)
-target_link_libraries(boost_compute INTERFACE boost::function_types)
-target_link_libraries(boost_compute INTERFACE boost::algorithm)
-target_link_libraries(boost_compute INTERFACE boost::thread)
-target_link_libraries(boost_compute INTERFACE boost::chrono)
-target_link_libraries(boost_compute INTERFACE boost::range)
-target_link_libraries(boost_compute INTERFACE boost::typeof)
-target_link_libraries(boost_compute INTERFACE boost::filesystem)
-target_link_libraries(boost_compute INTERFACE boost::lexical_cast)
-target_link_libraries(boost_compute INTERFACE boost::throw_exception)
-
-
-
-
-bcm_deploy(TARGETS boost_compute INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
+set(CMAKE_MODULE_PATH ${BoostCompute_SOURCE_DIR}/cmake)
+if (CMAKE_VERSION VERSION_LESS "3.1.0")
+    list(APPEND CMAKE_MODULE_PATH "${BoostCompute_SOURCE_DIR}/cmake/opencl")
 endif()
+
+# find OpenCL
+find_package(OpenCL REQUIRED)
+include_directories(SYSTEM ${OpenCL_INCLUDE_DIRS})
+
+# find Boost
+find_package(Boost 1.54 REQUIRED)
+include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
+
+# optional support for c++11
+option(BOOST_COMPUTE_USE_CPP11 "Use C++11 features" OFF)
+if(NOT MSVC)
+  if(${BOOST_COMPUTE_USE_CPP11})
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+  endif()
+endif()
+
+# optional support for offline-caching
+option(BOOST_COMPUTE_USE_OFFLINE_CACHE "Use offline cache for OpenCL program binaries" OFF)
+if(${BOOST_COMPUTE_USE_OFFLINE_CACHE})
+  add_definitions(-DBOOST_COMPUTE_USE_OFFLINE_CACHE)
+endif()
+
+# thread-safety options
+option(BOOST_COMPUTE_THREAD_SAFE "Compile with BOOST_COMPUTE_THREAD_SAFE defined" OFF)
+if(${BOOST_COMPUTE_THREAD_SAFE})
+  add_definitions(-DBOOST_COMPUTE_THREAD_SAFE)
+  if(${BOOST_COMPUTE_USE_CPP11})
+    if(MSVC)
+      if (MSVC_VERSION GREATER 1800)
+        add_definitions(-DBOOST_COMPUTE_HAVE_THREAD_LOCAL)
+      endif()
+    else()
+      add_definitions(-DBOOST_COMPUTE_HAVE_THREAD_LOCAL)
+    endif()
+  endif()
+endif()
+
+# optional third-party libraries
+option(BOOST_COMPUTE_HAVE_EIGEN "Have Eigen" OFF)
+option(BOOST_COMPUTE_HAVE_OPENCV "Have OpenCV" OFF)
+option(BOOST_COMPUTE_HAVE_QT "Have Qt" OFF)
+option(BOOST_COMPUTE_HAVE_VTK "Have VTK" OFF)
+option(BOOST_COMPUTE_HAVE_CUDA "Have CUDA" OFF)
+option(BOOST_COMPUTE_HAVE_TBB "Have TBB" OFF)
+option(BOOST_COMPUTE_HAVE_BOLT "Have BOLT" OFF)
+
+include_directories(include)
+
+if(${OpenCL_HEADER_CL_EXT_FOUND})
+  add_definitions(-DBOOST_COMPUTE_HAVE_HDR_CL_EXT)
+endif()
+
+if(WIN32)
+  # optional support for boost dynamic libraries
+  option(BOOST_COMPUTE_BOOST_ALL_DYN_LINK "Use boost dynamic link libraries" OFF)
+  if(${BOOST_COMPUTE_BOOST_ALL_DYN_LINK})
+    add_definitions(-DBOOST_ALL_DYN_LINK)
+  else()
+    # for default use statis libs
+    set(Boost_USE_STATIC_LIBS ON)
+  endif()
+  link_directories(${Boost_LIBRARY_DIRS})
+endif()
+
+# compiler options
+option(BOOST_COMPUTE_ENABLE_COVERAGE "Enable code coverage generation" OFF)
+
+# Visual Studio C++
+if(MSVC)
+  add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+  add_definitions(-D_SCL_SECURE_NO_WARNINGS)
+  add_definitions(-DNOMINMAX)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4003") # Not enough actual parameters for a BOOST_PP macro
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4244") # Warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4305") # Warning C4305: 'initializing': truncation from 'double' to 'float'
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4800") # Warning C4800: 'uint32_t' : forcing value to bool 'true' or 'false' (performance warning)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4838") # Warning C4838: conversion from 'double' to 'float' requires a narrowing conversion
+endif()
+
+option(BOOST_COMPUTE_BUILD_TESTS "Build the Boost.Compute tests" OFF)
+if(${BOOST_COMPUTE_BUILD_TESTS})
+  enable_testing()
+  add_subdirectory(test)
+endif()
+
+option(BOOST_COMPUTE_BUILD_BENCHMARKS "Build the Boost.Compute benchmarks" OFF)
+if(${BOOST_COMPUTE_BUILD_BENCHMARKS})
+  add_subdirectory(perf)
+endif()
+
+option(BOOST_COMPUTE_BUILD_EXAMPLES "Build the Boost.Compute examples" OFF)
+if(${BOOST_COMPUTE_BUILD_EXAMPLES})
+  add_subdirectory(example)
+endif()
+
+# configure cmake config file
+configure_file(
+  cmake/BoostComputeConfig.cmake.in
+  ${BoostCompute_BINARY_DIR}/BoostComputeConfig.cmake
+  @ONLY
+)
+
+# install cmake config file
+install(
+  FILES ${BoostCompute_BINARY_DIR}/BoostComputeConfig.cmake
+  DESTINATION lib/cmake/BoostCompute
+)
+
+# install header files
+install(DIRECTORY include/boost DESTINATION include/compute)

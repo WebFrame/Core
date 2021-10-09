@@ -1,43 +1,28 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_optional)
+# Copyright 2019 Mike Dev
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at https://www.boost.org/LICENSE_1_0.txt
+#
+# NOTE: CMake support for Boost.Optional is currently experimental at best
+#       and the interface is likely to change in the future
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required( VERSION 3.5 )
+project( BoostOptional )
 
-find_package(boost_core)
-find_package(boost_static_assert)
-find_package(boost_config)
-find_package(boost_mpl)
-find_package(boost_move)
-find_package(boost_detail)
-find_package(boost_assert)
-find_package(boost_type_traits)
-find_package(boost_throw_exception)
-find_package(boost_utility)
+add_library( boost_optional INTERFACE )
+add_library( Boost::optional ALIAS boost_optional )
 
-bcm_setup_version(VERSION 1.64.0)
+target_include_directories( boost_optional INTERFACE include )
 
-add_library(boost_optional INTERFACE
+target_link_libraries( boost_optional
+    INTERFACE
+        Boost::assert
+        Boost::config
+        Boost::core
+        Boost::detail
+        Boost::move
+        Boost::predef
+        Boost::static_assert
+        Boost::throw_exception
+        Boost::type_traits
+        Boost::utility
 )
-set_property(TARGET boost_optional PROPERTY EXPORT_NAME optional)
-
-target_link_libraries(boost_optional INTERFACE boost::core)
-target_link_libraries(boost_optional INTERFACE boost::static_assert)
-target_link_libraries(boost_optional INTERFACE boost::config)
-target_link_libraries(boost_optional INTERFACE boost::mpl)
-target_link_libraries(boost_optional INTERFACE boost::move)
-target_link_libraries(boost_optional INTERFACE boost::detail)
-target_link_libraries(boost_optional INTERFACE boost::assert)
-target_link_libraries(boost_optional INTERFACE boost::type_traits)
-target_link_libraries(boost_optional INTERFACE boost::throw_exception)
-target_link_libraries(boost_optional INTERFACE boost::utility)
-
-
-
-
-bcm_deploy(TARGETS boost_optional INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
-endif()

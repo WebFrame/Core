@@ -35,7 +35,8 @@ BOOST_HANA_NAMESPACE_BEGIN
     //! The representation of `hana::range` is implementation defined. In
     //! particular, one should not take for granted the number and types
     //! of template parameters. The proper way to create a `hana::range`
-    //! is to use `hana::range_c` or `hana::make_range`.
+    //! is to use `hana::range_c` or `hana::make_range`. More details
+    //! [in the tutorial](@ref tutorial-containers-types).
     //!
     //!
     //! Modeled concepts
@@ -111,7 +112,7 @@ BOOST_HANA_NAMESPACE_BEGIN
 
     //! Alias to `make<range_tag>`; provided for convenience.
     //! @relates hana::range
-    constexpr auto make_range = make<range_tag>;
+    BOOST_HANA_INLINE_VARIABLE constexpr auto make_range = make<range_tag>;
 
     //! Shorthand to create a `hana::range` with the given bounds.
     //! @relates hana::range
@@ -142,7 +143,7 @@ BOOST_HANA_NAMESPACE_BEGIN
     constexpr auto range_c = make_range(integral_c<T, from>, integral_c<T, to>);
 #else
     template <typename T, T from, T to>
-    constexpr range<T, from, to> range_c{};
+    BOOST_HANA_INLINE_VARIABLE constexpr range<T, from, to> range_c{};
 #endif
 BOOST_HANA_NAMESPACE_END
 

@@ -1,27 +1,24 @@
-cmake_minimum_required(VERSION 3.5)
-project(boost_bind)
+# Copyright 2018, 2019 Peter Dimov
+# Distributed under the Boost Software License, Version 1.0.
+# See accompanying file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt
 
-find_package(BCM)
-include(BCMDeploy)
-include(BCMSetupVersion)
+cmake_minimum_required(VERSION 3.5...3.16)
 
-find_package(boost_config)
-find_package(boost_core)
+project(boost_bind VERSION "${BOOST_SUPERPROJECT_VERSION}" LANGUAGES CXX)
 
-bcm_setup_version(VERSION 1.64.0)
+add_library(boost_bind INTERFACE)
+add_library(Boost::bind ALIAS boost_bind)
 
-add_library(boost_bind INTERFACE
+target_include_directories(boost_bind INTERFACE include)
+
+target_link_libraries(boost_bind
+  INTERFACE
+    Boost::config
+    Boost::core
 )
-set_property(TARGET boost_bind PROPERTY EXPORT_NAME bind)
 
-target_link_libraries(boost_bind INTERFACE boost::config)
-target_link_libraries(boost_bind INTERFACE boost::core)
+if(BUILD_TESTING)
 
+  add_subdirectory(test)
 
-
-
-bcm_deploy(TARGETS boost_bind INCLUDE include NAMESPACE boost::)
-
-if(BOOST_CMAKE_BUILD_TESTS)
-    add_subdirectory(test)
 endif()

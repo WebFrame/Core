@@ -11,6 +11,7 @@
 #ifndef BOOST_JAM_CONSTANTS_H
 #define BOOST_JAM_CONSTANTS_H
 
+#include "config.h"
 #include "object.h"
 
 void constants_init( void );
@@ -71,5 +72,7 @@ extern OBJECT * constant_extra_pythonpath;          /* "EXTRA_PYTHONPATH" */
 extern OBJECT * constant_MAIN_PYTHON;               /* "MAIN_PYTHON" */
 extern OBJECT * constant_FILE_ARCHIVESCAN;          /* "FILE_ARCHIVESCAN" */
 extern OBJECT * constant_BUILTIN_GLOB_ARCHIVE_BACK; /* "BUILTIN_GLOB_ARCHIVE_BACK" */
+
+extern OBJECT * constant_RESPONSE_FILE_SUB; // "RESPONSE_FILE_SUB"
 
 #endif

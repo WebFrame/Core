@@ -29,9 +29,10 @@
 
 #include <boost/config.hpp>
 
+BOOST_AUTO_TEST_SUITE( bind_stdin );
 
 #if defined(BOOST_WINDOWS_API)
-#   include <Windows.h>
+#   include <windows.h>
 typedef boost::asio::windows::stream_handle pipe_end;
 #elif defined(BOOST_POSIX_API)
 #   include <sys/wait.h>
@@ -111,9 +112,9 @@ BOOST_AUTO_TEST_CASE(async_io, *boost::unit_test::timeout(2))
     std::cout << "async_io" << std::endl;
     using boost::unit_test::framework::master_test_suite;
 
-    boost::asio::io_service io_service;
+    boost::asio::io_context io_context;
 
-    bp::async_pipe p1(io_service);
+    bp::async_pipe p1(io_context);
     bp::ipstream is;
 
     boost::asio::streambuf sb;
@@ -135,7 +136,7 @@ BOOST_AUTO_TEST_CASE(async_io, *boost::unit_test::timeout(2))
     boost::asio::async_write(p1, sb,
         write_handler(is));
 
-    io_service.run();
+    io_context.run();
 
     c.wait();
 }
@@ -255,3 +256,5 @@ BOOST_AUTO_TEST_CASE(file_io_C, *boost::unit_test::timeout(2))
     c.wait();
     boost::filesystem::remove(pth);
 }
+
+BOOST_AUTO_TEST_SUITE_END();

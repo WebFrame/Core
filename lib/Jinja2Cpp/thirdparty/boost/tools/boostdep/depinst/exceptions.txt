@@ -25,6 +25,14 @@ config:
   boost/detail/workaround.hpp
   boost/limits.hpp
   boost/version.hpp
+container_hash:
+  boost/functional/hash.hpp
+  boost/functional/hash/extensions.hpp
+  boost/functional/hash/hash.hpp
+  boost/functional/hash/hash_fwd.hpp
+  boost/functional/hash_fwd.hpp
+contract:
+  boost/contract_macro.hpp
 conversion:
   boost/implicit_cast.hpp
   boost/polymorphic_cast.hpp
@@ -46,7 +54,6 @@ core:
   boost/swap.hpp
   boost/type.hpp
   boost/utility/addressof.hpp
-  boost/utility/empty_deleter.hpp
   boost/utility/enable_if.hpp
   boost/utility/explicit_operator_bool.hpp
   boost/utility/swap.hpp
@@ -55,13 +62,8 @@ detail:
   boost/blank.hpp
   boost/blank_fwd.hpp
   boost/cstdlib.hpp
-disjoint_sets:
-  boost/pending/detail/disjoint_sets.hpp
-  boost/pending/disjoint_sets.hpp
 dynamic_bitset:
-  boost/detail/dynamic_bitset.hpp
   boost/dynamic_bitset_fwd.hpp
-  boost/pending/lowest_bit.hpp
 exception:
   boost/exception_ptr.hpp
 foreach:
@@ -72,7 +74,9 @@ graph:
   boost/detail/algorithm.hpp
   boost/pending/bucket_sorter.hpp
   boost/pending/container_traits.hpp
+  boost/pending/detail/disjoint_sets.hpp
   boost/pending/detail/property.hpp
+  boost/pending/disjoint_sets.hpp
   boost/pending/fenced_priority_queue.hpp
   boost/pending/fibonacci_heap.hpp
   boost/pending/indirect_cmp.hpp
@@ -80,6 +84,7 @@ graph:
   boost/pending/mutable_heap.hpp
   boost/pending/mutable_queue.hpp
   boost/pending/property.hpp
+  boost/pending/property_serialize.hpp
   boost/pending/queue.hpp
   boost/pending/relaxed_heap.hpp
   boost/pending/stringtok.hpp
@@ -139,7 +144,6 @@ graph_parallel:
   boost/graph/parallel/process_group.hpp
   boost/graph/parallel/properties.hpp
   boost/graph/parallel/simple_trigger.hpp
-  boost/pending/property_serialize.hpp
 integer:
   boost/integer_fwd.hpp
   boost/integer_traits.hpp
@@ -151,6 +155,7 @@ iterator:
   boost/generator_iterator.hpp
   boost/indirect_reference.hpp
   boost/iterator_adaptors.hpp
+  boost/next_prior.hpp
   boost/pending/detail/int_iterator.hpp
   boost/pending/iterator_adaptors.hpp
   boost/pending/iterator_tests.hpp
@@ -170,9 +175,27 @@ numeric/conversion:
 optional:
   boost/none.hpp
   boost/none_t.hpp
+parameter_python:
+  boost/parameter/aux_/python/invoker.hpp
+  boost/parameter/aux_/python/invoker_iterate.hpp
+  boost/parameter/python.hpp
 predef:
-  boost/detail/endian.hpp
   boost/predef.h
+property_map_parallel:
+  boost/property_map/parallel/basic_reduce.hpp
+  boost/property_map/parallel/caching_property_map.hpp
+  boost/property_map/parallel/detail/untracked_pair.hpp
+  boost/property_map/parallel/distributed_property_map.hpp
+  boost/property_map/parallel/global_index_map.hpp
+  boost/property_map/parallel/impl/distributed_property_map.ipp
+  boost/property_map/parallel/local_property_map.hpp
+  boost/property_map/parallel/parallel_property_maps.hpp
+  boost/property_map/parallel/process_group.hpp
+  boost/property_map/parallel/simple_trigger.hpp
+  boost/property_map/parallel/unsafe_serialize.hpp
+  boost/property_map/parallel/vector_property_map.hpp
+qvm:
+  boost/qvm_lite.hpp
 random:
   boost/nondet_random.hpp
 regex:
@@ -288,9 +311,6 @@ serialization:
   boost/archive/xml_oarchive.hpp
   boost/archive/xml_wiarchive.hpp
   boost/archive/xml_woarchive.hpp
-signals:
-  boost/last_value.hpp
-  boost/signal.hpp
 smart_ptr:
   boost/detail/atomic_count.hpp
   boost/detail/lightweight_mutex.hpp
@@ -309,9 +329,6 @@ smart_ptr:
   boost/weak_ptr.hpp
 system:
   boost/cerrno.hpp
-thread:
-  boost/detail/atomic_redef_macros.hpp
-  boost/detail/atomic_undef_macros.hpp
 throw_exception:
   boost/exception/exception.hpp
 timer:
@@ -331,26 +348,22 @@ utility:
   boost/detail/call_traits.hpp
   boost/detail/compressed_pair.hpp
   boost/detail/ob_compressed_pair.hpp
-  boost/next_prior.hpp
   boost/operators.hpp
   boost/operators_v1.hpp
 winapi:
   boost/detail/interlocked.hpp
-  boost/detail/winapi/GetCurrentProcess.hpp
-  boost/detail/winapi/GetCurrentThread.hpp
-  boost/detail/winapi/GetLastError.hpp
-  boost/detail/winapi/GetProcessTimes.hpp
-  boost/detail/winapi/GetThreadTimes.hpp
   boost/detail/winapi/access_rights.hpp
   boost/detail/winapi/apc.hpp
   boost/detail/winapi/basic_types.hpp
+  boost/detail/winapi/bcrypt.hpp
   boost/detail/winapi/character_code_conversion.hpp
   boost/detail/winapi/condition_variable.hpp
   boost/detail/winapi/config.hpp
   boost/detail/winapi/critical_section.hpp
   boost/detail/winapi/crypt.hpp
   boost/detail/winapi/dbghelp.hpp
-  boost/detail/winapi/detail/cast_ptr.hpp
+  boost/detail/winapi/debugapi.hpp
+  boost/detail/winapi/detail/deprecated_namespace.hpp
   boost/detail/winapi/directory_management.hpp
   boost/detail/winapi/dll.hpp
   boost/detail/winapi/environment.hpp
@@ -386,6 +399,7 @@ winapi:
   boost/detail/winapi/shell.hpp
   boost/detail/winapi/show_window.hpp
   boost/detail/winapi/srw_lock.hpp
+  boost/detail/winapi/stack_backtrace.hpp
   boost/detail/winapi/synchronization.hpp
   boost/detail/winapi/system.hpp
   boost/detail/winapi/thread.hpp

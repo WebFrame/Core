@@ -64,9 +64,9 @@ struct test_get_turns
     {
         typedef typename bg::point_type<G2>::type point_type;
         
-        typedef typename bg::strategy::intersection::services::default_strategy
+        typedef typename bg::strategies::relate::services::default_strategy
             <
-                typename bg::cs_tag<G1>::type
+                G1, G2
             >::type strategy_type;
         
         typedef typename bg::rescale_policy_type<point_type>::type
@@ -80,7 +80,7 @@ struct test_get_turns
         typedef bg::detail::overlay::turn_info
             <
                 point_type,
-                typename bg::segment_ratio_type<point_type, rescale_policy_type>::type
+                typename bg::detail::segment_ratio_type<point_type, rescale_policy_type>::type
             > turn_info;
         std::vector<turn_info> turns;
 
@@ -395,9 +395,6 @@ int test_main(int, char* [])
     test_all<long double>();
 #endif
 
-#if defined(HAVE_TTMATH)
-    test_all<ttmath_big>();
-#endif
     return 0;
 }
 
