@@ -693,7 +693,7 @@ namespace mime_types {
         {"x-world/x-vrml", ".xof"},
     };
     
-    const std::string_view get_mime_type_sv (std::string_view ext, size_t index = 0) {
+    constexpr std::string_view get_mime_type_sv (std::string_view ext, size_t index = 0) {
         if (index == sizeof(mime_types)/sizeof(mime_types[0])) {
             throw std::invalid_argument("Extention is not in the list of MIME types.");
         }
@@ -703,7 +703,7 @@ namespace mime_types {
         return get_mime_type_sv(ext, index+1);
     } 
 
-    const std::string_view get_mime_type (const char* ext)
+    constexpr std::string_view get_mime_type (const char* ext)
     {
         return get_mime_type_sv(std::string_view(ext), 0);
     }
