@@ -20,7 +20,6 @@ jobs:
           exclude_check: ./lib
           inconclusive: enable
           inline_suppression: disable
-          force_language: auto-detect
           force: disable
           max_ctu_depth: 4
           platform: unspecified
