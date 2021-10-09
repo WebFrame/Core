@@ -15,4 +15,6 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: shenxianpeng/cpp-linter-action@master
         with:
-          style: 'file'
+          style: 'llvm'
+          tiny-checks: '*'
+          repo-root: './src/'
