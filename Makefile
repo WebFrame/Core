@@ -35,3 +35,15 @@ run_tests:
 
 clean:
 	rm -rf ./bin/log/*
+
+cppcheck:
+	git clone https://github.com/danmar/cppcheck
+	mkdir build
+	cd build
+	cmake ..
+	cmake --build .
+	cd ..
+	echo "" > cppcheck_report.txt
+	cppcheck -I./tests -I./src -I./lib/win/mingw-std-threads-master -I./lib/win/filesystem-master/include/ -I./lib/win/stopwatch/ --std=c++17 --config-exclude=./lib ./src/ --xml --enable=information 2>> check_report.xml
+	./cppcheck/htmlreport/cppcheck-htmlreport --source-dir ./ --report-dir=./html_report --file=cppcheck_report.xml
+        
