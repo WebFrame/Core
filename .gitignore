@@ -3,3 +3,5 @@ bin/test.exe
 .vscode/settings.json
 buffer.txt
 lib/Jinja2Cpp/thirdparty/
+cppcheck/
+cppcheck_report.xml

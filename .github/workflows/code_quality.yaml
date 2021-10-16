@@ -10,23 +10,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: cppcheck
-        uses: deep5050/cppcheck-action@main
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN}}
-          check_library: disable
-          skip_preprocessor: disable
-          enable: all
-          exclude_check: ./lib
-          inconclusive: enable
-          inline_suppression: disable
-          force: disable
-          max_ctu_depth: 4
-          platform: unspecified
-          std: c++17
-          output_file: ./cppcheck_report.txt
-          other_options: disable
-
+      - name: Set up
+        shell: bash
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y cppcheck
+          make install
+      - name: Run cppcheck
+        shell: bash
+        run: |
+          git clone https://github.com/danmar/cppcheck
+          mkdir build
+          cd build
+          cmake ..
+          cmake --build .
+          cd ..
+          echo "" > cppcheck_report.txt
+          cppcheck -I./tests -I./src -I./lib/win/mingw-std-threads-master -I./lib/win/filesystem-master/include/ -I./lib/win/stopwatch/ --std=c++17 --config-exclude=./lib ./src/ --xml --enable=information 2>> check_report.xml
+          ./cppcheck/htmlreport/cppcheck-htmlreport --source-dir ./ --report-dir=./html_report --file=cppcheck_report.xml
+        
       - name: Extract branch name
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
@@ -36,4 +38,4 @@ jobs:
         uses: mikeal/publish-to-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }} # your branch name goes here
+          BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
