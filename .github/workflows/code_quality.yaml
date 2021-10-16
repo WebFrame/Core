@@ -20,6 +20,7 @@ jobs:
         shell: bash
         run: |
           git clone https://github.com/danmar/cppcheck
+          cd cppcheck
           mkdir build
           cd build
           cmake ..
