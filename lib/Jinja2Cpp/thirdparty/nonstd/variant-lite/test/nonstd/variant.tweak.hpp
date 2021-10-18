@@ -1,1 +1,0 @@
-#define VARIANT_TWEAK_VALUE 42
