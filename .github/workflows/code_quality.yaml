@@ -1,0 +1,42 @@
+name: Code quality control
+on: 
+  push:
+  pull_request:
+    types: [opened]
+
+jobs:
+  build:
+    name: cppcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up
+        shell: bash
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y cppcheck
+          make install
+      - name: Run cppcheck
+        shell: bash
+        run: |
+          git clone https://github.com/danmar/cppcheck
+          cd cppcheck
+          mkdir build
+          cd build
+          cmake ..
+          cmake --build .
+          cd ../../
+          echo "" > cppcheck_report.txt
+          cppcheck -I./tests -I./src -I./lib/win/mingw-std-threads-master -I./lib/win/filesystem-master/include/ -I./lib/win/stopwatch/ --std=c++17 --config-exclude=./lib ./src/ --xml --enable=information 2>> cppcheck_report.xml
+          ./cppcheck/htmlreport/cppcheck-htmlreport --source-dir ./ --report-dir=./html_report --file=cppcheck_report.xml
+        
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
+      - name: publish report    
+        uses: mikeal/publish-to-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}

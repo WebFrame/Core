@@ -50,6 +50,7 @@ namespace fs = ghc::filesystem;
 #include <string.h>
 
 #include <webnetpp/file.hpp>
+#include <webnetpp/mime.hpp>
 #include <webnetpp/lambda2function.hpp>
 
 #include <jinja2cpp/template.h>
@@ -203,7 +204,7 @@ public:
 	response get_file(std::string path) const
 	{
 		std::string ext = fs::path(path).extension();
-		const std::string mime = mime_types.at(ext);
+		const std::string mime = mime_types::get_mime_type(ext.c_str()).data();
 		std::ifstream ifs(path);
 		if (not ifs.is_open())
 		{
@@ -306,7 +307,7 @@ private:
 		try
 		{
 			char buffer[8196] = {0};
-			int valread = recv(new_socket, buffer, 8196, 0);
+			recv(new_socket, buffer, 8196, 0);
 			// app->logger << "Accepted data:\n" << buffer << "\n--------- END-OF-DATA ------------\n";
 
 			if (strlen(buffer) == 0)
