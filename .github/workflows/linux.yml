@@ -1,6 +1,9 @@
 name: Build under Ubuntu Linux
 
-on: [push]
+on:
+  push:
+  pull_request:
+    types: [opened]
 
 jobs:
   build-on-linux:
