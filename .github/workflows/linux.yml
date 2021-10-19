@@ -1,6 +1,9 @@
 name: Build under Ubuntu Linux
 
-on: [push]
+on:
+  push:
+  pull_request:
+    types: [opened]
 
 jobs:
   build-on-linux:
@@ -9,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: jinja
-        run: cd ./lib && rm -rf Jinja2Cpp && git clone https://github.com/jinja2cpp/Jinja2Cpp && cd Jinja2Cpp && mkdir .jinja2cpp-build && cd .jinja2cpp-build && cmake ../ -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../.jinja2cpp-install -DJINJA2CPP_BUILD_TESTS=OFF -DJINJA2CPP_DEPS_MODE=internal -DJINJA2CPP_CXX_STANDARD=17 && cmake --build . --config Release --target install
+        run: make install
         shell: bash
       - name: root dir
         run: cd ../../../
