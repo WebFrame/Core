@@ -163,11 +163,13 @@ public:
 		return *this;
 	}
 
+private:
 	auto get_routes() const
 	{
 		return this->routes;
 	}
 
+public:
 	webnetpp &set_performancer(std::ostream &_performancer = std::clog)
 	{
 		performancer = SynchronizedFile(_performancer);
@@ -201,6 +203,7 @@ public:
 		return *this;
 	}
 
+private:
 	response get_file(std::string path) const
 	{
 		std::string ext = fs::path(path).extension();
@@ -220,7 +223,7 @@ public:
 			return response(status_line("1.1", "200"), m, content);
 		}
 	}
-
+public:
 	response render(std::string path, jinja2::ValuesMap params = {})
 	{
 		path = this->template_dir + "/" + path;
@@ -260,6 +263,7 @@ public:
 		return *this;
 	}
 
+private:
 	response respond(const std::string &path)
 	{
 		// this->logger << "Requested: " << req.uri << "\n";
@@ -299,7 +303,6 @@ public:
 		return respond(std::string(p));
 	}
 
-private:
 	static void accept_req(size_t id, webnetpp *app)
 	{
 		auto t1 = std::chrono::high_resolution_clock::now();
@@ -349,7 +352,7 @@ private:
 	}
 
 public:
-	bool run(unsigned short PORT, unsigned int threads, unsigned requests = -1)
+	int run(unsigned short PORT, unsigned int threads, bool limited = false, unsigned requests = -1)
 	{
 #ifdef __WIN32__
 		WSADATA wsa;
@@ -358,7 +361,7 @@ public:
 		if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 		{
 			this->errors << "Failed. Error Code: " << WSAGetLastError() << "\n";
-			exit(1);
+			throw std::runtime_error("Unable to initiate Winsock: " + std::string(atoi(WSAGetLastError())));
 		}
 
 		// this->logger << "Initialised.\n";
@@ -371,8 +374,8 @@ public:
 		// Creating socket file descriptor
 		if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
 		{
-			perror("socket failed");
-			exit(EXIT_FAILURE);
+			this->errors << "Failed. Unable to initiate socket." << "\n";
+			throw std::runtime_error("Unable to initiate socket.");
 		}
 
 		// Forcefully attaching socket to the port
@@ -384,13 +387,13 @@ public:
 		if (bind(server_fd, (struct sockaddr *)&address,
 				 sizeof(address)) < 0)
 		{
-			perror("bind failed");
-			exit(EXIT_FAILURE);
+			this->errors << "Socket binding failed." << "\n";
+			throw std::runtime_error("Unable to bind with the socket.");
 		}
 		if (listen(server_fd, 3) < 0)
 		{
-			perror("listen");
-			exit(EXIT_FAILURE);
+			this->errors << "Socket listening failed." << "\n";
+			throw std::runtime_error("Unable to listen to the socket.");
 		}
 
 		// this->logger << "Listening\n";
@@ -406,7 +409,7 @@ public:
 			threads_ptr[i] = nullptr;
 			busy[i] = false;
 		}
-		while (requests >= 1)
+		while (requests >= 1 || !limited)
 		{
 			bool is_there_thread = false;
 			size_t i = 0;
@@ -441,11 +444,8 @@ public:
 		}
 		for (size_t i = 0; i < threads; i++)
 		{
-			if (busy[i])
+			while (busy[i])
 			{
-				while (busy[i])
-				{
-				}
 			}
 		}
 		return true;
