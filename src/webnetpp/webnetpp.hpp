@@ -361,7 +361,7 @@ public:
 		if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 		{
 			this->errors << "Failed. Error Code: " << WSAGetLastError() << "\n";
-			throw std::runtime_error("Unable to initiate Winsock: " + std::string(atoi(WSAGetLastError())));
+			throw std::runtime_error("Unable to initiate Winsock: " + std::to_string(WSAGetLastError()));
 		}
 
 		// this->logger << "Initialised.\n";
