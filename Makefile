@@ -2,8 +2,6 @@ COMPILER_CPP=g++
 CPP_STD=-std=c++2a
 OPT=-O3
 INCLUDE_DIRS=-I./lib/boost -I./tests -I./src
-# JINJA2CPP=-I./lib/Jinja2Cpp/include -I./lib/Jinja2Cpp/.jinja2cpp-install/include -L./lib/Jinja2Cpp/.jinja2cpp-install/lib/static -ljinja2cpp
-# JINJA2CPP_DEFINES=-Dvariant_CONFIG_SELECT_VARIANT=variant_VARIANT_NONSTD -Dnssv_CONFIG_SELECT_STRING_VIEW=nssv_STRING_VIEW_NONSTD -Doptional_CONFIG_SELECT_OPTIONAL=optional_OPTIONAL_NONSTD -DBOOST_SYSTEM_NO_DEPRECATED -DBOOST_ERROR_CODE_HEADER_ONLY
 LIB_FLAGS=-static -pthread -lboost_system -lpthread -fconcepts
 INJACPP=-I./lib/inja/single_include/ -I./lib/inja/include/inja/third_party/include
 
@@ -18,9 +16,6 @@ WARNING_FLAGS=-Wall -pedantic
 all: clean build build_test run_tests
 
 install: install_inja install_boost
-
-install_jinja:
-	cd ./lib && cd Jinja2Cpp && mkdir .jinja2cpp-build && cd .jinja2cpp-build && cmake ../ -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../.jinja2cpp-install -DJINJA2CPP_BUILD_TESTS=OFF -DJINJA2CPP_DEPS_MODE=internal -DJINJA2CPP_CXX_STANDARD=17 && cmake --build . --config Release --target install
 
 install_boost:
 	cd ./lib && cd boost && ./bootstrap.sh && ./b2 headers

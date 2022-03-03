@@ -11,10 +11,8 @@
             "includePath": [
                 "${workspaceFolder}/",
                 "${workspaceFolder}/src",
-                "${workspaceFolder}/lib/win/mingw-std-threads-master",
-                "${workspaceFolder}/lib/win/filesystem-master/include",
-                "${workspaceFolder}/lib/win/stopwatch",
-                "${workspaceFolder}/lib/Jinja2Cpp/.jinja2cpp-install/include"
+                "${workspaceFolder}/lib/",
+                "${workspaceFolder}/lib/inja/single_include/"
             ],
             "defines": [
                 "_DEBUG",
