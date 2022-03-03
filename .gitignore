@@ -5,3 +5,4 @@ buffer.txt
 lib/Jinja2Cpp/**
 cppcheck*/**
 cppcheck*
+lib/boost_1_78_0

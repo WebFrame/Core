@@ -1,59 +1,47 @@
 #pragma once
 
-#ifdef _WIN32
-#define WIN32_LEAN_AND_MEAN
-#include <winsock2.h>
-#include <winsock.h>
-#include <windows.h>
-#define SO_REUSEPORT SO_BROADCAST
-using socklen_t = int;
-#include <stopwatch.h>
-#else
-#include <sys/socket.h>
-#include <netinet/in.h>
-#endif
+#include <ios>
+#include <iomanip>
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 #include <thread>
-#define mingw_stdthread std
-
-/*
-#if defined(__cplusplus) && __cplusplus >= 201703L && defined(__has_include)
-	#if __has_include(<filesystem>)
-		#define GHC_USE_STD_FS
-		#include <filesystem>
-		namespace fs = std::filesystem;
-	#endif
-#endif
-*/
-#ifndef GHC_USE_STD_FS
-#include <ghc/filesystem.hpp>
-namespace fs = ghc::filesystem;
-#endif
-
+#include <filesystem>
 #include <type_traits>
-#include <iomanip>
-#include <webnetpp/base.hpp>
 #include <map>
 #include <set>
 #include <string>
 #include <functional>
-
 #include <utility>
 #include <chrono>
-
-#include <ios>
-#include <iostream>
 
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include <boost/asio.hpp>
+
+using boost::asio::ip::tcp;
+using boost::asio::awaitable;
+using boost::asio::co_spawn;
+using boost::asio::detached;
+using boost::asio::use_awaitable;
+namespace this_coro = boost::asio::this_coro;
+
+#if defined(BOOST_ASIO_ENABLE_HANDLER_TRACKING)
+# define use_awaitable \
+  boost::asio::use_awaitable_t(__FILE__, __LINE__, __PRETTY_FUNCTION__)
+#endif
+
+#include <webnetpp/base.hpp>
 #include <webnetpp/file.hpp>
 #include <webnetpp/mime.hpp>
 #include <webnetpp/lambda2function.hpp>
 
-#include <jinja2cpp/template.h>
+//#include <jinja2cpp/template.h>
+#include <inja/inja.hpp>
 
 namespace webnetpp
 {
@@ -71,14 +59,15 @@ private:
 	std::map<
 		std::pair<std::vector<std::string>, // var type
 				  std::regex>,				// regex
-		responcer,
+		responser,
 		cmp>
 		routes;
 
 	static std::pair<std::vector<std::string>, // var type
 					 std::regex>			   // regex
-	convert_path_to_regex(std::string str)
+	convert_path_to_regex(std::string str, webnetpp& app)
 	{
+		static const std::string regexAnyChar = "A-Za-z_%0-9.-";
 		std::vector<std::string> v;
 		std::string format = "^";
 		for (size_t i = 0; i < str.size(); i++)
@@ -109,18 +98,20 @@ private:
 					curr_val_regex += str[i];
 				}
 				if (curr_val_regex == "string" or curr_val_regex == "text")
-					curr_val_regex = "[A-Za-z_%0-9.]+";
+					curr_val_regex = "[" + regexAnyChar + "]+";
 				if (curr_val_regex == "char" or curr_val_regex == "symbol")
-					curr_val_regex = "[A-Za-z_%0-9.]";
+					curr_val_regex = "[" + regexAnyChar + "]";
 				if (curr_val_regex == "digit")
 					curr_val_regex = "[0-9]";
 				if (curr_val_regex == "number")
 					curr_val_regex = "[1-9][0-9]*";
 				if (curr_val_regex == "path")
-					curr_val_regex = "[A-Za-z_/%0-9.]+";
-				std::cout << curr_val_regex << std::endl;
+					curr_val_regex = "[" + regexAnyChar + "\\/]+";
 				format += curr_val_regex;
 				format += ")";
+			}
+			else if (str[i] == '/') {
+				format += "\\/";
 			}
 			else
 			{
@@ -128,6 +119,7 @@ private:
 			}
 		}
 		format += "$";
+		app.logger << format << '\n';
 		return {v, std::regex(format)};
 	}
 
@@ -135,9 +127,9 @@ private:
 	SynchronizedFile errors;
 	SynchronizedFile performancer;
 	std::string template_dir;
-	jinja2::Template tpl;
+	inja::Environment env;
 
-	std::map<std::string, responcer> responses;
+	std::map<std::string, responser> responses;
 
 public:
 	webnetpp()
@@ -152,24 +144,22 @@ public:
 	webnetpp &handle(std::string code, F _res)
 	{
 		const auto res = wrap(_res);
-		responses[code] = responcer(res);
+		responses[code] = responser(res);
 		return *this;
 	}
 
 	template <typename Ret, typename... Ts>
 	webnetpp &handle(std::string code, std::function<Ret(Ts...)> const &res)
 	{
-		responses[code] = responcer(res);
+		responses[code] = responser(res);
 		return *this;
 	}
 
-private:
 	auto get_routes() const
 	{
 		return this->routes;
 	}
 
-public:
 	webnetpp &set_performancer(std::ostream &_performancer = std::clog)
 	{
 		performancer = SynchronizedFile(_performancer);
@@ -190,8 +180,9 @@ public:
 
 	webnetpp &set_static(std::string path, std::string alias)
 	{
-		fs::path p = fs::relative(path);
+		std::filesystem::path p = std::filesystem::relative(path);
 		this->route(alias + "/{path}", [&path, this](std::string file) {
+			std::cout << "Requested file: " << path + "/" + file << std::endl;
 			return this->get_file(path + "/" + file);
 		});
 		return *this;
@@ -203,51 +194,55 @@ public:
 		return *this;
 	}
 
-private:
-	response get_file(std::string path) const
+	response get_file(std::string path)
 	{
-		std::string ext = fs::path(path).extension();
+		std::string ext = std::filesystem::path(path).extension().string();
 		const std::string mime = mime_types::get_mime_type(ext.c_str()).data();
-		std::ifstream ifs(path);
+		std::ifstream ifs(path, std::ios::in | std::ios::binary);
 		if (not ifs.is_open())
 		{
 			path_vars p;
 			p += path_vars::var(path, "string");
-			return this->responses.at("404").call(p);
+			return this->responses.at("404").call("1.1", p);
 		}
 		else
 		{
-			std::string content((std::istreambuf_iterator<char>(ifs)),
-								(std::istreambuf_iterator<char>()));
-			std::map<std::string, std::string> m = {{"Content-type", mime + "; charset=utf-8"}};
+			std::ostringstream oss;
+			oss << ifs.rdbuf();
+			std::string content(oss.str());
+			std::map<std::string, std::string> m = {
+				{"Content-type", mime},
+				{"Accept-Ranges", "bytes"},
+				{"Cache-Control", "public, max-age=10"},
+				{"Connection", "keep-alive"},
+				{"Keep-Alive", "timeout=5"}
+			};
 			return response(status_line("1.1", "200"), m, content);
 		}
 	}
-public:
-	response render(std::string path, jinja2::ValuesMap params = {})
+
+	response render(std::string path, inja::json params = {})
 	{
 		path = this->template_dir + "/" + path;
-		std::string response_str;
 		try
 		{
-			this->tpl.LoadFromFile(path);
-			response_str = std::move(tpl.RenderAsString(params).value());
+			return response(this->env.render_file(path, params));
 		}
 		catch (...)
-		{ // file not found
-			return this->responses.at("404").call(path_vars() += path_vars::var(path, "string"));
+		{ 
+			// file not found
+			return this->responses.at("404").call("1.1", path_vars() += path_vars::var(path, "string"));
 		}
-		return response(response_str);
 	}
 
 	template <typename Ret, typename... Ts>
 	webnetpp &route(std::string path, std::function<Ret(Ts...)> const &res)
 	{
-		auto x = convert_path_to_regex(path);
+		auto x = convert_path_to_regex(path, *this);
 		if (routes.find(x) == routes.end())
-			routes[x] = responcer(res);
+			routes[x] = responser(res);
 		else // rewriting path
-			routes[x] = responcer(res);
+			routes[x] = responser(res);
 		return *this;
 	}
 
@@ -255,18 +250,16 @@ public:
 	webnetpp &route(std::string path, F _res)
 	{
 		const auto res = wrap(_res);
-		auto x = convert_path_to_regex(path);
+		auto x = convert_path_to_regex(path, *this);
 		if (routes.find(x) == routes.end())
-			routes[x] = responcer(res);
+			routes[x] = responser(res);
 		else // rewriting path
-			routes[x] = responcer(res);
+			routes[x] = responser(res);
 		return *this;
 	}
 
-private:
-	response respond(const std::string &path)
+	response respond(const std::string &path, const std::string& http = "1.1")
 	{
-		// this->logger << "Requested: " << req.uri << "\n";
 		std::smatch pieces_match;
 		for (const auto &s : routes)
 		{
@@ -284,176 +277,108 @@ private:
 						piece = sub_match.str();
 						params += path_vars::var(piece, s.first.first[i - 1]);
 					}
-					return s.second.call(params);
+					return s.second.call(http, params);
 				}
 			}
 		}
 		path_vars p;
 		p += path_vars::var(path, "string");
-		return responses.at("404").call(p);
+		return responses.at("404").call(http, p);
 	}
 
-	response respond(const request &req)
+	response respond(const request &req, const std::string& http = "1.1")
 	{
-		return respond(req.uri);
+		return respond(req.uri, http);
 	}
 
-	response respond(const char *p)
+	response respond(const char *p, const std::string& http = "1.1")
 	{
-		return respond(std::string(p));
-	}
-
-	static void accept_req(size_t id, webnetpp *app)
-	{
-		auto t1 = std::chrono::high_resolution_clock::now();
-		int &new_socket = app->clients[id];
-		try
-		{
-			char buffer[8196] = {0};
-			recv(new_socket, buffer, 8196, 0);
-			// app->logger << "Accepted data:\n" << buffer << "\n--------- END-OF-DATA ------------\n";
-
-			if (strlen(buffer) == 0)
-			{
-				// app->logger << "================= EMPTY-BUFFER ===============\n";
-				app->busy[id] = false;
-				return;
-			}
-
-			response res;
-			request r(buffer);
-			// app->logger << "================= PARSING-BUFFER ===============\n";
-			// app->logger << r.to_string () << "\n";
-			// app->logger << "--------- PARSED ------------\n";
-
-			try
-			{
-				res = app->respond(r);
-			}
-			catch (std::exception &e)
-			{
-				res = app->responses.at("500").call(path_vars() += {std::string(e.what()), "string"});
-			}
-			res.set_http(r.http);
-			std::string s = res.to_string();
-			send(new_socket, s.c_str(), s.size(), 0);
-			shutdown(new_socket, 2);
-			app->busy[id] = false;
-			auto t2 = std::chrono::high_resolution_clock::now();
-			std::chrono::duration<double, std::milli> elapsed = t2 - t1;
-			app->performancer << elapsed.count() << " miliseconds\n";
-			return;
-		}
-		catch (...)
-		{
-			shutdown(new_socket, 2);
-			app->busy[id] = false;
-		}
-	}
-
-public:
-	int run(unsigned short PORT, unsigned int threads, bool limited = false, unsigned requests = -1)
-	{
-#ifdef __WIN32__
-		WSADATA wsa;
-
-		// this->logger << "Initialising Winsock...\n";
-		if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
-		{
-			this->errors << "Failed. Error Code: " << WSAGetLastError() << "\n";
-			throw std::runtime_error("Unable to initiate Winsock: " + std::to_string(WSAGetLastError()));
-		}
-
-		// this->logger << "Initialised.\n";
-#endif
-
-		int server_fd;
-		struct sockaddr_in address;
-		int addrlen = sizeof(address);
-
-		// Creating socket file descriptor
-		if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
-		{
-			this->errors << "Failed. Unable to initiate socket." << "\n";
-			throw std::runtime_error("Unable to initiate socket.");
-		}
-
-		// Forcefully attaching socket to the port
-		address.sin_family = AF_INET;
-		address.sin_addr.s_addr = INADDR_ANY;
-		address.sin_port = htons(PORT);
-
-		// Forcefully attaching socket to the port
-		if (bind(server_fd, (struct sockaddr *)&address,
-				 sizeof(address)) < 0)
-		{
-			this->errors << "Socket binding failed." << "\n";
-			throw std::runtime_error("Unable to bind with the socket.");
-		}
-		if (listen(server_fd, 3) < 0)
-		{
-			this->errors << "Socket listening failed." << "\n";
-			throw std::runtime_error("Unable to listen to the socket.");
-		}
-
-		// this->logger << "Listening\n";
-		//std::cout << "Listening" << std::endl;
-
-		//std::cout << "Starting initing the threads" << std::endl;
-		threads = std::min(threads, requests);
-		threads_ptr = new mingw_stdthread::thread *[threads];
-		busy = new bool[threads];
-		clients = new int[threads];
-		for (size_t i = 0; i < threads; i++)
-		{
-			threads_ptr[i] = nullptr;
-			busy[i] = false;
-		}
-		while (requests >= 1 || !limited)
-		{
-			bool is_there_thread = false;
-			size_t i = 0;
-			while (!is_there_thread)
-				for (i = 0; i < threads; i++)
-					if (threads_ptr[i] == nullptr)
-					{
-						busy[i] = true;
-						is_there_thread = true;
-						break;
-					}
-					else if (busy[i] == false)
-					{
-						delete threads_ptr[i];
-						busy[i] = true;
-						is_there_thread = true;
-						break;
-					}
-			if ((clients[i] = accept(server_fd, (struct sockaddr *)&address,
-									 (socklen_t *)&addrlen)) < 0)
-			{
-				// this->errors << "Failed to connect to client\n";
-				continue;
-			}
-
-			//std::cout << "New thread creating" << std::endl;
-			threads_ptr[i] = new mingw_stdthread::thread(accept_req, i, this);
-			//std::cout << "Detaching the new thread" << std::endl;
-			threads_ptr[i]->join();
-			//std::cout << "Successfully detached the new thread" << std::endl;
-			requests--;
-		}
-		for (size_t i = 0; i < threads; i++)
-		{
-			while (busy[i])
-			{
-			}
-		}
-		return true;
+		return respond(std::string(p), http);
 	}
 
 private:
-	mingw_stdthread::thread **threads_ptr;
-	bool *busy;
-	int *clients;
+
+	awaitable<void> responder(tcp::socket socket, std::function<void()> callback)
+	{
+		auto t1 = std::chrono::high_resolution_clock::now();
+		try
+		{
+			char data[2048];
+			std::size_t n = -1;
+			request r;
+			for (; n >= sizeof(data)/sizeof(char) ;)
+			{
+				n = co_await socket.async_read_some(boost::asio::buffer(data), use_awaitable);
+				r.loadMore(data, n);
+			}
+			r.finalize();
+			{
+				response res;
+				try
+				{
+					res = this->respond(r, r.http);
+				}
+				catch (std::exception &e)
+				{
+					res = this->responses.at("500").call(r.http, path_vars() += {std::string(e.what()), "string"});
+				}
+				std::string response = res.to_string().str();
+				size_t responseSize = response.size();
+				co_await async_write(socket, boost::asio::buffer(std::move(response), responseSize), use_awaitable);
+				auto t2 = std::chrono::high_resolution_clock::now();
+				std::chrono::duration<double, std::milli> elapsed = t2 - t1;
+				this->performancer << r.uri << " " << elapsed.count() << "\n";
+				socket.shutdown(boost::asio::socket_base::shutdown_both);
+			}
+		}
+		catch (std::exception& e)
+		{
+			this->logger << "echo Exception: " << e.what() << "\n";
+		}
+		if (callback)
+			callback();
+	}
+
+	awaitable<void> listener(const unsigned short int PORT, std::function<void()> callback)
+	{
+		auto executor = co_await this_coro::executor;
+		tcp::acceptor acceptor(executor, {tcp::v4(), PORT});
+		for (;;)
+		{
+			tcp::socket socket = co_await acceptor.async_accept(use_awaitable);
+			co_spawn(executor, responder(std::move(socket), callback), detached);
+		}
+	}
+public:
+	bool run(unsigned short PORT, unsigned int threads, bool limited = false, unsigned int requests = -1) {
+		try
+		{
+			boost::asio::io_context io_context(threads);
+
+			boost::asio::signal_set signals(io_context, SIGINT, SIGTERM);
+			signals.async_wait([&](auto, auto){ io_context.stop(); });
+
+			if (limited)
+				co_spawn(io_context, listener(PORT, [&requests, limited, &io_context]() {
+					requests--;
+					if (limited && requests == 0)
+						io_context.stop();
+				}), detached);
+			else
+				co_spawn(io_context, listener(PORT, std::function<void()>()), detached);
+
+			io_context.run();
+			return true;
+		}
+		catch (std::exception& e)
+		{
+			this->logger << "Exception: " << e.what() << "\n";
+			return false;
+		}
+	}
+private:
+	std::thread **threads_ptr;
+	std::mutex* busy;
+	int* clients;
 };
 } // namespace webnetpp

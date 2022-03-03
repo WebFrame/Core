@@ -98,29 +98,35 @@ namespace webnetpp
 			}
 	};
 
+	class response;
 	struct status_line
 	{
 	public:
 	private:
 		std::string http;
 		std::string code;
+		std::string output;
+
+		void rebuild_string () {
+			output = "HTTP/" + this->http + " " + this->code + " " + std::string(http_codes::get_reason_by_code(this->code.c_str())) + end_line;
+		}
 	public:
-		status_line (std::string _code) : http (""), code (_code) 
-		{}
+		status_line (std::string _code) : http ("1.1"), code (_code) 
+		{
+			rebuild_string();
+		}
 		
 		status_line (std::string _http, std::string _code) : http (_http), code (_code) 
-		{}
-
-		status_line& set_http (std::string h)
 		{
-			this->http = h;
-			return *this;
+			rebuild_string();
 		}
 
-		std::string to_string () const
+		const std::string& to_string () const
 		{
-			return "HTTP/" + this->http + " " + this->code + " " + std::string(http_codes::get_reason_by_code(this->code.c_str())) + end_line;
+			return output;
 		}
+
+		friend response;
 	};
 
 	class response 
@@ -128,35 +134,48 @@ namespace webnetpp
 		private:
 			status_line status;
 			std::map < std::string, std::string > header;
-			std::string body;
+			std::stringbuf body;
+			std::stringstream res;
 		public:
-			response (std::string html): 
+			response (const std::string& html): 
 				response(status_line ("1.1", "200"), {{"Content-type", "text/html"}}, html)
-			{}
-			response (std::string http, std::string html): 
-				response(status_line (http, "200"), {{"Content-type", "text/html"}}, html)
-			{}
-			response (status_line status, std::string html): 
-				response(status, {{"Content-type", "text/html"}}, html)
-			{}
-			response (status_line s = status_line ("1.1", "204"), std::map < std::string, std::string > m = {}, std::string _body = ""): 
-				status (s), header (m), body (_body)
-			{}
-
-			std::string to_string () const
 			{
-				std::string res = status.to_string ();
-				for (auto& x : header)
-					res += x.first + ": " + x.second + end_line;
-				res += end_line;
-				res += body;
-				return res;
+				rebuild_string();
 			}
-
-			response& set_http (std::string h)
+			response (const std::string& http, const std::string& html): 
+				response(status_line (http, "200"), {{"Content-type", "text/html"}}, html)
 			{
-				status.set_http (h);
-				return *this;
+				rebuild_string();
+			}
+			response (status_line status, const std::string& html): 
+				response(status, {{"Content-type", "text/html"}}, html)
+			{
+				rebuild_string();
+			}
+			response (status_line s = status_line ("2.0", "204"), const std::map < std::string, std::string >& m = {}, const std::string& _body = ""): 
+				status (s), header (m), body (_body, std::ios::in)
+			{
+				rebuild_string();
+			}
+			response (const std::string& http, const response& r) :
+				status(http, r.status.code), header (r.header), body(r.body.str())
+			{
+				rebuild_string();
+			}
+		private:
+			void rebuild_string ()
+			{
+				res << status.to_string();
+				for (auto& x : header)
+				{
+					res << x.first + ": " + x.second + end_line;
+				}
+				res << end_line;
+				res << body.str();
+			}
+		public:
+			const std::stringstream& to_string() const {
+				return res;
 			}
 	};
 
@@ -173,21 +192,20 @@ namespace webnetpp
 		,PATCH
 	};
 
-	std::string to_string (const method& m)
+	constexpr const char* to_string (const method& m)
 	{
-		switch (m)
-		{
-			case method::GET: return "GET";
-			case method::HEAD: return "HEAD";
-			case method::POST: return "POST";
-			case method::PUT: return "PUT";
-			case method::DDELETE: return "DELETE";
-			case method::CONNECT: return "CONNECT";
-			case method::OPTIONS: return "OPTIONS";
-			case method::TRACE: return "TRACE";
-			case method::PATCH: return "PATCH";
-			default: throw std::invalid_argument ("Not valid METHOD Type");
-		}
+		return
+			(m == method::GET    ) ? "GET" :
+			(m == method::HEAD   ) ? "HEAD" :
+			(m == method::POST   ) ? "POST" :
+			(m == method::PUT    ) ? "PUT" :
+			(m == method::DDELETE) ? "DELETE" :
+			(m == method::CONNECT) ? "CONNECT" :
+			(m == method::OPTIONS) ? "OPTIONS" :
+			(m == method::TRACE  ) ? "TRACE" :
+			(m == method::PATCH  ) ? "PATCH" : ([]() -> const char* {
+				throw std::invalid_argument ("Not valid METHOD Type");
+			})();
 	}
 
 	method to_method (const std::string& m)
@@ -205,10 +223,25 @@ namespace webnetpp
 	}
 	
 	using req_vars = std::map < std::string, std::string >;
+
+	enum LoadingState {
+		NOT_STARTED = -1,
+		METHOD = 0,
+		URI = 1,
+		PARAM_KEY = 2,
+		PARAM_VALUE = 3,
+		HTTP_IN_PROGRESS = 4,
+		HTTP_LOADED = 5,
+		HEADER_ROW = 6,
+		BODY = 7,
+		LOADED = 8
+	};
 	
 	class request
 	{
 		private:
+			LoadingState loading;
+			std::string remaining_to_parse;
 		public:
 			method m;
 			std::string uri;
@@ -216,90 +249,164 @@ namespace webnetpp
 			std::string http;
 			std::map < std::string, std::string > header;
 			std::string body;
+			std::string output;
+
+			void rebuild_string() 
+			{
+				output = std::string(webnetpp::to_string(m)) + " " + uri + " HTTP/" + http + end_line;
+				for (auto& x : request_params)
+					output += x.first + ": " + x.second + end_line;
+				for (auto& x : header)
+					output += x.first + ": " + x.second + end_line;
+				output += end_line;
+				output += body;
+			}
 		public:
+			request () {
+				loading = LoadingState::NOT_STARTED;
+				remaining_to_parse = "";
+			}
+
 			request (method _m, std::string h, std::map < std::string, std::string > m, std::string _body) : m (_m), http (h), header (m), body (_body)
 			{}
 
-			request (char* buff)
-			{
-				if (strlen (buff) != 0)
-				{
-					std::string M;
-					size_t i;
-					for (i = 0 ; i < strlen (buff) ; i ++)
-					{
-						if (buff [i] == ' ')
-							break;
-						M += buff [i];
-					}
-					m = to_method (M);
-					for (i ++ ; i < strlen (buff) ; i ++)
-					{
-						if (buff [i] == ' ' or buff [i] == '?')
-							break;
-						uri += buff [i];
-					}
-					if (buff [i] == '?')
-					{
-						std::string var = "", val = "";
-						std::string* x = &var;
+			request (char* buff) : request() {
+				this->loadMore(buff, strlen(buff));
+			}
 
-						for (i ++ ; i < strlen (buff) ; i ++)
+			void loadMore(char* buff, size_t n)
+			{
+				if (n != 0)
+				{
+					size_t i = 0;
+					if(loading == LoadingState::NOT_STARTED) 
+					{
+						for ( ; i < n ; i ++)
 						{
-							//std::cout << (*x) << "; ;" << buff [i] << std::endl;
-							//std::cout << "\t" << var << "; ;" << val << std::endl;
+							if (buff [i] == ' ')
+							{
+								m = to_method (remaining_to_parse);
+								loading = LoadingState::METHOD;
+								remaining_to_parse = "";
+								i ++;
+								break;
+							}
+							remaining_to_parse += buff [i];
+						}
+					}
+					if(loading == LoadingState::METHOD)
+					{
+						for ( ; i < n ; i ++)
+						{
+							if (buff [i] == ' ') {
+								uri = remaining_to_parse;
+								loading = LoadingState::HTTP_IN_PROGRESS;
+								remaining_to_parse = "";
+								i ++;
+								break;
+							}
+							if (buff [i] == '?') {
+								uri = remaining_to_parse;
+								loading = LoadingState::PARAM_KEY;
+								remaining_to_parse = "";
+								i ++;
+								break;
+							}
+							remaining_to_parse += buff [i];
+						}
+					}
+					if(loading == LoadingState::PARAM_KEY or
+					   loading == LoadingState::PARAM_VALUE)
+					   {
+						std::string var = "", val = "";
+						std::string* x;
+						if (loading == LoadingState::PARAM_VALUE) x = &var;
+						if (loading == LoadingState::PARAM_KEY) x = &val;
+
+						(*x) = remaining_to_parse;
+
+						for ( ; i < n ; i ++)
+						{
 							if (buff [i] == '=')
 							{
+								loading = LoadingState::PARAM_KEY;
+								remaining_to_parse = "";
 								x = &val;
 								continue;
 							}
 							if (buff [i] == '&' or buff [i] == ' ')
 							{
+								loading = LoadingState::PARAM_VALUE;
+								remaining_to_parse = "";
 								request_params[var] = val;
 								var = val = "";
 								x = &var;
 							}
-							if (buff [i] == ' ')
+							if (buff [i] == ' ') {
+								loading = LoadingState::HTTP_IN_PROGRESS;
+								remaining_to_parse = "";
 								break;
+							}
 							(*x) += buff [i];
+							remaining_to_parse += buff [i];
 						}
 					}
-					http = "";
-					for (i += 6 ; i < strlen (buff) ; i ++)
+					if(loading == LoadingState::HTTP_IN_PROGRESS)
 					{
-						if (buff [i] == '\r')
-							break;
-						http += buff [i];
-					}
-					for (i ++ ; i < strlen (buff) ; i ++)
-					{
-						std::string line = "";
-						for ( ; i < strlen (buff) ; i ++)
+						// skip " HTTP/" to reach "1.1"
+						for ( ; i < n and !(buff[i] >= '0' and buff[i] <= '9') and buff [i] != '.' ; i ++){}
+						// read version
+						for ( ; i < n ; i ++)
 						{
-							if (buff [i] == '\r')
-							{
+							if (buff [i] == '\r') {
+								http = remaining_to_parse;
+								loading = LoadingState::HTTP_LOADED;
+								remaining_to_parse = "";
 								i ++;
 								break;
 							}
-							if (buff [i] != ' ')
-								line += buff [i];
+							remaining_to_parse += buff [i];
 						}
-						if (line == "") break;
-						header [line.substr (0, line.find (':'))] = line.substr (line.find (':') + 1);
+					}
+					if(loading == LoadingState::HTTP_LOADED)
+					{
+						for ( ; i < n ; i ++)
+						{
+							loading = LoadingState::HEADER_ROW;
+							for ( ; i < n ; i ++)
+							{
+								if (buff [i] == '\r')
+								{
+									i ++;
+									break;
+								}
+								if (buff [i] != ' ')
+									remaining_to_parse += buff [i];
+							}
+							if (remaining_to_parse == "") {
+								loading = LoadingState::BODY;
+								break;
+							}
+							header [remaining_to_parse.substr (0, remaining_to_parse.find (':'))] = remaining_to_parse.substr (remaining_to_parse.find (':') + 1);
+							remaining_to_parse = "";
+						}
+					}
+					if(loading == LoadingState::BODY)
+					{
+						body = remaining_to_parse + std::string((char*)(buff+i));
 					}
 				}
 			}
 
-			std::string to_string () const
+			void finalize () 
 			{
-				std::string res = webnetpp::to_string(m) + " " + uri + " HTTP/" + http + end_line;
-				for (auto& x : request_params)
-					res += x.first + ": " + x.second + end_line;
-				for (auto& x : header)
-					res += x.first + ": " + x.second + end_line;
-				res += end_line;
-				res += body;
-				return res;
+				loading = LoadingState::LOADED;
+				rebuild_string();
+			}
+
+			const std::string& to_string () const
+			{
+				return output;
 			}
 	};
 }

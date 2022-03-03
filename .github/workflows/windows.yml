@@ -10,19 +10,15 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
       - name: jinja
         run: make install
         shell: bash
-      - name: make build
-        run: make build
+      - name: Build
+        run: make clean build build_test
         shell: bash
-      - name: make build_test
-        run: make build_test
-        shell: bash
-      - name: make clean
-        run: make clean
-        shell: bash
-      - name: full build+run
-        run: make build build_test clean run_tests
+      - name: Test
+        run: make run_tests
         shell: bash

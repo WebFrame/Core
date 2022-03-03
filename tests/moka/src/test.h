@@ -26,13 +26,13 @@ namespace Moka
   protected:
     std::string prefix(const Item& i) const {
       if(i.error == nullptr) {
-        return cli::g("✔ ", true);
+        return cli::g("+ ", true); //✔
       }
       else if(i.error->file() == nullptr) {
-        return cli::y("▲ ", true);
+        return cli::y("^ ", true); //▲
       }
       else {
-        return cli::r("✘ ", true);
+        return cli::r("x ", true); //✘
       }
     }
   public:
