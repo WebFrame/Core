@@ -18,10 +18,10 @@ all: clean build build_test run_tests
 install: install_inja install_boost
 
 install_boost:
-	cd ./lib && cd boost && ./bootstrap.sh && ./b2 headers
+	cd ./lib/boost && ./bootstrap.sh && ./b2 headers
 
 install_inja:
-	cd ./lib && rm -rf inja && git clone https://github.com/pantor/inja && cd inja && cmake . -G "Unix Makefiles" && make
+	cd ./lib/inja && cmake . -G "Unix Makefiles" && make
 
 build:
 	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./src/main.cpp -o ./bin/main.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(INJACPP)
@@ -42,13 +42,5 @@ clean:
 	mkdir -p ./bin
 
 cppcheck:
-	git clone https://github.com/danmar/cppcheck
-	mkdir build
-	cd build
-	cmake ..
-	cmake --build .
-	cd ..
-	echo "" > cppcheck_report.txt
-	cppcheck $(INCLUDE_DIRS) $(LIB_FLAGS) $(JINJA2CPP) $(JINJA2CPP_DEFINES) --std=c++17 --config-exclude=./lib ./src/ --xml --enable=information 2>> check_report.xml
-	./cppcheck/htmlreport/cppcheck-htmlreport --source-dir ./ --report-dir=./html_report --file=cppcheck_report.xml
+	git clone https://github.com/danmar/cppcheck; mkdir build; cd build; cmake ..; cmake --build .; cd ..; echo "" > cppcheck_report.txt; cppcheck $(INCLUDE_DIRS) $(LIB_FLAGS) $(JINJA2CPP) $(JINJA2CPP_DEFINES) --std=c++17 --config-exclude=./lib ./src/ --xml --enable=information 2>> check_report.xml; ./cppcheck/htmlreport/cppcheck-htmlreport --source-dir ./ --report-dir=./html_report --file=cppcheck_report.xml
         
