@@ -42,5 +42,5 @@ clean:
 	mkdir -p ./bin
 
 cppcheck:
-	git clone https://github.com/danmar/cppcheck; mkdir build; cd build; cmake ..; cmake --build .; cd ..; echo "" > cppcheck_report.txt; cppcheck $(INCLUDE_DIRS) --std=c++20 --config-exclude=./lib ./src/ --xml --enable=information 2>> check_report.xml; ./cppcheck/htmlreport/cppcheck-htmlreport --source-dir ./ --report-dir=./html_report --file=cppcheck_report.xml
+	git clone https://github.com/danmar/cppcheck; cd cppcheck; mkdir build; cd build; cmake ..; cmake --build .; cd ..; echo "" > cppcheck_report.txt; cppcheck $(INCLUDE_DIRS) --std=c++20 --config-exclude=./lib ./src/ --xml --enable=information 2>> check_report.xml; ./cppcheck/htmlreport/cppcheck-htmlreport --source-dir ./ --report-dir=./html_report --file=cppcheck_report.xml
         
