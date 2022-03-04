@@ -10,3 +10,4 @@ cppcheck*
 lib/boost_1_78_0
 linux.yaml
 windows.yaml
+node_modules/
