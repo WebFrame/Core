@@ -21,7 +21,7 @@ install_boost:
 	cd ./lib/boost && ./bootstrap.sh && ./b2 headers
 
 install_inja:
-	cd ./lib/inja && cmake . -G "Unix Makefiles" && make
+	cd ./lib/inja && cmake . -G "Unix Makefiles" && make MAKE=make CMAKE_COMMAND=cmake
 
 build:
 	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./src/main.cpp -o ./bin/main.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(INJACPP)

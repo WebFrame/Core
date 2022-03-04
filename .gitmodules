@@ -1,6 +1,6 @@
-[submodule "lib/inja"]
-	path = lib/inja
-	url = https://github.com/pantor/inja.git
 [submodule "lib/boost"]
 	path = lib/boost
 	url = https://github.com/boostorg/boost.git
+[submodule "lib/inja"]
+	path = lib/inja
+	url = https://github.com/pantor/inja.git
