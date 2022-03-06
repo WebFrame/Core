@@ -1,1 +1,1 @@
-0.108178 miliseconds avg.
+0.687568 miliseconds avg.

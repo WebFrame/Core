@@ -181,15 +181,15 @@ namespace webnetpp
 
 	enum class method
 	{
-		GET
-		,HEAD
-		,POST
-		,PUT
-		,DDELETE
-		,CONNECT
-		,OPTIONS
-		,TRACE
-		,PATCH
+		GET,
+		HEAD,
+		POST,
+		PUT,
+		DDELETE,
+		CONNECT,
+		OPTIONS,
+		TRACE,
+		PATCH
 	};
 
 	constexpr const char* to_string (const method& m)
@@ -203,23 +203,24 @@ namespace webnetpp
 			(m == method::CONNECT) ? "CONNECT" :
 			(m == method::OPTIONS) ? "OPTIONS" :
 			(m == method::TRACE  ) ? "TRACE" :
-			(m == method::PATCH  ) ? "PATCH" : ([]() -> const char* {
+			(m == method::PATCH  ) ? "PATCH" : 
+			([]() -> const char* {
 				throw std::invalid_argument ("Not valid METHOD Type");
 			})();
 	}
 
-	method to_method (const std::string& m)
+	constexpr method to_method (const char* m)
 	{
-		if (m == "GET") return method::GET;
-		if (m == "HEAD") return method::HEAD;
-		if (m == "POST") return method::POST;
-		if (m == "PUT") return method::PUT;
-		if (m == "DELETE") return method::DDELETE;
-		if (m == "CONNECT") return method::CONNECT;
-		if (m == "OPTIONS") return method::OPTIONS;
-		if (m == "TRACE") return method::TRACE;
-		if (m == "PATCH") return method::PATCH;
-		throw std::invalid_argument (m + " is not a valid METHOD Type");
+		return (strcmp(m, "GET") == 0) ?     method::GET :
+		       (strcmp(m, "HEAD") == 0) ?    method::HEAD :
+		       (strcmp(m, "POST") == 0) ?    method::POST :
+		       (strcmp(m, "PUT") == 0) ?     method::PUT :
+		       (strcmp(m, "DELETE") == 0) ?  method::DDELETE :
+		       (strcmp(m, "CONNECT") == 0) ? method::CONNECT :
+		       (strcmp(m, "OPTIONS") == 0) ? method::OPTIONS :
+		       (strcmp(m, "TRACE") == 0) ?   method::TRACE :
+		       (strcmp(m, "PATCH") == 0) ?   method::PATCH :
+		       throw std::invalid_argument (std::string(m) + " is not a valid METHOD Type");
 	}
 	
 	using req_vars = std::map < std::string, std::string >;
@@ -285,7 +286,7 @@ namespace webnetpp
 						{
 							if (buff [i] == ' ')
 							{
-								m = to_method (remaining_to_parse);
+								m = to_method (remaining_to_parse.c_str());
 								loading = LoadingState::METHOD;
 								remaining_to_parse = "";
 								i ++;

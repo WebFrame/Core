@@ -1,1 +1,0 @@
-# In this foler you can find all the logs from the unit and integration tests
