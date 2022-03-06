@@ -27,10 +27,7 @@ jobs:
     runs-on: windows-2022
     steps:
       - name: Prepare
-        run: |
-        choco install mingw
-        choco install make
-        choco install cmake
+        run: choco install mingw && choco install make && choco install cmake
       - uses: actions/checkout@v3
         with:
           submodules: 'recursive'
