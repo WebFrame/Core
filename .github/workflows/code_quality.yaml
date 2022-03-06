@@ -15,6 +15,7 @@ jobs:
       - name: Set up
         shell: bash
         run: |
+          python -m pip install pygments
           make install
       - name: Run cppcheck
         shell: bash
