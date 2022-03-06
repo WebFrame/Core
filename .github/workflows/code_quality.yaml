@@ -15,8 +15,6 @@ jobs:
       - name: Set up
         shell: bash
         run: |
-          sudo apt-get update -y
-          sudo apt-get install -y cppcheck
           make install
       - name: Run cppcheck
         shell: bash
