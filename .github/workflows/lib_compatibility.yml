@@ -1,0 +1,38 @@
+name: Compile, Build, Run, and Test
+
+on:
+  push:
+  pull_request:
+    types: [opened]
+
+jobs:
+  build-on-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+      - name: Install
+        run: make install
+        shell: bash
+      - name: Build
+        run: make clean build build_test
+        shell: bash
+      - name: Test
+        run: make run_tests
+        shell: bash
+  build-on-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+      - name: Install
+        run: make install
+        shell: bash
+      - name: Build
+        run: make clean build build_test
+        shell: bash
+      - name: Test
+        run: make run_tests
+        shell: bash
