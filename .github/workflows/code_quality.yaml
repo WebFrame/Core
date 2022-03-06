@@ -19,14 +19,15 @@ jobs:
       - name: Run cppcheck
         shell: bash
         run: |
-          make cppcheck
+          make -B cppcheck
       - name: Extract branch name
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch
-
-      - name: publish report    
-        uses: mikeal/publish-to-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
+      - uses: seanmiddleditch/gha-publish-to-git@master
+        with:
+          branch: ${{ steps.extract_branch.outputs.branch }}
+          github_token: '${{ secrets.GITHUB_TOKEN  }}'
+          github_pat: '${{ secrets.GH_PAT }}'
+          source_folder: cppcheck_report
+        if: success() && github.event == 'push'
