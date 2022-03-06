@@ -27,12 +27,9 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add cppcheck_report/
-          git stash
-          git checkout gh-pages
-          git stash apply
           git commit -m "Add changes" -a
       - name: Push static code analysis
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages
+          branch: ${{ github.ref }}
