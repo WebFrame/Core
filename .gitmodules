@@ -4,3 +4,6 @@
 [submodule "lib/inja"]
 	path = lib/inja
 	url = https://github.com/pantor/inja.git
+[submodule "cppcheck"]
+	path = cppcheck
+	url = https://github.com/danmar/cppcheck

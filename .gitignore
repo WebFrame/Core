@@ -5,8 +5,7 @@ buffer.txt
 log.txt
 curl.txt
 lib/Jinja2Cpp/**
-cppcheck*/**
-cppcheck*
+cppcheck*.*
 check_report.xml
 lib/boost_1_78_0
 linux.yaml
