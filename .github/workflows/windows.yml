@@ -1,4 +1,4 @@
-name: Compile, Build, Run, and Test
+name: Windows/Compile, Build, Run, and Test
 
 on:
   push:
