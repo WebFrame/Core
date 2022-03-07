@@ -7,8 +7,8 @@ on:
 
 jobs:
   build:
-    name: cppcheck
-    runs-on: windows-latest
+    name: doxygen
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
