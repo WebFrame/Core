@@ -12,38 +12,19 @@ jobs:
       matrix:
         config:
           - {
-            name: "Windows Latest MSVC",
-            os: windows-latest,
-            build_type: "Release",
-            cc: "cl",
-            cxx: "cl",
-            environment_script: "C:/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build/vcvars64.bat",
-            generators: "Visual Studio 16 2019"
-          }
-          - {
             name: "Windows Latest MinGW",
             os: windows-latest,
-            build_type: "Release",
-            cc: "gcc",
-            cxx: "g++",
-            archiver: "7z a",
-            generators: "Ninja"
+            cxx: "gcc",
           }
           - {
-            name: "Ubuntu_Latest_GCC",
+            name: "Ubuntu Latest GCC",
             os: ubuntu-latest,
-            build_type: "Release",
-            cc: "gcc",
-            cxx: "g++",
-            generators: "Ninja"
+            cxx: "gcc-11"
           }
           - {
             name: "macOS Latest Clang",
             os: macos-latest,
-            build_type: "Release",
-            cc: "clang",
-            cxx: "clang++",
-            generators: "Ninja"
+            cxx: "gcc"
           }
 
     steps:
@@ -59,22 +40,23 @@ jobs:
       - name: Install dependencies on windows
         if: startsWith(matrix.config.os, 'windows')
         run: |
-          choco install make mingw
+          choco install mingw --version 11.2.0.07112021 --force
           make --version
           gcc --version
       - name: Install dependencies on ubuntu
-        if: startsWith(matrix.config.name, 'Ubuntu_Latest_GCC')
+        if: startsWith(matrix.config.name, 'Ubuntu Latest GCC')
         run: |
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
           sudo apt-get update
-          sudo apt-get install make gcc
+          sudo apt-get install -y gcc-11 make
           make --version
-          gcc --version
+          gcc-11 --version
       - name: Install dependencies on macos
         if: startsWith(matrix.config.os, 'macos')
         run: |
           brew install p7zip make llvm gcc
           make --version
-          clang++ --version
+          gcc --version
       - name: Configure
         shell: bash
         run: |
@@ -82,7 +64,7 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          make -B clean build build_test
+          make -B clean build build_test COMPILER_CPP=${{ matrix.config.cxx }}
       - name: Test
         shell: bash
         run: |
