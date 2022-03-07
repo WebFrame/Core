@@ -16,7 +16,7 @@ jobs:
       - uses: langroodi/doxygenize@v1.6
         with:
             doxygenconf: './Doxyfile'
-            htmloutput: './doc'
+            htmloutput: './documentation/html'
             ghpagesbranch: 'gh-pages'
             ghpagesdir: '.'
             darkmode: 'true'
