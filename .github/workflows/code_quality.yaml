@@ -7,36 +7,37 @@ on:
 jobs:
   build:
     name: cppcheck
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
       - name: Set up
         shell: bash
         run: |
-          sudo apt-get update -y
-          sudo apt-get install -y cppcheck
+          python -m pip install pygments
           make install
+          rm -rf cppcheck_report/
       - name: Run cppcheck
         shell: bash
         run: |
-          git clone https://github.com/danmar/cppcheck
-          cd cppcheck
-          mkdir build
-          cd build
-          cmake ..
-          cmake --build .
-          cd ../../
-          echo "" > cppcheck_report.txt
-          cppcheck -I./tests -I./src -I./lib/win/mingw-std-threads-master -I./lib/win/filesystem-master/include/ -I./lib/win/stopwatch/ --std=c++17 --config-exclude=./lib ./src/ --xml --enable=information 2>> cppcheck_report.xml
-          ./cppcheck/htmlreport/cppcheck-htmlreport --source-dir ./ --report-dir=./html_report --file=cppcheck_report.xml
-        
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
-
-      - name: publish report    
-        uses: mikeal/publish-to-github-action@master
-        env:
+          make -B cppcheck
+      - name: Commit files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add cppcheck_report/
+          git commit -m "Add changes" -a
+      - name: Push static code analysis
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/master'
+        uses: qoomon/deploy-to-github-pages-action@v1
+        with:
+          GITHUB_PAGES_SOURCE_DIR: cppcheck_report
+          GITHUB_PAGES_BRANCH: gh-pages
+          GITHUB_PAGES_REPLACE: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
