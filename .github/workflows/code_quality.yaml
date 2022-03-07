@@ -1,13 +1,16 @@
 name: Code quality control
 on: 
   push:
+    branches:
+      - master
+      - v2
   pull_request:
     types: [opened]
 
 jobs:
   build:
-    name: cppcheck
-    runs-on: windows-latest
+    name: Static code analysis
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
@@ -17,16 +20,18 @@ jobs:
         run: |
           python -m pip install pygments
           make install
-          rm -rf cppcheck_report/
+          rm -rf code_analysis/
       - name: Run cppcheck
         shell: bash
         run: |
           make -B cppcheck
       - name: Commit files
         run: |
+          mkdir code_analysis
+          mv cppcheck_report code_analysis/cppcheck_report
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add cppcheck_report/
+          git add code_analysis/
           git commit -m "Add changes" -a
       - name: Push static code analysis
         uses: ad-m/github-push-action@master
@@ -37,7 +42,7 @@ jobs:
         if: github.ref == 'refs/heads/master'
         uses: qoomon/deploy-to-github-pages-action@v1
         with:
-          GITHUB_PAGES_SOURCE_DIR: cppcheck_report
+          GITHUB_PAGES_SOURCE_DIR: code_analysis
           GITHUB_PAGES_BRANCH: gh-pages
-          GITHUB_PAGES_REPLACE: true
+          GITHUB_PAGES_REPLACE: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
