@@ -1,3 +1,10 @@
+/** 
+ *  @file   base.hpp 
+ *  @brief  Basic utils to handle web requests and reponses
+ *  @author Alex Tsvetanov
+ *  @date   2022-03-07
+ ***********************************************/
+
 #pragma once
 
 #include <map>
@@ -7,13 +14,25 @@
 #include <any>
 #include <stdexcept>
 #include <utility>
-#include <webnetpp/http_codes.hpp>
-#include <webnetpp/mime.hpp>
+#include <webframe/http_codes.hpp>
+#include <webframe/mime.hpp>
 
-namespace webnetpp
+namespace webframe
 {
-	const std::string end_line = /*\r*/"\n";
+	const std::string end_line = "\n";
+
+	/** 
+	 *  @brief   Type of request prameters
+	 *  @details This is the type of all parameters passed as request paramertes
+	 *  @note    Ex. In 'url?param=value' param and value will be saved in the map as key and value.
+	 ***********************************************/
+	using req_vars = std::map < std::string, std::string >;
 	
+	/** 
+	 *  @brief   Type of path prameters
+	 *  @details This is the type of all variables passed as part of the unique URL
+	 *  @note    Ex. In 'url/variable' the value of the variable will be saved in the variable.
+	 ***********************************************/
 	struct path_vars 
 	{
 			struct var 
@@ -98,7 +117,10 @@ namespace webnetpp
 			}
 	};
 
-	class response;
+	/** 
+	 *  @brief   Type of the status line of the response
+	 *  @details This type represents the HTTP version and the HTTP code of the reponse
+	 ***********************************************/
 	struct status_line
 	{
 	public:
@@ -129,6 +151,10 @@ namespace webnetpp
 		friend response;
 	};
 
+	/** 
+	 *  @brief   Type of the response
+	 *  @details This type represents the status line, all headers, and the body of the response
+	 ***********************************************/
 	class response 
 	{
 		private:
@@ -174,25 +200,17 @@ namespace webnetpp
 				res << body.str();
 			}
 		public:
-			const std::stringstream& to_string() const {
+			const std::stringstream& to_string() const 
+			{
 				return res;
 			}
 	};
-
-	enum class method
-	{
-		GET,
-		HEAD,
-		POST,
-		PUT,
-		DDELETE,
-		CONNECT,
-		OPTIONS,
-		TRACE,
-		PATCH
-	};
-
-	constexpr const char* to_string (const method& m)
+	
+	/** 
+	 *  @brief    Casts webframe::method to const char*
+	 *  @see      webframe::method
+	 ***********************************************/
+	constexpr const char* method_to_string (const method& m)
 	{
 		return
 			(m == method::GET    ) ? "GET" :
@@ -208,8 +226,12 @@ namespace webnetpp
 				throw std::invalid_argument ("Not valid METHOD Type");
 			})();
 	}
-
-	constexpr method to_method (const char* m)
+	
+	/** 
+	 *  @brief    Casts const char* to webframe::method
+	 *  @see      webframe::method
+	 ***********************************************/
+	constexpr method string_to_method (const char* m)
 	{
 		return (strcmp(m, "GET") == 0) ?     method::GET :
 		       (strcmp(m, "HEAD") == 0) ?    method::HEAD :
@@ -223,21 +245,11 @@ namespace webnetpp
 		       throw std::invalid_argument (std::string(m) + " is not a valid METHOD Type");
 	}
 	
-	using req_vars = std::map < std::string, std::string >;
-
-	enum LoadingState {
-		NOT_STARTED = -1,
-		METHOD = 0,
-		URI = 1,
-		PARAM_KEY = 2,
-		PARAM_VALUE = 3,
-		HTTP_IN_PROGRESS = 4,
-		HTTP_LOADED = 5,
-		HEADER_ROW = 6,
-		BODY = 7,
-		LOADED = 8
-	};
-	
+	/** 
+	 *  @brief   Type of the request
+	 *  @details This type represents the HTTP version, the URL, the URL variables, all headers, and the body of the request
+	 *  @see     webframe::path_vars
+	 ***********************************************/
 	class request
 	{
 		private:
@@ -254,7 +266,7 @@ namespace webnetpp
 
 			void rebuild_string() 
 			{
-				output = std::string(webnetpp::to_string(m)) + " " + uri + " HTTP/" + http + end_line;
+				output = std::string(method_to_string(m)) + " " + uri + " HTTP/" + http + end_line;
 				for (auto& x : request_params)
 					output += x.first + ": " + x.second + end_line;
 				for (auto& x : header)
@@ -286,7 +298,7 @@ namespace webnetpp
 						{
 							if (buff [i] == ' ')
 							{
-								m = to_method (remaining_to_parse.c_str());
+								m = string_to_method (remaining_to_parse.c_str());
 								loading = LoadingState::METHOD;
 								remaining_to_parse = "";
 								i ++;

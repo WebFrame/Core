@@ -1,3 +1,10 @@
+/** 
+ *  @file   lambda2function.hpp 
+ *  @brief  Util for saving lambda functions into variables
+ *  @author Alex Tsvetanov
+ *  @date   2022-03-07
+ ***********************************************/
+
 #include <functional>
 #include <type_traits>
 

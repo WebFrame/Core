@@ -1,6 +1,6 @@
 COMPILER_CPP=g++
 CPP_STD=-std=c++2a
-OPT=-O3
+OPT=-O3 -fconstexpr-depth=700
 INCLUDE_DIRS=-I./lib/boost -I./tests -I./src
 LIB_FLAGS=-static -pthread -lpthread -fconcepts
 INJACPP=-I./lib/inja/single_include/ -I./lib/inja/third_party/include

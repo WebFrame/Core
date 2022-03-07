@@ -1,5 +1,5 @@
 #include <moka/moka.h>
-#include <webnetpp/webnetpp.hpp>
+#include <webframe/webframe.hpp>
 
 #include <stdio.h>
 std::ostream* nil;
@@ -8,28 +8,28 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 	it.should("response with 200 and the testing string", []() {
 		const std::string text = "sample";
 	
-		webnetpp::webnetpp app;
+		webframe::webframe app;
 		app
 		.set_logger(*nil)
 		.set_error_logger(*nil)
 		.route ("/", [text]() { // static setup
-				return webnetpp::response (webnetpp::status_line ("200"), {{"Content-Type", "text/html; charset=utf-8"}}, text);
+				return webframe::response (webframe::status_line ("200"), {{"Content-Type", "text/html; charset=utf-8"}}, text);
 		});
 		
-		auto r = (*app.get_routes().begin()).second.call("1.1", webnetpp::path_vars());
+		auto r = (*app.get_routes().begin()).second.call("1.1", webframe::path_vars());
 		must_equal("HTTP/1.1 200 OK\nContent-Type: text/html; charset=utf-8\n\n" + text, r.to_string().str());
 	});
 	it.should("response with 1.1/201 and the username", []() {
 		const std::string username = "sample username";
 	
-		webnetpp::webnetpp app;
+		webframe::webframe app;
 		app
 		.set_logger(*nil)
 		.set_error_logger(*nil)
 		.route ("/{.*}", [](std::string username) { // static setup
-				return webnetpp::response (webnetpp::status_line ("1.1", "201"), {{"Content-Type", "text/html; charset=utf-8"}}, username);
+				return webframe::response (webframe::status_line ("1.1", "201"), {{"Content-Type", "text/html; charset=utf-8"}}, username);
 		});
-		auto params = webnetpp::path_vars();
+		auto params = webframe::path_vars();
 		params += {username, "string"};
 		auto r = (*app.get_routes().begin()).second.call("1.1", params);
 		must_equal("HTTP/1.1 201 Created\nContent-Type: text/html; charset=utf-8\n\n" + username, r.to_string().str());
@@ -37,15 +37,15 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 	it.should("response with 1.1/201, the username and a custom header", []() {
 		const std::string username = "sample username", testing_header="testing header";
 	
-		webnetpp::webnetpp app;
+		webframe::webframe app;
 		app
 		.set_logger(*nil)
 		.set_error_logger(*nil)
 		.route ("/{.*}", [testing_header](std::string username) { // static setup
-				return webnetpp::response (webnetpp::status_line ("1.1", "201"), {{"Custom-header", testing_header}, {"Content-Type", "text/html; charset=utf-8"}}, username);
+				return webframe::response (webframe::status_line ("1.1", "201"), {{"Custom-header", testing_header}, {"Content-Type", "text/html; charset=utf-8"}}, username);
 		});
 		try {
-			auto params = webnetpp::path_vars();
+			auto params = webframe::path_vars();
 			params += {username, "string"};
 			auto r = (*app.get_routes().begin()).second.call("1.1", params);
 			must_equal("HTTP/1.1 201 Created\nContent-Type: text/html; charset=utf-8\nCustom-header: " + testing_header + "\n\n" + username, r.to_string().str());
@@ -61,13 +61,13 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 			std::filebuf performance;
 			performance.open ("./bin/log/performance.txt",std::ios::out);
 			std::ostream performancer (&performance);
-			webnetpp::webnetpp app;
+			webframe::webframe app;
 			app
 			.set_logger(*nil)
 			.set_error_logger(*nil)
 			.set_performancer(performancer)
 			.route ("/", []() { // static setup
-					return webnetpp::response (webnetpp::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
+					return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 			})
 			.run(8887, 1, 1, 1);
 			ended = true;
@@ -90,13 +90,13 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 			std::filebuf performance;
 			performance.open ("./bin/log/performance.txt",std::ios::out);
 			std::ostream performancer (&performance);
-			webnetpp::webnetpp app;
+			webframe::webframe app;
 			app
 			.set_logger(*nil)
 			.set_error_logger(*nil)
 			.set_performancer(performancer)
 			.route ("/", []() { // static setup
-					return webnetpp::response (webnetpp::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
+					return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 			})
 			.run(8889, 1, 1, 100);
 			ended = true;

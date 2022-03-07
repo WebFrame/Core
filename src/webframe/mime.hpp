@@ -1,3 +1,10 @@
+/** 
+ *  @file   mime.hpp 
+ *  @brief  List of all extenstions and their respective Content types
+ *  @author Alex Tsvetanov
+ *  @date   2022-03-07
+ ***********************************************/
+
 #pragma once
 
 #include <string_view>

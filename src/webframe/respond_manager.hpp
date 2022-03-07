@@ -1,5 +1,10 @@
+#pragma once
+
 #include <functional>
-#include <webnetpp/base.hpp>
+#include <webframe/base.hpp>
+
+namespace webframe
+{
 struct responser
 {
     public:
@@ -32,5 +37,6 @@ struct responser
             };
         }
 
-        friend class webnetpp;
+        friend class webframe;
 };
+}

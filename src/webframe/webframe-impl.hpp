@@ -1,5 +1,3 @@
-#pragma once
-
 #include <ios>
 #include <iomanip>
 #include <iostream>
@@ -15,11 +13,9 @@
 #include <functional>
 #include <utility>
 #include <chrono>
+#include <regex>
 
-//#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <inja/inja.hpp>
 
 #include <boost/asio.hpp>
 
@@ -35,20 +31,12 @@ namespace this_coro = boost::asio::this_coro;
   boost::asio::use_awaitable_t(__FILE__, __LINE__, __PRETTY_FUNCTION__)
 #endif
 
-#include <webnetpp/base.hpp>
-#include <webnetpp/file.hpp>
-#include <webnetpp/mime.hpp>
-#include <webnetpp/lambda2function.hpp>
+#include <webframe/respond_manager.hpp>
+#include <webframe/file.hpp>
 
-#include <inja/inja.hpp>
-
-namespace webnetpp
+namespace webframe
 {
-class webnetpp;
-
-#include <webnetpp/respond_manager.hpp>
-
-class webnetpp
+class webframe
 {
 private:
 	struct cmp
@@ -64,7 +52,7 @@ private:
 
 	static std::pair<std::vector<std::string>, // var type
 					 std::regex>			   // regex
-	convert_path_to_regex(std::string str, webnetpp& app)
+	convert_path_to_regex(std::string str, webframe& app)
 	{
 		static const std::string regexAnyChar = "A-Za-z_%0-9.-";
 		std::vector<std::string> v;
@@ -131,7 +119,7 @@ private:
 	std::map<std::string, responser> responses;
 
 public:
-	webnetpp()
+	webframe()
 	{
 		performancer = SynchronizedFile(std::clog);
 		logger = SynchronizedFile(std::clog);
@@ -139,8 +127,33 @@ public:
 		template_dir = ".";
 	}
 
+private:
+    static constexpr const char* strCodes[] = {"0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117","200","201","202","203","204","205","206","207","208","209","210","211","212","213","214","215","216","217","300","301","302","303","304","305","306","307","308","309","310","311","312","313","314","315","316","317","400","401","402","403","404","405","406","407","408","409","410","411","412","413","414","415","416","417","500","501","502","503","504","505","506","507","508","509","510","511","512","513","514","515","516","517"};
+    static constexpr unsigned int codes[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,400,401,402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,417,500,501,502,503,504,505,506,507,508,509,510,511,512,513,514,515,516,517};
+public:
+    static constexpr int init(unsigned int code = 0) 
+    {
+        if (code >= sizeof(strCodes)/sizeof(const char*)) return 0;
+        if (code == 0)
+        {
+            mime_types::get_mime_type("x-world/x-vrml");
+            string_to_method(method_to_string(method::GET    ));
+            string_to_method(method_to_string(method::HEAD   ));
+            string_to_method(method_to_string(method::POST   ));
+            string_to_method(method_to_string(method::PUT    ));
+            string_to_method(method_to_string(method::DDELETE));
+            string_to_method(method_to_string(method::CONNECT));
+            string_to_method(method_to_string(method::OPTIONS));
+            string_to_method(method_to_string(method::TRACE  ));
+            string_to_method(method_to_string(method::PATCH  ));
+        }
+        http_codes::get_reason_by_code(codes[code]); 
+        http_codes::get_reason_by_code(strCodes[code]);
+        return init(code + 1);
+    }
+
 	template <typename F>
-	webnetpp &handle(std::string code, F _res)
+	webframe &handle(std::string code, F _res)
 	{
 		const auto res = wrap(_res);
 		responses[code] = responser(res);
@@ -148,7 +161,7 @@ public:
 	}
 
 	template <typename Ret, typename... Ts>
-	webnetpp &handle(std::string code, std::function<Ret(Ts...)> const &res)
+	webframe &handle(std::string code, std::function<Ret(Ts...)> const &res)
 	{
 		responses[code] = responser(res);
 		return *this;
@@ -159,25 +172,25 @@ public:
 		return this->routes;
 	}
 
-	webnetpp &set_performancer(std::ostream &_performancer = std::clog)
+	webframe &set_performancer(std::ostream &_performancer = std::clog)
 	{
 		performancer = SynchronizedFile(_performancer);
 		return *this;
 	}
 
-	webnetpp &set_logger(std::ostream &_logger = std::clog)
+	webframe &set_logger(std::ostream &_logger = std::clog)
 	{
 		logger = SynchronizedFile(_logger);
 		return *this;
 	}
 
-	webnetpp &set_error_logger(std::ostream &_logger = std::clog)
+	webframe &set_error_logger(std::ostream &_logger = std::clog)
 	{
 		errors = SynchronizedFile(_logger);
 		return *this;
 	}
 
-	webnetpp &set_static(std::string path, std::string alias)
+	webframe &set_static(std::string path, std::string alias)
 	{
 		std::filesystem::path p = std::filesystem::relative(path);
 		this->route(alias + "/{path}", [&path, this](std::string file) {
@@ -187,7 +200,7 @@ public:
 		return *this;
 	}
 
-	webnetpp &set_templates(std::string path)
+	webframe &set_templates(std::string path)
 	{
 		this->template_dir = path;
 		return *this;
@@ -235,7 +248,7 @@ public:
 	}
 
 	template <typename Ret, typename... Ts>
-	webnetpp &route(std::string path, std::function<Ret(Ts...)> const &res)
+	webframe &route(std::string path, std::function<Ret(Ts...)> const &res)
 	{
 		auto x = convert_path_to_regex(path, *this);
 		if (routes.find(x) == routes.end())
@@ -246,7 +259,7 @@ public:
 	}
 
 	template <typename F>
-	webnetpp &route(std::string path, F _res)
+	webframe &route(std::string path, F _res)
 	{
 		const auto res = wrap(_res);
 		auto x = convert_path_to_regex(path, *this);
@@ -380,4 +393,4 @@ private:
 	std::mutex* busy;
 	int* clients;
 };
-} // namespace webnetpp
+} // namespace webframe

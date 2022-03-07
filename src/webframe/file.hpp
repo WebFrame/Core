@@ -1,8 +1,21 @@
+/** 
+ *  @file   file.hpp 
+ *  @brief  Multi-thread-safe file structure
+ *  @author Alex Tsvetanov
+ *  @date   2022-03-07
+ ***********************************************/
+
+#pragma once
+
 #include <mutex>
 #include <string>
 #include <iomanip>
 #include <cstring>
 
+/** 
+ *  @brief   Multi-thread-safe file class
+ *  @details This type handle multithreading write requests to a given output stream (inc. files)
+ ***********************************************/
 class SynchronizedFile {
 public:
     SynchronizedFile (std::basic_ostream<char>& path) : _path(&path) {
@@ -25,7 +38,6 @@ private:
 
 template<typename T>
 SynchronizedFile& operator << (SynchronizedFile& file,  T val) {
-    // Ensure that only one thread can execute at a time
     file._writerMutex.lock();
 
     (*file._path) << val;

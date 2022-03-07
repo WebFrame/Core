@@ -20,7 +20,7 @@
                 "UNICODE",
                 "_UNICODE"
             ],
-            "compilerPath": "\"C:/Program Files/MinGW/winlibs-x86_64-posix-seh-gcc-11.0.1-snapshot20210228-mingw-w64-8.0.0-r1/mingw64/bin/g++.exe\"",
+            "compilerPath": "\"C:\\ProgramData\\chocolatey\\bin\\g++.exe\"",
             "cStandard": "c11",
             "cppStandard": "c++20",
             "intelliSenseMode": "gcc-x64",

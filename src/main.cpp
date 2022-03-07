@@ -1,12 +1,13 @@
-#include <webnetpp/webnetpp.hpp>
+#include <webframe/webframe.hpp>
 #include <iostream>
 #include <sstream>
 #include <stdlib.h>
 
 int main()
 {
-	int pass = 0;
-	webnetpp::webnetpp app;
+	constexpr int fasten = webframe::webframe::init();
+	int pass = fasten;
+	webframe::webframe app;
 	app.set_static("./src/static", "/static")
 		.set_templates("./src/static/templates")
 		.handle("404", [&](std::string path) {
@@ -16,7 +17,7 @@ int main()
 			return "Error 500: Internal server error: " + reason + ".";
 		})
 		.route ("/", []() { // static setup
-				return webnetpp::response (webnetpp::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
+				return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 		})
 		.route("/{text}", [&](std::string user) {
 			return app.render("template.html", {{"username", user}});
