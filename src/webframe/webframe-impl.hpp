@@ -136,7 +136,7 @@ public:
         if (code >= sizeof(strCodes)/sizeof(const char*)) return 0;
         if (code == 0)
         {
-            mime_types::get_mime_type("x-world/x-vrml");
+            mime_types::get_mime_type(".zip");
             string_to_method(method_to_string(method::GET    ));
             string_to_method(method_to_string(method::HEAD   ));
             string_to_method(method_to_string(method::POST   ));
