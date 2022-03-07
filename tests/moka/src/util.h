@@ -35,9 +35,15 @@ namespace Moka
     template <class T>
     std::string color(const T& t, int c, bool bold = false) {
       std::stringstream result;
-      result << "\e[" << c;
+      #ifdef __linux__
+      result << "\e["; << c;
       if(bold) result << ";1";
-      result << 'm' << rep(t) << "\e[0m";
+      result << 'm';
+      #endif
+      result << rep(t);
+      #ifdef __linux__
+      result << "\e[0m";
+      #endif
       return result.str();
     }
 

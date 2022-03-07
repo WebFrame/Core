@@ -1,9 +1,9 @@
-[submodule "moka"]
-	path = moka
-	url = https://github.com/xavierholt/moka
-[submodule "lib/win/cpr"]
-	path = lib/win/cpr
-	url = http://github.com/whoshuu/cpr.git
-[submodule "cpr"]
-	path = cpr
-	url = https://github.com/whoshuu/cpr.git
+[submodule "lib/boost"]
+	path = lib/boost
+	url = https://github.com/boostorg/boost.git
+[submodule "lib/inja"]
+	path = lib/inja
+	url = https://github.com/pantor/inja.git
+[submodule "cppcheck"]
+	path = cppcheck
+	url = https://github.com/danmar/cppcheck
