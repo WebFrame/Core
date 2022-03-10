@@ -1,9 +1,10 @@
-[submodule "lib/boost"]
-	path = lib/boost
-	url = https://github.com/boostorg/boost.git
 [submodule "lib/inja"]
 	path = lib/inja
 	url = https://github.com/pantor/inja.git
 [submodule "cppcheck"]
 	path = cppcheck
 	url = https://github.com/danmar/cppcheck
+[submodule "lib/asio"]
+	path = lib/asio
+	url = https://github.com/chriskohlhoff/asio.git
+	branch = tags/asio-1-22-0

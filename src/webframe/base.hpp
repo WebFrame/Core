@@ -161,7 +161,7 @@ namespace webframe
 			status_line status;
 			std::map < std::string, std::string > header;
 			std::stringbuf body;
-			std::stringstream res;
+			std::string output;
 		public:
 			response (const std::string& html): 
 				response(status_line ("1.1", "200"), {{"Content-type", "text/html"}}, html)
@@ -191,6 +191,7 @@ namespace webframe
 		private:
 			void rebuild_string ()
 			{
+				std::stringstream res;
 				res << status.to_string();
 				for (auto& x : header)
 				{
@@ -198,11 +199,12 @@ namespace webframe
 				}
 				res << end_line;
 				res << body.str();
+				output = res.str();
 			}
 		public:
-			const std::stringstream& to_string() const 
+			const std::string& to_string() const 
 			{
-				return res;
+				return output;
 			}
 	};
 	
@@ -283,11 +285,7 @@ namespace webframe
 			request (method _m, std::string h, std::map < std::string, std::string > m, std::string _body) : m (_m), http (h), header (m), body (_body)
 			{}
 
-			request (char* buff) : request() {
-				this->loadMore(buff, strlen(buff));
-			}
-
-			void loadMore(char* buff, size_t n)
+			void loadMore(const char* buff, const size_t n)
 			{
 				if (n != 0)
 				{
@@ -414,10 +412,10 @@ namespace webframe
 			void finalize () 
 			{
 				loading = LoadingState::LOADED;
-				rebuild_string();
+				// rebuild_string();
 			}
 
-			const std::string& to_string () const
+			inline const std::string& to_string () const
 			{
 				return output;
 			}

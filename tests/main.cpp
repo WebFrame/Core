@@ -17,7 +17,7 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		});
 		
 		auto r = (*app.get_routes().begin()).second.call("1.1", webframe::path_vars());
-		must_equal("HTTP/1.1 200 OK\nContent-Type: text/html; charset=utf-8\n\n" + text, r.to_string().str());
+		must_equal("HTTP/1.1 200 OK\nContent-Type: text/html; charset=utf-8\n\n" + text, r.to_string());
 	});
 	it.should("response with 1.1/201 and the username", []() {
 		const std::string username = "sample username";
@@ -32,7 +32,7 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		auto params = webframe::path_vars();
 		params += {username, "string"};
 		auto r = (*app.get_routes().begin()).second.call("1.1", params);
-		must_equal("HTTP/1.1 201 Created\nContent-Type: text/html; charset=utf-8\n\n" + username, r.to_string().str());
+		must_equal("HTTP/1.1 201 Created\nContent-Type: text/html; charset=utf-8\n\n" + username, r.to_string());
 	});
 	it.should("response with 1.1/201, the username and a custom header", []() {
 		const std::string username = "sample username", testing_header="testing header";
@@ -48,7 +48,7 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 			auto params = webframe::path_vars();
 			params += {username, "string"};
 			auto r = (*app.get_routes().begin()).second.call("1.1", params);
-			must_equal("HTTP/1.1 201 Created\nContent-Type: text/html; charset=utf-8\nCustom-header: " + testing_header + "\n\n" + username, r.to_string().str());
+			must_equal("HTTP/1.1 201 Created\nContent-Type: text/html; charset=utf-8\nCustom-header: " + testing_header + "\n\n" + username, r.to_string());
 		} catch(std::exception& e) {
 			must_equal(1, 0);
 			std::cout << e.what() << std::endl;
@@ -113,7 +113,7 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		{
 			double a;
 			std::string str;
-			fin >> str >> a;
+			fin >> str >> a >> str;
 			sum += a;
 		}
 		sum /= n;
@@ -126,6 +126,7 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 
 int main ()
 {
+	constexpr int _ = webframe::webframe::init();
 	
 	std::filebuf fb;
 	fb.open ("./bin/log/buffer.txt", std::ios::out);
@@ -133,7 +134,7 @@ int main ()
 
 	nil = &nill;
 
-	std::cout << "===============================  Testing  ===============================\n";
+	std::cout << _ << "===============================  Testing  ===============================" << _ << "\n";
 
 	Moka::Report report;
 	all.test(report);

@@ -13,7 +13,7 @@
                 "${workspaceFolder}/src",
                 "${workspaceFolder}/lib/inja/single_include/",
                 "${workspaceFolder}/lib/inja/third_party/include",
-                "${workspaceFolder}/lib/boost"
+                "${workspaceFolder}/lib/asio/asio/include"
             ],
             "defines": [
                 "_DEBUG",

@@ -17,18 +17,18 @@
 
 #include <inja/inja.hpp>
 
-#include <boost/asio.hpp>
+#include <asio.hpp>
 
-using boost::asio::ip::tcp;
-using boost::asio::awaitable;
-using boost::asio::co_spawn;
-using boost::asio::detached;
-using boost::asio::use_awaitable;
-namespace this_coro = boost::asio::this_coro;
+using asio::ip::tcp;
+using asio::awaitable;
+using asio::co_spawn;
+using asio::detached;
+using asio::use_awaitable;
+namespace this_coro = asio::this_coro;
 
-#if defined(BOOST_ASIO_ENABLE_HANDLER_TRACKING)
+#if defined(ASIO_ENABLE_HANDLER_TRACKING)
 # define use_awaitable \
-  boost::asio::use_awaitable_t(__FILE__, __LINE__, __PRETTY_FUNCTION__)
+  asio::use_awaitable_t(__FILE__, __LINE__, __PRETTY_FUNCTION__)
 #endif
 
 #include <webframe/respond_manager.hpp>
@@ -298,30 +298,41 @@ public:
 		return responses.at("404").call(http, p);
 	}
 
-	response respond(const request &req, const std::string& http = "1.1")
+	inline response respond(const request &req, const std::string& http = "1.1")
 	{
 		return respond(req.uri, http);
 	}
 
-	response respond(const char *p, const std::string& http = "1.1")
+	inline response respond(const char *p, const std::string& http = "1.1")
 	{
 		return respond(std::string(p), http);
 	}
 
 private:
 
+	static std::chrono::duration<double, std::milli> timer(const std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long long int, std::ratio<1, 1000000000> > > start) 
+	{
+		return std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start);
+	}
+
 	awaitable<void> responder(tcp::socket socket, std::function<void()> callback)
 	{
-		auto t1 = std::chrono::high_resolution_clock::now();
+		const auto t1 = std::chrono::high_resolution_clock::now();
 		try
 		{
-			char data[2048];
+			const std::size_t capacity = 65536; 
+			char data[capacity];
 			std::size_t n = -1;
 			request r;
-			for (; n >= sizeof(data)/sizeof(char) ;)
+			for (; n >= capacity ;)
 			{
-				n = co_await socket.async_read_some(boost::asio::buffer(data), use_awaitable);
+				n = socket.read_some(asio::buffer(data));
+
+				this->performancer << r.uri << ": " << timer(t1).count() << " ReadingChunk\n";
+
 				r.loadMore(data, n);
+				
+				this->performancer << r.uri << ": " << timer(t1).count() << " LoadingChunk\n";
 			}
 			r.finalize();
 			{
@@ -334,13 +345,12 @@ private:
 				{
 					res = this->responses.at("500").call(r.http, path_vars() += {std::string(e.what()), "string"});
 				}
-				std::string response = res.to_string().str();
-				size_t responseSize = response.size();
-				co_await async_write(socket, boost::asio::buffer(std::move(response), responseSize), use_awaitable);
-				auto t2 = std::chrono::high_resolution_clock::now();
-				std::chrono::duration<double, std::milli> elapsed = t2 - t1;
-				this->performancer << r.uri << " " << elapsed.count() << "\n";
-				socket.shutdown(boost::asio::socket_base::shutdown_both);
+				const std::string response = res.to_string();
+				const size_t responseSize = response.size();
+				co_await async_write(socket, asio::buffer(std::move(response), responseSize), use_awaitable);
+				
+				this->performancer << r.uri << ": " << timer(t1).count() << " Responding\n";
+				socket.shutdown(asio::socket_base::shutdown_both);
 			}
 		}
 		catch (std::exception& e)
@@ -365,9 +375,9 @@ public:
 	bool run(unsigned short PORT, unsigned int threads, bool limited = false, unsigned int requests = -1) {
 		try
 		{
-			boost::asio::io_context io_context(threads);
+			asio::io_context io_context(threads);
 
-			boost::asio::signal_set signals(io_context, SIGINT, SIGTERM);
+			asio::signal_set signals(io_context, SIGINT, SIGTERM);
 			signals.async_wait([&](auto, auto){ io_context.stop(); });
 
 			if (limited)

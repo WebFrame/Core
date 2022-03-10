@@ -1,7 +1,7 @@
 COMPILER_CPP=g++
 CPP_STD=-std=c++2a
-OPT=-O3 -fconstexpr-depth=700
-INCLUDE_DIRS=-I./lib/boost -I./tests -I./src
+OPT=-Ofast -fconstexpr-depth=700
+INCLUDE_DIRS=-I./lib/asio/asio/include -I./tests -I./src
 LIB_FLAGS=-static -pthread -lpthread -fconcepts
 INJACPP=-I./lib/inja/single_include/ -I./lib/inja/third_party/include
 
@@ -11,9 +11,11 @@ else
 	LIB_FLAGS += -Wl,--whole-archive -Wl,--no-whole-archive
 endif
 
-WARNING_FLAGS=-Wall -pedantic -Werror
+WARNING_FLAGS=-Wall -Wextra -pedantic
 
-all: clean build build_test run_tests
+all: build run
+
+test: clean build_test run_tests
 
 install: install_inja install_boost
 
