@@ -170,8 +170,7 @@
            <tr><th>Show</th><th>#</th><th>Defect ID</th></tr>
             <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="memleak" name="memleak" checked></td><td>1</td><td>memleak</td></tr>
             <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="missingIncludeSystem" name="missingIncludeSystem" checked></td><td>1</td><td>missingIncludeSystem</td></tr>
-            <tr><td><input type="checkbox" class="idToggle" onclick="toggleDisplay(this)" id="missingReturn" name="missingReturn" checked></td><td>1</td><td>missingReturn</td></tr>
-           <tr><td></td><td>3</td><td>total</td></tr>
+           <tr><td></td><td>2</td><td>total</td></tr>
        </table>
        <p><a href="stats.html">Statistics</a></p>
     </div>
@@ -180,14 +179,11 @@
        <table class="summaryTable">
        <tr><th>Line</th><th>Id</th><th>CWE</th><th>Severity</th><th>Message</th></tr>
       <tbody class="fileEntry">
-       <tr><td colspan="5"><a href="2.html"></a></td></tr>
+       <tr><td colspan="5"><a href="1.html"></a></td></tr>
          <tr class="missingIncludeSystem sev_information issue"><td></td><td>missingIncludeSystem</td><td></td><td>information</td><td>Cppcheck cannot find all the include files (use --check-config for details)</td></tr>
       <tbody class="fileEntry">
-       <tr><td colspan="5"><a href="1.html">src\webframe\base.hpp</a></td></tr>
-         <tr class="memleak sev_error issue"><td><a href="1.html#line-92">92</a></td><td>memleak</td><td><a href="https://cwe.mitre.org/data/definitions/401.html">401</a></td><td>error</td><td class="error">Memory leak: ans</td></tr>
-      <tbody class="fileEntry">
-       <tr><td colspan="5"><a href="0.html">src\webframe\webframe-impl.hpp</a></td></tr>
-         <tr class="missingReturn sev_error issue"><td><a href="0.html#line-351">351</a></td><td>missingReturn</td><td><a href="https://cwe.mitre.org/data/definitions/758.html">758</a></td><td>error</td><td class="error">Found a exit path from function with non-void return type that has missing return statement</td></tr>
+       <tr><td colspan="5"><a href="0.html">src\webframe\base.hpp</a></td></tr>
+         <tr class="memleak sev_error issue"><td><a href="0.html#line-92">92</a></td><td>memleak</td><td><a href="https://cwe.mitre.org/data/definitions/401.html">401</a></td><td>error</td><td class="error">Memory leak: ans</td></tr>
       </tbody>
        </table>
     </div>
