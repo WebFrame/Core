@@ -39,11 +39,11 @@ int main()
 			}
 			return "Hello World!";
 		})
-		.route("/{number}/3", [&](int steps) {
+		.route("/{number}/3", [&](__attribute__((unused)) int steps) {
 			throw std::logic_error("asdf");
 			return "asdf";
 		});
-	const unsigned short port = 8888;
+	const char* port = "8888";
 	const unsigned char cores = ((std::thread::hardware_concurrency() - 1 > 0) ? (std::thread::hardware_concurrency() - 1) : 1);
-	app.run(port, cores);
+	app.run(port, 1);
 }

@@ -14,7 +14,7 @@ namespace http_codes {
     /** 
      *  @brief   List of all HTTP response messages (grouped by first digit of the code)
      ***********************************************/
-    constexpr std::string_view codes [6][18] = {
+    constexpr const char* codes [6][18] = {
         /*0xx errors*/{},
         /*1xx errors*/{"Continue", "Switching Protocols"},
         /*2xx errors*/{"OK", "Created", "Accepted", "Non-Authoritative Information", "No Content", "Reset Content", "Partial Content"},
@@ -35,7 +35,7 @@ namespace http_codes {
      *  @brief   Transforms HTTP code into HTTP response message
      *  @param   code The HTTP code which's message is requested as integer
      ***********************************************/
-    constexpr std::string_view get_reason_by_code(unsigned int code) {
+    constexpr const char* get_reason_by_code(unsigned int code) {
         return codes[code / 100][code % 100];
     }
 
@@ -43,7 +43,7 @@ namespace http_codes {
      *  @brief   Transforms HTTP code to HTTP response message
      *  @param   code_str The HTTP code which's message is requested as a string
      ***********************************************/
-    constexpr std::string_view get_reason_by_code(const char* code_str) {
+    constexpr const char* get_reason_by_code(const char* code_str) {
         return get_reason_by_code(string_to_uint(code_str));
     }
 };
