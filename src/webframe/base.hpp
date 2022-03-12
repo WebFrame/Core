@@ -84,12 +84,11 @@ namespace webframe
 						throw std::invalid_argument("path_vars::var::value is empty.");
 					return value;
 				}
-				explicit operator std::string& () const
+				explicit operator const std::string& () const
 				{
 					if (value.size () == 0)
 						throw std::invalid_argument("path_vars::var::value is empty.");
-					std::string* ans = new std::string(value);
-					return *ans;
+					return value;
 				}
 				template<typename T>
     			explicit operator T&() const { 
