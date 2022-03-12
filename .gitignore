@@ -1,5 +1,3 @@
-bin/main.exe
-bin/test.exe
 .vscode/settings.json
 buffer.txt
 log.txt
@@ -11,3 +9,4 @@ lib/boost_1_78_0
 linux.yaml
 windows.yaml
 node_modules/
+bin/
