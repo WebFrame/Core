@@ -17,7 +17,7 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		});
 		
 		auto r = (*app.get_routes().begin()).second.call("1.1", webframe::path_vars());
-		must_equal("HTTP/1.1 200 OK\nContent-Type: text/html; charset=utf-8\n\n" + text, r.to_string().str());
+		must_equal("HTTP/1.1 200 OK\nContent-Type: text/html; charset=utf-8\n\n" + text, r.to_string());
 	});
 	it.should("response with 1.1/201 and the username", []() {
 		const std::string username = "sample username";
@@ -32,7 +32,7 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		auto params = webframe::path_vars();
 		params += {username, "string"};
 		auto r = (*app.get_routes().begin()).second.call("1.1", params);
-		must_equal("HTTP/1.1 201 Created\nContent-Type: text/html; charset=utf-8\n\n" + username, r.to_string().str());
+		must_equal("HTTP/1.1 201 Created\nContent-Type: text/html; charset=utf-8\n\n" + username, r.to_string());
 	});
 	it.should("response with 1.1/201, the username and a custom header", []() {
 		const std::string username = "sample username", testing_header="testing header";
@@ -48,7 +48,7 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 			auto params = webframe::path_vars();
 			params += {username, "string"};
 			auto r = (*app.get_routes().begin()).second.call("1.1", params);
-			must_equal("HTTP/1.1 201 Created\nContent-Type: text/html; charset=utf-8\nCustom-header: " + testing_header + "\n\n" + username, r.to_string().str());
+			must_equal("HTTP/1.1 201 Created\nContent-Type: text/html; charset=utf-8\nCustom-header: " + testing_header + "\n\n" + username, r.to_string());
 		} catch(std::exception& e) {
 			must_equal(1, 0);
 			std::cout << e.what() << std::endl;
@@ -56,7 +56,7 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 	});
 	it.should("test whole functionality", [](){
 		bool ended = false;
-		auto server = [&ended]()
+		std::thread([&ended]()
 		{
 			std::filebuf performance;
 			performance.open ("./bin/log/performance.txt",std::ios::out);
@@ -69,11 +69,9 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 			.route ("/", []() { // static setup
 					return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 			})
-			.run(8887, 1, 1, 1);
+			.run("8887", 1, 1, 1);
 			ended = true;
-		};
-		std::thread th(server);
-		th.detach();
+		}).detach();
 		// sending a single request to /
 		system("curl http://localhost:8887/ > ./bin/log/curl.txt 2>> ./bin/log/log.txt");
 		while (!ended) { }
@@ -83,9 +81,10 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		must_equal(response, "<h1>Hello, World!</h1>");
 	});
 	
-	it.should("test the performance", [](){
+	it.should("get performance data", [](){
 		bool ended = false;
-		auto server = [&ended]()
+		int count = 0;
+		auto server = [&ended, &count]()
 		{
 			std::filebuf performance;
 			performance.open ("./bin/log/performance.txt",std::ios::out);
@@ -95,16 +94,25 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 			.set_logger(*nil)
 			.set_error_logger(*nil)
 			.set_performancer(performancer)
-			.route ("/", []() { // static setup
-					return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
+			.route ("/{number}", [&count](int steps) {	
+				for (int i = 0; i < (1 << steps); i++)
+				{
+					count++;
+				}
+				return "Hello, World!";
 			})
-			.run(8889, 1, 1, 100);
+			.run("8889", 1, 1, 31);
 			ended = true;
 		};
 		std::thread th(server);
 		th.detach();
-		for (int i = 0 ; i < 100 ; i ++)
-		{ system("curl http://localhost:8889/ > ./bin/log/curl.txt 2>> ./bin/log/log.txt"); }
+		char buffer [3];
+		std::string command;
+		for (int i = 0 ; i <= 30 ; i ++)
+		{
+			command = std::string("curl http://localhost:8889/") + std::string(itoa(i, buffer, 10)) + " > ./bin/log/curl.txt 2>> ./bin/log/log.txt";
+			system(command.c_str());
+		}
 		while (!ended){}
 		std::ifstream fin ("./bin/log/performance.txt");
 		double sum = 0;
@@ -114,18 +122,19 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 			double a;
 			std::string str;
 			fin >> str >> a;
-			sum += a;
+			sum += a * 1000000;
 		}
-		sum /= n;
+		sum /= ((1ll<<31) - 1ll);
 		std::ofstream fout;
 		fout.open("./bin/log/performance_summary.txt", std::ios::trunc);
-		fout << sum << " miliseconds avg.\n";
-		must_be_less (sum, 1);
+		fout << sum << " nanoseconds avg. per operation in the resolver\n";
+		must_be_less (sum, 0.0015);
 	});
 });
 
 int main ()
 {
+	constexpr int _ = webframe::webframe::init();
 	
 	std::filebuf fb;
 	fb.open ("./bin/log/buffer.txt", std::ios::out);
@@ -133,7 +142,7 @@ int main ()
 
 	nil = &nill;
 
-	std::cout << "===============================  Testing  ===============================\n";
+	std::cout << _ << "===============================  Testing  ===============================" << _ << "\n";
 
 	Moka::Report report;
 	all.test(report);
