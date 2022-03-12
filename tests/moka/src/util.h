@@ -33,7 +33,13 @@ namespace Moka
 
   namespace cli {
     template <class T>
+    
+    #ifdef __linux__
     std::string color(const T& t, int c, bool bold = false) {
+    #endif
+    #ifndef __linux__
+    std::string color(const T& t, __attribute__((unused)) int c, __attribute__((unused)) bool bold = false) {
+    #endif
       std::stringstream result;
       #ifdef __linux__
       result << "\e["; << c;

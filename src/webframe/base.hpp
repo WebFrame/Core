@@ -160,7 +160,7 @@ namespace webframe
 		private:
 			status_line status;
 			std::map < std::string, std::string > header;
-			std::stringbuf body;
+			std::string body;
 			std::string output;
 		public:
 			response (const std::string& html): 
@@ -179,27 +179,26 @@ namespace webframe
 				rebuild_string();
 			}
 			response (status_line s = status_line ("2.0", "204"), const std::map < std::string, std::string >& m = {}, const std::string& _body = ""): 
-				status (s), header (m), body (_body, std::ios::in)
+				status (s), header (m), body (_body)
 			{
 				rebuild_string();
 			}
 			response (const std::string& http, const response& r) :
-				status(http, r.status.code), header (r.header), body(r.body.str())
+				status(http, r.status.code), header (r.header), body(r.body)
 			{
 				rebuild_string();
 			}
 		private:
 			void rebuild_string ()
 			{
-				std::stringstream res;
-				res << status.to_string();
+				output.clear();
+				output += status.to_string();
 				for (auto& x : header)
 				{
-					res << x.first + ": " + x.second + end_line;
+					output += x.first + ": " + x.second + end_line;
 				}
-				res << end_line;
-				res << body.str();
-				output = res.str();
+				output += end_line;
+				output += body;
 			}
 		public:
 			const std::string& to_string() const 
@@ -264,18 +263,6 @@ namespace webframe
 			std::string http;
 			std::map < std::string, std::string > header;
 			std::string body;
-			std::string output;
-
-			void rebuild_string() 
-			{
-				output = std::string(method_to_string(m)) + " " + uri + " HTTP/" + http + end_line;
-				for (auto& x : request_params)
-					output += x.first + ": " + x.second + end_line;
-				for (auto& x : header)
-					output += x.first + ": " + x.second + end_line;
-				output += end_line;
-				output += body;
-			}
 		public:
 			request () {
 				loading = LoadingState::NOT_STARTED;
@@ -285,7 +272,7 @@ namespace webframe
 			request (method _m, std::string h, std::map < std::string, std::string > m, std::string _body) : m (_m), http (h), header (m), body (_body)
 			{}
 
-			void loadMore(const char* buff, const size_t n)
+			LoadingState loadMore(const char* buff, const size_t n)
 			{
 				if (n != 0)
 				{
@@ -298,7 +285,7 @@ namespace webframe
 							{
 								m = string_to_method (remaining_to_parse.c_str());
 								loading = LoadingState::METHOD;
-								remaining_to_parse = "";
+								remaining_to_parse.clear();
 								i ++;
 								break;
 							}
@@ -310,16 +297,16 @@ namespace webframe
 						for ( ; i < n ; i ++)
 						{
 							if (buff [i] == ' ') {
-								uri = remaining_to_parse;
+								uri = std::move(remaining_to_parse);
 								loading = LoadingState::HTTP_IN_PROGRESS;
-								remaining_to_parse = "";
+								remaining_to_parse.clear();
 								i ++;
 								break;
 							}
 							if (buff [i] == '?') {
-								uri = remaining_to_parse;
+								uri = std::move(remaining_to_parse);
 								loading = LoadingState::PARAM_KEY;
-								remaining_to_parse = "";
+								remaining_to_parse.clear();
 								i ++;
 								break;
 							}
@@ -334,31 +321,30 @@ namespace webframe
 						if (loading == LoadingState::PARAM_VALUE) x = &var;
 						if (loading == LoadingState::PARAM_KEY) x = &val;
 
-						(*x) = remaining_to_parse;
-
 						for ( ; i < n ; i ++)
 						{
 							if (buff [i] == '=')
 							{
+								(*x) = std::move(remaining_to_parse);
+								remaining_to_parse.clear();	
 								loading = LoadingState::PARAM_KEY;
-								remaining_to_parse = "";
 								x = &val;
 								continue;
 							}
 							if (buff [i] == '&' or buff [i] == ' ')
 							{
+								(*x) = std::move(remaining_to_parse);
+								remaining_to_parse.clear();
 								loading = LoadingState::PARAM_VALUE;
-								remaining_to_parse = "";
 								request_params[var] = val;
 								var = val = "";
 								x = &var;
 							}
 							if (buff [i] == ' ') {
 								loading = LoadingState::HTTP_IN_PROGRESS;
-								remaining_to_parse = "";
+								remaining_to_parse.clear();
 								break;
 							}
-							(*x) += buff [i];
 							remaining_to_parse += buff [i];
 						}
 					}
@@ -370,17 +356,19 @@ namespace webframe
 						for ( ; i < n ; i ++)
 						{
 							if (buff [i] == '\r') {
-								http = remaining_to_parse;
+								http = std::move(remaining_to_parse);
+								remaining_to_parse.clear();
 								loading = LoadingState::HTTP_LOADED;
-								remaining_to_parse = "";
 								i ++;
 								break;
 							}
 							remaining_to_parse += buff [i];
 						}
 					}
-					if(loading == LoadingState::HTTP_LOADED)
+					if(loading == LoadingState::HTTP_LOADED || loading == LoadingState::HEADER_ROW)
 					{
+						if (buff [i] == '\n') i ++;
+						size_t splitter = remaining_to_parse.find(':');
 						for ( ; i < n ; i ++)
 						{
 							loading = LoadingState::HEADER_ROW;
@@ -393,31 +381,29 @@ namespace webframe
 								}
 								if (buff [i] != ' ')
 									remaining_to_parse += buff [i];
+								if (buff [i] == ':')
+									splitter = remaining_to_parse.size() - 1;
 							}
 							if (remaining_to_parse == "") {
 								loading = LoadingState::BODY;
 								break;
 							}
-							header [remaining_to_parse.substr (0, remaining_to_parse.find (':'))] = remaining_to_parse.substr (remaining_to_parse.find (':') + 1);
-							remaining_to_parse = "";
+							if (i != n)
+							{
+								header [remaining_to_parse.substr (0, splitter)] = remaining_to_parse.substr (splitter + 1);
+								remaining_to_parse.clear();
+							}
 						}
 					}
 					if(loading == LoadingState::BODY)
 					{
-						body = remaining_to_parse + std::string((char*)(buff+i));
+						body = std::move(remaining_to_parse) + std::string((char*)(buff+i+1));
+						remaining_to_parse.clear();
+						if (header.find("Content-Length") == header.end() or body.size () >= (unsigned long long)atoll(header["Content-Length"].c_str()))
+							loading = LoadingState::LOADED;
 					}
 				}
-			}
-
-			void finalize () 
-			{
-				loading = LoadingState::LOADED;
-				// rebuild_string();
-			}
-
-			inline const std::string& to_string () const
-			{
-				return output;
+				return loading;
 			}
 	};
 }

@@ -17,22 +17,9 @@
 
 #include <inja/inja.hpp>
 
-#include <asio.hpp>
-
-using asio::ip::tcp;
-using asio::awaitable;
-using asio::co_spawn;
-using asio::detached;
-using asio::use_awaitable;
-namespace this_coro = asio::this_coro;
-
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# define use_awaitable \
-  asio::use_awaitable_t(__FILE__, __LINE__, __PRETTY_FUNCTION__)
-#endif
-
 #include <webframe/respond_manager.hpp>
 #include <webframe/file.hpp>
+#include <webframe/host.h>
 
 namespace webframe
 {
@@ -125,6 +112,13 @@ public:
 		logger = SynchronizedFile(std::clog);
 		errors = SynchronizedFile(std::cout);
 		template_dir = ".";
+
+		this->handle("404", [&](std::string path) {
+			return "Error 404: " + path + " was not found.";
+		})
+		.handle("500", [&](std::string reason) {
+			return "Error 500: Internal server error: " + reason + ".";
+		});
 	}
 
 private:
@@ -315,26 +309,32 @@ private:
 		return std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start);
 	}
 
-	awaitable<void> responder(tcp::socket socket, std::function<void()> callback)
+	int responder(int socket, std::function<void()> callback)
 	{
-		const auto t1 = std::chrono::high_resolution_clock::now();
+		const std::size_t capacity = 1024; 
+		char data[capacity];
+		int n = 0;
+		request r;
 		try
 		{
-			const std::size_t capacity = 65536; 
-			char data[capacity];
-			std::size_t n = -1;
-			request r;
-			for (; n >= capacity ;)
+			do
 			{
-				n = socket.read_some(asio::buffer(data));
+				n = RECV(socket, data, capacity, 0);
+				if(n < 0) break;
 
-				this->performancer << r.uri << ": " << timer(t1).count() << " ReadingChunk\n";
+				auto state = r.loadMore(data, n);
 
-				r.loadMore(data, n);
-				
-				this->performancer << r.uri << ": " << timer(t1).count() << " LoadingChunk\n";
-			}
-			r.finalize();
+				if (state == LoadingState::LOADED) // Headers are loaded, the buffer is not full and the last char is \0 -> body is filled
+					break;
+			} while (n > 0);
+		}
+		catch (std::exception& e)
+		{
+			this->logger << "Reading Exception: " << e.what() << "\n";
+		}
+		try
+		{
+			const auto t1 = std::chrono::high_resolution_clock::now();
 			{
 				response res;
 				try
@@ -343,53 +343,194 @@ private:
 				}
 				catch (std::exception &e)
 				{
-					res = this->responses.at("500").call(r.http, path_vars() += {std::string(e.what()), "string"});
+					throw e;
+					//res = this->responses.at("500").call(r.http, path_vars() += {std::string(e.what()), "string"});
 				}
-				const std::string response = res.to_string();
+				const std::string& response = res.to_string();
 				const size_t responseSize = response.size();
-				co_await async_write(socket, asio::buffer(std::move(response), responseSize), use_awaitable);
+				SEND(socket, response.c_str(), responseSize, 0);
 				
-				this->performancer << r.uri << ": " << timer(t1).count() << " Responding\n";
-				socket.shutdown(asio::socket_base::shutdown_both);
+				this->performancer << r.uri << ": " << timer(t1).count() << "\n";
+				CLOSE(socket);
 			}
 		}
 		catch (std::exception& e)
 		{
-			this->logger << "echo Exception: " << e.what() << "\n";
+			this->logger << "Responding Exception: " << e.what() << "\n";
 		}
 		if (callback)
-			callback();
+			callback();	
+		return 0;
 	}
 
-	awaitable<void> listener(const unsigned short int PORT, std::function<void()> callback)
+	void listener_host(const char* PORT, const std::function<bool()>& accept_more, const std::function<void()>& callback)
 	{
-		auto executor = co_await this_coro::executor;
-		tcp::acceptor acceptor(executor, {tcp::v4(), PORT});
-		for (;;)
+		// Variables for writing a server. 
+		/*
+		1. Getting the address data structure.
+		2. Openning a new socket.
+		3. Bind to the socket.
+		4. Listen to the socket.
+		5. Accept Connection.
+		6. Receive Data.
+		7. Close Connection.
+		*/
+		int status;
+		struct addrinfo hints, *res;
+		int listner;
+		
+		// Before using hint you have to make sure that the data structure is empty 
+		memset(&hints, 0, sizeof hints);
+		// Set the attribute for hint
+		hints.ai_family = AF_UNSPEC; // We don't care V4 AF_INET or 6 AF_INET6
+		hints.ai_socktype = SOCK_STREAM; // TCP Socket SOCK_DGRAM 
+		hints.ai_flags = AI_PASSIVE;
+
+		// Fill the res data structure and make sure that the results make sense. 
+		status = getaddrinfo(NULL, PORT, &hints, &res);
+		this->logger << "status" << status << "\n";
+		if (status != 0)
 		{
-			tcp::socket socket = co_await acceptor.async_accept(use_awaitable);
-			co_spawn(executor, responder(std::move(socket), callback), detached);
+			this->logger << "getaddrinfo error: " << gai_strerror(status) << "\n";
+
 		}
-	}
-public:
-	bool run(unsigned short PORT, unsigned int threads, bool limited = false, unsigned int requests = -1) {
-		try
+
+		// Create Socket and check if error occured afterwards
+		listner = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+		this->logger << "listner" << listner << "\n";
+		if (listner < 0)
 		{
-			asio::io_context io_context(threads);
+			fprintf(stderr, "socket error: %s\n", gai_strerror(status));
+		}
 
-			asio::signal_set signals(io_context, SIGINT, SIGTERM);
-			signals.async_wait([&](auto, auto){ io_context.stop(); });
+		// Bind the socket to the address of my local machine and port number 
+		status = bind(listner, res->ai_addr, res->ai_addrlen);
+		this->logger << "status2" << status << "\n";
+		if (status < 0)
+		{
+			fprintf(stderr, "bind: %s\n", gai_strerror(status));
+		}
 
-			if (limited)
-				co_spawn(io_context, listener(PORT, [&requests, limited, &io_context]() {
-					requests--;
-					if (limited && requests == 0)
-						io_context.stop();
-				}), detached);
-			else
-				co_spawn(io_context, listener(PORT, std::function<void()>()), detached);
+		status = listen(listner, 1);
+		if (status < 0)
+		{
+			fprintf(stderr, "listen: %s\n", gai_strerror(status));
+		}
 
-			io_context.run();
+		// Free the res linked list after we are done with it	
+		freeaddrinfo(res);
+
+		// We should wait now for a connection to accept
+		int new_conn_fd = -1;
+		struct sockaddr_storage client_addr;
+		socklen_t addr_size;
+		char s[INET6_ADDRSTRLEN]; // an empty string 
+
+		// Calculate the size of the data structure	
+		addr_size = sizeof client_addr;
+
+		while (accept_more()) {
+			// Accept a new connection and return back the socket desciptor 
+			new_conn_fd = ACCEPT(listner, (struct sockaddr *) & client_addr, &addr_size);
+			if (new_conn_fd < 0)
+			{
+				this->logger << "accept/ error: " << gai_strerror(new_conn_fd) << "\n";
+				continue;
+			}
+			 
+			if (!accept_more()) break;
+
+			inet_ntop(client_addr.ss_family, get_in_addr((struct sockaddr *) &client_addr), s, sizeof s);
+			this->logger << "I am now connected to " << s << " \n";
+			status = responder(new_conn_fd, callback);
+			if (status == -1)
+			{
+				CLOSE(new_conn_fd);
+			}
+		}
+		// Close the socket before we finish
+		CLOSE(new_conn_fd);
+	}
+	
+	struct thread
+	{
+	private:
+		std::mutex m;
+		void unlock() 
+		{
+			m.unlock();
+		}
+		void lock() 
+		{
+			m.lock();
+		}
+	public:
+		thread() 
+		{
+			m.unlock();
+		}
+
+		void join(std::function<void()> f) 
+		{
+			this->lock();
+			f();
+			this->unlock();
+		}
+
+		void detach(std::function<void()> f) 
+		{
+			std::thread([&]() {
+				this->lock();
+				f();
+				this->unlock();
+			}).detach();
+		}
+	};
+public:
+	bool run(const char* PORT, const unsigned int cores, bool limited = false, unsigned int requests = -1) 
+	{
+		#ifdef _WIN32
+			//----------------------
+			// Initialize Winsock.
+			WSADATA wsaData;
+			this->logger << "Startup called\n";
+			int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+			this->logger << "Startup finished " << iResult << "\n";
+			if (iResult != NO_ERROR) {
+				this->logger << "WSAStartup failed with error: " << iResult << "\n";
+				// return;
+			}
+		#endif
+
+		const unsigned int threads = std::min(cores, requests);
+		thread* threads_ptr = new thread [threads];
+		try 
+		{
+			for (unsigned int thread = 0 ; thread < threads ; thread ++) 
+			{
+				this->logger << "Creating thread " << thread+1 << "\n";
+				if(limited)
+				{
+					this->logger << "Detaching --requests thread " << thread+1 << "\n";
+					threads_ptr[thread].join([&]() {
+						listener_host(PORT, [&requests](){ return requests != 0; }, [this, &requests]() {
+							this->logger << "--requests = " << requests - 1 << "\n";
+							requests--;
+						});
+					});
+				}
+				else {
+					threads_ptr[thread].detach([&, this]() {
+						listener_host(PORT, [](){ return true; }, [this, &thread]() {
+							this->logger << "Callback from thread " << thread << "\n";
+						});
+					});
+				}
+			}
+			while(!limited || requests != 0) {}
+			#ifdef _WIN32
+				WSACleanup();
+			#endif
 			return true;
 		}
 		catch (std::exception& e)
@@ -398,9 +539,5 @@ public:
 			return false;
 		}
 	}
-private:
-	std::thread **threads_ptr;
-	std::mutex* busy;
-	int* clients;
 };
 } // namespace webframe

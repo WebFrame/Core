@@ -1,7 +1,7 @@
 COMPILER_CPP=g++
 CPP_STD=-std=c++2a
-OPT=-Ofast -fconstexpr-depth=700
-INCLUDE_DIRS=-I./lib/asio/asio/include -I./tests -I./src
+OPT=-O3 -fconstexpr-depth=700
+INCLUDE_DIRS=-I./tests -I./src
 LIB_FLAGS=-static -pthread -lpthread -fconcepts
 INJACPP=-I./lib/inja/single_include/ -I./lib/inja/third_party/include
 
@@ -17,10 +17,7 @@ all: build run
 
 test: clean build_test run_tests
 
-install: install_inja install_boost
-
-install_boost:
-	cd ./lib/boost && ./bootstrap.sh && ./b2 headers
+install: install_inja
 
 install_inja:
 	cd ./lib/inja && cmake . -G "Unix Makefiles" && make MAKE=make CMAKE_COMMAND=cmake

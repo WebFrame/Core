@@ -23,14 +23,14 @@ struct responser
         template<typename Ret>
         responser (std::function<Ret()> f)
         {
-            call = [=](const std::string& http, const path_vars& vars) -> response {
+            call = [=](const std::string& http, __attribute__((unused)) const path_vars& vars) -> response {
                 return response(http, f());
             };
         }
 
     private:
         template<typename Ret, typename... Ts, std::size_t... I>
-        void set(std::function<Ret(Ts...)> f, std::index_sequence<I...> seq)
+        void set(std::function<Ret(Ts...)> f, __attribute__((unused)) std::index_sequence<I...> seq)
         {
             call = [=](const std::string& http, const path_vars& vars) -> response {
                 return response(http, f((Ts(vars[I]))...));
