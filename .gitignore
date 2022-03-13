@@ -1,12 +1,14 @@
 .vscode/settings.json
+*.exe
 buffer.txt
 log.txt
 curl.txt
 lib/Jinja2Cpp/**
 cppcheck*.*
 check_report.xml
-lib/boost_1_78_0
 linux.yaml
 windows.yaml
 node_modules/
 bin/
+benchmark/tmp/
+package-lock.json

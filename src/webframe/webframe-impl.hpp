@@ -188,7 +188,6 @@ public:
 	{
 		std::filesystem::path p = std::filesystem::relative(path);
 		this->route(alias + "/{path}", [&path, this](std::string file) {
-			std::cout << "Requested file: " << path + "/" + file << std::endl;
 			return this->get_file(path + "/" + file);
 		});
 		return *this;
@@ -388,33 +387,29 @@ private:
 
 		// Fill the res data structure and make sure that the results make sense. 
 		status = getaddrinfo(NULL, PORT, &hints, &res);
-		this->logger << "status" << status << "\n";
 		if (status != 0)
 		{
 			this->logger << "getaddrinfo error: " << gai_strerror(status) << "\n";
-
 		}
 
 		// Create Socket and check if error occured afterwards
 		listner = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
-		this->logger << "listner" << listner << "\n";
 		if (listner < 0)
 		{
-			fprintf(stderr, "socket error: %s\n", gai_strerror(status));
+			this->logger << "socket error: " << gai_strerror(status) << "\n";
 		}
 
 		// Bind the socket to the address of my local machine and port number 
 		status = bind(listner, res->ai_addr, res->ai_addrlen);
-		this->logger << "status2" << status << "\n";
 		if (status < 0)
 		{
-			fprintf(stderr, "bind: %s\n", gai_strerror(status));
+			this->logger << "bid error: " << gai_strerror(status) << "\n";
 		}
 
 		status = listen(listner, 1);
 		if (status < 0)
 		{
-			fprintf(stderr, "listen: %s\n", gai_strerror(status));
+			this->logger << "listen error: " << gai_strerror(status) << "\n";
 		}
 
 		// Free the res linked list after we are done with it	
@@ -441,7 +436,6 @@ private:
 			if (!accept_more()) break;
 
 			inet_ntop(client_addr.ss_family, get_in_addr((struct sockaddr *) &client_addr), s, sizeof s);
-			this->logger << "I am now connected to " << s << " \n";
 			status = responder(new_conn_fd, callback);
 			if (status == -1)
 			{
@@ -498,7 +492,7 @@ public:
 			this->logger << "Startup finished " << iResult << "\n";
 			if (iResult != NO_ERROR) {
 				this->logger << "WSAStartup failed with error: " << iResult << "\n";
-				// return;
+				return false;
 			}
 		#endif
 
@@ -508,13 +502,10 @@ public:
 		{
 			for (unsigned int thread = 0 ; thread < threads ; thread ++) 
 			{
-				this->logger << "Creating thread " << thread+1 << "\n";
 				if(limited)
 				{
-					this->logger << "Detaching --requests thread " << thread+1 << "\n";
 					threads_ptr[thread].join([&]() {
 						listener_host(PORT, [&requests](){ return requests != 0; }, [this, &requests]() {
-							this->logger << "--requests = " << requests - 1 << "\n";
 							requests--;
 						});
 					});
@@ -522,7 +513,6 @@ public:
 				else {
 					threads_ptr[thread].detach([&, this]() {
 						listener_host(PORT, [](){ return true; }, [this, &thread]() {
-							this->logger << "Callback from thread " << thread << "\n";
 						});
 					});
 				}

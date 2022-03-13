@@ -42,7 +42,7 @@ namespace Moka
     #endif
       std::stringstream result;
       #ifdef __linux__
-      result << "\e["; << c;
+      result << "\e[" << c;
       if(bold) result << ";1";
       result << 'm';
       #endif
