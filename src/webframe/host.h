@@ -11,13 +11,15 @@
   #include <time.h>
 #endif
 
-#ifdef __linux__
+#ifdef __unix__
   #include <unistd.h>
   #include <stdio.h>
-  #include <sys/socket.h>
   #include <stdlib.h>
   #include <netinet/in.h>
   #include <string.h>
+  #include <sys/types.h>
+  #include <sys/socket.h>
+  #include <netdb.h>
 #endif
 
 #include <limits.h>
@@ -37,7 +39,7 @@ extern "C"
   #define __WORDSIZE 32
 #endif
 
-#ifdef __linux__
+#ifdef __unix__
     typedef unsigned char  uint8;
     typedef char           int8;
     typedef unsigned short uint16;
@@ -152,7 +154,7 @@ extern "C"
 #define GETHOSTBYNAME(a)       gethostbyname(a)
 #endif
 
-#ifdef __linux__
+#ifdef __unix__
 #define ACCEPT(a,b,c)          accept(a,b,c)
 #define CONNECT(a,b,c)         connect(a,b,c)
 #define CLOSE(a)               close(a)
