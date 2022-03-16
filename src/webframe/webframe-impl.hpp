@@ -435,7 +435,6 @@ private:
 			 
 			if (!accept_more()) break;
 
-			inet_ntop(client_addr.ss_family, get_in_addr((struct sockaddr *) &client_addr), s, sizeof s);
 			status = responder(new_conn_fd, callback);
 			if (status == -1)
 			{
