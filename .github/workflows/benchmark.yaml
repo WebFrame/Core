@@ -16,7 +16,7 @@ jobs:
         run: make install
         shell: bash
       - name: Benchmark
-        run: make benchmark
+        run: make -B benchmark
         shell: bash
       - name: Outcome
         run: |
