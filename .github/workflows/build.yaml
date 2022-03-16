@@ -72,13 +72,13 @@ jobs:
         shell: bash
         run: |
           make -B run_tests
-          cp bin/log/performance* benchmark/integration\ tests/
+          cp bin/log/performance* benchmark/integration_tests/
       - name: Commit test score
         if: github.ref == 'refs/heads/master'
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          echo "${{ github.sha }} ${{ matrix.config.os }}" >> benchmark/integration\ tests/commit_hash
+          echo "${{ github.sha }} ${{ matrix.config.os }}" >> benchmark/integration_tests/commit_hash
           git add .
           git commit -m "Add pipeline testing score" -a
       - name: Push static code analysis
