@@ -74,7 +74,7 @@ jobs:
           make -B run_tests
           cp bin/log/performance* benchmark/integration_tests/
       - name: Commit test score
-        if: github.ref == 'refs/heads/master'
+        if: ${{ github.ref == 'refs/heads/master' && startsWith(matrix.config.name, 'Ubuntu Latest GCC') }}
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -82,13 +82,13 @@ jobs:
           git add .
           git commit -m "Add pipeline testing score" -a
       - name: Push static code analysis
-        if: github.ref == 'refs/heads/master'
+        if: ${{ github.ref == 'refs/heads/master' && startsWith(matrix.config.name, 'Ubuntu Latest GCC') }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
       - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/master'
+        if: ${{ github.ref == 'refs/heads/master' && startsWith(matrix.config.name, 'Ubuntu Latest GCC') }}
         uses: qoomon/deploy-to-github-pages-action@v1
         with:
           GITHUB_PAGES_SOURCE_DIR: ./bin/log
