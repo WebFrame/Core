@@ -8,7 +8,7 @@ INJACPP=-I./lib/inja/single_include/ -I./lib/inja/third_party/include
 ifeq ($(OS),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...
 	LIB_FLAGS += -lwsock32 -lws2_32
 else
-	LIB_FLAGS += -Wl,--whole-archive
+	LIB_FLAGS += 
 endif
 
 WARNING_FLAGS=-Wall -Wextra -pedantic
