@@ -16,8 +16,8 @@ int main()
 		.handle("500", [&](std::string reason) {
 			return "Error 500: Internal server error: " + reason + ".";
 		})
-		.route ("/", []() { // static setup
-				return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
+		.route ("/", [&]() { // static setup
+			return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 		})
 		.route("/{text}", [&](std::string user) {
 			return app.render("template.html", {{"username", user}});
@@ -42,8 +42,17 @@ int main()
 		.route("/{number}/3", [&](__attribute__((unused)) int steps) {
 			throw std::logic_error("asdf");
 			return "asdf";
+		})
+		.route("/{number}/4", [&](__attribute__((unused)) webframe::body_t request_body, __attribute__((unused)) int steps) {
+			return "asdf";
+		})
+		.route("/6", [&](__attribute__((unused)) webframe::body_t request_body) {
+			return "asdf";
+		})
+		.route("/{text}/7", [&](__attribute__((unused)) std::string not_request_body) {
+			return "asdf";
 		});
 	const char* port = "8888";
-	const unsigned char cores = ((std::thread::hardware_concurrency() - 1 > 0) ? (std::thread::hardware_concurrency() - 1) : 1);
-	app.run(port, 1);
+	//const unsigned char cores = ((std::thread::hardware_concurrency() - 1 > 0) ? (std::thread::hardware_concurrency() - 1) : 1);
+	app.run(port, 1).value().wait();
 }
