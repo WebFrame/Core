@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 std::ostream* nil;
+const unsigned char cores = ((std::thread::hardware_concurrency() - 1 > 0) ? (std::thread::hardware_concurrency() - 1) : 1);
 
 Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 	it.should("response with 200 and the testing string", []() {
@@ -16,7 +17,7 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 				return webframe::response (webframe::status_line ("200"), {{"Content-Type", "text/html; charset=utf-8"}}, text);
 		});
 		
-		auto r = (*app.get_routes().begin()).second.call("1.1", webframe::path_vars());
+		auto r = (*app.get_routes().begin()).second.call("1.1", "", webframe::path_vars());
 		must_equal("HTTP/1.1 200 OK\nContent-Type: text/html; charset=utf-8\n\n" + text, r.to_string());
 	});
 	it.should("response with 1.1/201 and the username", []() {
@@ -31,7 +32,7 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		});
 		auto params = webframe::path_vars();
 		params += {username, "string"};
-		auto r = (*app.get_routes().begin()).second.call("1.1", params);
+		auto r = (*app.get_routes().begin()).second.call("1.1", "", params);
 		must_equal("HTTP/1.1 201 Created\nContent-Type: text/html; charset=utf-8\n\n" + username, r.to_string());
 	});
 	it.should("response with 1.1/201, the username and a custom header", []() {
@@ -47,7 +48,7 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		try {
 			auto params = webframe::path_vars();
 			params += {username, "string"};
-			auto r = (*app.get_routes().begin()).second.call("1.1", params);
+			auto r = (*app.get_routes().begin()).second.call("1.1", "", params);
 			must_equal("HTTP/1.1 201 Created\nContent-Type: text/html; charset=utf-8\nCustom-header: " + testing_header + "\n\n" + username, r.to_string());
 		} catch(std::exception& e) {
 			must_equal(1, 0);
@@ -55,8 +56,10 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		}
 	});
 	it.should("test whole functionality", [](){
-		bool ended = false;
-		std::thread([&ended]()
+		std::promise<void> server;
+		std::future<void> server_ready = server.get_future();
+
+		std::thread([&server]()
 		{
 			std::filebuf performance;
 			performance.open ("./bin/log/performance.txt",std::ios::out);
@@ -69,12 +72,12 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 			.route ("/", []() { // static setup
 					return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 			})
-			.run("8887", 1, 1, 1);
-			ended = true;
+			.run("8887", cores, &server, 1, 1);
 		}).detach();
-		// sending a single request to /
 		system("curl http://localhost:8887/ > ./bin/log/curl.txt 2>> ./bin/log/log.txt");
-		while (!ended) { }
+		
+		server_ready.wait();
+
 		std::ifstream fin ("./bin/log/curl.txt");
 		std::string response; 
 		std::getline(fin, response);
@@ -82,9 +85,11 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 	});
 	
 	it.should("get performance data", [](){
-		bool ended = false;
+		std::promise<void> server;
+		std::future<void> server_ready = server.get_future();
+
 		int count = 0;
-		auto server = [&ended, &count]()
+		std::thread([&server, &count]()
 		{
 			std::filebuf performance;
 			performance.open ("./bin/log/performance.txt",std::ios::out);
@@ -101,11 +106,9 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 				}
 				return "Hello, World!";
 			})
-			.run("8889", 1, 1, 31);
-			ended = true;
-		};
-		std::thread th(server);
-		th.detach();
+			.run("8889", cores, &server, 1, 31);
+		}).detach();
+
 		char buffer [3];
 		std::string command;
 		for (int i = 0 ; i <= 30 ; i ++)
@@ -113,7 +116,9 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 			command = std::string("curl http://localhost:8889/") + std::string(itoa(i, buffer, 10)) + " > ./bin/log/curl.txt 2>> ./bin/log/log.txt";
 			system(command.c_str());
 		}
-		while (!ended){}
+
+		server_ready.wait();
+		
 		std::ifstream fin ("./bin/log/performance.txt");
 		double sum = 0;
 		int n;

@@ -50,6 +50,11 @@ namespace webframe
 					this->value = value;
 				}
 
+				const std::string& get() const
+				{
+					return value;
+				}
+
 				explicit operator int () const
 				{
 					if (value.size () == 0)
@@ -113,6 +118,10 @@ namespace webframe
 			{
 				vars.push_back (v);
 				return *this;
+			}
+			size_t size () const
+			{
+				return vars.size();
 			}
 	};
 

@@ -14,6 +14,8 @@
 #include <utility>
 #include <chrono>
 #include <regex>
+#include <future>
+#include <optional>
 
 #include <inja/inja.hpp>
 
@@ -97,15 +99,16 @@ private:
 		return {v, std::regex(format)};
 	}
 
-	SynchronizedFile logger;
-	SynchronizedFile errors;
-	SynchronizedFile performancer;
 	std::string template_dir;
 	inja::Environment env;
 
 	std::map<std::string, responser> responses;
 
 public:
+	SynchronizedFile logger;
+	SynchronizedFile errors;
+	SynchronizedFile performancer;
+
 	webframe()
 	{
 		performancer = SynchronizedFile(std::clog);
@@ -208,7 +211,7 @@ public:
 		{
 			path_vars p;
 			p += path_vars::var(path, "string");
-			return this->responses.at("404").call("1.1", p);
+			return this->responses.at("404").call("1.1", "", p);
 		}
 		else
 		{
@@ -236,7 +239,7 @@ public:
 		catch (...)
 		{ 
 			// file not found
-			return this->responses.at("404").call("1.1", path_vars() += path_vars::var(path, "string"));
+			return this->responses.at("404").call("1.1", "", path_vars() += path_vars::var(path, "string"));
 		}
 	}
 
@@ -282,13 +285,13 @@ public:
 						piece = sub_match.str();
 						params += path_vars::var(piece, s.first.first[i - 1]);
 					}
-					return s.second.call(http, params);
+					return s.second.call(http, "", params);
 				}
 			}
 		}
 		path_vars p;
 		p += path_vars::var(path, "string");
-		return responses.at("404").call(http, p);
+		return responses.at("404").call(http, "", p);
 	}
 
 	inline response respond(const request &req, const std::string& http = "1.1")
@@ -308,7 +311,7 @@ private:
 		return std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start);
 	}
 
-	int responder(int socket, std::function<void()> callback)
+	int responder(const int socket)
 	{
 		const std::size_t capacity = 1024; 
 		char data[capacity];
@@ -319,64 +322,161 @@ private:
 			do
 			{
 				n = RECV(socket, data, capacity, 0);
-				if(n < 0) break;
+				if (n < 0)
+				{
+					break;
+				}
 
 				auto state = r.loadMore(data, n);
 
 				if (state == LoadingState::LOADED) // Headers are loaded, the buffer is not full and the last char is \0 -> body is filled
 					break;
 			} while (n > 0);
-		}
-		catch (std::exception& e)
-		{
-			this->logger << "Reading Exception: " << e.what() << "\n";
-		}
-		try
-		{
+
 			const auto t1 = std::chrono::high_resolution_clock::now();
-			{
-				response res;
-				try
-				{
-					res = this->respond(r, r.http);
-				}
-				catch (std::exception &e)
-				{
-					throw e;
-					//res = this->responses.at("500").call(r.http, path_vars() += {std::string(e.what()), "string"});
-				}
-				const std::string& response = res.to_string();
-				const size_t responseSize = response.size();
-				SEND(socket, response.c_str(), responseSize, 0);
-				
-				this->performancer << r.uri << ": " << timer(t1).count() << "\n";
-				CLOSE(socket);
+			response res;
+			res = this->respond(r, r.http);
+			const std::string& response = res.to_string();
+			const size_t responseSize = response.size();
+			int status;
+			status = SEND(socket, response.c_str(), responseSize, 0);
+			if(status == SOCKET_ERROR) {
+				return -1;
 			}
+			this->performancer << r.uri << ": " << timer(t1).count() << "\n";
 		}
-		catch (std::exception& e)
+		catch (std::exception const& e)
 		{
 			this->logger << "Responding Exception: " << e.what() << "\n";
+			response res = this->responses.at("500").call(r.http, "", path_vars() += {std::string(e.what()), "string"});
+			const std::string& response = res.to_string();
+			const size_t responseSize = response.size();
+			SEND(socket, response.c_str(), responseSize, 0);
+			return -1;
 		}
-		if (callback)
-			callback();	
 		return 0;
 	}
 
-	void listener_host(const char* PORT, const std::function<bool()>& accept_more, const std::function<void()>& callback)
+	void handler(const int* client, const std::function<void()>& callback)
 	{
-		// Variables for writing a server. 
-		/*
-		1. Getting the address data structure.
-		2. Openning a new socket.
-		3. Bind to the socket.
-		4. Listen to the socket.
-		5. Accept Connection.
-		6. Receive Data.
-		7. Close Connection.
-		*/
+		int status = responder(*client);
+		callback();
+		if (status == -1) 
+		{
+			CLOSE(*client);
+		} 
+		else 
+		{
+			CLOSE(*client);
+		}
+		delete client;
+	}
+	
+	struct thread_pool;
+	struct thread
+	{
+	private:
+		std::mutex m;
+		void unlock() 
+		{
+			m.unlock();
+		}
+		void lock() 
+		{
+			m.lock();
+		}
+		bool try_lock() 
+		{
+			return m.try_lock();
+		}
+	public:
+		int requestor;
+
+		thread() 
+		{
+			m.unlock();
+		}
+
+		void join(std::function<void()> f) 
+		{
+			this->lock();
+			f();
+			this->unlock();
+		}
+
+		void detach(std::function<void()> f) 
+		{
+			this->lock();
+			std::thread([&]() {
+				f();
+				this->unlock();
+			}).detach();
+		}
+
+		friend struct thread_pool;
+	};
+
+	struct thread_pool 
+	{
+	private:
+		thread* pool;
+		size_t size;
+		std::mutex extract;
+	public:
+		thread_pool(size_t _size) 
+		{
+			size = _size;
+			pool = new thread[_size];
+		}
+		~thread_pool() 
+		{
+			delete[] pool;
+		}
+		thread& operator[] (const size_t index) const
+		{
+			return pool[index];
+		}
+		
+		std::optional<size_t> get_free_thread() 
+		{
+			std::lock_guard locker (this->extract);
+			for (size_t index = 0 ; index < this->size ; index ++)
+			{
+				if (pool[index].try_lock())
+				{
+					pool[index].unlock();
+					return index;
+				}
+			}
+			return {};
+		}
+	};
+ 
+public:
+	std::optional<std::shared_future<void>> run(const char* PORT, const unsigned int cores, std::promise<void>* callback = nullptr, bool limited = false, unsigned int requests = -1) 
+	{
+		std::promise<void>* running;
+		if(callback != nullptr) running = callback;
+		else running = new std::promise<void>();
+		#ifdef _WIN32
+			//----------------------
+			// Initialize Winsock.
+			WSADATA wsaData;
+			this->logger << "Startup called\n";
+			int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+			this->logger << "Startup finished " << iResult << "\n";
+			if (iResult != NO_ERROR) {
+				this->logger << "WSAStartup failed with error: " << iResult << "\n";
+				running->set_value();
+			}
+		#endif
+
+		const unsigned int threads = std::min(cores, limited ? requests : cores);
+		thread_pool threads_ptr(threads);
+
 		int status;
 		struct addrinfo hints, *res;
-		int listner;
+		int listener;
 		
 		// Before using hint you have to make sure that the data structure is empty 
 		memset(&hints, 0, sizeof hints);
@@ -393,140 +493,79 @@ private:
 		}
 
 		// Create Socket and check if error occured afterwards
-		listner = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
-		if (listner < 0)
+		listener = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+		if (listener == -1)
 		{
 			this->logger << "socket error: " << gai_strerror(status) << "\n";
 		}
 
 		// Bind the socket to the address of my local machine and port number 
-		status = bind(listner, res->ai_addr, res->ai_addrlen);
+		status = bind(listener, res->ai_addr, res->ai_addrlen);
 		if (status < 0)
 		{
-			this->logger << "bid error: " << gai_strerror(status) << "\n";
+			this->logger << "bind error: " << gai_strerror(status) << "\n";
 		}
 
-		status = listen(listner, 1);
+		status = listen(listener, 10);
 		if (status < 0)
 		{
 			this->logger << "listen error: " << gai_strerror(status) << "\n";
 		}
 
+		status = nonblock_config(listener);
+		if (status < 0)
+		{
+			this->logger << "nonblocking config error: " << gai_strerror(status) << "\n";
+		}
+
 		// Free the res linked list after we are done with it	
 		freeaddrinfo(res);
 
-		// We should wait now for a connection to accept
-		int new_conn_fd = -1;
-		struct sockaddr_storage client_addr;
-		socklen_t addr_size;
-		char s[INET6_ADDRSTRLEN]; // an empty string 
+		while (!limited || requests != 0) {
+			const std::optional<size_t> thread = threads_ptr.get_free_thread();
+			if(!thread)
+				continue;
 
-		// Calculate the size of the data structure	
-		addr_size = sizeof client_addr;
-
-		while (accept_more()) {
 			// Accept a new connection and return back the socket desciptor 
-			new_conn_fd = ACCEPT(listner, (struct sockaddr *) & client_addr, &addr_size);
-			if (new_conn_fd < 0)
+			int requestor = ACCEPT(listener, NULL, NULL);
+			if (requestor == -1)
 			{
-				this->logger << "accept/ error: " << gai_strerror(new_conn_fd) << "\n";
 				continue;
 			}
-			 
-			if (!accept_more()) break;
+			
+			struct timeval selTimeout;
+			selTimeout.tv_sec = 2;
+			selTimeout.tv_usec = 0;
+			fd_set readSet;
+			FD_ZERO(&readSet);
+			FD_SET(requestor + 1, &readSet);
 
-			status = responder(new_conn_fd, callback);
-			if (status == -1)
-			{
-				CLOSE(new_conn_fd);
-			}
-		}
-		// Close the socket before we finish
-		CLOSE(new_conn_fd);
-	}
-	
-	struct thread
-	{
-	private:
-		std::mutex m;
-		void unlock() 
-		{
-			m.unlock();
-		}
-		void lock() 
-		{
-			m.lock();
-		}
-	public:
-		thread() 
-		{
-			m.unlock();
-		}
+			status = SELECT(0, &readSet, nullptr, nullptr, &selTimeout);
+			if (status <= 0)
+				continue;
 
-		void join(std::function<void()> f) 
-		{
-			this->lock();
-			f();
-			this->unlock();
-		}
+			if (getsockname(requestor, nullptr, nullptr) < 0 && errno == ENOTSOCK) continue;
 
-		void detach(std::function<void()> f) 
-		{
-			std::thread([&]() {
-				this->lock();
-				f();
-				this->unlock();
-			}).detach();
+			this->logger << thread.value() << " thread will handle client " << requestor << "\n";
+			
+			threads_ptr[thread.value()].detach([requestor, this, &limited, &running, &requests]() {
+				int* copy = new int(requestor);
+				handler(copy, [this, &limited, &running, &requests]() {
+					if (!limited) return;
+					requests--;
+					if (requests == 0) {
+						running->set_value();
+					}
+				});
+			});
 		}
-	};
-public:
-	bool run(const char* PORT, const unsigned int cores, bool limited = false, unsigned int requests = -1) 
-	{
 		#ifdef _WIN32
-			//----------------------
-			// Initialize Winsock.
-			WSADATA wsaData;
-			this->logger << "Startup called\n";
-			int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-			this->logger << "Startup finished " << iResult << "\n";
-			if (iResult != NO_ERROR) {
-				this->logger << "WSAStartup failed with error: " << iResult << "\n";
-				return false;
-			}
+			WSACleanup();
 		#endif
-
-		const unsigned int threads = std::min(cores, requests);
-		thread* threads_ptr = new thread [threads];
-		try 
-		{
-			for (unsigned int thread = 0 ; thread < threads ; thread ++) 
-			{
-				if(limited)
-				{
-					threads_ptr[thread].join([&]() {
-						listener_host(PORT, [&requests](){ return requests != 0; }, [this, &requests]() {
-							requests--;
-						});
-					});
-				}
-				else {
-					threads_ptr[thread].detach([&, this]() {
-						listener_host(PORT, [](){ return true; }, [this, &thread]() {
-						});
-					});
-				}
-			}
-			while(!limited || requests != 0) {}
-			#ifdef _WIN32
-				WSACleanup();
-			#endif
-			return true;
-		}
-		catch (std::exception& e)
-		{
-			this->logger << "Exception: " << e.what() << "\n";
-			return false;
-		}
+		if (callback != nullptr)
+			return {};
+		else
+			return running->get_future().share();
 	}
 };
 } // namespace webframe
