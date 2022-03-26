@@ -113,7 +113,7 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		std::string command;
 		for (int i = 0 ; i <= 30 ; i ++)
 		{
-			command = std::string("curl http://localhost:8889/") + std::string(itoa(i, buffer, 10)) + " > ./bin/log/curl.txt 2>> ./bin/log/log.txt";
+			command = std::string("curl http://localhost:8889/") + std::string(webframe::itoa(i, buffer, 10)) + " > ./bin/log/curl.txt 2>> ./bin/log/log.txt";
 			system(command.c_str());
 		}
 
