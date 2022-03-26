@@ -156,7 +156,8 @@ extern "C"
 #endif
 
 #ifdef __unix__
-#define INVALID_SOCKET         -1
+#define SOCKET_ERROR           (-1)
+#define INVALID_SOCKET         (-1)
 #define ACCEPT(a,b,c)          accept(a,b,c)
 #define CONNECT(a,b,c)         connect(a,b,c)
 #define CLOSE(a)               close(a)
