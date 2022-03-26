@@ -2,7 +2,7 @@ COMPILER_CPP=g++
 CPP_STD=-std=c++2a
 OPT=-O3 -fconstexpr-depth=700
 INCLUDE_DIRS=-I./tests -I./src
-LIB_FLAGS=-static -pthread -fconcepts
+LIB_FLAGS=-pthread -fconcepts
 INJACPP=-I./lib/inja/single_include/ -I./lib/inja/third_party/include
 
 ifeq ($(OS),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...
