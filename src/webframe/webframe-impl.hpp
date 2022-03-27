@@ -30,7 +30,8 @@ class webframe
 private:
 	struct cmp
 	{
-		bool operator()(const auto &a, const auto &b) const { return (&a) < (&b); }
+		template<typename T>
+		bool operator()(const T &a, const T &b) const { return (&a) < (&b); }
 	};
 	std::map<
 		std::pair<std::vector<std::string>, // var type
