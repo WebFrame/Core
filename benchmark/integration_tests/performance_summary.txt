@@ -1,1 +1,1 @@
-0.00111217 nanoseconds avg. per operation in the resolver
+0.00137579 nanoseconds avg. per operation in the resolver
