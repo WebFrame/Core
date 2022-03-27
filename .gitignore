@@ -12,3 +12,5 @@ node_modules/
 bin/
 benchmark/tmp/
 package-lock.json
+.github/workflows/code_quality.yaml
+.github/workflows/doxygen.yaml
