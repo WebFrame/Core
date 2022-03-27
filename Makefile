@@ -2,12 +2,16 @@ COMPILER_CPP=g++
 CPP_STD=-std=c++2a
 OPT=-O3 -fconstexpr-depth=700
 INCLUDE_DIRS=-I./tests -I./src
-LIB_FLAGS=-pthread -fconcepts
+LIB_FLAGS=-pthread -lpthread # -fconcepts
+DEBUG_FLAGS=-fsanitize=undefined
 INJACPP=-I./lib/inja/single_include/ -I./lib/inja/third_party/include
 
 ifeq ($(OS),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...
 	LIB_FLAGS += -lwsock32 -lws2_32
 else
+    ifeq ($(UNAME_S),Darwin)
+        LIB_FLAGS += -stdlib=libc++
+    endif
 	LIB_FLAGS += 
 endif
 
@@ -15,7 +19,7 @@ WARNING_FLAGS=-Wall -Wextra -pedantic
 
 all: build run
 
-test: clean build_test run_tests
+test: clean build_tests run_tests
 
 install: install_inja
 
@@ -25,8 +29,14 @@ install_inja:
 build:
 	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./src/main.cpp -o ./bin/main.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(INJACPP)
 
-build_test:
+build_tests:
 	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./tests/main.cpp -o ./bin/test.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(INJACPP)
+
+debug_build:
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./src/main.cpp -o ./bin/main.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP)
+
+debug_build_tests:
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./tests/main.cpp -o ./bin/test.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP)
 
 run:
 	./bin/main.exe
