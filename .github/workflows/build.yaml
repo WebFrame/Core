@@ -80,6 +80,7 @@ jobs:
           GITHUB_PAGES_REPLACE: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   code_quality:
+    needs: build
     name: cppcheck
     runs-on: windows-latest
     steps:
@@ -116,6 +117,7 @@ jobs:
           GITHUB_PAGES_REPLACE: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   doxygen:
+    needs: code_quality
     name: doxygen
     runs-on: ubuntu-latest
     steps:
