@@ -59,21 +59,19 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		std::promise<void> server;
 		std::future<void> server_ready = server.get_future();
 
-		std::thread([&server]()
-		{
-			std::filebuf performance;
-			performance.open ("./bin/log/performance.txt",std::ios::out);
-			std::ostream performancer (&performance);
-			webframe::webframe app;
-			app
-			.set_logger(*nil)
-			.set_error_logger(*nil)
-			.set_performancer(performancer)
-			.route ("/", []() { // static setup
-					return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
-			})
-			.run("8887", cores, &server, 1, 1);
-		}).detach();
+		std::filebuf performance;
+		performance.open ("./bin/log/performance.txt",std::ios::out);
+		std::ostream performancer (&performance);
+		webframe::webframe app;
+		app
+		.set_logger(*nil)
+		.set_error_logger(*nil)
+		.set_performancer(performancer)
+		.route ("/", []() { // static setup
+				return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
+		})
+		.run("8887", cores, &server, 1, 1);
+
 		system("curl http://localhost:8887/ > ./bin/log/curl.txt 2>> ./bin/log/log.txt");
 		
 		server_ready.wait();
@@ -89,25 +87,22 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		std::future<void> server_ready = server.get_future();
 
 		int count = 0;
-		std::thread([&server, &count]()
-		{
-			std::filebuf performance;
-			performance.open ("./bin/log/performance.txt",std::ios::out);
-			std::ostream performancer (&performance);
-			webframe::webframe app;
-			app
-			.set_logger(*nil)
-			.set_error_logger(*nil)
-			.set_performancer(performancer)
-			.route ("/{number}", [&count](int steps) {	
-				for (int i = 0; i < (1 << steps); i++)
-				{
-					count++;
-				}
-				return "Hello, World!";
-			})
-			.run("8889", cores, &server, 1, 31);
-		}).detach();
+		std::filebuf performance;
+		performance.open ("./bin/log/performance.txt",std::ios::out);
+		std::ostream performancer (&performance);
+		webframe::webframe app;
+		app
+		.set_logger(*nil)
+		.set_error_logger(*nil)
+		.set_performancer(performancer)
+		.route ("/{number}", [&count](int steps) {	
+			for (int i = 0; i < (1 << steps); i++)
+			{
+				count++;
+			}
+			return "Hello, World!";
+		})
+		.run("8889", cores, &server, 1, 31);
 
 		char buffer [3];
 		std::string command;

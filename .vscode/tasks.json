@@ -6,9 +6,9 @@
         {
             "label": "Build",
             "type": "shell",
-            "command": "make build build_test",
+            "command": "make build build_tests",
             "windows": {
-                "command": "make build build_test"
+                "command": "make build build_tests"
             },
             "group": {
                 "kind": "build",
