@@ -427,9 +427,7 @@ private:
 		thread_pool(size_t _size) 
 		{
 			size = _size;
-			std::cout << "Pool initiation..." << std::endl;
 			pool = std::make_shared<std::vector<std::shared_ptr<thread>>>(_size);
-			std::cout << "Pool initiated" << std::endl;
 			for (size_t i = 0 ; i < _size ; i ++)
 			{	
 				pool->at(i) = std::make_shared<thread>();
@@ -462,13 +460,11 @@ private:
 	};
  
 public:
-	std::optional<std::shared_future<void>> run(const char* PORT, const unsigned int cores, std::promise<void>* callback = nullptr, bool limited = false, unsigned int requests = -1) 
+	std::shared_future<void> run(const char* PORT, const unsigned int cores, std::promise<void>* started = nullptr, bool limited = false, unsigned int requests = -1) 
 	{
-		std::promise<void>* running;
-		if(callback != nullptr) running = callback;
-		else running = new std::promise<void>();
+		std::shared_ptr<std::promise<void>> running = std::make_shared<std::promise<void>>();
 		
-		std::thread([&, this]() {
+		std::thread([&, this](std::shared_ptr<std::promise<void>> running) {
 			#ifdef _WIN32
 				//----------------------
 				// Initialize Winsock.
@@ -478,8 +474,8 @@ public:
 				this->logger << "Startup finished " << iResult << "\n";
 				if (iResult != NO_ERROR) {
 					this->logger << "WSAStartup failed with error: " << iResult << "\n";
-				running->set_value();
-				return;
+					running->set_value();
+					return;
 				}
 			#endif
 			this->logger << "Startup called\n";
@@ -551,12 +547,14 @@ public:
 			freeaddrinfo(res);
 
 			this->logger << "Listener setup " << listener << "\n";
-				
+
+			started->set_value();
+
 			while (!limited || requests != 0) {
 				const std::optional<size_t> thread = threads_ptr->get_free_thread();
 				if(!thread)
 					continue;
-			
+
 				// Accept a new connection and return back the socket desciptor 
 				threads_ptr->get(thread.value())->requestor = std::shared_ptr<int>(new int(ACCEPT(listener, NULL, NULL)));
 				if (*threads_ptr->get(thread.value())->requestor == -1)
@@ -602,11 +600,8 @@ public:
 			#ifdef _WIN32
 				WSACleanup();
 			#endif
-		}).detach();
-		if (callback != nullptr)
-			return {};
-		else
-			return running->get_future().share();
+		}, running).detach();
+		return running->get_future().share();
 	}
 };
 } // namespace webframe

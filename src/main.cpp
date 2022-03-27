@@ -53,6 +53,6 @@ int main()
 			return "asdf";
 		});
 	const char* port = "8888";
-	//const unsigned char cores = ((std::thread::hardware_concurrency() - 1 > 0) ? (std::thread::hardware_concurrency() - 1) : 1);
-	app.run(port, 1).value().wait();
+	const unsigned char cores = ((std::thread::hardware_concurrency() - 1 > 0) ? (std::thread::hardware_concurrency() - 1) : 1);
+	app.run(port, cores).wait();
 }
