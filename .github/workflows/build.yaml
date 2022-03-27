@@ -22,11 +22,6 @@ jobs:
             os: ubuntu-latest,
             cxx: "g++-11"
           }
-          - {
-            name: "macOS Latest GCC",
-            os: macos-latest,
-            cxx: "g++"
-          }
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -53,13 +48,6 @@ jobs:
           make --version
           gcc-11 --version
           g++-11 --version
-      - name: Install dependencies on macos
-        if: startsWith(matrix.config.os, 'macos')
-        run: |
-          brew install p7zip make gcc
-          make --version
-          gcc --version
-          g++ --version
       - name: Configure
         shell: bash
         run: |

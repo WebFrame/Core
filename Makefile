@@ -7,7 +7,7 @@ DEBUG_FLAGS=-fsanitize=undefined
 INJACPP=-I./lib/inja/single_include/ -I./lib/inja/third_party/include
 
 ifeq ($(OS),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...
-	LIB_FLAGS += -lwsock32 -lws2_32
+	LIB_FLAGS += -lwsock32 -lws2_32 
 else
     ifeq ($(UNAME_S),Darwin)
         LIB_FLAGS += -stdlib=libc++
