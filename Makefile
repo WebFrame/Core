@@ -54,7 +54,7 @@ cppcheck:
 	cd cppcheck; mkdir build; cd build; cmake ..; cmake --build .; cd ../..; echo "" > check_report.xml; cppcheck/build/bin/Debug/cppcheck.exe -I./tests -I./src --std=c++20 --config-exclude=./lib ./src/ --xml --enable=information 2> check_report.xml; ./cppcheck/htmlreport/cppcheck-htmlreport --source-dir ./ --report-dir=./html_report --file=check_report.xml; mv html_report cppcheck_report
 
 benchmark:
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server.exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP); \
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server.exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP) -fconcepts; \
 	npm install express; \
 	python -m pip install flask; \
 	./benchmark/contestants/server.exe & \
@@ -62,6 +62,7 @@ benchmark:
 	node benchmark/contestants/server.js & \
 	sleep 10s; \
 	cd benchmark; \
+	mkdir tmp; \
 	bash benchmark.sh
 
 save-benchmark:
