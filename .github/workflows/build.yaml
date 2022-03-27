@@ -70,7 +70,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          branch: master
       - name: Deploy to GitHub Pages
         if: ${{ github.ref == 'refs/heads/master' && startsWith(matrix.config.name, 'Ubuntu Latest GCC') }}
         uses: qoomon/deploy-to-github-pages-action@v1
@@ -90,6 +90,7 @@ jobs:
       - name: Set up
         shell: bash
         run: |
+          git pull
           python -m pip install pygments
           make install
           rm -rf cppcheck_report/
@@ -124,6 +125,10 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: 'recursive'
+      - name: Pull
+        shell: bash
+        run: |
+          git pull
       - uses: langroodi/doxygenize@v1.6
         if: ${{ github.ref == 'refs/heads/master' }}
         with:
