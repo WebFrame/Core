@@ -23,7 +23,7 @@ jobs:
             cxx: "g++-11"
           }
           - {
-            name: "macOS Latest Clang",
+            name: "macOS Latest GCC",
             os: macos-latest,
             cxx: "g++"
           }
@@ -58,7 +58,7 @@ jobs:
         run: |
           brew install p7zip make gcc
           make --version
-          gcc --version
+          g --version
           g++ --version
       - name: Configure
         shell: bash
@@ -67,9 +67,10 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          make -B clean build build_test COMPILER_CPP=${{ matrix.config.cxx }}
+          make -B clean build build_tests COMPILER_CPP=${{ matrix.config.cxx }}
       - name: Test
         shell: bash
+        timeout-minutes: 10
         run: |
           make -B run_tests
           cp bin/log/performance* benchmark/integration_tests/

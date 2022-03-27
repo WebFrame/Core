@@ -311,7 +311,7 @@ private:
 		return std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start);
 	}
 
-	int responder(const int socket)
+	int responder(int socket)
 	{
 		const std::size_t capacity = 1024; 
 		char data[capacity];
@@ -357,19 +357,18 @@ private:
 		return 0;
 	}
 
-	void handler(const int* client, const std::function<void()>& callback)
+	void handler(int client, const std::function<void()>& callback)
 	{
-		int status = responder(*client);
+		int status = this->responder(client);
 		callback();
 		if (status == -1) 
 		{
-			CLOSE(*client);
+			CLOSE(client);
 		} 
 		else 
 		{
-			CLOSE(*client);
+			CLOSE(client);
 		}
-		delete client;
 	}
 	
 	struct thread_pool;
@@ -390,27 +389,29 @@ private:
 			return m.try_lock();
 		}
 	public:
-		int requestor;
+		std::shared_ptr<int> requestor;
 
 		thread() 
 		{
 			m.unlock();
 		}
 
-		void join(std::function<void()> f) 
+		void join(std::shared_ptr<std::function<void(int)>> f, int socket) 
 		{
 			this->lock();
-			f();
-			this->unlock();
+			std::thread([this, f](int socket) {
+				f->operator()(socket);
+				this->unlock();
+			}, socket).join();
 		}
 
-		void detach(std::function<void()> f) 
+		void detach(std::shared_ptr<std::function<void(int)>> f, int socket) 
 		{
 			this->lock();
-			std::thread([&]() {
-				f();
+			std::thread([this, f](int socket) {
+				f->operator()(socket);
 				this->unlock();
-			}).detach();
+			}, socket).detach();
 		}
 
 		friend struct thread_pool;
@@ -419,22 +420,30 @@ private:
 	struct thread_pool 
 	{
 	private:
-		thread* pool;
+		std::shared_ptr<std::vector<std::shared_ptr<thread>>> pool;
 		size_t size;
 		std::mutex extract;
 	public:
 		thread_pool(size_t _size) 
 		{
 			size = _size;
-			pool = new thread[_size];
+			std::cout << "Pool initiation..." << std::endl;
+			pool = std::make_shared<std::vector<std::shared_ptr<thread>>>(_size);
+			std::cout << "Pool initiated" << std::endl;
+			for (size_t i = 0 ; i < _size ; i ++)
+			{	
+				pool->at(i) = std::make_shared<thread>();
+			}
 		}
-		~thread_pool() 
+
+		std::shared_ptr<thread>& get(const size_t index) const 
 		{
-			delete[] pool;
+			return pool->at(index);
 		}
-		thread& operator[] (const size_t index) const
+
+		std::shared_ptr<thread>& operator[] (const size_t index) const
 		{
-			return pool[index];
+			return this->get(index);
 		}
 		
 		std::optional<size_t> get_free_thread() 
@@ -442,9 +451,9 @@ private:
 			std::lock_guard locker (this->extract);
 			for (size_t index = 0 ; index < this->size ; index ++)
 			{
-				if (pool[index].try_lock())
+				if (pool->at(index)->try_lock())
 				{
-					pool[index].unlock();
+					pool->at(index)->unlock();
 					return index;
 				}
 			}
@@ -458,110 +467,142 @@ public:
 		std::promise<void>* running;
 		if(callback != nullptr) running = callback;
 		else running = new std::promise<void>();
-		#ifdef _WIN32
-			//----------------------
-			// Initialize Winsock.
-			WSADATA wsaData;
-			this->logger << "Startup called\n";
-			int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-			this->logger << "Startup finished " << iResult << "\n";
-			if (iResult != NO_ERROR) {
-				this->logger << "WSAStartup failed with error: " << iResult << "\n";
-				running->set_value();
-			}
-		#endif
-
-		const unsigned int threads = std::min(cores, limited ? requests : cores);
-		thread_pool threads_ptr(threads);
-
-		int status;
-		struct addrinfo hints, *res;
-		int listener;
 		
-		// Before using hint you have to make sure that the data structure is empty 
-		memset(&hints, 0, sizeof hints);
-		// Set the attribute for hint
-		hints.ai_family = AF_UNSPEC; // We don't care V4 AF_INET or 6 AF_INET6
-		hints.ai_socktype = SOCK_STREAM; // TCP Socket SOCK_DGRAM 
-		hints.ai_flags = AI_PASSIVE;
+		std::thread([&, this]() {
+			#ifdef _WIN32
+				//----------------------
+				// Initialize Winsock.
+				WSADATA wsaData;
+				this->logger << "Startup called\n";
+				int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+				this->logger << "Startup finished " << iResult << "\n";
+				if (iResult != NO_ERROR) {
+					this->logger << "WSAStartup failed with error: " << iResult << "\n";
+				running->set_value();
+				return;
+				}
+			#endif
+			this->logger << "Startup called\n";
+	
+			const unsigned int threads = std::min(cores, limited ? requests : cores);
+			std::shared_ptr<thread_pool> threads_ptr = std::make_shared<thread_pool>(threads);
+			
+			this->logger << "Thread pool generated\n";	
 
-		// Fill the res data structure and make sure that the results make sense. 
-		status = getaddrinfo(NULL, PORT, &hints, &res);
-		if (status != 0)
-		{
-			this->logger << "getaddrinfo error: " << gai_strerror(status) << "\n";
-		}
+			int status;
+			struct addrinfo hints, *res;
+			int listener;
+			
+			// Before using hint you have to make sure that the data structure is empty 
+			memset(&hints, 0, sizeof hints);
+			// Set the attribute for hint
+			hints.ai_family = AF_INET; // We don't care V4 AF_INET or 6 AF_INET6
+			hints.ai_socktype = SOCK_STREAM; // TCP Socket SOCK_DGRAM 
+			hints.ai_flags = AI_PASSIVE;
+			hints.ai_protocol = 0;          /* Any protocol */
+			hints.ai_canonname = NULL;
+			hints.ai_addr = NULL;
+			hints.ai_next = NULL;
 
-		// Create Socket and check if error occured afterwards
-		listener = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
-		if (listener == -1)
-		{
-			this->logger << "socket error: " << gai_strerror(status) << "\n";
-		}
-
-		// Bind the socket to the address of my local machine and port number 
-		status = bind(listener, res->ai_addr, res->ai_addrlen);
-		if (status < 0)
-		{
-			this->logger << "bind error: " << gai_strerror(status) << "\n";
-		}
-
-		status = listen(listener, 10);
-		if (status < 0)
-		{
-			this->logger << "listen error: " << gai_strerror(status) << "\n";
-		}
-
-		status = nonblock_config(listener);
-		if (status < 0)
-		{
-			this->logger << "nonblocking config error: " << gai_strerror(status) << "\n";
-		}
-
-		// Free the res linked list after we are done with it	
-		freeaddrinfo(res);
-
-		while (!limited || requests != 0) {
-			const std::optional<size_t> thread = threads_ptr.get_free_thread();
-			if(!thread)
-				continue;
-
-			// Accept a new connection and return back the socket desciptor 
-			int requestor = ACCEPT(listener, NULL, NULL);
-			if (requestor == -1)
+			// Fill the res data structure and make sure that the results make sense. 
+			status = getaddrinfo(NULL, PORT, &hints, &res);
+			if (status != 0)
 			{
-				continue;
+				this->logger << "getaddrinfo error: " << gai_strerror(status) << "\n";
+				running->set_value();
+				return;
 			}
+
+			// Create Socket and check if error occured afterwards
+			listener = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+			if (listener == -1)
+			{
+				this->logger << "socket error: " << gai_strerror(status) << "\n";
+				running->set_value();
+				return;
+			}
+
+			// Bind the socket to the address of my local machine and port number 
+			status = bind(listener, res->ai_addr, res->ai_addrlen);
+			if (status < 0)
+			{
+				this->logger << "bind error: " << gai_strerror(status) << "\n";
+				running->set_value();
+				return;
+			}
+
+			status = listen(listener, 10);
+			if (status < 0)
+			{
+				this->logger << "listen error: " << gai_strerror(status) << "\n";
+				running->set_value();
+				return;
+			}
+
+			status = nonblock_config(listener);
+			if (status < 0)
+			{
+				this->logger << "nonblocking config error: " << gai_strerror(status) << "\n";
+				running->set_value();
+				return;
+			}
+
+			// Free the res linked list after we are done with it	
+			freeaddrinfo(res);
+
+			this->logger << "Listener setup " << listener << "\n";
+				
+			while (!limited || requests != 0) {
+				const std::optional<size_t> thread = threads_ptr->get_free_thread();
+				if(!thread)
+					continue;
 			
-			struct timeval selTimeout;
-			selTimeout.tv_sec = 2;
-			selTimeout.tv_usec = 0;
-			fd_set readSet;
-			FD_ZERO(&readSet);
-			FD_SET(requestor + 1, &readSet);
+				// Accept a new connection and return back the socket desciptor 
+				threads_ptr->get(thread.value())->requestor = std::shared_ptr<int>(new int(ACCEPT(listener, NULL, NULL)));
+				if (*threads_ptr->get(thread.value())->requestor == -1)
+				{
+					continue;
+				}
 
-			status = SELECT(0, &readSet, nullptr, nullptr, &selTimeout);
-			if (status <= 0)
-				continue;
+				this->logger << "Requestor " << *threads_ptr->get(thread.value())->requestor << " is getting handled\n";
 
-			if (getsockname(requestor, nullptr, nullptr) < 0 && errno == ENOTSOCK) continue;
+				struct timeval selTimeout;
+				selTimeout.tv_sec = 2;
+				selTimeout.tv_usec = 0;
+				fd_set readSet;
+				FD_ZERO(&readSet);
+				FD_SET(*threads_ptr->get(thread.value())->requestor + 1, &readSet);
+				FD_SET(*threads_ptr->get(thread.value())->requestor, &readSet);
 
-			this->logger << thread.value() << " thread will handle client " << requestor << "\n";
-			
-			threads_ptr[thread.value()].detach([requestor, this, &limited, &running, &requests]() {
-				int* copy = new int(requestor);
-				handler(copy, [this, &limited, &running, &requests]() {
-					if (!limited) return;
-					requests--;
-					if (requests == 0) {
-						running->set_value();
-					}
-				});
-			});
-		}
-		#ifdef _WIN32
-			WSACleanup();
-		#endif
+				this->logger << "Requestor " << *threads_ptr->get(thread.value())->requestor << " is checked if valid\n";
+				
+				status = SELECT(*threads_ptr->get(thread.value())->requestor + 1, &readSet, nullptr, nullptr, &selTimeout);
+				this->logger << "SELECT status is " << status << "\n";
+				if (status <= 0)
+					continue;
+
+				this->logger << "Requestor " << *threads_ptr->get(thread.value())->requestor << " is still valid\n";
+
+				if (getsockname(*threads_ptr->get(thread.value())->requestor, nullptr, nullptr) < 0 && errno == ENOTSOCK) continue;
+				
+				this->logger << "Requestor " << *threads_ptr->get(thread.value())->requestor << " is still valid\n";
+
+				this->logger << thread.value() << " thread will handle client " << *threads_ptr->get(thread.value())->requestor << "\n";
+				
+				threads_ptr->get(thread.value())->detach(std::make_shared<std::function<void(int)>>([this, &limited, &running, &requests](int socket) -> void {
+					this->handler (socket, [&limited, &running, &requests]() {
+						if (!limited) return;
+						requests--;
+						if (requests == 0) {
+							running->set_value();
+						}
+					});
+				}), *threads_ptr->get(thread.value())->requestor);
+			}
+			#ifdef _WIN32
+				WSACleanup();
+			#endif
+		}).detach();
 		if (callback != nullptr)
 			return {};
 		else
