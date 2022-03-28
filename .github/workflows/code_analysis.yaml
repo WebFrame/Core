@@ -11,7 +11,6 @@ on:
 jobs:
   cppcheck:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
       with:
@@ -32,7 +31,7 @@ jobs:
         name: report
         path: report
     - name: Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/master'
+        if: ${{ github.ref == 'refs/heads/master' }}
         uses: qoomon/deploy-to-github-pages-action@v1
         with:
           GITHUB_PAGES_SOURCE_DIR: report
