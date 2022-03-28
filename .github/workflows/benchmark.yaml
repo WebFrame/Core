@@ -51,6 +51,9 @@ jobs:
           cd Core
           git checkout gh-pages
           cp -rf ../benchmark/benchmark/* .
+          ls
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
       - name: Deploy to GitHub Pages
         if: ${{ github.ref == 'refs/heads/master' }}
         uses: qoomon/deploy-to-github-pages-action@v1
