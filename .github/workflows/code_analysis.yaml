@@ -3,7 +3,7 @@ name: Code quality control
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: [Build & Test, build, Ubuntu Latest GCC]
+    workflows: [Build & Test]
     types: [completed]
     branches:
       - '**'
