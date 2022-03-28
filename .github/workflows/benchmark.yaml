@@ -47,11 +47,15 @@ jobs:
         run: |
           mkdir -p benchmark/benchmark/
           mv -f benchmark/report/ benchmark/benchmark/report/
+          git clone https://github.com/WebFrame/Core
+          cd Core
+          git checkout gh-pages
+          cp -rf ../benchmark/benchmark/* .
       - name: Deploy to GitHub Pages
         if: ${{ github.ref == 'refs/heads/master' }}
         uses: qoomon/deploy-to-github-pages-action@v1
         with:
-          GITHUB_PAGES_SOURCE_DIR: benchmark/benchmark/
+          GITHUB_PAGES_SOURCE_DIR: Core/
           GITHUB_PAGES_BRANCH: gh-pages
           GITHUB_PAGES_REPLACE: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
