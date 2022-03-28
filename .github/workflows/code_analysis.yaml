@@ -30,6 +30,14 @@ jobs:
       with:
         name: report
         path: report
+    - name: Renaming
+      if: ${{ failure() }}
+      shell: bash
+      run: |
+        mv -rf report report1
+        mkdir -p report
+        mv -rf report1 report/report1
+        mv -rf report/report1 report/codeql_report
     - name: Deploy to GitHub Pages
       continue-on-error: true
       if: ${{ always() && github.ref == 'refs/heads/master' }}
