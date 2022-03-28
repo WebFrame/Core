@@ -3,10 +3,12 @@ on:
   workflow_run:
     workflows: [Build & Test]
     types: [completed]
+
 jobs:
-  analysis:
+  build:
+    name: Code quality control
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     - uses: actions/checkout@v3
       with:
         submodules: 'recursive'
