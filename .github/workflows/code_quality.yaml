@@ -1,7 +1,7 @@
 name: Code quality control
 on: 
   workflow_run:
-    workflows: [Build & Test]
+    workflows: ["Build & Test"]
     types: [completed]
 
 jobs:
