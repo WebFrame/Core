@@ -1,8 +1,9 @@
 name: Code quality control
+
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["Build & Test", "build", "Ubuntu Latest GCC"]
+    workflows: [Build & Test, build, Ubuntu Latest GCC]
     types: [completed]
 
 jobs:
