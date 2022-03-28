@@ -31,10 +31,10 @@ jobs:
         name: report
         path: report
     - name: Deploy to GitHub Pages
-        if: ${{ github.ref == 'refs/heads/master' }}
-        uses: qoomon/deploy-to-github-pages-action@v1
-        with:
-          GITHUB_PAGES_SOURCE_DIR: report
-          GITHUB_PAGES_BRANCH: gh-pages
-          GITHUB_PAGES_REPLACE: true
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      if: ${{ github.ref == 'refs/heads/master' }}
+      uses: qoomon/deploy-to-github-pages-action@v1
+      with:
+        GITHUB_PAGES_SOURCE_DIR: report
+        GITHUB_PAGES_BRANCH: gh-pages
+        GITHUB_PAGES_REPLACE: true
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
