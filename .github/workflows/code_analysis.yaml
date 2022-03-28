@@ -5,6 +5,8 @@ on:
   workflow_run:
     workflows: [Build & Test, build, Ubuntu Latest GCC]
     types: [completed]
+    branches:
+      - '**'
 
 jobs:
   build:
