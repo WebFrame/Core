@@ -50,9 +50,6 @@ clean:
 	rm -rf ./bin
 	mkdir -p ./bin
 
-cppcheck:
-	cd cppcheck; mkdir build; cd build; cmake ..; cmake --build .; cd ../..; echo "" > check_report.xml; cppcheck/build/bin/Debug/cppcheck.exe -I./tests -I./src --std=c++20 --config-exclude=./lib ./src/ --xml --enable=information 2> check_report.xml; ./cppcheck/htmlreport/cppcheck-htmlreport --source-dir ./ --report-dir=./html_report --file=check_report.xml; mv html_report cppcheck_report
-
 benchmark:
 	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server.exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP) -fconcepts; \
 	npm install express; \

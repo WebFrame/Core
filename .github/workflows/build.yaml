@@ -90,20 +90,29 @@ jobs:
       - name: Set up
         shell: bash
         run: |
+          apt-get install cppcheck
           git pull
           python -m pip install pygments
           make install
-          rm -rf cppcheck_report/
-      - name: Run cppcheck
+      - name: cppcheck
+        uses: deep5050/cppcheck-action@main
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN}}
+          check_library: enable
+          skip_preprocessor: disable
+          enable: all
+          exclude_check: ./lib
+          inconclusive: enable
+          inline_suppression: disable
+          force: disable
+          max_ctu_depth: 4
+          std: c++20
+          output_file: check_report.xml
+      - name: Convert to web form
         shell: bash
         run: |
-          make -B cppcheck
-      - name: Commit files
-        run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add cppcheck_report/
-          git commit -m "Add changes" -a
+          cppcheck-htmlreport --source-dir ./ --report-dir=./html_report --file=check_report.xml
+          mv html_report cppcheck_report
       - name: Push static code analysis
         uses: ad-m/github-push-action@master
         with:
