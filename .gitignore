@@ -12,4 +12,4 @@ node_modules/
 bin/
 benchmark/tmp/
 package-lock.json
-
+build/
