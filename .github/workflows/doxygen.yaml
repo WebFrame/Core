@@ -1,14 +1,15 @@
 name: Doxygen
-on:     
-  push:
-    branches:
-      - master
-      - v2
+on:
+  workflow_run:
+    workflows: [Build & Test]
+    types: [completed]
+    branches: [master]
 
 jobs:
   build:
     name: doxygen
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v3
         with:
