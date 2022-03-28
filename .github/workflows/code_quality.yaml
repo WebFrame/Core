@@ -3,50 +3,40 @@ on:
   workflow_run:
     workflows: [Build & Test]
     types: [completed]
-
 jobs:
   static_analysis:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-
     - uses: actions/checkout@v3
       with:
         submodules: 'recursive'
-
     - name: setup init_script
       shell: bash
       run: |
         echo "#!/bin/bash
         make -B install" > init_script.sh
-
     - name: Run static analysis
       uses: JacobDomagala/StaticAnalysis@master
       with:
         # Exclude any issues found in ${Project_root_dir}/lib
         exclude_dir: lib
-
         # Additional script that will be run (sourced) AFTER 'apt_pckgs' and before running Cmake
         init_script: init_script.sh
-
         # (Optional) clang-tidy args
         clang_tidy_args: -checks='*,fuchsia-*,google-*,zircon-*,abseil-*,modernize-use-trailing-return-type'
-
         # (Optional) cppcheck args
         cppcheck_args: --enable=all -I./tests -I./src --std=c++20 --config-exclude=./lib ./src/ --xml
-
     - name: Commit files
       run: |
         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
         git add .
         git commit -m "Add changes" -a
-
     - name: Push static code analysis
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         branch: ${{ github.ref }}
-
     - name: Deploy to GitHub Pages
       if: github.ref == 'refs/heads/master'
       uses: qoomon/deploy-to-github-pages-action@v1
