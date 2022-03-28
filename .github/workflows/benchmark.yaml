@@ -46,7 +46,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p benchmark/benchmark/
-          mv -rf benchmark/report/ benchmark/benchmark/report/
+          mv -f benchmark/report/ benchmark/benchmark/report/
       - name: Deploy to GitHub Pages
         if: ${{ github.ref == 'refs/heads/master' }}
         uses: qoomon/deploy-to-github-pages-action@v1
