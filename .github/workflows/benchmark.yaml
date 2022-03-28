@@ -1,8 +1,13 @@
 name: Benchmark with Node.JS and Python
+
 on:
-  push:
-  pull_request:
-    types: [opened]
+  workflow_dispatch:
+  workflow_run:
+    workflows: [Doxygen]
+    types: [completed]
+    branches:
+      - '**'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,8 +25,33 @@ jobs:
         shell: bash
       - name: Outcome
         run: |
+          mkdir -p benchmark/report;
+          mv benchmark/tmp/test1.result benchmark/report/;
+          mv benchmark/tmp/test2.result benchmark/report/;
           echo "Test 1";
-          cat benchmark/tmp/test1.result;
+          cat benchmark/report/test1.result;
           echo "Test 2";
-          cat benchmark/tmp/test2.result;
+          cat benchmark/report/test2.result;
+          echo "<style>table,th,td{border:1px solid red;border-collapse:collapse;text-align:center;}th,td{color: #111;background-color: white;}</style><table><tr><th>C++</th><th>Python</th><th>Node.JS Express</th>" > benchmark/report/test1.results.html; cat benchmark/report/test1.result | sed ':a;N;$!ba;s/C++\t//g' | sed ':a;N;$!ba;s/<1> Python//g' | sed ':a;N;$!ba;s/<2> Node.JS Express//g' | sed ':a;N;$!ba;s/\t/ /g' | sed ':a;N;$!ba;s/  /<td>/g' | sed 's/s/s<\/td>/g' | sed 's/^/<\/tr><tr><td>/g' >> benchmark/report/test1.results.html; echo "</tr></table>" >> benchmark/report/test1.results.html;
+          echo "<style>table,th,td{border:1px solid red;border-collapse:collapse;text-align:center;}th,td{color: #111;background-color: white;}</style><table><tr><th>C++</th><th>Python</th><th>Node.JS Express</th>" > benchmark/report/test2.results.html; cat benchmark/report/test2.result | sed ':a;N;$!ba;s/C++\t//g' | sed ':a;N;$!ba;s/<1> Python//g' | sed ':a;N;$!ba;s/<2> Node.JS Express//g' | sed ':a;N;$!ba;s/\t/ /g' | sed ':a;N;$!ba;s/  /<td>/g' | sed 's/s/s<\/td>/g' | sed 's/^/<\/tr><tr><td>/g' >> benchmark/report/test2.results.html; echo "</tr></table>" >> benchmark/report/test2.results.html;
+          echo "<h1>Test 1:</h1>" > index.html; cat test1.results.html >> index.html;
+          echo "<h1>Test 2:</h1>" >> index.html; cat test2.results.html >> index.html;
         shell: bash
+      - name: Upload Report
+        uses: actions/upload-artifact@v1
+        with:
+          name: benchmark_report
+          path: benchmark/report/
+      - name: Renaming
+        shell: bash
+        run: |
+          mkdir -p benchmark/benchmark/
+          mv -rf benchmark/report/ benchmark/benchmark/report/
+      - name: Deploy to GitHub Pages
+        if: ${{ github.ref == 'refs/heads/master' }}
+        uses: qoomon/deploy-to-github-pages-action@v1
+        with:
+          GITHUB_PAGES_SOURCE_DIR: benchmark/benchmark/
+          GITHUB_PAGES_BRANCH: gh-pages
+          GITHUB_PAGES_REPLACE: false
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
