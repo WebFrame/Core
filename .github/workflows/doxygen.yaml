@@ -1,9 +1,11 @@
 name: Doxygen
 on:
+  workflow_dispatch:
   workflow_run:
-    workflows: [Build & Test]
+    workflows: [Code quality control]
     types: [completed]
-    branches: [master]
+    branches:
+      - '**'
 
 jobs:
   build:
