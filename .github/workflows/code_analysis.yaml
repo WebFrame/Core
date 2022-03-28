@@ -31,7 +31,8 @@ jobs:
         name: report
         path: report
     - name: Deploy to GitHub Pages
-      if: ${{ github.ref == 'refs/heads/master' }}
+      continue-on-error: true
+      if: ${{ always() && github.ref == 'refs/heads/master' }}
       uses: qoomon/deploy-to-github-pages-action@v1
       with:
         GITHUB_PAGES_SOURCE_DIR: report
