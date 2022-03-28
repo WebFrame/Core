@@ -67,13 +67,13 @@ jobs:
           git config --local user.name "github-actions[bot]"
           echo "${{ github.sha }} ${{ matrix.config.os }}" >> benchmark/integration_tests/commit_hash
           git add .
-          git commit -m "Add pipeline testing score" -a
-      - name: Push static code analysis
-        if: ${{ github.ref == 'refs/heads/master' && startsWith(matrix.config.name, 'Ubuntu Latest GCC') }}
+          git commit -m "Unit & Integation tests run" -a
+      - name: Push testing results
+        if: startsWith(matrix.config.name, 'Ubuntu Latest GCC') }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
+          branch: ${{ github.ref }}
       - name: Deploy to GitHub Pages
         if: ${{ github.ref == 'refs/heads/master' && startsWith(matrix.config.name, 'Ubuntu Latest GCC') }}
         uses: qoomon/deploy-to-github-pages-action@v1
