@@ -38,6 +38,8 @@ jobs:
         mkdir -p report
         mv -f report1 report/report1
         mv -f report/report1 report/codeql_report
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"  
     - name: Deploy to GitHub Pages
       continue-on-error: true
       if: ${{ always() && github.ref == 'refs/heads/master' }}
