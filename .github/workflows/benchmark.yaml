@@ -66,3 +66,15 @@ jobs:
         with:
           branch: gh-pages # The branch the action should deploy to.
           folder: ./src-gh-pages # The folder the action should deploy.
+      - name: Commit
+        shell: bash
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git rm -rf src-gh-pages/
+          git commit -m "GH Pages files removed" -a
+      - name: Push cppcheck results
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
