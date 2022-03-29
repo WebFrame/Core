@@ -1,7 +1,6 @@
 name: Code quality control
 
 on:
-  workflow_dispatch:
   workflow_run:
     workflows: [Build & Test]
     types: [completed]
