@@ -46,6 +46,19 @@ jobs:
         run: |
           mkdir -p benchmark/benchmark/
           mv -f benchmark/report/ benchmark/benchmark/report/
+          cp -rf ./benchmark/benchmark/* gh-pages/
+      - name: Commit
+        shell: bash
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add gh-pages
+          git commit -m "Benchmarks report" -a
+      - name: Push cppcheck results
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
       - name: Deploy to GitHub Pages 🚀
         continue-on-error: true
         if: ${{ always() && github.ref == 'refs/heads/master' }}

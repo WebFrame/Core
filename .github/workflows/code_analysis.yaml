@@ -35,16 +35,19 @@ jobs:
       shell: bash
       run: |
         mv -f report report1
-        mkdir -p report
-        mv -f report1 report/report1
-        mv -f report/report1 report/codeql_report
+        mkdir -p gh-pages
+        mv -f report1 gh-pages/codeql_report
+    - name: Commit
+      if: ${{ failure() }}
+      shell: bash
+      run: |
         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"  
-    - name: Deploy to GitHub Pages
-      continue-on-error: true
-      if: ${{ always() && github.ref == 'refs/heads/master' }}
-      uses: JamesIves/github-pages-deploy-action@v4.2.5
+        git config --local user.name "github-actions[bot]"
+        git add gh-pages
+        git commit -m "Cppcheck report" -a
+    - name: Push cppcheck results
+      uses: ad-m/github-push-action@master
       with:
-        branch: gh-pages # The branch the action should deploy to.
-        folder: ./report/ # The folder the action should deploy.
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
 
