@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for i in `seq 1 10`; do
+for i in `seq 1 30`; do
     echo -n $i;
     >&2 echo "Label: C++";
     time curl http://localhost:8888/$i;
@@ -23,7 +23,7 @@ cat tmp/test.record | grep -E -i -w 'Label|real' | sed 's/Label: //g' | sed ':a;
 
 cp tmp/test.record.filtered tmp/test1.result
 
-for i in `seq 1 10`; do
+for i in `seq 1 30`; do
     echo -n $i;
     >&2 echo "Label: C++";
     time curl http://localhost:8888/$i/2;
