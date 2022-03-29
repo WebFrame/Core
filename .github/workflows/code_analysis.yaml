@@ -47,5 +47,5 @@ jobs:
       with:
         GITHUB_PAGES_SOURCE_DIR: report
         GITHUB_PAGES_BRANCH: gh-pages
-        GITHUB_PAGES_REPLACE: true
+        GITHUB_PAGES_REPLACE: false
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
