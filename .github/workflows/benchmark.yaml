@@ -46,13 +46,13 @@ jobs:
         run: |
           mkdir -p benchmark/benchmark/
           mv -f benchmark/report/ benchmark/benchmark/report/
-          cp -rf ./benchmark/benchmark/* gh-pages/
+          cp -rf ./benchmark/benchmark/* src-gh-pages/
       - name: Commit
         shell: bash
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add gh-pages
+          git add src-gh-pages/
           git commit -m "Benchmarks report" -a
       - name: Push cppcheck results
         uses: ad-m/github-push-action@master
@@ -65,4 +65,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4.2.5
         with:
           branch: gh-pages # The branch the action should deploy to.
-          folder: ./gh-pages # The folder the action should deploy.
+          folder: ./src-gh-pages # The folder the action should deploy.
