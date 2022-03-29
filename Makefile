@@ -1,6 +1,6 @@
 COMPILER_CPP=g++
 CPP_STD=-std=c++2a
-OPTIMIZATION_LEVEL=3
+OPTIMIZATION_LEVEL=-O3
 OPT=-fconstexpr-depth=700
 INCLUDE_DIRS=-I./tests -I./src
 LIB_FLAGS=-pthread -lpthread # -fconcepts
