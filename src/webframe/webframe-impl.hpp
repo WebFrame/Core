@@ -521,42 +521,47 @@ public:
 			this->logger << "Thread pool generated\n";	
 
 			int status;
-			struct addrinfo hints, *res;
-			int listener;
-			
-			// Before using hint you have to make sure that the data structure is empty 
-			memset(&hints, 0, sizeof hints);
-			// Set the attribute for hint
-			hints.ai_family = AF_INET; // We don't care V4 AF_INET or 6 AF_INET6
-			hints.ai_socktype = SOCK_STREAM; // TCP Socket SOCK_DGRAM 
-			hints.ai_flags = AI_PASSIVE;
-			hints.ai_protocol = 0;          /* Any protocol */
+			struct addrinfo hints;
+			struct addrinfo *result, *rp;
+			int listener = -1;
+			memset(&hints, 0, sizeof(hints));
+			hints.ai_family = AF_UNSPEC;     /* Allow IPv4 or IPv6 */
+			hints.ai_socktype = SOCK_STREAM; /* Datagram socket */
+			hints.ai_flags = AI_PASSIVE;     /* For wildcard IP address */
+			hints.ai_protocol = 0;           /* Any protocol */
 			hints.ai_canonname = NULL;
 			hints.ai_addr = NULL;
 			hints.ai_next = NULL;
 
-			// Fill the res data structure and make sure that the results make sense. 
-			status = getaddrinfo(NULL, PORT, &hints, &res);
-			if (status != 0)
+			status = getaddrinfo(NULL, PORT, &hints, &result);
+			if (status != 0) 
 			{
 				this->logger << "getaddrinfo error: " << gai_strerror(status) << "\n";
 				status_handler->kill();
 				return;
 			}
 
-			// Create Socket and check if error occured afterwards
-			listener = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
-			if (listener == -1)
-			{
-				this->logger << "socket error: " << gai_strerror(status) << "\n";
-				status_handler->kill();
-				return;
-			}
+			/* getaddrinfo() returns a list of address structures.
+			Try each address until we successfully bind(2).
+			If socket(2) (or bind(2)) fails, we (close the socket
+			and) try the next address. */
 
-			// Bind the socket to the address of my local machine and port number 
-			status = bind(listener, res->ai_addr, res->ai_addrlen);
-			if (status < 0)
+			for (rp = result; rp != NULL; rp = rp->ai_next) 
 			{
+				listener = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
+				if (listener == -1)
+					continue;
+
+				if (bind(listener, rp->ai_addr, rp->ai_addrlen) == 0)
+					break;                  /* Success */
+
+				CLOSE(listener);
+			}
+			
+			freeaddrinfo(result);           /* No longer needed */
+
+			if (rp == NULL || listener == -1) /* No address succeeded */
+			{               
 				this->logger << "bind error: " << gai_strerror(status) << "\n";
 				status_handler->kill();
 				return;
@@ -578,9 +583,6 @@ public:
 				return;
 			}
 
-			// Free the res linked list after we are done with it	
-			freeaddrinfo(res);
-
 			this->logger << "Listener setup " << listener << "\n";
 
 			status_handler->start();
@@ -594,7 +596,7 @@ public:
 				// Accept a new connection and return back the socket desciptor 
 				//std::cout << "Client accepting available..." << std::endl;
 				int client = ACCEPT(listener, NULL, NULL);
-				//std::cout << "Client found: " << client << std::endl;
+				//this->logger << "Client found: " << client << "\n";
 				if (client == -1)
 				{
 					continue;

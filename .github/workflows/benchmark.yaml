@@ -1,4 +1,4 @@
-name: Benchmark with Node.JS and Python
+name: Benchmarks
 
 on:
   workflow_dispatch:

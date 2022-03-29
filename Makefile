@@ -1,19 +1,18 @@
 COMPILER_CPP=g++
 CPP_STD=-std=c++2a
-OPTIMIZATION_LEVEL=-O3
+OPTIMIZATION_LEVEL=-O2
 OPT=-fconstexpr-depth=700
 INCLUDE_DIRS=-I./tests -I./src
-LIB_FLAGS=-pthread -lpthread # -fconcepts
+LIB_FLAGS=-pthread -lpthread
 DEBUG_FLAGS=-fsanitize=undefined
 INJACPP=-I./lib/inja/single_include/ -I./lib/inja/third_party/include
 
 ifeq ($(OS),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...
-	LIB_FLAGS += -lwsock32 -lws2_32 
+	LIB_FLAGS += -lwsock32 -lws2_32
 else
     ifeq ($(UNAME_S),Darwin)
         LIB_FLAGS += -stdlib=libc++
     endif
-	LIB_FLAGS += 
 endif
 
 WARNING_FLAGS=-Wall -Wextra -pedantic
@@ -68,8 +67,9 @@ save-benchmark:
 	cp tmp/*.result results/ 
 
 local-benchmark:
-	 for i in "" 0 1 2 3 fast g s; do \
-	 	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O$$i ; \
-		cp ./bin/log/performance.txt ./benchmark/performance/performance-O$$i.txt ; \
-		cp ./bin/log/performance_summary.txt ./benchmark/performance/performance_summary-O$$i.txt ; \
+	mkdir -p ./benchmark/performance/$(DIR_PREFIX)\
+	for i in "" 0 1 2 3 fast g s; do \
+	 	tmieout 1h make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O$$i ; \
+		cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-O$$i.txt ; \
+		cp ./bin/log/performance_summary.txt ./benchmark/$(DIR_PREFIX)performance/performance_summary-O$$i.txt ; \
 	done
