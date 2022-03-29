@@ -66,6 +66,8 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           echo "${{ github.sha }} ${{ matrix.config.os }}" >> benchmark/integration_tests/commit_hash
+          mkdir -p gh-pages/it/
+          cp ./bin/log/performance* gh-pages/it/
           git add .
           git commit -m "Unit & Integation tests run" -a
       - name: Push testing results
@@ -74,11 +76,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
-      - name: Deploy to GitHub Pages
-        if: ${{ github.ref == 'refs/heads/master' && startsWith(matrix.config.name, 'Ubuntu Latest GCC') }}
-        uses: qoomon/deploy-to-github-pages-action@v1
-        with:
-          GITHUB_PAGES_SOURCE_DIR: ./bin/log
-          GITHUB_PAGES_BRANCH: gh-pages
-          GITHUB_PAGES_REPLACE: false
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
