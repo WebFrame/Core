@@ -137,7 +137,7 @@
       </div>
       <div id="menu" dir="rtl">
        <p id="filename"><a href="index.html">Defects:</a> webframe-impl.hpp</p>
-<a href='1.html#line-115'> useInitializationList 115</a><a href='1.html#line-428'> noExplicitConstructor 428</a><a href='1.html#line-431'> useInitializationList 431</a>
+<a href='1.html#line-115'> useInitializationList 115</a><a href='1.html#line-431'> noExplicitConstructor 431</a><a href='1.html#line-434'> useInitializationList 434</a><a href='1.html#line-486'> useInitializationList 486</a><a href='1.html#line-487'> useInitializationList 487</a>
       </div>
       <div id="content">
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
@@ -747,7 +747,44 @@
 605
 606
 607
-608</pre></div></td><td class="code"><div class="highlight"><pre><span></span><a name="line-1"></a><span class="cp">#include</span> <span class="cpf">&lt;ios&gt;</span><span class="cp"></span>
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645</pre></div></td><td class="code"><div class="highlight"><pre><span></span><a name="line-1"></a><span class="cp">#include</span> <span class="cpf">&lt;ios&gt;</span><span class="cp"></span>
 <a name="line-2"></a><span class="cp">#include</span> <span class="cpf">&lt;iomanip&gt;</span><span class="cp"></span>
 <a name="line-3"></a><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
 <a name="line-4"></a><span class="cp">#include</span> <span class="cpf">&lt;fstream&gt;</span><span class="cp"></span>
@@ -1068,293 +1105,330 @@
 <a name="line-319"></a>		<span class="p">{</span>
 <a name="line-320"></a>			<span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">capacity</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">;</span> 
 <a name="line-321"></a>			<span class="kt">char</span> <span class="n">data</span><span class="p">[</span><span class="n">capacity</span><span class="p">];</span>
-<a name="line-322"></a>			<span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<a name="line-323"></a>			<span class="k">do</span>
-<a name="line-324"></a>			<span class="p">{</span>
-<a name="line-325"></a>				<span class="n">n</span> <span class="o">=</span> <span class="n">RECV</span><span class="p">(</span><span class="n">socket</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">capacity</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-<a name="line-326"></a>				<span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
-<a name="line-327"></a>				<span class="p">{</span>
-<a name="line-328"></a>					<span class="k">break</span><span class="p">;</span>
-<a name="line-329"></a>				<span class="p">}</span>
-<a name="line-330"></a>
-<a name="line-331"></a>				<span class="k">auto</span> <span class="n">state</span> <span class="o">=</span> <span class="n">r</span><span class="p">.</span><span class="n">loadMore</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
-<a name="line-332"></a>
-<a name="line-333"></a>				<span class="k">if</span> <span class="p">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">LOADED</span><span class="p">)</span> <span class="c1">// Headers are loaded, the buffer is not full and the last char is \0 -&gt; body is filled</span>
-<a name="line-334"></a>					<span class="k">break</span><span class="p">;</span>
-<a name="line-335"></a>			<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
-<a name="line-336"></a>
-<a name="line-337"></a>			<span class="k">const</span> <span class="k">auto</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">high_resolution_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
-<a name="line-338"></a>			<span class="n">response</span> <span class="n">res</span><span class="p">;</span>
-<a name="line-339"></a>			<span class="n">res</span> <span class="o">=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">respond</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">http</span><span class="p">);</span>
-<a name="line-340"></a>			<span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">response</span> <span class="o">=</span> <span class="n">res</span><span class="p">.</span><span class="n">to_string</span><span class="p">();</span>
-<a name="line-341"></a>			<span class="k">const</span> <span class="kt">size_t</span> <span class="n">responseSize</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
-<a name="line-342"></a>			<span class="kt">int</span> <span class="n">status</span><span class="p">;</span>
-<a name="line-343"></a>			<span class="n">status</span> <span class="o">=</span> <span class="n">SEND</span><span class="p">(</span><span class="n">socket</span><span class="p">,</span> <span class="n">response</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="n">responseSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-<a name="line-344"></a>			<span class="k">if</span><span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="n">SOCKET_ERROR</span><span class="p">)</span> <span class="p">{</span>
-<a name="line-345"></a>				<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-<a name="line-346"></a>			<span class="p">}</span>
-<a name="line-347"></a>			<span class="k">this</span><span class="o">-&gt;</span><span class="n">performancer</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">uri</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">timer</span><span class="p">(</span><span class="n">t1</span><span class="p">).</span><span class="n">count</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-348"></a>		<span class="p">}</span>
-<a name="line-349"></a>		<span class="k">catch</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">exception</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
-<a name="line-350"></a>		<span class="p">{</span>
-<a name="line-351"></a>			<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Responding Exception: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-352"></a>			<span class="n">response</span> <span class="n">res</span> <span class="o">=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">responses</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="s">&quot;500&quot;</span><span class="p">).</span><span class="n">call</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">http</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">path_vars</span><span class="p">()</span> <span class="o">+=</span> <span class="p">{</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()),</span> <span class="s">&quot;string&quot;</span><span class="p">});</span>
-<a name="line-353"></a>			<span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">response</span> <span class="o">=</span> <span class="n">res</span><span class="p">.</span><span class="n">to_string</span><span class="p">();</span>
-<a name="line-354"></a>			<span class="k">const</span> <span class="kt">size_t</span> <span class="n">responseSize</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
-<a name="line-355"></a>			<span class="n">SEND</span><span class="p">(</span><span class="n">socket</span><span class="p">,</span> <span class="n">response</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="n">responseSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-<a name="line-356"></a>			<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-<a name="line-357"></a>		<span class="p">}</span>
-<a name="line-358"></a>		<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<a name="line-359"></a>	<span class="p">}</span>
-<a name="line-360"></a>
-<a name="line-361"></a>	<span class="kt">void</span> <span class="n">handler</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;&amp;</span> <span class="n">callback</span><span class="p">)</span>
-<a name="line-362"></a>	<span class="p">{</span>
-<a name="line-363"></a>		<span class="kt">int</span> <span class="n">status</span> <span class="o">=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">responder</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
-<a name="line-364"></a>		<span class="n">callback</span><span class="p">();</span>
-<a name="line-365"></a>		<span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> 
-<a name="line-366"></a>		<span class="p">{</span>
-<a name="line-367"></a>			<span class="n">CLOSE</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
-<a name="line-368"></a>		<span class="p">}</span> 
-<a name="line-369"></a>		<span class="k">else</span> 
-<a name="line-370"></a>		<span class="p">{</span>
-<a name="line-371"></a>			<span class="n">CLOSE</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
-<a name="line-372"></a>		<span class="p">}</span>
-<a name="line-373"></a>	<span class="p">}</span>
-<a name="line-374"></a>	
-<a name="line-375"></a>	<span class="k">struct</span> <span class="n">thread_pool</span><span class="p">;</span>
-<a name="line-376"></a>	<span class="k">struct</span> <span class="kr">thread</span>
-<a name="line-377"></a>	<span class="p">{</span>
-<a name="line-378"></a>	<span class="k">private</span><span class="o">:</span>
-<a name="line-379"></a>		<span class="n">std</span><span class="o">::</span><span class="n">mutex</span> <span class="n">m</span><span class="p">;</span>
-<a name="line-380"></a>		<span class="kt">void</span> <span class="nf">unlock</span><span class="p">()</span> 
-<a name="line-381"></a>		<span class="p">{</span>
-<a name="line-382"></a>			<span class="n">m</span><span class="p">.</span><span class="n">unlock</span><span class="p">();</span>
-<a name="line-383"></a>		<span class="p">}</span>
-<a name="line-384"></a>		<span class="kt">void</span> <span class="nf">lock</span><span class="p">()</span> 
-<a name="line-385"></a>		<span class="p">{</span>
-<a name="line-386"></a>			<span class="n">m</span><span class="p">.</span><span class="n">lock</span><span class="p">();</span>
-<a name="line-387"></a>		<span class="p">}</span>
-<a name="line-388"></a>		<span class="kt">bool</span> <span class="nf">try_lock</span><span class="p">()</span> 
-<a name="line-389"></a>		<span class="p">{</span>
-<a name="line-390"></a>			<span class="k">return</span> <span class="n">m</span><span class="p">.</span><span class="n">try_lock</span><span class="p">();</span>
-<a name="line-391"></a>		<span class="p">}</span>
-<a name="line-392"></a>	<span class="k">public</span><span class="o">:</span>
-<a name="line-393"></a>		<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">requestor</span><span class="p">;</span>
-<a name="line-394"></a>
-<a name="line-395"></a>		<span class="kr">thread</span><span class="p">()</span> 
-<a name="line-396"></a>		<span class="p">{</span>
-<a name="line-397"></a>			<span class="n">m</span><span class="p">.</span><span class="n">unlock</span><span class="p">();</span>
-<a name="line-398"></a>		<span class="p">}</span>
-<a name="line-399"></a>
-<a name="line-400"></a>		<span class="kt">void</span> <span class="n">join</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;&gt;</span> <span class="n">f</span><span class="p">,</span> <span class="kt">int</span> <span class="n">socket</span><span class="p">)</span> 
-<a name="line-401"></a>		<span class="p">{</span>
-<a name="line-402"></a>			<span class="k">this</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">();</span>
-<a name="line-403"></a>			<span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="p">([</span><span class="k">this</span><span class="p">,</span> <span class="n">f</span><span class="p">](</span><span class="kt">int</span> <span class="n">socket</span><span class="p">)</span> <span class="p">{</span>
-<a name="line-404"></a>				<span class="n">f</span><span class="o">-&gt;</span><span class="k">operator</span><span class="p">()(</span><span class="n">socket</span><span class="p">);</span>
-<a name="line-405"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">unlock</span><span class="p">();</span>
-<a name="line-406"></a>			<span class="p">},</span> <span class="n">socket</span><span class="p">).</span><span class="n">join</span><span class="p">();</span>
-<a name="line-407"></a>		<span class="p">}</span>
-<a name="line-408"></a>
-<a name="line-409"></a>		<span class="kt">void</span> <span class="n">detach</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;&gt;</span> <span class="n">f</span><span class="p">,</span> <span class="kt">int</span> <span class="n">socket</span><span class="p">)</span> 
-<a name="line-410"></a>		<span class="p">{</span>
-<a name="line-411"></a>			<span class="k">this</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">();</span>
-<a name="line-412"></a>			<span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="p">([</span><span class="k">this</span><span class="p">,</span> <span class="n">f</span><span class="p">](</span><span class="kt">int</span> <span class="n">socket</span><span class="p">)</span> <span class="p">{</span>
-<a name="line-413"></a>				<span class="n">f</span><span class="o">-&gt;</span><span class="k">operator</span><span class="p">()(</span><span class="n">socket</span><span class="p">);</span>
-<a name="line-414"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">unlock</span><span class="p">();</span>
-<a name="line-415"></a>			<span class="p">},</span> <span class="n">socket</span><span class="p">).</span><span class="n">detach</span><span class="p">();</span>
-<a name="line-416"></a>		<span class="p">}</span>
-<a name="line-417"></a>
-<a name="line-418"></a>		<span class="k">friend</span> <span class="k">struct</span> <span class="n">thread_pool</span><span class="p">;</span>
-<a name="line-419"></a>	<span class="p">};</span>
+<a name="line-322"></a>			<span class="kt">int</span> <span class="n">total_recv</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<a name="line-323"></a>			<span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<a name="line-324"></a>			<span class="k">do</span>
+<a name="line-325"></a>			<span class="p">{</span>
+<a name="line-326"></a>				<span class="n">n</span> <span class="o">=</span> <span class="n">RECV</span><span class="p">(</span><span class="n">socket</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">capacity</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<a name="line-327"></a>				<span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+<a name="line-328"></a>				<span class="p">{</span>
+<a name="line-329"></a>					<span class="k">break</span><span class="p">;</span>
+<a name="line-330"></a>				<span class="p">}</span>
+<a name="line-331"></a>
+<a name="line-332"></a>				<span class="n">total_recv</span> <span class="o">+=</span> <span class="n">n</span><span class="p">;</span>
+<a name="line-333"></a>
+<a name="line-334"></a>				<span class="k">auto</span> <span class="n">state</span> <span class="o">=</span> <span class="n">r</span><span class="p">.</span><span class="n">loadMore</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+<a name="line-335"></a>
+<a name="line-336"></a>				<span class="k">if</span> <span class="p">(</span><span class="n">state</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">LOADED</span><span class="p">)</span> <span class="c1">// Headers are loaded, the buffer is not full and the last char is \0 -&gt; body is filled</span>
+<a name="line-337"></a>					<span class="k">break</span><span class="p">;</span>
+<a name="line-338"></a>			<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">);</span>
+<a name="line-339"></a>
+<a name="line-340"></a>			<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">r</span><span class="p">.</span><span class="n">getState</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">total_recv</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-341"></a>
+<a name="line-342"></a>			<span class="k">if</span> <span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">getState</span><span class="p">()</span> <span class="o">!=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">LOADED</span><span class="p">)</span>
+<a name="line-343"></a>				<span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="s">&quot;Request was not loaded completely and data with size=&quot;</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">to_string</span><span class="p">(</span><span class="n">total_recv</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; was sent.&quot;</span><span class="p">);</span>
+<a name="line-344"></a>
+<a name="line-345"></a>			<span class="k">const</span> <span class="k">auto</span> <span class="n">t1</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">high_resolution_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+<a name="line-346"></a>			<span class="n">response</span> <span class="n">res</span><span class="p">;</span>
+<a name="line-347"></a>			<span class="n">res</span> <span class="o">=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">respond</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">r</span><span class="p">.</span><span class="n">http</span><span class="p">);</span>
+<a name="line-348"></a>			<span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">response</span> <span class="o">=</span> <span class="n">res</span><span class="p">.</span><span class="n">to_string</span><span class="p">();</span>
+<a name="line-349"></a>			<span class="k">const</span> <span class="kt">size_t</span> <span class="n">responseSize</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<a name="line-350"></a>			<span class="kt">int</span> <span class="n">status</span><span class="p">;</span>
+<a name="line-351"></a>			<span class="n">status</span> <span class="o">=</span> <span class="n">SEND</span><span class="p">(</span><span class="n">socket</span><span class="p">,</span> <span class="n">response</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="n">responseSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<a name="line-352"></a>			<span class="k">if</span><span class="p">(</span><span class="n">status</span> <span class="o">==</span> <span class="n">SOCKET_ERROR</span><span class="p">)</span> <span class="p">{</span>
+<a name="line-353"></a>				<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<a name="line-354"></a>			<span class="p">}</span>
+<a name="line-355"></a>			<span class="k">this</span><span class="o">-&gt;</span><span class="n">performancer</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">uri</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">timer</span><span class="p">(</span><span class="n">t1</span><span class="p">).</span><span class="n">count</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-356"></a>		<span class="p">}</span>
+<a name="line-357"></a>		<span class="k">catch</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">exception</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">e</span><span class="p">)</span>
+<a name="line-358"></a>		<span class="p">{</span>
+<a name="line-359"></a>			<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Responding Exception: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-360"></a>			<span class="n">response</span> <span class="n">res</span> <span class="o">=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">responses</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="s">&quot;500&quot;</span><span class="p">).</span><span class="n">call</span><span class="p">(</span><span class="n">r</span><span class="p">.</span><span class="n">http</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">path_vars</span><span class="p">()</span> <span class="o">+=</span> <span class="p">{</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">what</span><span class="p">()),</span> <span class="s">&quot;string&quot;</span><span class="p">});</span>
+<a name="line-361"></a>			<span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">response</span> <span class="o">=</span> <span class="n">res</span><span class="p">.</span><span class="n">to_string</span><span class="p">();</span>
+<a name="line-362"></a>			<span class="k">const</span> <span class="kt">size_t</span> <span class="n">responseSize</span> <span class="o">=</span> <span class="n">response</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<a name="line-363"></a>			<span class="n">SEND</span><span class="p">(</span><span class="n">socket</span><span class="p">,</span> <span class="n">response</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="n">responseSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<a name="line-364"></a>			<span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<a name="line-365"></a>		<span class="p">}</span>
+<a name="line-366"></a>		<span class="k">catch</span> <span class="p">(...)</span>
+<a name="line-367"></a>		<span class="p">{</span>
+<a name="line-368"></a>			<span class="k">return</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span>
+<a name="line-369"></a>		<span class="p">}</span>
+<a name="line-370"></a>		<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<a name="line-371"></a>	<span class="p">}</span>
+<a name="line-372"></a>
+<a name="line-373"></a>	<span class="kt">void</span> <span class="n">handler</span><span class="p">(</span><span class="kt">int</span> <span class="n">client</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">()</span><span class="o">&gt;&amp;</span> <span class="n">callback</span><span class="p">)</span>
+<a name="line-374"></a>	<span class="p">{</span>
+<a name="line-375"></a>		<span class="kt">int</span> <span class="n">status</span> <span class="o">=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">responder</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+<a name="line-376"></a>		<span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="n">callback</span><span class="p">();</span>
+<a name="line-377"></a>		<span class="n">CLOSE</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
+<a name="line-378"></a>	<span class="p">}</span>
+<a name="line-379"></a>	
+<a name="line-380"></a>	<span class="k">struct</span> <span class="n">thread_pool</span><span class="p">;</span>
+<a name="line-381"></a>	<span class="k">struct</span> <span class="kr">thread</span>
+<a name="line-382"></a>	<span class="p">{</span>
+<a name="line-383"></a>	<span class="k">private</span><span class="o">:</span>
+<a name="line-384"></a>		<span class="n">std</span><span class="o">::</span><span class="n">mutex</span> <span class="n">m</span><span class="p">;</span>
+<a name="line-385"></a>		<span class="kt">void</span> <span class="nf">unlock</span><span class="p">()</span> 
+<a name="line-386"></a>		<span class="p">{</span>
+<a name="line-387"></a>			<span class="n">m</span><span class="p">.</span><span class="n">unlock</span><span class="p">();</span>
+<a name="line-388"></a>		<span class="p">}</span>
+<a name="line-389"></a>		<span class="kt">void</span> <span class="nf">lock</span><span class="p">()</span> 
+<a name="line-390"></a>		<span class="p">{</span>
+<a name="line-391"></a>			<span class="n">m</span><span class="p">.</span><span class="n">lock</span><span class="p">();</span>
+<a name="line-392"></a>		<span class="p">}</span>
+<a name="line-393"></a>		<span class="kt">bool</span> <span class="nf">try_lock</span><span class="p">()</span> 
+<a name="line-394"></a>		<span class="p">{</span>
+<a name="line-395"></a>			<span class="k">return</span> <span class="n">m</span><span class="p">.</span><span class="n">try_lock</span><span class="p">();</span>
+<a name="line-396"></a>		<span class="p">}</span>
+<a name="line-397"></a>	<span class="k">public</span><span class="o">:</span>
+<a name="line-398"></a>		<span class="kr">thread</span><span class="p">()</span> 
+<a name="line-399"></a>		<span class="p">{</span>
+<a name="line-400"></a>			<span class="n">m</span><span class="p">.</span><span class="n">unlock</span><span class="p">();</span>
+<a name="line-401"></a>		<span class="p">}</span>
+<a name="line-402"></a>
+<a name="line-403"></a>		<span class="kt">void</span> <span class="n">join</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;&gt;</span> <span class="n">f</span><span class="p">,</span> <span class="kt">int</span> <span class="n">socket</span><span class="p">)</span> 
+<a name="line-404"></a>		<span class="p">{</span>
+<a name="line-405"></a>			<span class="k">this</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">();</span>
+<a name="line-406"></a>			<span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="p">([</span><span class="k">this</span><span class="p">,</span> <span class="n">f</span><span class="p">](</span><span class="kt">int</span> <span class="n">socket</span><span class="p">)</span> <span class="p">{</span>
+<a name="line-407"></a>				<span class="n">f</span><span class="o">-&gt;</span><span class="k">operator</span><span class="p">()(</span><span class="n">socket</span><span class="p">);</span>
+<a name="line-408"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">unlock</span><span class="p">();</span>
+<a name="line-409"></a>			<span class="p">},</span> <span class="n">socket</span><span class="p">).</span><span class="n">join</span><span class="p">();</span>
+<a name="line-410"></a>		<span class="p">}</span>
+<a name="line-411"></a>
+<a name="line-412"></a>		<span class="kt">void</span> <span class="n">detach</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;&gt;</span> <span class="n">f</span><span class="p">,</span> <span class="kt">int</span> <span class="n">socket</span><span class="p">)</span> 
+<a name="line-413"></a>		<span class="p">{</span>
+<a name="line-414"></a>			<span class="k">this</span><span class="o">-&gt;</span><span class="n">lock</span><span class="p">();</span>
+<a name="line-415"></a>			<span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="p">([</span><span class="k">this</span><span class="p">,</span> <span class="n">f</span><span class="p">](</span><span class="kt">int</span> <span class="n">socket</span><span class="p">)</span> <span class="p">{</span>
+<a name="line-416"></a>				<span class="n">f</span><span class="o">-&gt;</span><span class="k">operator</span><span class="p">()(</span><span class="n">socket</span><span class="p">);</span>
+<a name="line-417"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">unlock</span><span class="p">();</span>
+<a name="line-418"></a>			<span class="p">},</span> <span class="n">socket</span><span class="p">).</span><span class="n">detach</span><span class="p">();</span>
+<a name="line-419"></a>		<span class="p">}</span>
 <a name="line-420"></a>
-<a name="line-421"></a>	<span class="k">struct</span> <span class="n">thread_pool</span> 
-<a name="line-422"></a>	<span class="p">{</span>
-<a name="line-423"></a>	<span class="k">private</span><span class="o">:</span>
-<a name="line-424"></a>		<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kr">thread</span><span class="o">&gt;&gt;&gt;</span> <span class="n">pool</span><span class="p">;</span>
-<a name="line-425"></a>		<span class="kt">size_t</span> <span class="n">size</span><span class="p">;</span>
-<a name="line-426"></a>		<span class="n">std</span><span class="o">::</span><span class="n">mutex</span> <span class="n">extract</span><span class="p">;</span>
-<a name="line-427"></a>	<span class="k">public</span><span class="o">:</span>
-<a name="line-428"></a><span class="hll">		<span class="n">thread_pool</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">_size</span><span class="p">)</span> <div class='verbose expandable'><span class='error2'>&lt;--- Struct 'thread_pool' has a constructor with 1 argument that is not explicit. <span class='marker'>[+]</span></span><div class='content'>Struct &apos;thread_pool&apos; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided.</div></div>
-</span><a name="line-429"></a>		<span class="p">{</span>
-<a name="line-430"></a>			<span class="n">size</span> <span class="o">=</span> <span class="n">_size</span><span class="p">;</span>
-<a name="line-431"></a><span class="hll">			<span class="n">pool</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kr">thread</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">_size</span><span class="p">);</span><div class='verbose expandable'><span class='error2'>&lt;--- Variable 'pool' is assigned in constructor body. Consider performing initialization in initialization list. <span class='marker'>[+]</span></span><div class='content'>When an object of a class is created, the constructors of all member variables are called consecutively in the order the variables are declared, even if you don&apos;t explicitly write them to the initialization list. You could avoid assigning &apos;pool&apos; a value by passing the value to the constructor in the initialization list.</div></div>
-</span><a name="line-432"></a>			<span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">_size</span> <span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
-<a name="line-433"></a>			<span class="p">{</span>	
-<a name="line-434"></a>				<span class="n">pool</span><span class="o">-&gt;</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="kr">thread</span><span class="o">&gt;</span><span class="p">();</span>
-<a name="line-435"></a>			<span class="p">}</span>
-<a name="line-436"></a>		<span class="p">}</span>
-<a name="line-437"></a>
-<a name="line-438"></a>		<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kr">thread</span><span class="o">&gt;&amp;</span> <span class="n">get</span><span class="p">(</span><span class="k">const</span> <span class="kt">size_t</span> <span class="n">index</span><span class="p">)</span> <span class="k">const</span> 
-<a name="line-439"></a>		<span class="p">{</span>
-<a name="line-440"></a>			<span class="k">return</span> <span class="n">pool</span><span class="o">-&gt;</span><span class="n">at</span><span class="p">(</span><span class="n">index</span><span class="p">);</span>
-<a name="line-441"></a>		<span class="p">}</span>
-<a name="line-442"></a>
-<a name="line-443"></a>		<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kr">thread</span><span class="o">&gt;&amp;</span> <span class="k">operator</span><span class="p">[]</span> <span class="p">(</span><span class="k">const</span> <span class="kt">size_t</span> <span class="n">index</span><span class="p">)</span> <span class="k">const</span>
-<a name="line-444"></a>		<span class="p">{</span>
-<a name="line-445"></a>			<span class="k">return</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="n">index</span><span class="p">);</span>
-<a name="line-446"></a>		<span class="p">}</span>
-<a name="line-447"></a>		
-<a name="line-448"></a>		<span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span> <span class="n">get_free_thread</span><span class="p">()</span> 
-<a name="line-449"></a>		<span class="p">{</span>
-<a name="line-450"></a>			<span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span> <span class="n">locker</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">extract</span><span class="p">);</span>
-<a name="line-451"></a>			<span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">size</span> <span class="p">;</span> <span class="n">index</span> <span class="o">++</span><span class="p">)</span>
-<a name="line-452"></a>			<span class="p">{</span>
-<a name="line-453"></a>				<span class="k">if</span> <span class="p">(</span><span class="n">pool</span><span class="o">-&gt;</span><span class="n">at</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">try_lock</span><span class="p">())</span>
-<a name="line-454"></a>				<span class="p">{</span>
-<a name="line-455"></a>					<span class="n">pool</span><span class="o">-&gt;</span><span class="n">at</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">unlock</span><span class="p">();</span>
-<a name="line-456"></a>					<span class="k">return</span> <span class="n">index</span><span class="p">;</span>
-<a name="line-457"></a>				<span class="p">}</span>
-<a name="line-458"></a>			<span class="p">}</span>
-<a name="line-459"></a>			<span class="k">return</span> <span class="p">{};</span>
-<a name="line-460"></a>		<span class="p">}</span>
-<a name="line-461"></a>	<span class="p">};</span>
-<a name="line-462"></a> 
-<a name="line-463"></a><span class="k">public</span><span class="o">:</span>
-<a name="line-464"></a>	<span class="n">std</span><span class="o">::</span><span class="n">shared_future</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span> <span class="n">run</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">PORT</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">cores</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">promise</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;*</span> <span class="n">started</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">limited</span> <span class="o">=</span> <span class="nb">false</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">requests</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> 
-<a name="line-465"></a>	<span class="p">{</span>
-<a name="line-466"></a>		<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">promise</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;&gt;</span> <span class="n">running</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">promise</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;&gt;</span><span class="p">();</span>
-<a name="line-467"></a>		
-<a name="line-468"></a>		<span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="p">([</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">this</span><span class="p">](</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">promise</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;&gt;</span> <span class="n">running</span><span class="p">)</span> <span class="p">{</span>
-<a name="line-469"></a>			<span class="cp">#ifdef _WIN32</span>
-<a name="line-470"></a>				<span class="c1">//----------------------</span>
-<a name="line-471"></a>				<span class="c1">// Initialize Winsock.</span>
-<a name="line-472"></a>				<span class="n">WSADATA</span> <span class="n">wsaData</span><span class="p">;</span>
-<a name="line-473"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Startup called</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-474"></a>				<span class="kt">int</span> <span class="n">iResult</span> <span class="o">=</span> <span class="n">WSAStartup</span><span class="p">(</span><span class="n">MAKEWORD</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">wsaData</span><span class="p">);</span>
-<a name="line-475"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Startup finished &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">iResult</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-476"></a>				<span class="k">if</span> <span class="p">(</span><span class="n">iResult</span> <span class="o">!=</span> <span class="n">NO_ERROR</span><span class="p">)</span> <span class="p">{</span>
-<a name="line-477"></a>					<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;WSAStartup failed with error: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">iResult</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-478"></a>					<span class="n">running</span><span class="o">-&gt;</span><span class="n">set_value</span><span class="p">();</span>
-<a name="line-479"></a>					<span class="k">return</span><span class="p">;</span>
-<a name="line-480"></a>				<span class="p">}</span>
-<a name="line-481"></a>			<span class="cp">#endif</span>
-<a name="line-482"></a>			<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Startup called</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-483"></a>	
-<a name="line-484"></a>			<span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">threads</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span><span class="n">cores</span><span class="p">,</span> <span class="n">limited</span> <span class="o">?</span> <span class="nl">requests</span> <span class="p">:</span> <span class="n">cores</span><span class="p">);</span>
-<a name="line-485"></a>			<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">thread_pool</span><span class="o">&gt;</span> <span class="n">threads_ptr</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">thread_pool</span><span class="o">&gt;</span><span class="p">(</span><span class="n">threads</span><span class="p">);</span>
-<a name="line-486"></a>			
-<a name="line-487"></a>			<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Thread pool generated</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>	
-<a name="line-488"></a>
-<a name="line-489"></a>			<span class="kt">int</span> <span class="n">status</span><span class="p">;</span>
-<a name="line-490"></a>			<span class="k">struct</span> <span class="n">addrinfo</span> <span class="n">hints</span><span class="p">,</span> <span class="o">*</span><span class="n">res</span><span class="p">;</span>
-<a name="line-491"></a>			<span class="kt">int</span> <span class="n">listener</span><span class="p">;</span>
-<a name="line-492"></a>			
-<a name="line-493"></a>			<span class="c1">// Before using hint you have to make sure that the data structure is empty </span>
-<a name="line-494"></a>			<span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hints</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span> <span class="n">hints</span><span class="p">);</span>
-<a name="line-495"></a>			<span class="c1">// Set the attribute for hint</span>
-<a name="line-496"></a>			<span class="n">hints</span><span class="p">.</span><span class="n">ai_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span> <span class="c1">// We don&#39;t care V4 AF_INET or 6 AF_INET6</span>
-<a name="line-497"></a>			<span class="n">hints</span><span class="p">.</span><span class="n">ai_socktype</span> <span class="o">=</span> <span class="n">SOCK_STREAM</span><span class="p">;</span> <span class="c1">// TCP Socket SOCK_DGRAM </span>
-<a name="line-498"></a>			<span class="n">hints</span><span class="p">.</span><span class="n">ai_flags</span> <span class="o">=</span> <span class="n">AI_PASSIVE</span><span class="p">;</span>
-<a name="line-499"></a>			<span class="n">hints</span><span class="p">.</span><span class="n">ai_protocol</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>          <span class="cm">/* Any protocol */</span>
-<a name="line-500"></a>			<span class="n">hints</span><span class="p">.</span><span class="n">ai_canonname</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
-<a name="line-501"></a>			<span class="n">hints</span><span class="p">.</span><span class="n">ai_addr</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
-<a name="line-502"></a>			<span class="n">hints</span><span class="p">.</span><span class="n">ai_next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
-<a name="line-503"></a>
-<a name="line-504"></a>			<span class="c1">// Fill the res data structure and make sure that the results make sense. </span>
-<a name="line-505"></a>			<span class="n">status</span> <span class="o">=</span> <span class="n">getaddrinfo</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">PORT</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">hints</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">res</span><span class="p">);</span>
-<a name="line-506"></a>			<span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
-<a name="line-507"></a>			<span class="p">{</span>
-<a name="line-508"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;getaddrinfo error: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">gai_strerror</span><span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-509"></a>				<span class="n">running</span><span class="o">-&gt;</span><span class="n">set_value</span><span class="p">();</span>
-<a name="line-510"></a>				<span class="k">return</span><span class="p">;</span>
-<a name="line-511"></a>			<span class="p">}</span>
-<a name="line-512"></a>
-<a name="line-513"></a>			<span class="c1">// Create Socket and check if error occured afterwards</span>
-<a name="line-514"></a>			<span class="n">listener</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">res</span><span class="o">-&gt;</span><span class="n">ai_family</span><span class="p">,</span> <span class="n">res</span><span class="o">-&gt;</span><span class="n">ai_socktype</span><span class="p">,</span> <span class="n">res</span><span class="o">-&gt;</span><span class="n">ai_protocol</span><span class="p">);</span>
-<a name="line-515"></a>			<span class="k">if</span> <span class="p">(</span><span class="n">listener</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<a name="line-516"></a>			<span class="p">{</span>
-<a name="line-517"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;socket error: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">gai_strerror</span><span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-518"></a>				<span class="n">running</span><span class="o">-&gt;</span><span class="n">set_value</span><span class="p">();</span>
-<a name="line-519"></a>				<span class="k">return</span><span class="p">;</span>
-<a name="line-520"></a>			<span class="p">}</span>
-<a name="line-521"></a>
-<a name="line-522"></a>			<span class="c1">// Bind the socket to the address of my local machine and port number </span>
-<a name="line-523"></a>			<span class="n">status</span> <span class="o">=</span> <span class="n">bind</span><span class="p">(</span><span class="n">listener</span><span class="p">,</span> <span class="n">res</span><span class="o">-&gt;</span><span class="n">ai_addr</span><span class="p">,</span> <span class="n">res</span><span class="o">-&gt;</span><span class="n">ai_addrlen</span><span class="p">);</span>
-<a name="line-524"></a>			<span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
-<a name="line-525"></a>			<span class="p">{</span>
-<a name="line-526"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;bind error: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">gai_strerror</span><span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-527"></a>				<span class="n">running</span><span class="o">-&gt;</span><span class="n">set_value</span><span class="p">();</span>
-<a name="line-528"></a>				<span class="k">return</span><span class="p">;</span>
-<a name="line-529"></a>			<span class="p">}</span>
-<a name="line-530"></a>
-<a name="line-531"></a>			<span class="n">status</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">listener</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
-<a name="line-532"></a>			<span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
-<a name="line-533"></a>			<span class="p">{</span>
-<a name="line-534"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;listen error: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">gai_strerror</span><span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-535"></a>				<span class="n">running</span><span class="o">-&gt;</span><span class="n">set_value</span><span class="p">();</span>
-<a name="line-536"></a>				<span class="k">return</span><span class="p">;</span>
-<a name="line-537"></a>			<span class="p">}</span>
-<a name="line-538"></a>
-<a name="line-539"></a>			<span class="n">status</span> <span class="o">=</span> <span class="n">nonblock_config</span><span class="p">(</span><span class="n">listener</span><span class="p">);</span>
-<a name="line-540"></a>			<span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+<a name="line-421"></a>		<span class="k">friend</span> <span class="k">struct</span> <span class="n">thread_pool</span><span class="p">;</span>
+<a name="line-422"></a>	<span class="p">};</span>
+<a name="line-423"></a>
+<a name="line-424"></a>	<span class="k">struct</span> <span class="n">thread_pool</span> 
+<a name="line-425"></a>	<span class="p">{</span>
+<a name="line-426"></a>	<span class="k">private</span><span class="o">:</span>
+<a name="line-427"></a>		<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kr">thread</span><span class="o">&gt;&gt;&gt;</span> <span class="n">pool</span><span class="p">;</span>
+<a name="line-428"></a>		<span class="kt">size_t</span> <span class="n">size</span><span class="p">;</span>
+<a name="line-429"></a>		<span class="n">std</span><span class="o">::</span><span class="n">mutex</span> <span class="n">extract</span><span class="p">;</span>
+<a name="line-430"></a>	<span class="k">public</span><span class="o">:</span>
+<a name="line-431"></a><span class="hll">		<span class="n">thread_pool</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">_size</span><span class="p">)</span> <div class='verbose expandable'><span class='error2'>&lt;--- Struct 'thread_pool' has a constructor with 1 argument that is not explicit. <span class='marker'>[+]</span></span><div class='content'>Struct &apos;thread_pool&apos; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided.</div></div>
+</span><a name="line-432"></a>		<span class="p">{</span>
+<a name="line-433"></a>			<span class="n">size</span> <span class="o">=</span> <span class="n">_size</span><span class="p">;</span>
+<a name="line-434"></a><span class="hll">			<span class="n">pool</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kr">thread</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">_size</span><span class="p">);</span><div class='verbose expandable'><span class='error2'>&lt;--- Variable 'pool' is assigned in constructor body. Consider performing initialization in initialization list. <span class='marker'>[+]</span></span><div class='content'>When an object of a class is created, the constructors of all member variables are called consecutively in the order the variables are declared, even if you don&apos;t explicitly write them to the initialization list. You could avoid assigning &apos;pool&apos; a value by passing the value to the constructor in the initialization list.</div></div>
+</span><a name="line-435"></a>			<span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">_size</span> <span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
+<a name="line-436"></a>			<span class="p">{</span>	
+<a name="line-437"></a>				<span class="n">pool</span><span class="o">-&gt;</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="kr">thread</span><span class="o">&gt;</span><span class="p">();</span>
+<a name="line-438"></a>			<span class="p">}</span>
+<a name="line-439"></a>		<span class="p">}</span>
+<a name="line-440"></a>
+<a name="line-441"></a>		<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kr">thread</span><span class="o">&gt;&amp;</span> <span class="n">get</span><span class="p">(</span><span class="k">const</span> <span class="kt">size_t</span> <span class="n">index</span><span class="p">)</span> <span class="k">const</span> 
+<a name="line-442"></a>		<span class="p">{</span>
+<a name="line-443"></a>			<span class="k">return</span> <span class="n">pool</span><span class="o">-&gt;</span><span class="n">at</span><span class="p">(</span><span class="n">index</span><span class="p">);</span>
+<a name="line-444"></a>		<span class="p">}</span>
+<a name="line-445"></a>
+<a name="line-446"></a>		<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kr">thread</span><span class="o">&gt;&amp;</span> <span class="k">operator</span><span class="p">[]</span> <span class="p">(</span><span class="k">const</span> <span class="kt">size_t</span> <span class="n">index</span><span class="p">)</span> <span class="k">const</span>
+<a name="line-447"></a>		<span class="p">{</span>
+<a name="line-448"></a>			<span class="k">return</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="n">index</span><span class="p">);</span>
+<a name="line-449"></a>		<span class="p">}</span>
+<a name="line-450"></a>		
+<a name="line-451"></a>		<span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span> <span class="n">get_free_thread</span><span class="p">()</span> 
+<a name="line-452"></a>		<span class="p">{</span>
+<a name="line-453"></a>			<span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span> <span class="n">locker</span> <span class="p">(</span><span class="k">this</span><span class="o">-&gt;</span><span class="n">extract</span><span class="p">);</span>
+<a name="line-454"></a>			<span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span> <span class="p">;</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">size</span> <span class="p">;</span> <span class="n">index</span> <span class="o">++</span><span class="p">)</span>
+<a name="line-455"></a>			<span class="p">{</span>
+<a name="line-456"></a>				<span class="k">if</span> <span class="p">(</span><span class="n">pool</span><span class="o">-&gt;</span><span class="n">at</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">try_lock</span><span class="p">())</span>
+<a name="line-457"></a>				<span class="p">{</span>
+<a name="line-458"></a>					<span class="n">pool</span><span class="o">-&gt;</span><span class="n">at</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">unlock</span><span class="p">();</span>
+<a name="line-459"></a>					<span class="k">return</span> <span class="n">index</span><span class="p">;</span>
+<a name="line-460"></a>				<span class="p">}</span>
+<a name="line-461"></a>			<span class="p">}</span>
+<a name="line-462"></a>			<span class="k">return</span> <span class="p">{};</span>
+<a name="line-463"></a>		<span class="p">}</span>
+<a name="line-464"></a>	<span class="p">};</span>
+<a name="line-465"></a> 
+<a name="line-466"></a><span class="k">public</span><span class="o">:</span>
+<a name="line-467"></a>	<span class="k">class</span> <span class="nc">server_status</span> <span class="p">{</span>
+<a name="line-468"></a>		<span class="k">private</span><span class="o">:</span>
+<a name="line-469"></a>			<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">promise</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;&gt;</span> <span class="n">started_ptr</span><span class="p">,</span> <span class="n">down_ptr</span><span class="p">;</span>
+<a name="line-470"></a>			<span class="kt">void</span> <span class="nf">start</span><span class="p">()</span> <span class="p">{</span>
+<a name="line-471"></a>				<span class="k">try</span> <span class="p">{</span>
+<a name="line-472"></a>					<span class="n">started_ptr</span><span class="o">-&gt;</span><span class="n">set_value</span><span class="p">();</span>
+<a name="line-473"></a>				<span class="p">}</span> <span class="k">catch</span> <span class="p">(...)</span> <span class="p">{</span>
+<a name="line-474"></a>
+<a name="line-475"></a>				<span class="p">}</span>
+<a name="line-476"></a>			<span class="p">}</span>
+<a name="line-477"></a>			<span class="kt">void</span> <span class="nf">kill</span><span class="p">()</span> <span class="p">{</span>
+<a name="line-478"></a>				<span class="k">try</span> <span class="p">{</span>
+<a name="line-479"></a>					<span class="n">down_ptr</span><span class="o">-&gt;</span><span class="n">set_value</span><span class="p">();</span>
+<a name="line-480"></a>				<span class="p">}</span> <span class="k">catch</span> <span class="p">(...)</span> <span class="p">{</span>
+<a name="line-481"></a>
+<a name="line-482"></a>				<span class="p">}</span>
+<a name="line-483"></a>			<span class="p">}</span>
+<a name="line-484"></a>		<span class="k">public</span><span class="o">:</span>
+<a name="line-485"></a>			<span class="n">server_status</span> <span class="p">()</span> <span class="p">{</span>
+<a name="line-486"></a><span class="hll">				<span class="n">started_ptr</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">promise</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;&gt;</span><span class="p">();</span><div class='verbose expandable'><span class='error2'>&lt;--- Variable 'started_ptr' is assigned in constructor body. Consider performing initialization in initialization list. <span class='marker'>[+]</span></span><div class='content'>When an object of a class is created, the constructors of all member variables are called consecutively in the order the variables are declared, even if you don&apos;t explicitly write them to the initialization list. You could avoid assigning &apos;started_ptr&apos; a value by passing the value to the constructor in the initialization list.</div></div>
+</span><a name="line-487"></a><span class="hll">				<span class="n">down_ptr</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">promise</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;&gt;</span><span class="p">();</span><div class='verbose expandable'><span class='error2'>&lt;--- Variable 'down_ptr' is assigned in constructor body. Consider performing initialization in initialization list. <span class='marker'>[+]</span></span><div class='content'>When an object of a class is created, the constructors of all member variables are called consecutively in the order the variables are declared, even if you don&apos;t explicitly write them to the initialization list. You could avoid assigning &apos;down_ptr&apos; a value by passing the value to the constructor in the initialization list.</div></div>
+</span><a name="line-488"></a>			<span class="p">}</span>
+<a name="line-489"></a>			<span class="n">std</span><span class="o">::</span><span class="n">shared_future</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span> <span class="n">started</span><span class="p">()</span> <span class="p">{</span>
+<a name="line-490"></a>				<span class="k">return</span> <span class="n">started_ptr</span><span class="o">-&gt;</span><span class="n">get_future</span><span class="p">().</span><span class="n">share</span><span class="p">();</span>
+<a name="line-491"></a>			<span class="p">}</span>
+<a name="line-492"></a>			<span class="n">std</span><span class="o">::</span><span class="n">shared_future</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;</span> <span class="n">down</span><span class="p">()</span> <span class="p">{</span>
+<a name="line-493"></a>				<span class="k">return</span> <span class="n">down_ptr</span><span class="o">-&gt;</span><span class="n">get_future</span><span class="p">().</span><span class="n">share</span><span class="p">();</span>
+<a name="line-494"></a>			<span class="p">}</span>
+<a name="line-495"></a>			<span class="k">friend</span> <span class="k">class</span> <span class="nc">webframe</span><span class="p">;</span>
+<a name="line-496"></a>	<span class="p">};</span>
+<a name="line-497"></a>
+<a name="line-498"></a>	<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">server_status</span><span class="o">&gt;</span> <span class="n">run</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">PORT</span><span class="p">,</span> <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">cores</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">limited</span> <span class="o">=</span> <span class="nb">false</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">requests</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> 
+<a name="line-499"></a>	<span class="p">{</span>
+<a name="line-500"></a>		<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">server_status</span><span class="o">&gt;</span> <span class="n">status_handler</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">server_status</span><span class="o">&gt;</span><span class="p">();</span>
+<a name="line-501"></a>
+<a name="line-502"></a>		<span class="n">std</span><span class="o">::</span><span class="kr">thread</span><span class="p">([</span><span class="o">&amp;</span><span class="p">,</span> <span class="k">this</span><span class="p">](</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">server_status</span><span class="o">&gt;</span> <span class="n">status_handler</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">limited</span><span class="p">)</span> <span class="p">{</span>
+<a name="line-503"></a>			<span class="cp">#ifdef _WIN32</span>
+<a name="line-504"></a>				<span class="c1">//----------------------</span>
+<a name="line-505"></a>				<span class="c1">// Initialize Winsock.</span>
+<a name="line-506"></a>				<span class="n">WSADATA</span> <span class="n">wsaData</span><span class="p">;</span>
+<a name="line-507"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Startup called</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-508"></a>				<span class="kt">int</span> <span class="n">iResult</span> <span class="o">=</span> <span class="n">WSAStartup</span><span class="p">(</span><span class="n">MAKEWORD</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">wsaData</span><span class="p">);</span>
+<a name="line-509"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Startup finished &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">iResult</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-510"></a>				<span class="k">if</span> <span class="p">(</span><span class="n">iResult</span> <span class="o">!=</span> <span class="n">NO_ERROR</span><span class="p">)</span> <span class="p">{</span>
+<a name="line-511"></a>					<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;WSAStartup failed with error: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">iResult</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-512"></a>					<span class="n">status_handler</span><span class="o">-&gt;</span><span class="n">kill</span><span class="p">();</span>
+<a name="line-513"></a>					<span class="k">return</span><span class="p">;</span>
+<a name="line-514"></a>				<span class="p">}</span>
+<a name="line-515"></a>			<span class="cp">#endif</span>
+<a name="line-516"></a>			<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Startup called</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-517"></a>	
+<a name="line-518"></a>			<span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">threads</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span><span class="n">cores</span><span class="p">,</span> <span class="n">limited</span> <span class="o">?</span> <span class="nl">requests</span> <span class="p">:</span> <span class="n">cores</span><span class="p">);</span>
+<a name="line-519"></a>			<span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">thread_pool</span><span class="o">&gt;</span> <span class="n">threads_ptr</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">thread_pool</span><span class="o">&gt;</span><span class="p">(</span><span class="n">threads</span><span class="p">);</span>
+<a name="line-520"></a>			
+<a name="line-521"></a>			<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Thread pool generated</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>	
+<a name="line-522"></a>
+<a name="line-523"></a>			<span class="kt">int</span> <span class="n">status</span><span class="p">;</span>
+<a name="line-524"></a>			<span class="k">struct</span> <span class="n">addrinfo</span> <span class="n">hints</span><span class="p">,</span> <span class="o">*</span><span class="n">res</span><span class="p">;</span>
+<a name="line-525"></a>			<span class="kt">int</span> <span class="n">listener</span><span class="p">;</span>
+<a name="line-526"></a>			
+<a name="line-527"></a>			<span class="c1">// Before using hint you have to make sure that the data structure is empty </span>
+<a name="line-528"></a>			<span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hints</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span> <span class="n">hints</span><span class="p">);</span>
+<a name="line-529"></a>			<span class="c1">// Set the attribute for hint</span>
+<a name="line-530"></a>			<span class="n">hints</span><span class="p">.</span><span class="n">ai_family</span> <span class="o">=</span> <span class="n">AF_INET</span><span class="p">;</span> <span class="c1">// We don&#39;t care V4 AF_INET or 6 AF_INET6</span>
+<a name="line-531"></a>			<span class="n">hints</span><span class="p">.</span><span class="n">ai_socktype</span> <span class="o">=</span> <span class="n">SOCK_STREAM</span><span class="p">;</span> <span class="c1">// TCP Socket SOCK_DGRAM </span>
+<a name="line-532"></a>			<span class="n">hints</span><span class="p">.</span><span class="n">ai_flags</span> <span class="o">=</span> <span class="n">AI_PASSIVE</span><span class="p">;</span>
+<a name="line-533"></a>			<span class="n">hints</span><span class="p">.</span><span class="n">ai_protocol</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>          <span class="cm">/* Any protocol */</span>
+<a name="line-534"></a>			<span class="n">hints</span><span class="p">.</span><span class="n">ai_canonname</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+<a name="line-535"></a>			<span class="n">hints</span><span class="p">.</span><span class="n">ai_addr</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+<a name="line-536"></a>			<span class="n">hints</span><span class="p">.</span><span class="n">ai_next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+<a name="line-537"></a>
+<a name="line-538"></a>			<span class="c1">// Fill the res data structure and make sure that the results make sense. </span>
+<a name="line-539"></a>			<span class="n">status</span> <span class="o">=</span> <span class="n">getaddrinfo</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">PORT</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">hints</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">res</span><span class="p">);</span>
+<a name="line-540"></a>			<span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
 <a name="line-541"></a>			<span class="p">{</span>
-<a name="line-542"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;nonblocking config error: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">gai_strerror</span><span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-543"></a>				<span class="n">running</span><span class="o">-&gt;</span><span class="n">set_value</span><span class="p">();</span>
+<a name="line-542"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;getaddrinfo error: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">gai_strerror</span><span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-543"></a>				<span class="n">status_handler</span><span class="o">-&gt;</span><span class="n">kill</span><span class="p">();</span>
 <a name="line-544"></a>				<span class="k">return</span><span class="p">;</span>
 <a name="line-545"></a>			<span class="p">}</span>
 <a name="line-546"></a>
-<a name="line-547"></a>			<span class="c1">// Free the res linked list after we are done with it	</span>
-<a name="line-548"></a>			<span class="n">freeaddrinfo</span><span class="p">(</span><span class="n">res</span><span class="p">);</span>
-<a name="line-549"></a>
-<a name="line-550"></a>			<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Listener setup &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">listener</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-551"></a>
-<a name="line-552"></a>			<span class="n">started</span><span class="o">-&gt;</span><span class="n">set_value</span><span class="p">();</span>
-<a name="line-553"></a>
-<a name="line-554"></a>			<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">limited</span> <span class="o">||</span> <span class="n">requests</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-<a name="line-555"></a>				<span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span> <span class="kr">thread</span> <span class="o">=</span> <span class="n">threads_ptr</span><span class="o">-&gt;</span><span class="n">get_free_thread</span><span class="p">();</span>
-<a name="line-556"></a>				<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="kr">thread</span><span class="p">)</span>
-<a name="line-557"></a>					<span class="k">continue</span><span class="p">;</span>
-<a name="line-558"></a>
-<a name="line-559"></a>				<span class="c1">// Accept a new connection and return back the socket desciptor </span>
-<a name="line-560"></a>				<span class="n">threads_ptr</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="kr">thread</span><span class="p">.</span><span class="n">value</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">requestor</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">int</span><span class="p">(</span><span class="n">ACCEPT</span><span class="p">(</span><span class="n">listener</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)));</span>
-<a name="line-561"></a>				<span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">threads_ptr</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="kr">thread</span><span class="p">.</span><span class="n">value</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">requestor</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<a name="line-562"></a>				<span class="p">{</span>
-<a name="line-563"></a>					<span class="k">continue</span><span class="p">;</span>
-<a name="line-564"></a>				<span class="p">}</span>
-<a name="line-565"></a>
-<a name="line-566"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Requestor &quot;</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">threads_ptr</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="kr">thread</span><span class="p">.</span><span class="n">value</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">requestor</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; is getting handled</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-567"></a>
-<a name="line-568"></a>				<span class="k">struct</span> <span class="n">timeval</span> <span class="n">selTimeout</span><span class="p">;</span>
-<a name="line-569"></a>				<span class="n">selTimeout</span><span class="p">.</span><span class="n">tv_sec</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
-<a name="line-570"></a>				<span class="n">selTimeout</span><span class="p">.</span><span class="n">tv_usec</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<a name="line-571"></a>				<span class="n">fd_set</span> <span class="n">readSet</span><span class="p">;</span>
-<a name="line-572"></a>				<span class="n">FD_ZERO</span><span class="p">(</span><span class="o">&amp;</span><span class="n">readSet</span><span class="p">);</span>
-<a name="line-573"></a>				<span class="n">FD_SET</span><span class="p">(</span><span class="o">*</span><span class="n">threads_ptr</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="kr">thread</span><span class="p">.</span><span class="n">value</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">requestor</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">readSet</span><span class="p">);</span>
-<a name="line-574"></a>				<span class="n">FD_SET</span><span class="p">(</span><span class="o">*</span><span class="n">threads_ptr</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="kr">thread</span><span class="p">.</span><span class="n">value</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">requestor</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">readSet</span><span class="p">);</span>
-<a name="line-575"></a>
-<a name="line-576"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Requestor &quot;</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">threads_ptr</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="kr">thread</span><span class="p">.</span><span class="n">value</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">requestor</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; is checked if valid</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-577"></a>				
-<a name="line-578"></a>				<span class="n">status</span> <span class="o">=</span> <span class="n">SELECT</span><span class="p">(</span><span class="o">*</span><span class="n">threads_ptr</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="kr">thread</span><span class="p">.</span><span class="n">value</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">requestor</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">readSet</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">selTimeout</span><span class="p">);</span>
-<a name="line-579"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;SELECT status is &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">status</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-580"></a>				<span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
-<a name="line-581"></a>					<span class="k">continue</span><span class="p">;</span>
-<a name="line-582"></a>
-<a name="line-583"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Requestor &quot;</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">threads_ptr</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="kr">thread</span><span class="p">.</span><span class="n">value</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">requestor</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; is still valid</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-584"></a>
-<a name="line-585"></a>				<span class="k">if</span> <span class="p">(</span><span class="n">getsockname</span><span class="p">(</span><span class="o">*</span><span class="n">threads_ptr</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="kr">thread</span><span class="p">.</span><span class="n">value</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">requestor</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">errno</span> <span class="o">==</span> <span class="n">ENOTSOCK</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
-<a name="line-586"></a>				
-<a name="line-587"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Requestor &quot;</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">threads_ptr</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="kr">thread</span><span class="p">.</span><span class="n">value</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">requestor</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; is still valid</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-588"></a>
-<a name="line-589"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="kr">thread</span><span class="p">.</span><span class="n">value</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; thread will handle client &quot;</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">threads_ptr</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="kr">thread</span><span class="p">.</span><span class="n">value</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">requestor</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-590"></a>				
-<a name="line-591"></a>				<span class="n">threads_ptr</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="kr">thread</span><span class="p">.</span><span class="n">value</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">detach</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="p">([</span><span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">limited</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">running</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">requests</span><span class="p">](</span><span class="kt">int</span> <span class="n">socket</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">void</span> <span class="p">{</span>
-<a name="line-592"></a>					<span class="k">this</span><span class="o">-&gt;</span><span class="n">handler</span> <span class="p">(</span><span class="n">socket</span><span class="p">,</span> <span class="p">[</span><span class="o">&amp;</span><span class="n">limited</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">running</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">requests</span><span class="p">]()</span> <span class="p">{</span>
-<a name="line-593"></a>						<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">limited</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
-<a name="line-594"></a>						<span class="n">requests</span><span class="o">--</span><span class="p">;</span>
-<a name="line-595"></a>						<span class="k">if</span> <span class="p">(</span><span class="n">requests</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-<a name="line-596"></a>							<span class="n">running</span><span class="o">-&gt;</span><span class="n">set_value</span><span class="p">();</span>
-<a name="line-597"></a>						<span class="p">}</span>
-<a name="line-598"></a>					<span class="p">});</span>
-<a name="line-599"></a>				<span class="p">}),</span> <span class="o">*</span><span class="n">threads_ptr</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="kr">thread</span><span class="p">.</span><span class="n">value</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">requestor</span><span class="p">);</span>
-<a name="line-600"></a>			<span class="p">}</span>
-<a name="line-601"></a>			<span class="cp">#ifdef _WIN32</span>
-<a name="line-602"></a>				<span class="n">WSACleanup</span><span class="p">();</span>
-<a name="line-603"></a>			<span class="cp">#endif</span>
-<a name="line-604"></a>		<span class="p">},</span> <span class="n">running</span><span class="p">).</span><span class="n">detach</span><span class="p">();</span>
-<a name="line-605"></a>		<span class="k">return</span> <span class="n">running</span><span class="o">-&gt;</span><span class="n">get_future</span><span class="p">().</span><span class="n">share</span><span class="p">();</span>
-<a name="line-606"></a>	<span class="p">}</span>
-<a name="line-607"></a><span class="p">};</span>
-<a name="line-608"></a><span class="p">}</span> <span class="c1">// namespace webframe</span>
+<a name="line-547"></a>			<span class="c1">// Create Socket and check if error occured afterwards</span>
+<a name="line-548"></a>			<span class="n">listener</span> <span class="o">=</span> <span class="n">socket</span><span class="p">(</span><span class="n">res</span><span class="o">-&gt;</span><span class="n">ai_family</span><span class="p">,</span> <span class="n">res</span><span class="o">-&gt;</span><span class="n">ai_socktype</span><span class="p">,</span> <span class="n">res</span><span class="o">-&gt;</span><span class="n">ai_protocol</span><span class="p">);</span>
+<a name="line-549"></a>			<span class="k">if</span> <span class="p">(</span><span class="n">listener</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<a name="line-550"></a>			<span class="p">{</span>
+<a name="line-551"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;socket error: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">gai_strerror</span><span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-552"></a>				<span class="n">status_handler</span><span class="o">-&gt;</span><span class="n">kill</span><span class="p">();</span>
+<a name="line-553"></a>				<span class="k">return</span><span class="p">;</span>
+<a name="line-554"></a>			<span class="p">}</span>
+<a name="line-555"></a>
+<a name="line-556"></a>			<span class="c1">// Bind the socket to the address of my local machine and port number </span>
+<a name="line-557"></a>			<span class="n">status</span> <span class="o">=</span> <span class="n">bind</span><span class="p">(</span><span class="n">listener</span><span class="p">,</span> <span class="n">res</span><span class="o">-&gt;</span><span class="n">ai_addr</span><span class="p">,</span> <span class="n">res</span><span class="o">-&gt;</span><span class="n">ai_addrlen</span><span class="p">);</span>
+<a name="line-558"></a>			<span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+<a name="line-559"></a>			<span class="p">{</span>
+<a name="line-560"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;bind error: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">gai_strerror</span><span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-561"></a>				<span class="n">status_handler</span><span class="o">-&gt;</span><span class="n">kill</span><span class="p">();</span>
+<a name="line-562"></a>				<span class="k">return</span><span class="p">;</span>
+<a name="line-563"></a>			<span class="p">}</span>
+<a name="line-564"></a>
+<a name="line-565"></a>			<span class="n">status</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">listener</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+<a name="line-566"></a>			<span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+<a name="line-567"></a>			<span class="p">{</span>
+<a name="line-568"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;listen error: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">gai_strerror</span><span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-569"></a>				<span class="n">status_handler</span><span class="o">-&gt;</span><span class="n">kill</span><span class="p">();</span>
+<a name="line-570"></a>				<span class="k">return</span><span class="p">;</span>
+<a name="line-571"></a>			<span class="p">}</span>
+<a name="line-572"></a>
+<a name="line-573"></a>			<span class="n">status</span> <span class="o">=</span> <span class="n">nonblock_config</span><span class="p">(</span><span class="n">listener</span><span class="p">);</span>
+<a name="line-574"></a>			<span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+<a name="line-575"></a>			<span class="p">{</span>
+<a name="line-576"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;nonblocking config error: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">gai_strerror</span><span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-577"></a>				<span class="n">status_handler</span><span class="o">-&gt;</span><span class="n">kill</span><span class="p">();</span>
+<a name="line-578"></a>				<span class="k">return</span><span class="p">;</span>
+<a name="line-579"></a>			<span class="p">}</span>
+<a name="line-580"></a>
+<a name="line-581"></a>			<span class="c1">// Free the res linked list after we are done with it	</span>
+<a name="line-582"></a>			<span class="n">freeaddrinfo</span><span class="p">(</span><span class="n">res</span><span class="p">);</span>
+<a name="line-583"></a>
+<a name="line-584"></a>			<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Listener setup &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">listener</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-585"></a>
+<a name="line-586"></a>			<span class="n">status_handler</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">();</span>
+<a name="line-587"></a>
+<a name="line-588"></a>			<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">limited</span> <span class="o">||</span> <span class="n">requests</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+<a name="line-589"></a>				<span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">optional</span><span class="o">&lt;</span><span class="kt">size_t</span><span class="o">&gt;</span> <span class="kr">thread</span> <span class="o">=</span> <span class="n">threads_ptr</span><span class="o">-&gt;</span><span class="n">get_free_thread</span><span class="p">();</span>
+<a name="line-590"></a>				<span class="c1">//std::cout &lt;&lt; &quot;Thread available: &quot; &lt;&lt; !!thread &lt;&lt; std::endl;</span>
+<a name="line-591"></a>				<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="kr">thread</span><span class="p">)</span>
+<a name="line-592"></a>					<span class="k">continue</span><span class="p">;</span>
+<a name="line-593"></a>
+<a name="line-594"></a>				<span class="c1">// Accept a new connection and return back the socket desciptor </span>
+<a name="line-595"></a>				<span class="c1">//std::cout &lt;&lt; &quot;Client accepting available...&quot; &lt;&lt; std::endl;</span>
+<a name="line-596"></a>				<span class="kt">int</span> <span class="n">client</span> <span class="o">=</span> <span class="n">ACCEPT</span><span class="p">(</span><span class="n">listener</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<a name="line-597"></a>				<span class="c1">//std::cout &lt;&lt; &quot;Client found: &quot; &lt;&lt; client &lt;&lt; std::endl;</span>
+<a name="line-598"></a>				<span class="k">if</span> <span class="p">(</span><span class="n">client</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<a name="line-599"></a>				<span class="p">{</span>
+<a name="line-600"></a>					<span class="k">continue</span><span class="p">;</span>
+<a name="line-601"></a>				<span class="p">}</span>
+<a name="line-602"></a>
+<a name="line-603"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Requestor &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">client</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; is getting handled</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-604"></a>
+<a name="line-605"></a>				<span class="k">struct</span> <span class="n">timeval</span> <span class="n">selTimeout</span><span class="p">;</span>
+<a name="line-606"></a>				<span class="n">selTimeout</span><span class="p">.</span><span class="n">tv_sec</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<a name="line-607"></a>				<span class="n">selTimeout</span><span class="p">.</span><span class="n">tv_usec</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<a name="line-608"></a>				<span class="n">fd_set</span> <span class="n">readSet</span><span class="p">;</span>
+<a name="line-609"></a>				<span class="n">FD_ZERO</span><span class="p">(</span><span class="o">&amp;</span><span class="n">readSet</span><span class="p">);</span>
+<a name="line-610"></a>				<span class="n">FD_SET</span><span class="p">(</span><span class="n">client</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">readSet</span><span class="p">);</span>
+<a name="line-611"></a>				<span class="n">FD_SET</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">readSet</span><span class="p">);</span>
+<a name="line-612"></a>
+<a name="line-613"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Requestor &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">client</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; is checked if valid</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-614"></a>				
+<a name="line-615"></a>				<span class="n">status</span> <span class="o">=</span> <span class="n">SELECT</span><span class="p">(</span><span class="n">client</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">readSet</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">selTimeout</span><span class="p">)</span> <span class="o">+</span> <span class="n">SELECT</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">readSet</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">selTimeout</span><span class="p">);</span>
+<a name="line-616"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;SELECT status is &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">status</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-617"></a>				<span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
+<a name="line-618"></a>					<span class="k">continue</span><span class="p">;</span>
+<a name="line-619"></a>
+<a name="line-620"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Requestor &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">client</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; is still valid</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-621"></a>
+<a name="line-622"></a>				<span class="k">if</span> <span class="p">(</span><span class="n">getsockname</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">,</span> <span class="k">nullptr</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">errno</span> <span class="o">==</span> <span class="n">ENOTSOCK</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+<a name="line-623"></a>				
+<a name="line-624"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Requestor &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">client</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; is still valid</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-625"></a>
+<a name="line-626"></a>				<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="kr">thread</span><span class="p">.</span><span class="n">value</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; thread will handle client &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">client</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<a name="line-627"></a>				
+<a name="line-628"></a>				<span class="n">threads_ptr</span><span class="o">-&gt;</span><span class="n">get</span><span class="p">(</span><span class="kr">thread</span><span class="p">.</span><span class="n">value</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">detach</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="kt">void</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="p">([</span><span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">limited</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status_handler</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">requests</span><span class="p">](</span><span class="kt">int</span> <span class="n">socket</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">void</span> <span class="p">{</span>
+<a name="line-629"></a>					<span class="k">this</span><span class="o">-&gt;</span><span class="n">handler</span> <span class="p">(</span><span class="n">socket</span><span class="p">,</span> <span class="p">[</span><span class="o">&amp;</span><span class="n">limited</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">status_handler</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">requests</span><span class="p">]()</span> <span class="p">{</span>
+<a name="line-630"></a>						<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">limited</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+<a name="line-631"></a>						<span class="n">requests</span><span class="o">--</span><span class="p">;</span>
+<a name="line-632"></a>						<span class="k">if</span> <span class="p">(</span><span class="n">requests</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+<a name="line-633"></a>							<span class="n">status_handler</span><span class="o">-&gt;</span><span class="n">kill</span><span class="p">();</span>
+<a name="line-634"></a>						<span class="p">}</span>
+<a name="line-635"></a>					<span class="p">});</span>
+<a name="line-636"></a>				<span class="p">}),</span> <span class="n">client</span><span class="p">);</span>
+<a name="line-637"></a>			<span class="p">}</span>
+<a name="line-638"></a>			<span class="cp">#ifdef _WIN32</span>
+<a name="line-639"></a>				<span class="n">WSACleanup</span><span class="p">();</span>
+<a name="line-640"></a>			<span class="cp">#endif</span>
+<a name="line-641"></a>		<span class="p">},</span> <span class="n">status_handler</span><span class="p">,</span> <span class="n">limited</span><span class="p">).</span><span class="n">detach</span><span class="p">();</span>
+<a name="line-642"></a>		<span class="k">return</span> <span class="n">status_handler</span><span class="p">;</span>
+<a name="line-643"></a>	<span class="p">}</span>
+<a name="line-644"></a><span class="p">};</span>
+<a name="line-645"></a><span class="p">}</span> <span class="c1">// namespace webframe</span>
 </pre></div>
 </td></tr></table>
       </div>
