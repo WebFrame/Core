@@ -10,20 +10,19 @@ on:
 
 jobs:
   build:
+    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
         with:
           submodules: 'recursive'
-      - name: Prepare
-        run: git submodule update --recursive
-      - name: Install
-        run: make install
+      - name: Install & Build 🔧
         shell: bash
-      - name: Benchmark
-        run: make -B benchmark
-        shell: bash
-      - name: Outcome
+        run: |
+          make install
+          make -B benchmark
+      - name: Pack 📦
         run: |
           mkdir -p benchmark/report;
           mv benchmark/tmp/test1.result benchmark/report/;
@@ -37,7 +36,7 @@ jobs:
           echo "<h1>Test 1:</h1>" > benchmark/report/index.html; cat benchmark/report/test1.results.html >> benchmark/report/index.html;
           echo "<h1>Test 2:</h1>" >> benchmark/report/index.html; cat benchmark/report/test2.results.html >> benchmark/report/index.html;
         shell: bash
-      - name: Upload Report
+      - name: Upload Report 🚀
         uses: actions/upload-artifact@v1
         with:
           name: benchmark_report
@@ -47,18 +46,10 @@ jobs:
         run: |
           mkdir -p benchmark/benchmark/
           mv -f benchmark/report/ benchmark/benchmark/report/
-          git clone https://github.com/WebFrame/Core
-          cd Core
-          git checkout gh-pages
-          cp -rf ../benchmark/benchmark/* .
-          ls
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-      - name: Deploy to GitHub Pages
-        if: ${{ github.ref == 'refs/heads/master' }}
-        uses: qoomon/deploy-to-github-pages-action@v1
+      - name: Deploy to GitHub Pages 🚀
+        continue-on-error: true
+        if: ${{ always() && github.ref == 'refs/heads/master' }}
+        uses: JamesIves/github-pages-deploy-action@v4.2.5
         with:
-          GITHUB_PAGES_SOURCE_DIR: Core/
-          GITHUB_PAGES_BRANCH: gh-pages
-          GITHUB_PAGES_REPLACE: true
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages # The branch the action should deploy to.
+          folder: ./benchmark/benchmark # The folder the action should deploy.
