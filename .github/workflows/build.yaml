@@ -66,9 +66,9 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           echo "${{ github.sha }} ${{ matrix.config.os }}" >> benchmark/integration_tests/commit_hash
-          rm -rf gh-pages
-          mkdir -p gh-pages/it/
-          cp ./bin/log/performance* gh-pages/it/
+          rm -rf src-gh-pages
+          mkdir -p src-gh-pages/it/
+          cp ./bin/log/performance* src-gh-pages/it/
           git add .
           git commit -m "Unit & Integation tests run" -a
       - name: Push testing results
