@@ -117,10 +117,10 @@ public:
 		errors = SynchronizedFile(std::cout);
 		template_dir = ".";
 
-		this->handle("404", [&](std::string path) {
+		this->handle("404", [&](const std::string& path) {
 			return "Error 404: " + path + " was not found.";
 		})
-		.handle("500", [&](std::string reason) {
+		.handle("500", [&](const std::string& reason) {
 			return "Error 500: Internal server error: " + reason + ".";
 		});
 	}
@@ -188,22 +188,22 @@ public:
 		return *this;
 	}
 
-	webframe &set_static(std::string path, std::string alias)
+	webframe &set_static(const std::string& path, const std::string& alias)
 	{
 		std::filesystem::path p = std::filesystem::relative(path);
-		this->route(alias + "/{path}", [&path, this](std::string file) {
+		this->route(alias + "/{path}", [&path, this](const std::string& file) {
 			return this->get_file(path + "/" + file);
 		});
 		return *this;
 	}
 
-	webframe &set_templates(std::string path)
+	webframe &set_templates(const std::string& path)
 	{
 		this->template_dir = path;
 		return *this;
 	}
 
-	response get_file(std::string path)
+	response get_file(const std::string& path)
 	{
 		std::string ext = std::filesystem::path(path).extension().string();
 		const std::string mime = mime_types::get_mime_type(ext.c_str()).data();
@@ -230,7 +230,7 @@ public:
 		}
 	}
 
-	response render(std::string path, inja::json params = {})
+	response render(const std::string& path, inja::json params = {})
 	{
 		path = this->template_dir + "/" + path;
 		try
@@ -245,7 +245,7 @@ public:
 	}
 
 	template <typename Ret, typename... Ts>
-	webframe &route(std::string path, std::function<Ret(Ts...)> const &res)
+	webframe &route(const std::string& path, std::function<Ret(Ts...)> const &res)
 	{
 		auto x = convert_path_to_regex(path, *this);
 		if (routes.find(x) == routes.end())
@@ -256,7 +256,7 @@ public:
 	}
 
 	template <typename F>
-	webframe &route(std::string path, F _res)
+	webframe &route(const std::string& path, F _res)
 	{
 		const auto res = wrap(_res);
 		auto x = convert_path_to_regex(path, *this);
@@ -314,12 +314,12 @@ private:
 
 	int responder(int socket)
 	{
-		const std::size_t capacity = 1024; 
-		char data[capacity];
-		int n = 0;
 		request r;
 		try
 		{
+			const std::size_t capacity = 1024; 
+			char data[capacity];
+			int n = 0;
 			do
 			{
 				n = RECV(socket, data, capacity, 0);

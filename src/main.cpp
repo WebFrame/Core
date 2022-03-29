@@ -10,16 +10,16 @@ int main()
 	webframe::webframe app;
 	app.set_static("./src/static", "/static")
 		.set_templates("./src/static/templates")
-		.handle("404", [&](std::string path) {
+		.handle("404", [&](const std::string& path) {
 			return "Error 404: " + path + " was not found.";
 		})
-		.handle("500", [&](std::string reason) {
+		.handle("500", [&](const std::string& reason) {
 			return "Error 500: Internal server error: " + reason + ".";
 		})
 		.route ("/", [&]() { // static setup
 			return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 		})
-		.route("/{text}", [&](std::string user) {
+		.route("/{text}", [&](const std::string& user) {
 			return app.render("template.html", {{"username", user}});
 		})
 		.route("/favicon.ico", [&]() {
@@ -43,13 +43,13 @@ int main()
 			throw std::logic_error("asdf");
 			return "asdf";
 		})
-		.route("/{number}/4", [&](__attribute__((unused)) webframe::body_t request_body, __attribute__((unused)) int steps) {
+		.route("/{number}/4", [&](__attribute__((unused)) const webframe::body_t& request_body, __attribute__((unused)) int steps) {
 			return "asdf";
 		})
-		.route("/6", [&](__attribute__((unused)) webframe::body_t request_body) {
+		.route("/6", [&](__attribute__((unused)) const webframe::body_t& request_body) {
 			return "asdf";
 		})
-		.route("/{text}/7", [&](__attribute__((unused)) std::string not_request_body) {
+		.route("/{text}/7", [&](__attribute__((unused)) const std::string& not_request_body) {
 			return "asdf";
 		});
 	const char* port = "8888";
