@@ -319,6 +319,7 @@ private:
 		{
 			const std::size_t capacity = 1024; 
 			char data[capacity];
+			int total_recv = 0;
 			int n = 0;
 			do
 			{
@@ -328,11 +329,18 @@ private:
 					break;
 				}
 
+				total_recv += n;
+
 				auto state = r.loadMore(data, n);
 
 				if (state == LoadingState::LOADED) // Headers are loaded, the buffer is not full and the last char is \0 -> body is filled
 					break;
 			} while (n > 0);
+
+			this->logger << (int)r.getState() << " " << total_recv << "\n";
+
+			if (r.getState() != LoadingState::LOADED)
+				throw std::string("Request was not loaded completely and data with size=" + std::to_string(total_recv) + " was sent.");
 
 			const auto t1 = std::chrono::high_resolution_clock::now();
 			response res;
@@ -355,21 +363,18 @@ private:
 			SEND(socket, response.c_str(), responseSize, 0);
 			return -1;
 		}
+		catch (...)
+		{
+			return -2;
+		}
 		return 0;
 	}
 
 	void handler(int client, const std::function<void()>& callback)
 	{
 		int status = this->responder(client);
-		callback();
-		if (status == -1) 
-		{
-			CLOSE(client);
-		} 
-		else 
-		{
-			CLOSE(client);
-		}
+		if (status != -2) callback();
+		CLOSE(client);
 	}
 	
 	struct thread_pool;
@@ -390,8 +395,6 @@ private:
 			return m.try_lock();
 		}
 	public:
-		std::shared_ptr<int> requestor;
-
 		thread() 
 		{
 			m.unlock();
@@ -461,11 +464,42 @@ private:
 	};
  
 public:
-	std::shared_future<void> run(const char* PORT, const unsigned int cores, std::promise<void>* started = nullptr, bool limited = false, unsigned int requests = -1) 
+	class server_status {
+		private:
+			std::shared_ptr<std::promise<void>> started_ptr, down_ptr;
+			void start() {
+				try {
+					started_ptr->set_value();
+				} catch (...) {
+
+				}
+			}
+			void kill() {
+				try {
+					down_ptr->set_value();
+				} catch (...) {
+
+				}
+			}
+		public:
+			server_status () {
+				started_ptr = std::make_shared<std::promise<void>>();
+				down_ptr = std::make_shared<std::promise<void>>();
+			}
+			std::shared_future<void> started() {
+				return started_ptr->get_future().share();
+			}
+			std::shared_future<void> down() {
+				return down_ptr->get_future().share();
+			}
+			friend class webframe;
+	};
+
+	std::shared_ptr<server_status> run(const char* PORT, const unsigned int cores, bool limited = false, unsigned int requests = -1) 
 	{
-		std::shared_ptr<std::promise<void>> running = std::make_shared<std::promise<void>>();
-		
-		std::thread([&, this](std::shared_ptr<std::promise<void>> running) {
+		std::shared_ptr<server_status> status_handler = std::make_shared<server_status>();
+
+		std::thread([&, this](std::shared_ptr<server_status> status_handler, bool limited) {
 			#ifdef _WIN32
 				//----------------------
 				// Initialize Winsock.
@@ -475,7 +509,7 @@ public:
 				this->logger << "Startup finished " << iResult << "\n";
 				if (iResult != NO_ERROR) {
 					this->logger << "WSAStartup failed with error: " << iResult << "\n";
-					running->set_value();
+					status_handler->kill();
 					return;
 				}
 			#endif
@@ -506,7 +540,7 @@ public:
 			if (status != 0)
 			{
 				this->logger << "getaddrinfo error: " << gai_strerror(status) << "\n";
-				running->set_value();
+				status_handler->kill();
 				return;
 			}
 
@@ -515,7 +549,7 @@ public:
 			if (listener == -1)
 			{
 				this->logger << "socket error: " << gai_strerror(status) << "\n";
-				running->set_value();
+				status_handler->kill();
 				return;
 			}
 
@@ -524,7 +558,7 @@ public:
 			if (status < 0)
 			{
 				this->logger << "bind error: " << gai_strerror(status) << "\n";
-				running->set_value();
+				status_handler->kill();
 				return;
 			}
 
@@ -532,7 +566,7 @@ public:
 			if (status < 0)
 			{
 				this->logger << "listen error: " << gai_strerror(status) << "\n";
-				running->set_value();
+				status_handler->kill();
 				return;
 			}
 
@@ -540,7 +574,7 @@ public:
 			if (status < 0)
 			{
 				this->logger << "nonblocking config error: " << gai_strerror(status) << "\n";
-				running->set_value();
+				status_handler->kill();
 				return;
 			}
 
@@ -549,60 +583,63 @@ public:
 
 			this->logger << "Listener setup " << listener << "\n";
 
-			started->set_value();
+			status_handler->start();
 
 			while (!limited || requests != 0) {
 				const std::optional<size_t> thread = threads_ptr->get_free_thread();
+				//std::cout << "Thread available: " << !!thread << std::endl;
 				if(!thread)
 					continue;
 
 				// Accept a new connection and return back the socket desciptor 
-				threads_ptr->get(thread.value())->requestor = std::shared_ptr<int>(new int(ACCEPT(listener, NULL, NULL)));
-				if (*threads_ptr->get(thread.value())->requestor == -1)
+				//std::cout << "Client accepting available..." << std::endl;
+				int client = ACCEPT(listener, NULL, NULL);
+				//std::cout << "Client found: " << client << std::endl;
+				if (client == -1)
 				{
 					continue;
 				}
 
-				this->logger << "Requestor " << *threads_ptr->get(thread.value())->requestor << " is getting handled\n";
+				this->logger << "Requestor " << client << " is getting handled\n";
 
 				struct timeval selTimeout;
 				selTimeout.tv_sec = 2;
 				selTimeout.tv_usec = 0;
 				fd_set readSet;
 				FD_ZERO(&readSet);
-				FD_SET(*threads_ptr->get(thread.value())->requestor + 1, &readSet);
-				FD_SET(*threads_ptr->get(thread.value())->requestor, &readSet);
+				FD_SET(client + 1, &readSet);
+				FD_SET(client, &readSet);
 
-				this->logger << "Requestor " << *threads_ptr->get(thread.value())->requestor << " is checked if valid\n";
+				this->logger << "Requestor " << client << " is checked if valid\n";
 				
-				status = SELECT(*threads_ptr->get(thread.value())->requestor + 1, &readSet, nullptr, nullptr, &selTimeout);
+				status = SELECT(client + 1, &readSet, nullptr, nullptr, &selTimeout) + SELECT(client, &readSet, nullptr, nullptr, &selTimeout);
 				this->logger << "SELECT status is " << status << "\n";
 				if (status <= 0)
 					continue;
 
-				this->logger << "Requestor " << *threads_ptr->get(thread.value())->requestor << " is still valid\n";
+				this->logger << "Requestor " << client << " is still valid\n";
 
-				if (getsockname(*threads_ptr->get(thread.value())->requestor, nullptr, nullptr) < 0 && errno == ENOTSOCK) continue;
+				if (getsockname(client, nullptr, nullptr) < 0 && errno == ENOTSOCK) continue;
 				
-				this->logger << "Requestor " << *threads_ptr->get(thread.value())->requestor << " is still valid\n";
+				this->logger << "Requestor " << client << " is still valid\n";
 
-				this->logger << thread.value() << " thread will handle client " << *threads_ptr->get(thread.value())->requestor << "\n";
+				this->logger << thread.value() << " thread will handle client " << client << "\n";
 				
-				threads_ptr->get(thread.value())->detach(std::make_shared<std::function<void(int)>>([this, &limited, &running, &requests](int socket) -> void {
-					this->handler (socket, [&limited, &running, &requests]() {
+				threads_ptr->get(thread.value())->detach(std::make_shared<std::function<void(int)>>([this, &limited, &status_handler, &requests](int socket) -> void {
+					this->handler (socket, [&limited, &status_handler, &requests]() {
 						if (!limited) return;
 						requests--;
 						if (requests == 0) {
-							running->set_value();
+							status_handler->kill();
 						}
 					});
-				}), *threads_ptr->get(thread.value())->requestor);
+				}), client);
 			}
 			#ifdef _WIN32
 				WSACleanup();
 			#endif
-		}, running).detach();
-		return running->get_future().share();
+		}, status_handler, limited).detach();
+		return status_handler;
 	}
 };
 } // namespace webframe

@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 std::ostream* nil;
-const unsigned char cores = ((std::thread::hardware_concurrency() - 1 > 0) ? (std::thread::hardware_concurrency() - 1) : 1);
+const unsigned char cores = std::thread::hardware_concurrency();
 
 Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 	it.should("response with 200 and the testing string", []() {
@@ -56,27 +56,24 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		}
 	});
 	it.should("test whole functionality", [](){
-		std::promise<void> server;
-		std::future<void> server_ready = server.get_future();
-
 		std::filebuf performance;
 		performance.open ("./bin/log/performance.txt",std::ios::out);
 		std::ostream performancer (&performance);
 		webframe::webframe app;
-		std::shared_future<void> server_down = app
+		std::shared_ptr<webframe::webframe::server_status> status = app
 		.set_logger(*nil)
 		.set_error_logger(*nil)
 		.set_performancer(performancer)
 		.route ("/", []() { // static setup
 				return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 		})
-		.run("8887", cores, &server, 1, 1);
+		.run("8887", cores, 1, 1);
 
-		server_ready.wait();
+		status->started().wait();
 
-		system("curl http://localhost:8887/ > ./bin/log/curl.txt 2>> ./bin/log/log.txt");
+		system("curl http://localhost:8887/ > ./bin/log/curl.txt 2>> ./bin/log/log.txt &");
 		
-		server_down.wait();
+		status->down().wait();
 		
 		std::ifstream fin ("./bin/log/curl.txt");
 		std::string response; 
@@ -85,38 +82,34 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 	});
 	
 	it.should("get performance data", [](){
-		std::promise<void> server;
-		std::future<void> server_ready = server.get_future();
-
-		int count = 0;
+		volatile int count = 0;
 		std::filebuf performance;
 		performance.open ("./bin/log/performance.txt",std::ios::out);
 		std::ostream performancer (&performance);
 		webframe::webframe app;
-		std::shared_future<void> server_down = app
+		std::shared_ptr<webframe::webframe::server_status> status = app
 		.set_logger(*nil)
 		.set_error_logger(*nil)
 		.set_performancer(performancer)
 		.route ("/{number}", [&count](int steps) {	
-			for (int i = 0; i < (1 << steps); i++)
+			for (volatile int i = 0; i < (1 << steps); i++)
 			{
 				count++;
 			}
 			return "Hello, World!";
 		})
-		.run("8889", cores, &server, 1, 31);
+		.run("8889", cores, 1, 31);
 
-		server_ready.wait();
+		status->started().wait();
 
 		char buffer [3];
 		std::string command;
 		for (int i = 0 ; i <= 30 ; i ++)
 		{
-			command = std::string("curl http://localhost:8889/") + std::string(webframe::itoa(i, buffer, 10)) + " > ./bin/log/curl.txt 2>> ./bin/log/log.txt";
+			command = std::string("curl http://localhost:8889/") + std::string(webframe::itoa(i, buffer, 10)) + " > ./bin/log/curl.txt 2>> ./bin/log/log.txt &";
 			system(command.c_str());
 		}
-
-		server_down.wait();
+		status->down().wait();
 		
 		std::ifstream fin ("./bin/log/performance.txt");
 		double sum = 0;
@@ -132,7 +125,7 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		std::ofstream fout;
 		fout.open("./bin/log/performance_summary.txt", std::ios::trunc);
 		fout << sum << " nanoseconds avg. per operation in the resolver\n";
-		must_be_less (sum, 0.0015);
+		must_be_less (sum, 1);
 	});
 });
 

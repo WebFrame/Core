@@ -1,6 +1,7 @@
 COMPILER_CPP=g++
 CPP_STD=-std=c++2a
-OPT=-O2 -fconstexpr-depth=700
+OPTIMIZATION_LEVEL=3
+OPT=-fconstexpr-depth=700
 INCLUDE_DIRS=-I./tests -I./src
 LIB_FLAGS=-pthread -lpthread # -fconcepts
 DEBUG_FLAGS=-fsanitize=undefined
@@ -27,16 +28,16 @@ install_inja:
 	cd ./lib/inja && cmake . -G "Unix Makefiles" && make MAKE=make CMAKE_COMMAND=cmake
 
 build:
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./src/main.cpp -o ./bin/main.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./src/main.cpp -o ./bin/main.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(INJACPP)
 
 build_tests:
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./tests/main.cpp -o ./bin/test.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./tests/main.cpp -o ./bin/test.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(INJACPP)
 
 debug_build:
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./src/main.cpp -o ./bin/main.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./src/main.cpp -o ./bin/main.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP)
 
 debug_build_tests:
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./tests/main.cpp -o ./bin/test.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./tests/main.cpp -o ./bin/test.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP)
 
 run:
 	./bin/main.exe
@@ -65,3 +66,10 @@ benchmark:
 save-benchmark:
 	cd benchmark; \
 	cp tmp/*.result results/ 
+
+local-benchmark:
+	 for i in "" 0 1 2 3 fast g s; do \
+	 	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O$$i ; \
+		cp ./bin/log/performance.txt ./benchmark/performance/performance-O$$i.txt ; \
+		cp ./bin/log/performance_summary.txt ./benchmark/performance/performance_summary-O$$i.txt ; \
+	done
