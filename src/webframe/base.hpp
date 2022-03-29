@@ -345,6 +345,11 @@ namespace webframe
 			request (method _m, const std::string& h, const std::map<std::string, std::string>& m, const std::string& _body) : m (_m), http (h), header (m), body (_body)
 			{}
 
+			LoadingState getState() const 
+			{
+				return loading;
+			}
+
 			LoadingState loadMore(const char* buff, const size_t n)
 			{
 				if (n != 0)

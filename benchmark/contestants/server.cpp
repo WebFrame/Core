@@ -6,16 +6,16 @@
 int main()
 {
 	constexpr int fasten = webframe::webframe::init();
-	int pass = fasten;
+	volatile int pass = fasten;
 	webframe::webframe app;
-	app.route("/{number}", [&](int steps) {
+	app.route("/{number}/2", [&](int steps) {
 			for (int i = 0; i < (1 << steps); i++)
 			{
 				pass += rand();
 			}
 			return "Hello World!";
 		})
-		.route("/{number}/2", [&](int steps) {
+		.route("/{number}", [&](int steps) {
 			for (int i = 0; i < (1 << steps); i++)
 			{
 				pass++;

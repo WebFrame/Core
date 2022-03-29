@@ -54,5 +54,5 @@ int main()
 		});
 	const char* port = "8888";
 	const unsigned char cores = ((std::thread::hardware_concurrency() - 1 > 0) ? (std::thread::hardware_concurrency() - 1) : 1);
-	app.run(port, cores).wait();
+	app.run(port, cores)->down().wait();
 }
