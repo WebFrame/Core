@@ -230,7 +230,7 @@ public:
 		}
 	}
 
-	response render(const std::string& path, inja::json params = {})
+	response render(std::string path, inja::json params = {})
 	{
 		path = this->template_dir + "/" + path;
 		try
