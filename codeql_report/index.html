@@ -75,12 +75,12 @@
            <tr><th>Show</th><th>#</th><th>Defect ID</th></tr>
             <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='noExplicitConstructor' name='noExplicitConstructor' checked></td><td>10</td><td>noExplicitConstructor</td></tr>
             <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='knownConditionTrueFalse' name='knownConditionTrueFalse' checked></td><td>8</td><td>knownConditionTrueFalse</td></tr>
-            <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='useInitializationList' name='useInitializationList' checked></td><td>3</td><td>useInitializationList</td></tr>
+            <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='useInitializationList' name='useInitializationList' checked></td><td>5</td><td>useInitializationList</td></tr>
             <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='passedByValue' name='passedByValue' checked></td><td>2</td><td>passedByValue</td></tr>
             <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='uninitMemberVar' name='uninitMemberVar' checked></td><td>2</td><td>uninitMemberVar</td></tr>
             <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='missingIncludeSystem' name='missingIncludeSystem' checked></td><td>1</td><td>missingIncludeSystem</td></tr>
             <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='useStlAlgorithm' name='useStlAlgorithm' checked></td><td>1</td><td>useStlAlgorithm</td></tr>
-           <tr><td></td><td>27</td><td>total</td></tr>
+           <tr><td></td><td>29</td><td>total</td></tr>
        </table>
        <p><a href="stats.html">Statistics</a></p>
       </div>
@@ -118,8 +118,10 @@
        <tr class="noExplicitConstructor"><td><a href="3.html#line-49">49</a></td><td>noExplicitConstructor</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Struct &apos;responser&apos; has a constructor with 1 argument that is not explicit.</td></tr>
        <tr><td colspan='5'><a href='1.html'>src/webframe/webframe-impl.hpp</a></td></tr>
        <tr class="useInitializationList"><td><a href="1.html#line-115">115</a></td><td>useInitializationList</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>performance</td><td >Variable &apos;performancer&apos; is assigned in constructor body. Consider performing initialization in initialization list.</td></tr>
-       <tr class="noExplicitConstructor"><td><a href="1.html#line-428">428</a></td><td>noExplicitConstructor</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Struct &apos;thread_pool&apos; has a constructor with 1 argument that is not explicit.</td></tr>
-       <tr class="useInitializationList"><td><a href="1.html#line-431">431</a></td><td>useInitializationList</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>performance</td><td >Variable &apos;pool&apos; is assigned in constructor body. Consider performing initialization in initialization list.</td></tr>
+       <tr class="noExplicitConstructor"><td><a href="1.html#line-431">431</a></td><td>noExplicitConstructor</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Struct &apos;thread_pool&apos; has a constructor with 1 argument that is not explicit.</td></tr>
+       <tr class="useInitializationList"><td><a href="1.html#line-434">434</a></td><td>useInitializationList</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>performance</td><td >Variable &apos;pool&apos; is assigned in constructor body. Consider performing initialization in initialization list.</td></tr>
+       <tr class="useInitializationList"><td><a href="1.html#line-486">486</a></td><td>useInitializationList</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>performance</td><td >Variable &apos;started_ptr&apos; is assigned in constructor body. Consider performing initialization in initialization list.</td></tr>
+       <tr class="useInitializationList"><td><a href="1.html#line-487">487</a></td><td>useInitializationList</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>performance</td><td >Variable &apos;down_ptr&apos; is assigned in constructor body. Consider performing initialization in initialization list.</td></tr>
        </table>
       </div>
       <div id="footer">

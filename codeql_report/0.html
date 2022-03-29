@@ -621,7 +621,12 @@
 479
 480
 481
-482</pre></div></td><td class="code"><div class="highlight"><pre><span></span><a name="line-1"></a><span class="cm">/** </span>
+482
+483
+484
+485
+486
+487</pre></div></td><td class="code"><div class="highlight"><pre><span></span><a name="line-1"></a><span class="cm">/** </span>
 <a name="line-2"></a><span class="cm"> *  @file   base.hpp </span>
 <a name="line-3"></a><span class="cm"> *  @brief  Basic utils to handle web requests and reponses</span>
 <a name="line-4"></a><span class="cm"> *  @author Alex Tsvetanov</span>
@@ -968,141 +973,146 @@
 <a name="line-345"></a><span class="hll">			<span class="n">request</span> <span class="p">(</span><span class="n">method</span> <span class="n">_m</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">h</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&gt;&amp;</span> <span class="n">m</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">_body</span><span class="p">)</span> <span class="o">:</span> <span class="n">m</span> <span class="p">(</span><span class="n">_m</span><span class="p">),</span> <span class="n">http</span> <span class="p">(</span><span class="n">h</span><span class="p">),</span> <span class="n">header</span> <span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">body</span> <span class="p">(</span><span class="n">_body</span><span class="p">)</span><span class='error2'>&lt;--- Member variable 'request::loading' is not initialized in the constructor.</span>
 </span><a name="line-346"></a>			<span class="p">{}</span>
 <a name="line-347"></a>
-<a name="line-348"></a>			<span class="n">LoadingState</span> <span class="n">loadMore</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">buff</span><span class="p">,</span> <span class="k">const</span> <span class="kt">size_t</span> <span class="n">n</span><span class="p">)</span>
+<a name="line-348"></a>			<span class="n">LoadingState</span> <span class="n">getState</span><span class="p">()</span> <span class="k">const</span> 
 <a name="line-349"></a>			<span class="p">{</span>
-<a name="line-350"></a>				<span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
-<a name="line-351"></a>				<span class="p">{</span>
-<a name="line-352"></a>					<span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<a name="line-353"></a>					<span class="k">if</span><span class="p">(</span><span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">NOT_STARTED</span><span class="p">)</span> 
-<a name="line-354"></a>					<span class="p">{</span>
-<a name="line-355"></a>						<span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
-<a name="line-356"></a>						<span class="p">{</span>
-<a name="line-357"></a>							<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span><span class="p">)</span>
-<a name="line-358"></a>							<span class="p">{</span>
-<a name="line-359"></a>								<span class="n">m</span> <span class="o">=</span> <span class="n">string_to_method</span> <span class="p">(</span><span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
-<a name="line-360"></a>								<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">METHOD</span><span class="p">;</span>
-<a name="line-361"></a>								<span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
-<a name="line-362"></a>								<span class="n">i</span> <span class="o">++</span><span class="p">;</span>
-<a name="line-363"></a>								<span class="k">break</span><span class="p">;</span>
-<a name="line-364"></a>							<span class="p">}</span>
-<a name="line-365"></a>							<span class="n">remaining_to_parse</span> <span class="o">+=</span> <span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">];</span>
-<a name="line-366"></a>						<span class="p">}</span>
-<a name="line-367"></a>					<span class="p">}</span>
-<a name="line-368"></a>					<span class="k">if</span><span class="p">(</span><span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">METHOD</span><span class="p">)</span>
-<a name="line-369"></a>					<span class="p">{</span>
-<a name="line-370"></a>						<span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
-<a name="line-371"></a>						<span class="p">{</span>
-<a name="line-372"></a>							<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span><span class="p">)</span> <span class="p">{</span>
-<a name="line-373"></a>								<span class="n">uri</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">remaining_to_parse</span><span class="p">);</span>
-<a name="line-374"></a>								<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">HTTP_IN_PROGRESS</span><span class="p">;</span>
-<a name="line-375"></a>								<span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
-<a name="line-376"></a>								<span class="n">i</span> <span class="o">++</span><span class="p">;</span>
-<a name="line-377"></a>								<span class="k">break</span><span class="p">;</span>
-<a name="line-378"></a>							<span class="p">}</span>
-<a name="line-379"></a>							<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;?&#39;</span><span class="p">)</span> <span class="p">{</span>
-<a name="line-380"></a>								<span class="n">uri</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">remaining_to_parse</span><span class="p">);</span>
-<a name="line-381"></a>								<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">PARAM_KEY</span><span class="p">;</span>
-<a name="line-382"></a>								<span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
-<a name="line-383"></a>								<span class="n">i</span> <span class="o">++</span><span class="p">;</span>
-<a name="line-384"></a>								<span class="k">break</span><span class="p">;</span>
-<a name="line-385"></a>							<span class="p">}</span>
-<a name="line-386"></a>							<span class="n">remaining_to_parse</span> <span class="o">+=</span> <span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">];</span>
-<a name="line-387"></a>						<span class="p">}</span>
-<a name="line-388"></a>					<span class="p">}</span>
-<a name="line-389"></a>					<span class="k">if</span><span class="p">(</span><span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">PARAM_KEY</span> <span class="n">or</span>
-<a name="line-390"></a>					   <span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">PARAM_VALUE</span><span class="p">)</span>
-<a name="line-391"></a>					   <span class="p">{</span>
-<a name="line-392"></a>						<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">var</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
-<a name="line-393"></a>						<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">*</span> <span class="n">x</span><span class="p">;</span>
-<a name="line-394"></a>						<span class="k">if</span> <span class="p">(</span><span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">PARAM_VALUE</span><span class="p">)</span> <span class="n">x</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">var</span><span class="p">;</span>
-<a name="line-395"></a>						<span class="k">if</span> <span class="p">(</span><span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">PARAM_KEY</span><span class="p">)</span> <span class="n">x</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">val</span><span class="p">;</span>
-<a name="line-396"></a>
-<a name="line-397"></a>						<span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
-<a name="line-398"></a>						<span class="p">{</span>
-<a name="line-399"></a>							<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;=&#39;</span><span class="p">)</span>
-<a name="line-400"></a>							<span class="p">{</span>
-<a name="line-401"></a>								<span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">remaining_to_parse</span><span class="p">);</span>
-<a name="line-402"></a>								<span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>	
-<a name="line-403"></a>								<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">PARAM_KEY</span><span class="p">;</span>
-<a name="line-404"></a>								<span class="n">x</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">val</span><span class="p">;</span>
-<a name="line-405"></a>								<span class="k">continue</span><span class="p">;</span>
-<a name="line-406"></a>							<span class="p">}</span>
-<a name="line-407"></a>							<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;&amp;&#39;</span> <span class="n">or</span> <span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span><span class="p">)</span>
-<a name="line-408"></a>							<span class="p">{</span>
-<a name="line-409"></a>								<span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">remaining_to_parse</span><span class="p">);</span>
-<a name="line-410"></a>								<span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
-<a name="line-411"></a>								<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">PARAM_VALUE</span><span class="p">;</span>
-<a name="line-412"></a>								<span class="n">request_params</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="p">;</span>
-<a name="line-413"></a>								<span class="n">var</span> <span class="o">=</span> <span class="n">val</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
-<a name="line-414"></a>								<span class="n">x</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">var</span><span class="p">;</span>
-<a name="line-415"></a>							<span class="p">}</span>
-<a name="line-416"></a>							<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span><span class="p">)</span> <span class="p">{</span>
-<a name="line-417"></a>								<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">HTTP_IN_PROGRESS</span><span class="p">;</span>
-<a name="line-418"></a>								<span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
-<a name="line-419"></a>								<span class="k">break</span><span class="p">;</span>
+<a name="line-350"></a>				<span class="k">return</span> <span class="n">loading</span><span class="p">;</span>
+<a name="line-351"></a>			<span class="p">}</span>
+<a name="line-352"></a>
+<a name="line-353"></a>			<span class="n">LoadingState</span> <span class="n">loadMore</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">buff</span><span class="p">,</span> <span class="k">const</span> <span class="kt">size_t</span> <span class="n">n</span><span class="p">)</span>
+<a name="line-354"></a>			<span class="p">{</span>
+<a name="line-355"></a>				<span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+<a name="line-356"></a>				<span class="p">{</span>
+<a name="line-357"></a>					<span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<a name="line-358"></a>					<span class="k">if</span><span class="p">(</span><span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">NOT_STARTED</span><span class="p">)</span> 
+<a name="line-359"></a>					<span class="p">{</span>
+<a name="line-360"></a>						<span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
+<a name="line-361"></a>						<span class="p">{</span>
+<a name="line-362"></a>							<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span><span class="p">)</span>
+<a name="line-363"></a>							<span class="p">{</span>
+<a name="line-364"></a>								<span class="n">m</span> <span class="o">=</span> <span class="n">string_to_method</span> <span class="p">(</span><span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+<a name="line-365"></a>								<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">METHOD</span><span class="p">;</span>
+<a name="line-366"></a>								<span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+<a name="line-367"></a>								<span class="n">i</span> <span class="o">++</span><span class="p">;</span>
+<a name="line-368"></a>								<span class="k">break</span><span class="p">;</span>
+<a name="line-369"></a>							<span class="p">}</span>
+<a name="line-370"></a>							<span class="n">remaining_to_parse</span> <span class="o">+=</span> <span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<a name="line-371"></a>						<span class="p">}</span>
+<a name="line-372"></a>					<span class="p">}</span>
+<a name="line-373"></a>					<span class="k">if</span><span class="p">(</span><span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">METHOD</span><span class="p">)</span>
+<a name="line-374"></a>					<span class="p">{</span>
+<a name="line-375"></a>						<span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
+<a name="line-376"></a>						<span class="p">{</span>
+<a name="line-377"></a>							<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span><span class="p">)</span> <span class="p">{</span>
+<a name="line-378"></a>								<span class="n">uri</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">remaining_to_parse</span><span class="p">);</span>
+<a name="line-379"></a>								<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">HTTP_IN_PROGRESS</span><span class="p">;</span>
+<a name="line-380"></a>								<span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+<a name="line-381"></a>								<span class="n">i</span> <span class="o">++</span><span class="p">;</span>
+<a name="line-382"></a>								<span class="k">break</span><span class="p">;</span>
+<a name="line-383"></a>							<span class="p">}</span>
+<a name="line-384"></a>							<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;?&#39;</span><span class="p">)</span> <span class="p">{</span>
+<a name="line-385"></a>								<span class="n">uri</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">remaining_to_parse</span><span class="p">);</span>
+<a name="line-386"></a>								<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">PARAM_KEY</span><span class="p">;</span>
+<a name="line-387"></a>								<span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+<a name="line-388"></a>								<span class="n">i</span> <span class="o">++</span><span class="p">;</span>
+<a name="line-389"></a>								<span class="k">break</span><span class="p">;</span>
+<a name="line-390"></a>							<span class="p">}</span>
+<a name="line-391"></a>							<span class="n">remaining_to_parse</span> <span class="o">+=</span> <span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<a name="line-392"></a>						<span class="p">}</span>
+<a name="line-393"></a>					<span class="p">}</span>
+<a name="line-394"></a>					<span class="k">if</span><span class="p">(</span><span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">PARAM_KEY</span> <span class="n">or</span>
+<a name="line-395"></a>					   <span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">PARAM_VALUE</span><span class="p">)</span>
+<a name="line-396"></a>					   <span class="p">{</span>
+<a name="line-397"></a>						<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">var</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+<a name="line-398"></a>						<span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">*</span> <span class="n">x</span><span class="p">;</span>
+<a name="line-399"></a>						<span class="k">if</span> <span class="p">(</span><span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">PARAM_VALUE</span><span class="p">)</span> <span class="n">x</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">var</span><span class="p">;</span>
+<a name="line-400"></a>						<span class="k">if</span> <span class="p">(</span><span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">PARAM_KEY</span><span class="p">)</span> <span class="n">x</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">val</span><span class="p">;</span>
+<a name="line-401"></a>
+<a name="line-402"></a>						<span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
+<a name="line-403"></a>						<span class="p">{</span>
+<a name="line-404"></a>							<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;=&#39;</span><span class="p">)</span>
+<a name="line-405"></a>							<span class="p">{</span>
+<a name="line-406"></a>								<span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">remaining_to_parse</span><span class="p">);</span>
+<a name="line-407"></a>								<span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>	
+<a name="line-408"></a>								<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">PARAM_KEY</span><span class="p">;</span>
+<a name="line-409"></a>								<span class="n">x</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">val</span><span class="p">;</span>
+<a name="line-410"></a>								<span class="k">continue</span><span class="p">;</span>
+<a name="line-411"></a>							<span class="p">}</span>
+<a name="line-412"></a>							<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;&amp;&#39;</span> <span class="n">or</span> <span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span><span class="p">)</span>
+<a name="line-413"></a>							<span class="p">{</span>
+<a name="line-414"></a>								<span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">remaining_to_parse</span><span class="p">);</span>
+<a name="line-415"></a>								<span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+<a name="line-416"></a>								<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">PARAM_VALUE</span><span class="p">;</span>
+<a name="line-417"></a>								<span class="n">request_params</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="p">;</span>
+<a name="line-418"></a>								<span class="n">var</span> <span class="o">=</span> <span class="n">val</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+<a name="line-419"></a>								<span class="n">x</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">var</span><span class="p">;</span>
 <a name="line-420"></a>							<span class="p">}</span>
-<a name="line-421"></a>							<span class="n">remaining_to_parse</span> <span class="o">+=</span> <span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">];</span>
-<a name="line-422"></a>						<span class="p">}</span>
-<a name="line-423"></a>					<span class="p">}</span>
-<a name="line-424"></a>					<span class="k">if</span><span class="p">(</span><span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">HTTP_IN_PROGRESS</span><span class="p">)</span>
-<a name="line-425"></a>					<span class="p">{</span>
-<a name="line-426"></a>						<span class="c1">// skip &quot; HTTP/&quot; to reach &quot;1.1&quot;</span>
-<a name="line-427"></a>						<span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="n">and</span> <span class="o">!</span><span class="p">(</span><span class="n">buff</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="sc">&#39;0&#39;</span> <span class="n">and</span> <span class="n">buff</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="sc">&#39;9&#39;</span><span class="p">)</span> <span class="n">and</span> <span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">&#39;.&#39;</span> <span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">){}</span>
-<a name="line-428"></a>						<span class="c1">// read version</span>
-<a name="line-429"></a>						<span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
-<a name="line-430"></a>						<span class="p">{</span>
-<a name="line-431"></a>							<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;\r&#39;</span><span class="p">)</span> <span class="p">{</span>
-<a name="line-432"></a>								<span class="n">http</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">remaining_to_parse</span><span class="p">);</span>
-<a name="line-433"></a>								<span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
-<a name="line-434"></a>								<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">HTTP_LOADED</span><span class="p">;</span>
-<a name="line-435"></a>								<span class="n">i</span> <span class="o">++</span><span class="p">;</span>
-<a name="line-436"></a>								<span class="k">break</span><span class="p">;</span>
-<a name="line-437"></a>							<span class="p">}</span>
-<a name="line-438"></a>							<span class="n">remaining_to_parse</span> <span class="o">+=</span> <span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">];</span>
-<a name="line-439"></a>						<span class="p">}</span>
-<a name="line-440"></a>					<span class="p">}</span>
-<a name="line-441"></a>					<span class="k">if</span><span class="p">(</span><span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">HTTP_LOADED</span> <span class="o">||</span> <span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">HEADER_ROW</span><span class="p">)</span>
-<a name="line-442"></a>					<span class="p">{</span>
-<a name="line-443"></a>						<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;\n&#39;</span><span class="p">)</span> <span class="n">i</span> <span class="o">++</span><span class="p">;</span>
-<a name="line-444"></a>						<span class="kt">size_t</span> <span class="n">splitter</span> <span class="o">=</span> <span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="sc">&#39;:&#39;</span><span class="p">);</span>
-<a name="line-445"></a>						<span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
-<a name="line-446"></a>						<span class="p">{</span>
-<a name="line-447"></a>							<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">HEADER_ROW</span><span class="p">;</span>
-<a name="line-448"></a>							<span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
-<a name="line-449"></a>							<span class="p">{</span>
-<a name="line-450"></a>								<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;\r&#39;</span><span class="p">)</span>
-<a name="line-451"></a>								<span class="p">{</span>
-<a name="line-452"></a>									<span class="n">i</span> <span class="o">++</span><span class="p">;</span>
-<a name="line-453"></a>									<span class="k">break</span><span class="p">;</span>
-<a name="line-454"></a>								<span class="p">}</span>
-<a name="line-455"></a>								<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">&#39; &#39;</span><span class="p">)</span>
-<a name="line-456"></a>									<span class="n">remaining_to_parse</span> <span class="o">+=</span> <span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">];</span>
-<a name="line-457"></a>								<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;:&#39;</span><span class="p">)</span>
-<a name="line-458"></a>									<span class="n">splitter</span> <span class="o">=</span> <span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
-<a name="line-459"></a>							<span class="p">}</span>
-<a name="line-460"></a>							<span class="k">if</span> <span class="p">(</span><span class="n">remaining_to_parse</span> <span class="o">==</span> <span class="s">&quot;&quot;</span><span class="p">)</span> <span class="p">{</span>
-<a name="line-461"></a>								<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">BODY</span><span class="p">;</span>
-<a name="line-462"></a>								<span class="k">break</span><span class="p">;</span>
-<a name="line-463"></a>							<span class="p">}</span>
-<a name="line-464"></a>							<span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">n</span><span class="p">)</span>
-<a name="line-465"></a>							<span class="p">{</span>
-<a name="line-466"></a>								<span class="n">header</span> <span class="p">[</span><span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">substr</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">splitter</span><span class="p">)]</span> <span class="o">=</span> <span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">substr</span> <span class="p">(</span><span class="n">splitter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
-<a name="line-467"></a>								<span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+<a name="line-421"></a>							<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39; &#39;</span><span class="p">)</span> <span class="p">{</span>
+<a name="line-422"></a>								<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">HTTP_IN_PROGRESS</span><span class="p">;</span>
+<a name="line-423"></a>								<span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+<a name="line-424"></a>								<span class="k">break</span><span class="p">;</span>
+<a name="line-425"></a>							<span class="p">}</span>
+<a name="line-426"></a>							<span class="n">remaining_to_parse</span> <span class="o">+=</span> <span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<a name="line-427"></a>						<span class="p">}</span>
+<a name="line-428"></a>					<span class="p">}</span>
+<a name="line-429"></a>					<span class="k">if</span><span class="p">(</span><span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">HTTP_IN_PROGRESS</span><span class="p">)</span>
+<a name="line-430"></a>					<span class="p">{</span>
+<a name="line-431"></a>						<span class="c1">// skip &quot; HTTP/&quot; to reach &quot;1.1&quot;</span>
+<a name="line-432"></a>						<span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="n">and</span> <span class="o">!</span><span class="p">(</span><span class="n">buff</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="sc">&#39;0&#39;</span> <span class="n">and</span> <span class="n">buff</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="sc">&#39;9&#39;</span><span class="p">)</span> <span class="n">and</span> <span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">&#39;.&#39;</span> <span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">){}</span>
+<a name="line-433"></a>						<span class="c1">// read version</span>
+<a name="line-434"></a>						<span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
+<a name="line-435"></a>						<span class="p">{</span>
+<a name="line-436"></a>							<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;\r&#39;</span><span class="p">)</span> <span class="p">{</span>
+<a name="line-437"></a>								<span class="n">http</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">remaining_to_parse</span><span class="p">);</span>
+<a name="line-438"></a>								<span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+<a name="line-439"></a>								<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">HTTP_LOADED</span><span class="p">;</span>
+<a name="line-440"></a>								<span class="n">i</span> <span class="o">++</span><span class="p">;</span>
+<a name="line-441"></a>								<span class="k">break</span><span class="p">;</span>
+<a name="line-442"></a>							<span class="p">}</span>
+<a name="line-443"></a>							<span class="n">remaining_to_parse</span> <span class="o">+=</span> <span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<a name="line-444"></a>						<span class="p">}</span>
+<a name="line-445"></a>					<span class="p">}</span>
+<a name="line-446"></a>					<span class="k">if</span><span class="p">(</span><span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">HTTP_LOADED</span> <span class="o">||</span> <span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">HEADER_ROW</span><span class="p">)</span>
+<a name="line-447"></a>					<span class="p">{</span>
+<a name="line-448"></a>						<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;\n&#39;</span><span class="p">)</span> <span class="n">i</span> <span class="o">++</span><span class="p">;</span>
+<a name="line-449"></a>						<span class="kt">size_t</span> <span class="n">splitter</span> <span class="o">=</span> <span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="sc">&#39;:&#39;</span><span class="p">);</span>
+<a name="line-450"></a>						<span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
+<a name="line-451"></a>						<span class="p">{</span>
+<a name="line-452"></a>							<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">HEADER_ROW</span><span class="p">;</span>
+<a name="line-453"></a>							<span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="p">;</span> <span class="n">i</span> <span class="o">++</span><span class="p">)</span>
+<a name="line-454"></a>							<span class="p">{</span>
+<a name="line-455"></a>								<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;\r&#39;</span><span class="p">)</span>
+<a name="line-456"></a>								<span class="p">{</span>
+<a name="line-457"></a>									<span class="n">i</span> <span class="o">++</span><span class="p">;</span>
+<a name="line-458"></a>									<span class="k">break</span><span class="p">;</span>
+<a name="line-459"></a>								<span class="p">}</span>
+<a name="line-460"></a>								<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">&#39; &#39;</span><span class="p">)</span>
+<a name="line-461"></a>									<span class="n">remaining_to_parse</span> <span class="o">+=</span> <span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<a name="line-462"></a>								<span class="k">if</span> <span class="p">(</span><span class="n">buff</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;:&#39;</span><span class="p">)</span>
+<a name="line-463"></a>									<span class="n">splitter</span> <span class="o">=</span> <span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+<a name="line-464"></a>							<span class="p">}</span>
+<a name="line-465"></a>							<span class="k">if</span> <span class="p">(</span><span class="n">remaining_to_parse</span> <span class="o">==</span> <span class="s">&quot;&quot;</span><span class="p">)</span> <span class="p">{</span>
+<a name="line-466"></a>								<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">BODY</span><span class="p">;</span>
+<a name="line-467"></a>								<span class="k">break</span><span class="p">;</span>
 <a name="line-468"></a>							<span class="p">}</span>
-<a name="line-469"></a>						<span class="p">}</span>
-<a name="line-470"></a>					<span class="p">}</span>
-<a name="line-471"></a>					<span class="k">if</span><span class="p">(</span><span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">BODY</span><span class="p">)</span>
-<a name="line-472"></a>					<span class="p">{</span>
-<a name="line-473"></a>						<span class="n">body</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">remaining_to_parse</span><span class="p">)</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">((</span><span class="kt">char</span><span class="o">*</span><span class="p">)(</span><span class="n">buff</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
-<a name="line-474"></a>						<span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
-<a name="line-475"></a>						<span class="k">if</span> <span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;Content-Length&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">header</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="n">or</span> <span class="n">body</span><span class="p">.</span><span class="n">size</span> <span class="p">()</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">atoll</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s">&quot;Content-Length&quot;</span><span class="p">].</span><span class="n">c_str</span><span class="p">()))</span>
-<a name="line-476"></a>							<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">LOADED</span><span class="p">;</span>
-<a name="line-477"></a>					<span class="p">}</span>
-<a name="line-478"></a>				<span class="p">}</span>
-<a name="line-479"></a>				<span class="k">return</span> <span class="n">loading</span><span class="p">;</span>
-<a name="line-480"></a>			<span class="p">}</span>
-<a name="line-481"></a>	<span class="p">};</span>
-<a name="line-482"></a><span class="p">}</span>
+<a name="line-469"></a>							<span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">n</span><span class="p">)</span>
+<a name="line-470"></a>							<span class="p">{</span>
+<a name="line-471"></a>								<span class="n">header</span> <span class="p">[</span><span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">substr</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">splitter</span><span class="p">)]</span> <span class="o">=</span> <span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">substr</span> <span class="p">(</span><span class="n">splitter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+<a name="line-472"></a>								<span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+<a name="line-473"></a>							<span class="p">}</span>
+<a name="line-474"></a>						<span class="p">}</span>
+<a name="line-475"></a>					<span class="p">}</span>
+<a name="line-476"></a>					<span class="k">if</span><span class="p">(</span><span class="n">loading</span> <span class="o">==</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">BODY</span><span class="p">)</span>
+<a name="line-477"></a>					<span class="p">{</span>
+<a name="line-478"></a>						<span class="n">body</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">remaining_to_parse</span><span class="p">)</span> <span class="o">+</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">((</span><span class="kt">char</span><span class="o">*</span><span class="p">)(</span><span class="n">buff</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
+<a name="line-479"></a>						<span class="n">remaining_to_parse</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+<a name="line-480"></a>						<span class="k">if</span> <span class="p">(</span><span class="n">header</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;Content-Length&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">header</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="n">or</span> <span class="n">body</span><span class="p">.</span><span class="n">size</span> <span class="p">()</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="n">atoll</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="s">&quot;Content-Length&quot;</span><span class="p">].</span><span class="n">c_str</span><span class="p">()))</span>
+<a name="line-481"></a>							<span class="n">loading</span> <span class="o">=</span> <span class="n">LoadingState</span><span class="o">::</span><span class="n">LOADED</span><span class="p">;</span>
+<a name="line-482"></a>					<span class="p">}</span>
+<a name="line-483"></a>				<span class="p">}</span>
+<a name="line-484"></a>				<span class="k">return</span> <span class="n">loading</span><span class="p">;</span>
+<a name="line-485"></a>			<span class="p">}</span>
+<a name="line-486"></a>	<span class="p">};</span>
+<a name="line-487"></a><span class="p">}</span>
 </pre></div>
 </td></tr></table>
       </div>
