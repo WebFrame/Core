@@ -137,7 +137,7 @@
       </div>
       <div id="menu" dir="rtl">
        <p id="filename"><a href="index.html">Defects:</a> webframe-impl.hpp</p>
-<a href='1.html#line-115'> useInitializationList 115</a><a href='1.html#line-120'> passedByValue 120</a><a href='1.html#line-123'> passedByValue 123</a><a href='1.html#line-191'> passedByValue 191</a><a href='1.html#line-194'> passedByValue 194</a><a href='1.html#line-200'> passedByValue 200</a><a href='1.html#line-248'> passedByValue 248</a><a href='1.html#line-259'> passedByValue 259</a><a href='1.html#line-318'> variableScope 318</a><a href='1.html#line-319'> variableScope 319</a><a href='1.html#line-428'> noExplicitConstructor 428</a><a href='1.html#line-431'> useInitializationList 431</a>
+<a href='1.html#line-115'> useInitializationList 115</a><a href='1.html#line-428'> noExplicitConstructor 428</a><a href='1.html#line-431'> useInitializationList 431</a>
       </div>
       <div id="content">
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
@@ -866,11 +866,11 @@
 <a name="line-117"></a>		<span class="n">errors</span> <span class="o">=</span> <span class="n">SynchronizedFile</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">);</span>
 <a name="line-118"></a>		<span class="n">template_dir</span> <span class="o">=</span> <span class="s">&quot;.&quot;</span><span class="p">;</span>
 <a name="line-119"></a>
-<a name="line-120"></a><span class="hll">		<span class="k">this</span><span class="o">-&gt;</span><span class="n">handle</span><span class="p">(</span><span class="s">&quot;404&quot;</span><span class="p">,</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="p">)</span> <span class="p">{</span><div class='verbose expandable'><span class='error2'>&lt;--- Function parameter 'path' should be passed by const reference. <span class='marker'>[+]</span></span><div class='content'>Parameter &apos;path&apos; is passed by value. It could be passed as a const reference which is usually faster and recommended in C++.</div></div>
-</span><a name="line-121"></a>			<span class="k">return</span> <span class="s">&quot;Error 404: &quot;</span> <span class="o">+</span> <span class="n">path</span> <span class="o">+</span> <span class="s">&quot; was not found.&quot;</span><span class="p">;</span>
+<a name="line-120"></a>		<span class="k">this</span><span class="o">-&gt;</span><span class="n">handle</span><span class="p">(</span><span class="s">&quot;404&quot;</span><span class="p">,</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">)</span> <span class="p">{</span>
+<a name="line-121"></a>			<span class="k">return</span> <span class="s">&quot;Error 404: &quot;</span> <span class="o">+</span> <span class="n">path</span> <span class="o">+</span> <span class="s">&quot; was not found.&quot;</span><span class="p">;</span>
 <a name="line-122"></a>		<span class="p">})</span>
-<a name="line-123"></a><span class="hll">		<span class="p">.</span><span class="n">handle</span><span class="p">(</span><span class="s">&quot;500&quot;</span><span class="p">,</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">reason</span><span class="p">)</span> <span class="p">{</span><div class='verbose expandable'><span class='error2'>&lt;--- Function parameter 'reason' should be passed by const reference. <span class='marker'>[+]</span></span><div class='content'>Parameter &apos;reason&apos; is passed by value. It could be passed as a const reference which is usually faster and recommended in C++.</div></div>
-</span><a name="line-124"></a>			<span class="k">return</span> <span class="s">&quot;Error 500: Internal server error: &quot;</span> <span class="o">+</span> <span class="n">reason</span> <span class="o">+</span> <span class="s">&quot;.&quot;</span><span class="p">;</span>
+<a name="line-123"></a>		<span class="p">.</span><span class="n">handle</span><span class="p">(</span><span class="s">&quot;500&quot;</span><span class="p">,</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">reason</span><span class="p">)</span> <span class="p">{</span>
+<a name="line-124"></a>			<span class="k">return</span> <span class="s">&quot;Error 500: Internal server error: &quot;</span> <span class="o">+</span> <span class="n">reason</span> <span class="o">+</span> <span class="s">&quot;.&quot;</span><span class="p">;</span>
 <a name="line-125"></a>		<span class="p">});</span>
 <a name="line-126"></a>	<span class="p">}</span>
 <a name="line-127"></a>
@@ -937,22 +937,22 @@
 <a name="line-188"></a>		<span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
 <a name="line-189"></a>	<span class="p">}</span>
 <a name="line-190"></a>
-<a name="line-191"></a><span class="hll">	<span class="n">webframe</span> <span class="o">&amp;</span><span class="n">set_static</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">alias</span><span class="p">)</span><div class='verbose expandable'><span class='error2'>&lt;--- Function parameter 'alias' should be passed by const reference. <span class='marker'>[+]</span></span><div class='content'>Parameter &apos;alias&apos; is passed by value. It could be passed as a const reference which is usually faster and recommended in C++.</div></div>
-</span><a name="line-192"></a>	<span class="p">{</span>
+<a name="line-191"></a>	<span class="n">webframe</span> <span class="o">&amp;</span><span class="n">set_static</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">alias</span><span class="p">)</span>
+<a name="line-192"></a>	<span class="p">{</span>
 <a name="line-193"></a>		<span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span> <span class="n">p</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">relative</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
-<a name="line-194"></a><span class="hll">		<span class="k">this</span><span class="o">-&gt;</span><span class="n">route</span><span class="p">(</span><span class="n">alias</span> <span class="o">+</span> <span class="s">&quot;/{path}&quot;</span><span class="p">,</span> <span class="p">[</span><span class="o">&amp;</span><span class="n">path</span><span class="p">,</span> <span class="k">this</span><span class="p">](</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">file</span><span class="p">)</span> <span class="p">{</span><div class='verbose expandable'><span class='error2'>&lt;--- Function parameter 'file' should be passed by const reference. <span class='marker'>[+]</span></span><div class='content'>Parameter &apos;file&apos; is passed by value. It could be passed as a const reference which is usually faster and recommended in C++.</div></div>
-</span><a name="line-195"></a>			<span class="k">return</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">get_file</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span> <span class="o">+</span> <span class="n">file</span><span class="p">);</span>
+<a name="line-194"></a>		<span class="k">this</span><span class="o">-&gt;</span><span class="n">route</span><span class="p">(</span><span class="n">alias</span> <span class="o">+</span> <span class="s">&quot;/{path}&quot;</span><span class="p">,</span> <span class="p">[</span><span class="o">&amp;</span><span class="n">path</span><span class="p">,</span> <span class="k">this</span><span class="p">](</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">file</span><span class="p">)</span> <span class="p">{</span>
+<a name="line-195"></a>			<span class="k">return</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">get_file</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span> <span class="o">+</span> <span class="n">file</span><span class="p">);</span>
 <a name="line-196"></a>		<span class="p">});</span>
 <a name="line-197"></a>		<span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
 <a name="line-198"></a>	<span class="p">}</span>
 <a name="line-199"></a>
-<a name="line-200"></a><span class="hll">	<span class="n">webframe</span> <span class="o">&amp;</span><span class="n">set_templates</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="p">)</span><div class='verbose expandable'><span class='error2'>&lt;--- Function parameter 'path' should be passed by const reference. <span class='marker'>[+]</span></span><div class='content'>Parameter &apos;path&apos; is passed by value. It could be passed as a const reference which is usually faster and recommended in C++.</div></div>
-</span><a name="line-201"></a>	<span class="p">{</span>
+<a name="line-200"></a>	<span class="n">webframe</span> <span class="o">&amp;</span><span class="n">set_templates</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">)</span>
+<a name="line-201"></a>	<span class="p">{</span>
 <a name="line-202"></a>		<span class="k">this</span><span class="o">-&gt;</span><span class="n">template_dir</span> <span class="o">=</span> <span class="n">path</span><span class="p">;</span>
 <a name="line-203"></a>		<span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
 <a name="line-204"></a>	<span class="p">}</span>
 <a name="line-205"></a>
-<a name="line-206"></a>	<span class="n">response</span> <span class="n">get_file</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="p">)</span>
+<a name="line-206"></a>	<span class="n">response</span> <span class="n">get_file</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">)</span>
 <a name="line-207"></a>	<span class="p">{</span>
 <a name="line-208"></a>		<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">filesystem</span><span class="o">::</span><span class="n">path</span><span class="p">(</span><span class="n">path</span><span class="p">).</span><span class="n">extension</span><span class="p">().</span><span class="n">string</span><span class="p">();</span>
 <a name="line-209"></a>		<span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">mime</span> <span class="o">=</span> <span class="n">mime_types</span><span class="o">::</span><span class="n">get_mime_type</span><span class="p">(</span><span class="n">ext</span><span class="p">.</span><span class="n">c_str</span><span class="p">()).</span><span class="n">data</span><span class="p">();</span>
@@ -994,8 +994,8 @@
 <a name="line-245"></a>	<span class="p">}</span>
 <a name="line-246"></a>
 <a name="line-247"></a>	<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">Ret</span><span class="p">,</span> <span class="k">typename</span><span class="p">...</span> <span class="n">Ts</span><span class="o">&gt;</span>
-<a name="line-248"></a><span class="hll">	<span class="n">webframe</span> <span class="o">&amp;</span><span class="n">route</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="n">Ret</span><span class="p">(</span><span class="n">Ts</span><span class="p">...)</span><span class="o">&gt;</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">res</span><span class="p">)</span><div class='verbose expandable'><span class='error2'>&lt;--- Function parameter 'path' should be passed by const reference. <span class='marker'>[+]</span></span><div class='content'>Parameter &apos;path&apos; is passed by value. It could be passed as a const reference which is usually faster and recommended in C++.</div></div>
-</span><a name="line-249"></a>	<span class="p">{</span>
+<a name="line-248"></a>	<span class="n">webframe</span> <span class="o">&amp;</span><span class="n">route</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">function</span><span class="o">&lt;</span><span class="n">Ret</span><span class="p">(</span><span class="n">Ts</span><span class="p">...)</span><span class="o">&gt;</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">res</span><span class="p">)</span>
+<a name="line-249"></a>	<span class="p">{</span>
 <a name="line-250"></a>		<span class="k">auto</span> <span class="n">x</span> <span class="o">=</span> <span class="n">convert_path_to_regex</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">*</span><span class="k">this</span><span class="p">);</span>
 <a name="line-251"></a>		<span class="k">if</span> <span class="p">(</span><span class="n">routes</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="n">routes</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
 <a name="line-252"></a>			<span class="n">routes</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">responser</span><span class="p">(</span><span class="n">res</span><span class="p">);</span>
@@ -1005,8 +1005,8 @@
 <a name="line-256"></a>	<span class="p">}</span>
 <a name="line-257"></a>
 <a name="line-258"></a>	<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">F</span><span class="o">&gt;</span>
-<a name="line-259"></a><span class="hll">	<span class="n">webframe</span> <span class="o">&amp;</span><span class="n">route</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">path</span><span class="p">,</span> <span class="n">F</span> <span class="n">_res</span><span class="p">)</span><div class='verbose expandable'><span class='error2'>&lt;--- Function parameter 'path' should be passed by const reference. <span class='marker'>[+]</span></span><div class='content'>Parameter &apos;path&apos; is passed by value. It could be passed as a const reference which is usually faster and recommended in C++.</div></div>
-</span><a name="line-260"></a>	<span class="p">{</span>
+<a name="line-259"></a>	<span class="n">webframe</span> <span class="o">&amp;</span><span class="n">route</span><span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span> <span class="n">path</span><span class="p">,</span> <span class="n">F</span> <span class="n">_res</span><span class="p">)</span>
+<a name="line-260"></a>	<span class="p">{</span>
 <a name="line-261"></a>		<span class="k">const</span> <span class="k">auto</span> <span class="n">res</span> <span class="o">=</span> <span class="n">wrap</span><span class="p">(</span><span class="n">_res</span><span class="p">);</span>
 <a name="line-262"></a>		<span class="k">auto</span> <span class="n">x</span> <span class="o">=</span> <span class="n">convert_path_to_regex</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">*</span><span class="k">this</span><span class="p">);</span>
 <a name="line-263"></a>		<span class="k">if</span> <span class="p">(</span><span class="n">routes</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="n">routes</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
@@ -1063,36 +1063,12 @@
 <a name="line-314"></a>
 <a name="line-315"></a>	<span class="kt">int</span> <span class="n">responder</span><span class="p">(</span><span class="kt">int</span> <span class="n">socket</span><span class="p">)</span>
 <a name="line-316"></a>	<span class="p">{</span>
-<a name="line-317"></a>		<span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">capacity</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">;</span> 
-<a name="line-318"></a><span class="hll">		<span class="kt">char</span> <span class="n">data</span><span class="p">[</span><span class="n">capacity</span><span class="p">];</span><div class='verbose expandable'><span class='error2'>&lt;--- The scope of the variable 'data' can be reduced. <span class='marker'>[+]</span></span><div class='content'>The scope of the variable &apos;data&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:
-void f(int x)
-{
-    int i = 0;
-    if (x) {
-        // it&apos;s safe to move &apos;int i = 0;&apos; here
-        for (int n = 0; n &lt; 10; ++n) {
-            // it is possible but not safe to move &apos;int i = 0;&apos; here
-            do_something(&amp;i);
-        }
-    }
-}
-When you see this message it is always safe to reduce the variable scope 1 level.</div></div>
-</span><a name="line-319"></a><span class="hll">		<span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span><div class='verbose expandable'><span class='error2'>&lt;--- The scope of the variable 'n' can be reduced. <span class='marker'>[+]</span></span><div class='content'>The scope of the variable &apos;n&apos; can be reduced. Warning: Be careful when fixing this message, especially when there are inner loops. Here is an example where cppcheck will write that the scope for &apos;i&apos; can be reduced:
-void f(int x)
-{
-    int i = 0;
-    if (x) {
-        // it&apos;s safe to move &apos;int i = 0;&apos; here
-        for (int n = 0; n &lt; 10; ++n) {
-            // it is possible but not safe to move &apos;int i = 0;&apos; here
-            do_something(&amp;i);
-        }
-    }
-}
-When you see this message it is always safe to reduce the variable scope 1 level.</div></div>
-</span><a name="line-320"></a>		<span class="n">request</span> <span class="n">r</span><span class="p">;</span>
-<a name="line-321"></a>		<span class="k">try</span>
-<a name="line-322"></a>		<span class="p">{</span>
+<a name="line-317"></a>		<span class="n">request</span> <span class="n">r</span><span class="p">;</span>
+<a name="line-318"></a>		<span class="k">try</span>
+<a name="line-319"></a>		<span class="p">{</span>
+<a name="line-320"></a>			<span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">capacity</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">;</span> 
+<a name="line-321"></a>			<span class="kt">char</span> <span class="n">data</span><span class="p">[</span><span class="n">capacity</span><span class="p">];</span>
+<a name="line-322"></a>			<span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <a name="line-323"></a>			<span class="k">do</span>
 <a name="line-324"></a>			<span class="p">{</span>
 <a name="line-325"></a>				<span class="n">n</span> <span class="o">=</span> <span class="n">RECV</span><span class="p">(</span><span class="n">socket</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">capacity</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>

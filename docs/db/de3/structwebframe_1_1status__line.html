@@ -84,10 +84,10 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa2b5ee1b401400755a4d4aafedaaa61c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/de3/structwebframe_1_1status__line.html#aa2b5ee1b401400755a4d4aafedaaa61c">status_line</a> (std::string _code)</td></tr>
-<tr class="separator:aa2b5ee1b401400755a4d4aafedaaa61c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a553b7c8f4484241b2602907e43196dc2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/de3/structwebframe_1_1status__line.html#a553b7c8f4484241b2602907e43196dc2">status_line</a> (std::string _http, std::string _code)</td></tr>
-<tr class="separator:a553b7c8f4484241b2602907e43196dc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b7f876986924844406b05169dff8d88"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/de3/structwebframe_1_1status__line.html#a6b7f876986924844406b05169dff8d88">status_line</a> (const std::string &amp;_code)</td></tr>
+<tr class="separator:a6b7f876986924844406b05169dff8d88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b321379037405a3db3b624936ebd284"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/de3/structwebframe_1_1status__line.html#a8b321379037405a3db3b624936ebd284">status_line</a> (const std::string &amp;_http, const std::string &amp;_code)</td></tr>
+<tr class="separator:a8b321379037405a3db3b624936ebd284"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e908cbbf9144e032c40b438074beed3"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/de3/structwebframe_1_1status__line.html#a6e908cbbf9144e032c40b438074beed3">to_string</a> () const</td></tr>
 <tr class="separator:a6e908cbbf9144e032c40b438074beed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -116,8 +116,8 @@ Private Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="../../dd/d3c/base_8hpp_source.html#l00193">193</a> of file <a class="el" href="../../dd/d3c/base_8hpp_source.html">base.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa2b5ee1b401400755a4d4aafedaaa61c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa2b5ee1b401400755a4d4aafedaaa61c">&#9670;&nbsp;</a></span>status_line() <span class="overload">[1/2]</span></h2>
+<a id="a6b7f876986924844406b05169dff8d88"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b7f876986924844406b05169dff8d88">&#9670;&nbsp;</a></span>status_line() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -128,7 +128,7 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="memname">webframe::status_line::status_line </td>
           <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>_code</em></td><td>)</td>
           <td></td>
         </tr>
@@ -141,15 +141,15 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="../../dd/d3c/base_8hpp_source.html#l00205">205</a> of file <a class="el" href="../../dd/d3c/base_8hpp_source.html">base.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                                      : <a class="code" href="../../db/de3/structwebframe_1_1status__line.html#a8592c08a6f2de51e5cfdad83c83527fd">http</a> (<span class="stringliteral">&quot;1.1&quot;</span>), <a class="code" href="../../db/de3/structwebframe_1_1status__line.html#a346372f9f4d0f5d89201d6570bf950ad">code</a> (_code) </div>
+<div class="fragment"><div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;                                             : <a class="code" href="../../db/de3/structwebframe_1_1status__line.html#a8592c08a6f2de51e5cfdad83c83527fd">http</a> (<span class="stringliteral">&quot;1.1&quot;</span>), <a class="code" href="../../db/de3/structwebframe_1_1status__line.html#a346372f9f4d0f5d89201d6570bf950ad">code</a> (_code) </div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        {</div>
 <div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;            <a class="code" href="../../db/de3/structwebframe_1_1status__line.html#aed1c4f9a48c340fe484f11d599153421">rebuild_string</a>();</div>
 <div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        }</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a553b7c8f4484241b2602907e43196dc2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a553b7c8f4484241b2602907e43196dc2">&#9670;&nbsp;</a></span>status_line() <span class="overload">[2/2]</span></h2>
+<a id="a8b321379037405a3db3b624936ebd284"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b321379037405a3db3b624936ebd284">&#9670;&nbsp;</a></span>status_line() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -160,13 +160,13 @@ Private Attributes</h2></td></tr>
         <tr>
           <td class="memname">webframe::status_line::status_line </td>
           <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>_http</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::string&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>_code</em>&#160;</td>
         </tr>
         <tr>
@@ -183,7 +183,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="../../dd/d3c/base_8hpp_source.html#l00210">210</a> of file <a class="el" href="../../dd/d3c/base_8hpp_source.html">base.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;                                                       : <a class="code" href="../../db/de3/structwebframe_1_1status__line.html#a8592c08a6f2de51e5cfdad83c83527fd">http</a> (_http), <a class="code" href="../../db/de3/structwebframe_1_1status__line.html#a346372f9f4d0f5d89201d6570bf950ad">code</a> (_code) </div>
+<div class="fragment"><div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;                                                                     : <a class="code" href="../../db/de3/structwebframe_1_1status__line.html#a8592c08a6f2de51e5cfdad83c83527fd">http</a> (_http), <a class="code" href="../../db/de3/structwebframe_1_1status__line.html#a346372f9f4d0f5d89201d6570bf950ad">code</a> (_code) </div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        {</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;            <a class="code" href="../../db/de3/structwebframe_1_1status__line.html#aed1c4f9a48c340fe484f11d599153421">rebuild_string</a>();</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        }</div>
