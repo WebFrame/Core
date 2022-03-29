@@ -47,6 +47,7 @@ jobs:
           make --version
           gcc-11 --version
           g++-11 --version
+          mkdir -p ./bin
       - name: Configure
         shell: bash
         run: |
@@ -60,7 +61,6 @@ jobs:
         timeout-minutes: 10
         run: |
           make -B run_tests
-          cp bin/log/performance* benchmark/integration_tests/
       - name: Commit test score
         if: ${{ github.ref == 'refs/heads/master' && startsWith(matrix.config.name, 'Ubuntu Latest GCC') }}
         run: |
@@ -82,5 +82,5 @@ jobs:
         shell: bash
         timeout-minutes: 100
         run: |
-          make -B local-benchmark
-          cat ./benchmark/performance/performance_summary*
+          make -B local-benchmark DIR_PREFIX=${{ matrix.config.os }}/
+          cat ./benchmark/performance/${{ matrix.config.os }}/performance_summary*
