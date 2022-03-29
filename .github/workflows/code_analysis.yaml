@@ -43,9 +43,8 @@ jobs:
     - name: Deploy to GitHub Pages
       continue-on-error: true
       if: ${{ always() && github.ref == 'refs/heads/master' }}
-      uses: qoomon/deploy-to-github-pages-action@v1
+      uses: JamesIves/github-pages-deploy-action@v4.2.5
       with:
-        GITHUB_PAGES_SOURCE_DIR: report
-        GITHUB_PAGES_BRANCH: gh-pages
-        GITHUB_PAGES_REPLACE: false
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        branch: gh-pages # The branch the action should deploy to.
+        folder: ./report/ # The folder the action should deploy.
+
