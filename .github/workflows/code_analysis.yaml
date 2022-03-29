@@ -46,6 +46,7 @@ jobs:
         git add gh-pages
         git commit -m "Cppcheck report" -a
     - name: Push cppcheck results
+      if: ${{ failure() }}
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
