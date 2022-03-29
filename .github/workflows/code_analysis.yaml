@@ -35,8 +35,8 @@ jobs:
       shell: bash
       run: |
         mv -f report report1
-        mkdir -p gh-pages
-        mv -f report1 gh-pages/codeql_report
+        mkdir -p src-gh-pages
+        mv -f report1 src-gh-pages/codeql_report
     - name: Commit
       if: ${{ failure() }}
       shell: bash
