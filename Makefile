@@ -1,6 +1,6 @@
 COMPILER_CPP=g++
 CPP_STD=-std=c++2a
-OPT=-O3 -fconstexpr-depth=700
+OPT=-O2 -fconstexpr-depth=700
 INCLUDE_DIRS=-I./tests -I./src
 LIB_FLAGS=-pthread -lpthread # -fconcepts
 DEBUG_FLAGS=-fsanitize=undefined
