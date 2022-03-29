@@ -10,7 +10,7 @@ struct body_t {
     private:
     std::string body;
     public:
-    body_t(std::string _body) : body(_body) {}
+    body_t(const std::string& _body) : body(_body) {}
     const std::string& get_body() {
         return body;
     }

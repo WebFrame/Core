@@ -105,7 +105,7 @@ namespace webframe
 				}
 				std::string type;
 				std::string value;
-				var (std::string value, std::string type = "string")
+				var (const std::string& value, const std::string& type = "string")
 				{
 					this->type = type;
 					this->value = value;
@@ -202,12 +202,12 @@ namespace webframe
 			output = "HTTP/" + this->http + " " + this->code + " " + std::string(http_codes::get_reason_by_code(this->code.c_str())) + end_line;
 		}
 	public:
-		status_line (std::string _code) : http ("1.1"), code (_code) 
+		status_line (const std::string& _code) : http ("1.1"), code (_code) 
 		{
 			rebuild_string();
 		}
 		
-		status_line (std::string _http, std::string _code) : http (_http), code (_code) 
+		status_line (const std::string& _http, const std::string& _code) : http (_http), code (_code) 
 		{
 			rebuild_string();
 		}
@@ -342,7 +342,7 @@ namespace webframe
 				remaining_to_parse = "";
 			}
 
-			request (method _m, std::string h, std::map < std::string, std::string > m, std::string _body) : m (_m), http (h), header (m), body (_body)
+			request (method _m, const std::string& h, const std::map<std::string, std::string>& m, const std::string& _body) : m (_m), http (h), header (m), body (_body)
 			{}
 
 			LoadingState loadMore(const char* buff, const size_t n)
