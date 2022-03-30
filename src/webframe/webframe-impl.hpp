@@ -395,9 +395,12 @@ private:
 			return m.try_lock();
 		}
 	public:
+		std::shared_ptr<int> requestor;
+
 		thread() 
 		{
 			m.unlock();
+			requestor = std::make_shared<int>();
 		}
 
 		void join(std::shared_ptr<std::function<void(int)>> f, int socket) 
@@ -499,7 +502,7 @@ public:
 	{
 		std::shared_ptr<server_status> status_handler = std::make_shared<server_status>();
 
-		std::thread([&, this](std::shared_ptr<server_status> status_handler, bool limited) {
+		std::thread([&, this](std::shared_ptr<std::promise<void>> running) {
 			#ifdef _WIN32
 				//----------------------
 				// Initialize Winsock.
@@ -509,7 +512,7 @@ public:
 				this->logger << "Startup finished " << iResult << "\n";
 				if (iResult != NO_ERROR) {
 					this->logger << "WSAStartup failed with error: " << iResult << "\n";
-					status_handler->kill();
+					running->set_value();
 					return;
 				}
 			#endif
@@ -521,49 +524,44 @@ public:
 			this->logger << "Thread pool generated\n";	
 
 			int status;
-			struct addrinfo hints;
-			struct addrinfo *result, *rp;
+			struct addrinfo hints, *res;
 			int listener = -1;
-			memset(&hints, 0, sizeof(hints));
-			hints.ai_family = AF_UNSPEC;     /* Allow IPv4 or IPv6 */
-			hints.ai_socktype = SOCK_STREAM; /* Datagram socket */
-			hints.ai_flags = AI_PASSIVE;     /* For wildcard IP address */
-			hints.ai_protocol = 0;           /* Any protocol */
+			
+			// Before using hint you have to make sure that the data structure is empty 
+			memset(&hints, 0, sizeof hints);
+			// Set the attribute for hint
+			hints.ai_family = AF_INET; // We don't care V4 AF_INET or 6 AF_INET6
+			hints.ai_socktype = SOCK_STREAM; // TCP Socket SOCK_DGRAM 
+			hints.ai_flags = AI_PASSIVE;
+			hints.ai_protocol = 0;          /* Any protocol */
 			hints.ai_canonname = NULL;
 			hints.ai_addr = NULL;
 			hints.ai_next = NULL;
 
-			status = getaddrinfo(NULL, PORT, &hints, &result);
-			if (status != 0) 
+			// Fill the res data structure and make sure that the results make sense. 
+			status = getaddrinfo(NULL, PORT, &hints, &res);
+			if (status != 0)
 			{
 				this->logger << "getaddrinfo error: " << gai_strerror(status) << "\n";
-				status_handler->kill();
+				running->set_value();
 				return;
 			}
 
-			/* getaddrinfo() returns a list of address structures.
-			Try each address until we successfully bind(2).
-			If socket(2) (or bind(2)) fails, we (close the socket
-			and) try the next address. */
-
-			for (rp = result; rp != NULL; rp = rp->ai_next) 
+			// Create Socket and check if error occured afterwards
+			listener = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+			if (listener == -1)
 			{
-				listener = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
-				if (listener == -1)
-					continue;
-
-				if (bind(listener, rp->ai_addr, rp->ai_addrlen) == 0)
-					break;                  /* Success */
-
-				CLOSE(listener);
+				this->logger << "socket error: " << gai_strerror(status) << "\n";
+				running->set_value();
+				return;
 			}
-			
-			freeaddrinfo(result);           /* No longer needed */
 
-			if (rp == NULL || listener == -1) /* No address succeeded */
-			{               
+			// Bind the socket to the address of my local machine and port number 
+			status = bind(listener, res->ai_addr, res->ai_addrlen);
+			if (status < 0)
+			{
 				this->logger << "bind error: " << gai_strerror(status) << "\n";
-				status_handler->kill();
+				running->set_value();
 				return;
 			}
 
@@ -571,7 +569,7 @@ public:
 			if (status < 0)
 			{
 				this->logger << "listen error: " << gai_strerror(status) << "\n";
-				status_handler->kill();
+				running->set_value();
 				return;
 			}
 
@@ -579,9 +577,12 @@ public:
 			if (status < 0)
 			{
 				this->logger << "nonblocking config error: " << gai_strerror(status) << "\n";
-				status_handler->kill();
+				running->set_value();
 				return;
 			}
+
+			// Free the res linked list after we are done with it	
+			freeaddrinfo(res);
 
 			this->logger << "Listener setup " << listener << "\n";
 
@@ -589,43 +590,41 @@ public:
 
 			while (!limited || requests != 0) {
 				const std::optional<size_t> thread = threads_ptr->get_free_thread();
-				//std::cout << "Thread available: " << !!thread << std::endl;
+				this->logger << "Thread available: " << !!thread << "\n";
 				if(!thread)
 					continue;
 
 				// Accept a new connection and return back the socket desciptor 
-				//std::cout << "Client accepting available..." << std::endl;
-				int client = ACCEPT(listener, NULL, NULL);
-				//this->logger << "Client found: " << client << "\n";
-				if (client == -1)
+				*threads_ptr->get(thread.value())->requestor = ACCEPT(listener, NULL, NULL);
+				if (*threads_ptr->get(thread.value())->requestor == -1)
 				{
 					continue;
 				}
 
-				this->logger << "Requestor " << client << " is getting handled\n";
+				this->logger << "Requestor " << *threads_ptr->get(thread.value())->requestor << " is getting handled\n";
 
 				struct timeval selTimeout;
 				selTimeout.tv_sec = 2;
 				selTimeout.tv_usec = 0;
 				fd_set readSet;
 				FD_ZERO(&readSet);
-				FD_SET(client + 1, &readSet);
-				FD_SET(client, &readSet);
+				FD_SET(*threads_ptr->get(thread.value())->requestor + 1, &readSet);
+				FD_SET(*threads_ptr->get(thread.value())->requestor, &readSet);
 
-				this->logger << "Requestor " << client << " is checked if valid\n";
+				this->logger << "Requestor " << *threads_ptr->get(thread.value())->requestor << " is checked if valid\n";
 				
-				status = SELECT(client + 1, &readSet, nullptr, nullptr, &selTimeout) + SELECT(client, &readSet, nullptr, nullptr, &selTimeout);
+				status = SELECT(*threads_ptr->get(thread.value())->requestor + 1, &readSet, nullptr, nullptr, &selTimeout);
 				this->logger << "SELECT status is " << status << "\n";
 				if (status <= 0)
 					continue;
 
-				this->logger << "Requestor " << client << " is still valid\n";
+				this->logger << "Requestor " << *threads_ptr->get(thread.value())->requestor << " is still valid\n";
 
-				if (getsockname(client, nullptr, nullptr) < 0 && errno == ENOTSOCK) continue;
+				if (getsockname(*threads_ptr->get(thread.value())->requestor, nullptr, nullptr) < 0 && errno == ENOTSOCK) continue;
 				
-				this->logger << "Requestor " << client << " is still valid\n";
+				this->logger << "Requestor " << *threads_ptr->get(thread.value())->requestor << " is still valid\n";
 
-				this->logger << thread.value() << " thread will handle client " << client << "\n";
+				this->logger << thread.value() << " thread will handle client " << *threads_ptr->get(thread.value())->requestor << "\n";
 				
 				threads_ptr->get(thread.value())->detach(std::make_shared<std::function<void(int)>>([this, &limited, &status_handler, &requests](int socket) -> void {
 					this->handler (socket, [&limited, &status_handler, &requests]() {
@@ -635,7 +634,7 @@ public:
 							status_handler->kill();
 						}
 					});
-				}), client);
+				}), *threads_ptr->get(thread.value())->requestor);
 			}
 			#ifdef _WIN32
 				WSACleanup();
