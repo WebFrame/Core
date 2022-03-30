@@ -1,4 +1,4 @@
-# <span style="font-size: 1.25em;">WebFrame++  ![C++](https://img.shields.io/badge/c++-%2300599C.svg?&logo=c%2B%2B&logoColor=white) ![Mocha](https://img.shields.io/badge/-mocha-%238D6748?logo=mocha&logoColor=white)<br>[![Build & Test](https://github.com/WebFrame/Core/actions/workflows/build.yaml/badge.svg)](https://github.com/WebFrame/Core/actions/workflows/build.yaml) [![Code quality control](https://github.com/WebFrame/Core/actions/workflows/code_analysis.yaml/badge.svg?event=)](https://github.com/WebFrame/Core/actions/workflows/code_analysis.yaml)<br>[![Issues](https://img.shields.io/github/issues/WebFrame/Core?)](https://github.com/WebFrame/Core) [![Forks](https://img.shields.io/github/forks/WebFrame/Core?)](https://github.com/WebFrame/Core) [![Stars](https://img.shields.io/github/stars/WebFrame/Core?)](https://github.com/WebFrame/Core) [![License](https://img.shields.io/github/license/WebFrame/Core?)](https://github.com/WebFrame/Core)</span>
+# <span style="font-size: 1.25em;">WebFrame++  ![C++](https://img.shields.io/badge/c++-%2300599C.svg?&logo=c%2B%2B&logoColor=white) ![Mocha](https://img.shields.io/badge/-mocha-%238D6748?logo=mocha&logoColor=white)<br>[![Build & Test](https://github.com/WebFrame/Core/actions/workflows/build.yaml/badge.svg)](https://github.com/WebFrame/Core/actions/workflows/build.yaml) [![Code quality control](https://github.com/WebFrame/Core/actions/workflows/code_analysis.yaml/badge.svg?event=)](https://github.com/WebFrame/Core/actions/workflows/code_analysis.yaml)<br>[![Issues](https://img.shields.io/github/issues/WebFrame/Core?)](https://github.com/WebFrame/Core) [![Forks](https://img.shields.io/github/forks/WebFrame/Core?)](https://github.com/WebFrame/Core) [![Stars](https://img.shields.io/github/stars/WebFrame/Core?)](https://github.com/WebFrame/Core) [![License](https://img.shields.io/github/license/WebFrame/Core?)](https://github.com/WebFrame/Core) [![Softacheck](https://softacheck.com/app/repository/WebFrame/Core/badge)](https://softacheck.com/app/repository/WebFrame/Core/issues)</span>
 ### _Make your web application faster now!_
 <hr>
 
@@ -7,7 +7,7 @@
 
 
 ## Doxygen - automatic code documentation
-Check the documentation of the library [here](https://webframe.github.io/Core/docs/).
+Check the documentation of the library [here](https://softacheck.com/app/docs/WebFrame/Core/).
 
 # Testing
 ## Cppcheck - static code analysis
