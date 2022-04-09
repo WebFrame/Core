@@ -8,7 +8,7 @@ int main()
 	constexpr int fasten = webframe::webframe::init();
 	int pass = fasten;
 	webframe::webframe app;
-	app.set_static("./src/static", "/static")
+	/*app.set_static("./src/static", "/static")
 		.set_templates("./src/static/templates")
 		.handle("404", [&](const std::string& path) {
 			return "Error 404: " + path + " was not found.";
@@ -54,5 +54,12 @@ int main()
 		});
 	const char* port = "8888";
 	const unsigned char cores = ((std::thread::hardware_concurrency() - 1 > 0) ? (std::thread::hardware_concurrency() - 1) : 1);
-	app.run(port, cores)->down().wait();
+	app.run(port, cores)->down().wait();*/
+	app
+		.route ("/", []() { // static setup
+				return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
+		})
+		.run("8887", 1, 1, 1)
+		.wait_down();
+		
 }

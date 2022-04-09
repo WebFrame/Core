@@ -373,8 +373,13 @@ private:
 	void handler(int client, const std::function<void()>& callback)
 	{
 		int status = this->responder(client);
-		if (status != -2) callback();
+		if (status != -2)
+		{
+			callback();
+		}
+		this->logger << "Responded status: " << status << "\n";
 		CLOSE(client);
+		this->logger << "Closing client: " << client << "\n";
 	}
 	
 	struct thread_pool;
@@ -470,6 +475,7 @@ public:
 	class server_status {
 		private:
 			std::shared_ptr<std::promise<void>> started_ptr, down_ptr;
+			std::shared_future<void> started_shared_future, down_shared_future;
 			void start() {
 				try {
 					started_ptr->set_value();
@@ -488,21 +494,33 @@ public:
 			server_status () {
 				started_ptr = std::make_shared<std::promise<void>>();
 				down_ptr = std::make_shared<std::promise<void>>();
+				started_shared_future = started_ptr->get_future().share();
+				down_shared_future = down_ptr->get_future().share();
+			}
+			server_status (const server_status& ss) {
+				started_ptr = ss.started_ptr;
+				down_ptr = ss.down_ptr;
+				started_shared_future = ss.started_shared_future;
+				down_shared_future = ss.down_shared_future;
+			}
+			server_status (server_status&& ss) {
+				started_ptr = ss.started_ptr;
+				down_ptr = ss.down_ptr;
+				started_shared_future = ss.started_shared_future;
+				down_shared_future = ss.down_shared_future;
 			}
 			std::shared_future<void> started() {
-				return started_ptr->get_future().share();
+				return started_shared_future;
 			}
 			std::shared_future<void> down() {
-				return down_ptr->get_future().share();
+				return down_shared_future;
 			}
 			friend class webframe;
 	};
 
-	std::shared_ptr<server_status> run(const char* PORT, const unsigned int cores, bool limited = false, unsigned int requests = -1) 
+	webframe& run(const char* PORT, const unsigned int cores, bool limited = false, int requests = -1) 
 	{
-		std::shared_ptr<server_status> status_handler = std::make_shared<server_status>();
-
-		std::thread([&, this](std::shared_ptr<std::promise<void>> running) {
+		std::thread([this](std::string PORT, const unsigned int cores, bool limited, int requests) {
 			#ifdef _WIN32
 				//----------------------
 				// Initialize Winsock.
@@ -512,7 +530,8 @@ public:
 				this->logger << "Startup finished " << iResult << "\n";
 				if (iResult != NO_ERROR) {
 					this->logger << "WSAStartup failed with error: " << iResult << "\n";
-					running->set_value();
+					this->status_handler.start();
+					this->status_handler.kill();
 					return;
 				}
 			#endif
@@ -525,7 +544,7 @@ public:
 
 			int status;
 			struct addrinfo hints, *res;
-			int listener = -1;
+			int listener;
 			
 			// Before using hint you have to make sure that the data structure is empty 
 			memset(&hints, 0, sizeof hints);
@@ -539,11 +558,12 @@ public:
 			hints.ai_next = NULL;
 
 			// Fill the res data structure and make sure that the results make sense. 
-			status = getaddrinfo(NULL, PORT, &hints, &res);
+			status = getaddrinfo(NULL, PORT.c_str(), &hints, &res);
 			if (status != 0)
 			{
 				this->logger << "getaddrinfo error: " << gai_strerror(status) << "\n";
-				running->set_value();
+				this->status_handler.start();
+				this->status_handler.kill();
 				return;
 			}
 
@@ -552,7 +572,8 @@ public:
 			if (listener == -1)
 			{
 				this->logger << "socket error: " << gai_strerror(status) << "\n";
-				running->set_value();
+				this->status_handler.start();
+				this->status_handler.kill();
 				return;
 			}
 
@@ -561,7 +582,8 @@ public:
 			if (status < 0)
 			{
 				this->logger << "bind error: " << gai_strerror(status) << "\n";
-				running->set_value();
+				this->status_handler.start();
+				this->status_handler.kill();
 				return;
 			}
 
@@ -569,7 +591,8 @@ public:
 			if (status < 0)
 			{
 				this->logger << "listen error: " << gai_strerror(status) << "\n";
-				running->set_value();
+				this->status_handler.start();
+				this->status_handler.kill();
 				return;
 			}
 
@@ -577,7 +600,8 @@ public:
 			if (status < 0)
 			{
 				this->logger << "nonblocking config error: " << gai_strerror(status) << "\n";
-				running->set_value();
+				this->status_handler.start();
+				this->status_handler.kill();
 				return;
 			}
 
@@ -585,62 +609,83 @@ public:
 			freeaddrinfo(res);
 
 			this->logger << "Listener setup " << listener << "\n";
+			
+			status_handler.start();
 
-			status_handler->start();
-
-			while (!limited || requests != 0) {
+			while (!limited || requests > 0) {
 				const std::optional<size_t> thread = threads_ptr->get_free_thread();
 				this->logger << "Thread available: " << !!thread << "\n";
 				if(!thread)
 					continue;
 
+				this->logger << "Thead " << thread.value() << "\n";
+
+				int client = -1;
 				// Accept a new connection and return back the socket desciptor 
-				*threads_ptr->get(thread.value())->requestor = ACCEPT(listener, NULL, NULL);
-				if (*threads_ptr->get(thread.value())->requestor == -1)
+				//this->logger << "Client accepting available...\n";
+				client = ACCEPT(listener, NULL, NULL);
+				
+				if (client == -1)
 				{
 					continue;
 				}
 
-				this->logger << "Requestor " << *threads_ptr->get(thread.value())->requestor << " is getting handled\n";
+				this->logger << "Client found: " << client << "\n";
+
+				this->logger << "Requestor " << client << " is getting handled\n";
 
 				struct timeval selTimeout;
 				selTimeout.tv_sec = 2;
 				selTimeout.tv_usec = 0;
 				fd_set readSet;
 				FD_ZERO(&readSet);
-				FD_SET(*threads_ptr->get(thread.value())->requestor + 1, &readSet);
-				FD_SET(*threads_ptr->get(thread.value())->requestor, &readSet);
+				FD_SET(client + 1, &readSet);
+				FD_SET(client, &readSet);
 
-				this->logger << "Requestor " << *threads_ptr->get(thread.value())->requestor << " is checked if valid\n";
+				this->logger << "Requestor " << client << " is checked if valid\n";
 				
-				status = SELECT(*threads_ptr->get(thread.value())->requestor + 1, &readSet, nullptr, nullptr, &selTimeout);
+				status = SELECT(client + 1, &readSet, nullptr, nullptr, &selTimeout);
 				this->logger << "SELECT status is " << status << "\n";
 				if (status <= 0)
 					continue;
 
-				this->logger << "Requestor " << *threads_ptr->get(thread.value())->requestor << " is still valid\n";
+				this->logger << "Requestor " << client << " is still valid\n";
 
-				if (getsockname(*threads_ptr->get(thread.value())->requestor, nullptr, nullptr) < 0 && errno == ENOTSOCK) continue;
+				if (getsockname(client, nullptr, nullptr) < 0 && errno == ENOTSOCK) continue;
 				
-				this->logger << "Requestor " << *threads_ptr->get(thread.value())->requestor << " is still valid\n";
+				this->logger << "Requestor " << client << " is still valid\n";
 
-				this->logger << thread.value() << " thread will handle client " << *threads_ptr->get(thread.value())->requestor << "\n";
+				this->logger << thread.value() << " thread will handle client " << client << "\n";
 				
-				threads_ptr->get(thread.value())->detach(std::make_shared<std::function<void(int)>>([this, &limited, &status_handler, &requests](int socket) -> void {
-					this->handler (socket, [&limited, &status_handler, &requests]() {
+				threads_ptr->get(thread.value())->detach(std::make_shared<std::function<void(int)>>([this, &limited, &requests](int socket) -> void {
+					this->logger << "YEEEEEEEEEEEEEAP" << "\n";
+					this->handler (socket, [this, &limited, &requests]() {
 						if (!limited) return;
 						requests--;
-						if (requests == 0) {
-							status_handler->kill();
+						this->logger << "Requests: " << requests << "\n";
+						if (requests <= 0) {
+							this->status_handler.kill();
 						}
 					});
-				}), *threads_ptr->get(thread.value())->requestor);
+				}), client);
 			}
 			#ifdef _WIN32
 				WSACleanup();
 			#endif
-		}, status_handler, limited).detach();
-		return status_handler;
+		}, PORT, cores, limited, requests).detach();
+		return *this;
 	}
+	webframe& wait_start()
+	{
+		status_handler.down().wait();
+		return *this;
+	}
+	webframe& wait_down()
+	{
+		status_handler.down().wait();
+		return *this;
+	}
+	private:
+	server_status status_handler;
 };
 } // namespace webframe

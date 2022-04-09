@@ -4,7 +4,7 @@ OPTIMIZATION_LEVEL=-O2
 OPT=-fconstexpr-depth=700
 INCLUDE_DIRS=-I./tests -I./src
 LIB_FLAGS=-pthread -lpthread
-DEBUG_FLAGS=-fsanitize=undefined
+DEBUG_FLAGS=-fsanitize=undefined -fsanitize=address
 INJACPP=-I./lib/inja/single_include/ -I./lib/inja/third_party/include
 
 ifeq ($(OS),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...

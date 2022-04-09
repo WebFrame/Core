@@ -60,20 +60,19 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		performance.open ("./bin/log/performance.txt",std::ios::out);
 		std::ostream performancer (&performance);
 		webframe::webframe app;
-		std::shared_ptr<webframe::webframe::server_status> status = app
+		app
 		.set_logger(*nil)
 		.set_error_logger(*nil)
 		.set_performancer(performancer)
 		.route ("/", []() { // static setup
 				return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 		})
-		.run("8887", cores, 1, 1);
-
-		status->started().wait();
+		.run("8887", cores, 1, 1)
+		.wait_start();
 
 		system("curl http://localhost:8887/ > ./bin/log/curl.txt 2>> ./bin/log/log.txt &");
 		
-		status->down().wait();
+		app.wait_down();
 		
 		std::ifstream fin ("./bin/log/curl.txt");
 		std::string response; 
@@ -87,7 +86,7 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		performance.open ("./bin/log/performance.txt",std::ios::out);
 		std::ostream performancer (&performance);
 		webframe::webframe app;
-		std::shared_ptr<webframe::webframe::server_status> status = app
+		app
 		.set_logger(*nil)
 		.set_error_logger(*nil)
 		.set_performancer(performancer)
@@ -98,9 +97,8 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 			}
 			return "Hello, World!";
 		})
-		.run("8889", cores, 1, 31);
-
-		status->started().wait();
+		.run("8889", cores, 1, 31)
+		.wait_start();
 
 		char buffer [3];
 		std::string command;
@@ -109,8 +107,9 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 			command = std::string("curl http://localhost:8889/") + std::string(webframe::itoa(i, buffer, 10)) + " > ./bin/log/curl.txt 2>> ./bin/log/log.txt &";
 			system(command.c_str());
 		}
-		status->down().wait();
 		
+		app.wait_down();
+
 		std::ifstream fin ("./bin/log/performance.txt");
 		double sum = 0;
 		int n;
