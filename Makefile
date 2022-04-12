@@ -26,6 +26,8 @@ install: install_inja
 install_inja:
 	cd ./lib/inja && cmake . -G "Unix Makefiles" && make MAKE=make CMAKE_COMMAND=cmake
 
+build_all: build build_tests benchmark_build
+
 build:
 	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./src/main.cpp -o ./bin/main.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(INJACPP)
 
@@ -50,8 +52,10 @@ clean:
 	rm -rf ./bin
 	mkdir -p ./bin
 
-benchmark:
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server.exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP) -fconcepts; \
+benchmark_build:
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server.exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP) -fconcepts
+
+benchmark: benchmark_build
 	npm install express; \
 	python -m pip install flask; \
 	./benchmark/contestants/server.exe & \

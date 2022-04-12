@@ -11,14 +11,14 @@ int main()
 	app.route("/{number}/2", [&](int steps) {
 			for (int i = 0; i < (1 << steps); i++)
 			{
-				pass += rand();
+				pass = pass + rand();
 			}
 			return "Hello World!";
 		})
 		.route("/{number}", [&](int steps) {
 			for (int i = 0; i < (1 << steps); i++)
 			{
-				pass++;
+				pass = pass + 1;
 			}
 			return "Hello World!";
 		});
