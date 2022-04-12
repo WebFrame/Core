@@ -9,6 +9,7 @@
 
 #include <stdlib.h>
 #include <string_view>
+#include <webframe/constexpr.hpp>
 
 namespace http_codes {
     /** 
@@ -22,14 +23,6 @@ namespace http_codes {
         /*4xx errors*/{"Bad Request", "Unauthorized", "Payment Required", "Forbidden", "Not Found", "Method Not Allowed", "Not Acceptable", "Proxy Authentication Required", "Request Time-out", "Conflict", "Gone", "Length Required", "Precondition Failed", "Request Entity Too Large", "Request-URI Too Large", "Unsupported Media Type", "Requested range not satisfiable", "Expectation Failed"},
         /*5xx errors*/{"Internal Server Error", "Not Implemented", "Bad Gateway", "Service Unavailable", "Gateway Time-out", "HTTP Version not supported"},
     };
-    
-    /** 
-     *  @brief   Generates number off of string
-     *  @param   str A number in string form
-     ***********************************************/
-    constexpr unsigned int string_to_uint(const char* str, unsigned int value = 0) {
-        return (*str) == '\0' ? value : string_to_uint(str + 1, value * 10 + ((*str) - '0'));
-    }
 
     /** 
      *  @brief   Transforms HTTP code into HTTP response message
@@ -44,6 +37,6 @@ namespace http_codes {
      *  @param   code_str The HTTP code which's message is requested as a string
      ***********************************************/
     constexpr const char* get_reason_by_code(const char* code_str) {
-        return get_reason_by_code(string_to_uint(code_str));
+        return get_reason_by_code(webframe::_compile_time::string_to_uint(code_str));
     }
 };

@@ -5,8 +5,8 @@
 
 int main()
 {
-	constexpr int fasten = webframe::webframe::init();
-	int pass = fasten;
+	static_assert(webframe::webframe::init(), "constexpr initiation failed");
+	int pass = 0;
 	webframe::webframe app;
 	/*app.set_static("./src/static", "/static")
 		.set_templates("./src/static/templates")
@@ -60,6 +60,6 @@ int main()
 				return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 		})
 		.run("8887", 1, 1, 1)
-		.wait_down();
+		.wait_end();
 		
 }

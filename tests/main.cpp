@@ -68,11 +68,11 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 				return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 		})
 		.run("8887", cores, 1, 1)
-		.wait_start();
-
+		.wait_start("8887");
+		
 		system("curl http://localhost:8887/ > ./bin/log/curl.txt 2>> ./bin/log/log.txt &");
 		
-		app.wait_down();
+		app.wait_end("8887");
 		
 		std::ifstream fin ("./bin/log/curl.txt");
 		std::string response; 
@@ -91,14 +91,14 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		.set_error_logger(*nil)
 		.set_performancer(performancer)
 		.route ("/{number}", [&count](int steps) {	
-			for (volatile int i = 0; i < (1 << steps); i++)
+			for (int i = 0; i < (1 << steps); i ++)
 			{
-				count++;
+				count = count + 1;
 			}
 			return "Hello, World!";
 		})
 		.run("8889", cores, 1, 31)
-		.wait_start();
+		.wait_start("8889");
 
 		char buffer [3];
 		std::string command;
@@ -108,7 +108,7 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 			system(command.c_str());
 		}
 		
-		app.wait_down();
+		app.wait_end("8889");
 
 		std::ifstream fin ("./bin/log/performance.txt");
 		double sum = 0;
@@ -130,7 +130,7 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 
 int main ()
 {
-	constexpr int _ = webframe::webframe::init();
+	static_assert(webframe::webframe::init(), "constexpr initiation failed");
 	
 	std::filebuf fb;
 	fb.open ("./bin/log/buffer.txt", std::ios::out);
@@ -138,7 +138,7 @@ int main ()
 
 	nil = &nill;
 
-	std::cout << _ << "===============================  Testing  ===============================" << _ << "\n";
+	std::cout << "===============================  Testing  ===============================" << "\n";
 
 	Moka::Report report;
 	all.test(report);

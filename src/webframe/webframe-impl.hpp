@@ -22,6 +22,8 @@
 #include <webframe/respond_manager.hpp>
 #include <webframe/file.hpp>
 #include <webframe/host.h>
+#include <webframe/constexpr.hpp>
+#include <webframe/server_status.hpp>
 
 namespace webframe
 {
@@ -124,30 +126,27 @@ public:
 			return "Error 500: Internal server error: " + reason + ".";
 		});
 	}
-
-private:
-    static constexpr const char* strCodes[] = {"0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117","200","201","202","203","204","205","206","207","208","209","210","211","212","213","214","215","216","217","300","301","302","303","304","305","306","307","308","309","310","311","312","313","314","315","316","317","400","401","402","403","404","405","406","407","408","409","410","411","412","413","414","415","416","417","500","501","502","503","504","505","506","507","508","509","510","511","512","513","514","515","516","517"};
-    static constexpr unsigned int codes[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,400,401,402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,417,500,501,502,503,504,505,506,507,508,509,510,511,512,513,514,515,516,517};
 public:
-    static constexpr int init(unsigned int code = 0) 
+    static constexpr bool init(unsigned int code = 0) 
     {
-        if (code >= sizeof(strCodes)/sizeof(const char*)) return 0;
-        if (code == 0)
-        {
-            mime_types::get_mime_type(".zip");
-            string_to_method(method_to_string(method::GET    ));
-            string_to_method(method_to_string(method::HEAD   ));
-            string_to_method(method_to_string(method::POST   ));
-            string_to_method(method_to_string(method::PUT    ));
-            string_to_method(method_to_string(method::DDELETE));
-            string_to_method(method_to_string(method::CONNECT));
-            string_to_method(method_to_string(method::OPTIONS));
-            string_to_method(method_to_string(method::TRACE  ));
-            string_to_method(method_to_string(method::PATCH  ));
-        }
-        http_codes::get_reason_by_code(codes[code]); 
-        http_codes::get_reason_by_code(strCodes[code]);
-        return init(code + 1);
+        if (code >= sizeof(_compile_time::strCodes)/sizeof(const char*)) return true;
+		if (code == 0) 
+		{
+			static_assert(mime_types::get_mime_type(".zip").size() > 0, "mime_types were not initialized.");
+			
+			static_assert(string_to_method(method_to_string(method::GET    )) == method::GET, "method::GET was not able to be converted properly");
+			static_assert(string_to_method(method_to_string(method::HEAD   )) == method::HEAD, "method::HEAD was not able to be converted properly");
+			static_assert(string_to_method(method_to_string(method::POST   )) == method::POST, "method::POST was not able to be converted properly");
+			static_assert(string_to_method(method_to_string(method::PUT    )) == method::PUT, "method::PUT was not able to be converted properly");
+			static_assert(string_to_method(method_to_string(method::DDELETE)) == method::DDELETE, "method::DDELETE was not able to be converted properly");
+			static_assert(string_to_method(method_to_string(method::CONNECT)) == method::CONNECT, "method::CONNECT was not able to be converted properly");
+			static_assert(string_to_method(method_to_string(method::OPTIONS)) == method::OPTIONS, "method::OPTIONS was not able to be converted properly");
+			static_assert(string_to_method(method_to_string(method::TRACE  )) == method::TRACE, "method::TRACE was not able to be converted properly");
+			static_assert(string_to_method(method_to_string(method::PATCH  )) == method::PATCH, "method::PATCH was not able to be converted properly");
+		}
+		http_codes::get_reason_by_code(_compile_time::codes[code]);
+		http_codes::get_reason_by_code(_compile_time::strCodes[code]);
+		return init(code + 1);
     }
 
 	template <typename F>
@@ -472,55 +471,10 @@ private:
 	};
  
 public:
-	class server_status {
-		private:
-			std::shared_ptr<std::promise<void>> started_ptr, down_ptr;
-			std::shared_future<void> started_shared_future, down_shared_future;
-			void start() {
-				try {
-					started_ptr->set_value();
-				} catch (...) {
-
-				}
-			}
-			void kill() {
-				try {
-					down_ptr->set_value();
-				} catch (...) {
-
-				}
-			}
-		public:
-			server_status () {
-				started_ptr = std::make_shared<std::promise<void>>();
-				down_ptr = std::make_shared<std::promise<void>>();
-				started_shared_future = started_ptr->get_future().share();
-				down_shared_future = down_ptr->get_future().share();
-			}
-			server_status (const server_status& ss) {
-				started_ptr = ss.started_ptr;
-				down_ptr = ss.down_ptr;
-				started_shared_future = ss.started_shared_future;
-				down_shared_future = ss.down_shared_future;
-			}
-			server_status (server_status&& ss) {
-				started_ptr = ss.started_ptr;
-				down_ptr = ss.down_ptr;
-				started_shared_future = ss.started_shared_future;
-				down_shared_future = ss.down_shared_future;
-			}
-			std::shared_future<void> started() {
-				return started_shared_future;
-			}
-			std::shared_future<void> down() {
-				return down_shared_future;
-			}
-			friend class webframe;
-	};
-
 	webframe& run(const char* PORT, const unsigned int cores, bool limited = false, int requests = -1) 
 	{
-		std::thread([this](std::string PORT, const unsigned int cores, bool limited, int requests) {
+		this->port_status.initiate(PORT);
+		std::thread([this](const char* PORT, const unsigned int cores, bool limited, int requests) {
 			#ifdef _WIN32
 				//----------------------
 				// Initialize Winsock.
@@ -530,8 +484,8 @@ public:
 				this->logger << "Startup finished " << iResult << "\n";
 				if (iResult != NO_ERROR) {
 					this->logger << "WSAStartup failed with error: " << iResult << "\n";
-					this->status_handler.start();
-					this->status_handler.kill();
+					this->port_status.alert_start(PORT);
+					this->port_status.alert_end(PORT);
 					return;
 				}
 			#endif
@@ -558,12 +512,12 @@ public:
 			hints.ai_next = NULL;
 
 			// Fill the res data structure and make sure that the results make sense. 
-			status = getaddrinfo(NULL, PORT.c_str(), &hints, &res);
+			status = getaddrinfo(NULL, PORT, &hints, &res);
 			if (status != 0)
 			{
 				this->logger << "getaddrinfo error: " << gai_strerror(status) << "\n";
-				this->status_handler.start();
-				this->status_handler.kill();
+				this->port_status.alert_start(PORT);
+				this->port_status.alert_end(PORT);
 				return;
 			}
 
@@ -572,8 +526,8 @@ public:
 			if (listener == -1)
 			{
 				this->logger << "socket error: " << gai_strerror(status) << "\n";
-				this->status_handler.start();
-				this->status_handler.kill();
+				this->port_status.alert_start(PORT);
+				this->port_status.alert_end(PORT);
 				return;
 			}
 
@@ -582,8 +536,8 @@ public:
 			if (status < 0)
 			{
 				this->logger << "bind error: " << gai_strerror(status) << "\n";
-				this->status_handler.start();
-				this->status_handler.kill();
+				this->port_status.alert_start(PORT);
+				this->port_status.alert_end(PORT);
 				return;
 			}
 
@@ -591,8 +545,8 @@ public:
 			if (status < 0)
 			{
 				this->logger << "listen error: " << gai_strerror(status) << "\n";
-				this->status_handler.start();
-				this->status_handler.kill();
+				this->port_status.alert_start(PORT);
+				this->port_status.alert_end(PORT);
 				return;
 			}
 
@@ -600,25 +554,24 @@ public:
 			if (status < 0)
 			{
 				this->logger << "nonblocking config error: " << gai_strerror(status) << "\n";
-				this->status_handler.start();
-				this->status_handler.kill();
+				this->port_status.alert_start(PORT);
+				this->port_status.alert_end(PORT);
 				return;
 			}
 
 			// Free the res linked list after we are done with it	
 			freeaddrinfo(res);
-
-			this->logger << "Listener setup " << listener << "\n";
 			
-			status_handler.start();
+			this->logger << "Listener setup " << listener << "\n";
+			this->port_status.alert_start(PORT);
 
 			while (!limited || requests > 0) {
 				const std::optional<size_t> thread = threads_ptr->get_free_thread();
-				this->logger << "Thread available: " << !!thread << "\n";
+				//this->logger << "Thread available: " << !!thread << "\n";
 				if(!thread)
 					continue;
 
-				this->logger << "Thead " << thread.value() << "\n";
+				//this->logger << "Thead " << thread.value() << "\n";
 
 				int client = -1;
 				// Accept a new connection and return back the socket desciptor 
@@ -657,14 +610,14 @@ public:
 
 				this->logger << thread.value() << " thread will handle client " << client << "\n";
 				
-				threads_ptr->get(thread.value())->detach(std::make_shared<std::function<void(int)>>([this, &limited, &requests](int socket) -> void {
+				threads_ptr->get(thread.value())->detach(std::make_shared<std::function<void(int)>>([this, &limited, &requests, PORT](int socket) -> void {
 					this->logger << "YEEEEEEEEEEEEEAP" << "\n";
-					this->handler (socket, [this, &limited, &requests]() {
+					this->handler (socket, [this, &limited, &requests, PORT]() {
 						if (!limited) return;
 						requests--;
 						this->logger << "Requests: " << requests << "\n";
 						if (requests <= 0) {
-							this->status_handler.kill();
+							this->port_status.alert_end(PORT);
 						}
 					});
 				}), client);
@@ -675,17 +628,19 @@ public:
 		}, PORT, cores, limited, requests).detach();
 		return *this;
 	}
-	webframe& wait_start()
+
+	void wait_start(const char* PORT) 
 	{
-		status_handler.down().wait();
-		return *this;
+		port_status.get_start(PORT).lock();
+		port_status.get_start(PORT).unlock();
 	}
-	webframe& wait_down()
+
+	void wait_end(const char* PORT) 
 	{
-		status_handler.down().wait();
-		return *this;
+		port_status.get_end(PORT).lock();
+		port_status.get_end(PORT).unlock();
 	}
 	private:
-	server_status status_handler;
+	server_status port_status;
 };
 } // namespace webframe
