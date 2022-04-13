@@ -416,7 +416,7 @@ private:
 		void join(std::shared_ptr<std::function<void(int)>> f, int socket) 
 		{
 			this->lock();
-			std::jthread([this, f](int socket) {
+			std::thread([this, f](int socket) {
 				f->operator()(socket);
 				this->unlock();
 			}, socket).join();
@@ -425,7 +425,7 @@ private:
 		void detach(std::shared_ptr<std::function<void(int)>> f, int socket) 
 		{
 			this->lock();
-			std::jthread([this, f](int socket) {
+			std::thread([this, f](int socket) {
 				f->operator()(socket);
 				this->unlock();
 			}, socket).detach();
@@ -480,7 +480,7 @@ public:
 	webframe& run(const char* PORT, const unsigned int cores, bool limited = false, int requests = -1) 
 	{
 		this->port_status.initiate(PORT);
-		std::jthread([this](const char* PORT, const unsigned int cores, bool limited, int requests) {
+		std::thread([this](const char* PORT, const unsigned int cores, bool limited, int requests) {
 			#ifdef _WIN32
 				//----------------------
 				// Initialize Winsock.
