@@ -73,7 +73,7 @@ save-benchmark:
 local-benchmark:
 	mkdir -p ./benchmark/performance/$(DIR_PREFIX)\
 	for i in "" 0 1 2 3 fast g s; do \
-	 	tmieout 1h make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O$$i ; \
+	 	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O$$i ; \
 		cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-O$$i.txt ; \
 		cp ./bin/log/performance_summary.txt ./benchmark/$(DIR_PREFIX)performance/performance_summary-O$$i.txt ; \
 	done

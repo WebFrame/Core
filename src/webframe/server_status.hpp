@@ -12,11 +12,13 @@
 namespace webframe {
 	class server_status {
 	public:
-        server_status() { }
-    private:
-		mutable std::shared_mutex start [65536];
-		mutable std::shared_mutex dead  [65536];
+        server_status() {
 
+        }
+    private:
+		std::mutex start [65536];
+		std::mutex dead  [65536];
+		
     public:
 		void initiate(const char* PORT) {
 			this->lock_working(PORT);
@@ -31,11 +33,11 @@ namespace webframe {
             this->unlock_dead(PORT);
         }
 
-        std::shared_mutex& get_start(const char* PORT) {
+        std::mutex& get_start(const char* PORT) {
             return this->start[_compile_time::string_to_uint(PORT)];
         }
 
-        std::shared_mutex& get_end(const char* PORT) {
+        std::mutex& get_end(const char* PORT) {
             return this->dead[_compile_time::string_to_uint(PORT)];
         }
 

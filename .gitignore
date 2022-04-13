@@ -13,3 +13,4 @@ bin/
 benchmark/tmp/
 package-lock.json
 build/
+*.exe
