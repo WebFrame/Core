@@ -82,5 +82,5 @@ jobs:
         shell: bash
         timeout-minutes: 100
         run: |
-          make -B local-benchmark DIR_PREFIX=${{ matrix.config.os }}/
+          make -B local-benchmark COMPILER_CPP=${{ matrix.config.cxx }} DIR_PREFIX=${{ matrix.config.os }}/
           cat ./benchmark/performance/${{ matrix.config.os }}/performance_summary*
