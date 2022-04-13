@@ -1,7 +1,6 @@
 #include <moka/moka.h>
 #include <webframe/webframe.hpp>
 
-#include <atomic>
 #include <stdio.h>
 std::ostream* nil;
 const unsigned char cores = std::thread::hardware_concurrency();
@@ -84,7 +83,8 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 	});
 	
 	it.should("get performance data", [](){
-		std::atomic<int> count {0};
+		volatile int count = 0;
+		volatile int i;
 		std::filebuf performance;
 		performance.open ("./bin/log/performance.txt",std::ios::out);
 		std::ostream performancer (&performance);
@@ -93,10 +93,10 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		.set_logger(*nil)
 		.set_error_logger(*nil)
 		.set_performancer(performancer)
-		.route ("/{number}", [&count](int steps) {	
-			for (int i = 0; i < (1 << steps); i ++)
+		.route ("/{number}", [&count, &i](int steps) {	
+			for (i = 0; i < (1 << steps); )
 			{
-				count.fetch_add(1, std::memory_order_relaxed);
+				count = count + 1; i = i + 1;
 			}
 			return "Hello, World!";
 		})
