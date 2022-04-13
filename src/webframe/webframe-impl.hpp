@@ -83,7 +83,7 @@ private:
 				if (curr_val_regex == "digit")
 					curr_val_regex = "[0-9]";
 				if (curr_val_regex == "number")
-					curr_val_regex = "[1-9][0-9]*";
+					curr_val_regex = "[0-9]+";
 				if (curr_val_regex == "path")
 					curr_val_regex = "[" + regexAnyChar + "\\/]+";
 				format += curr_val_regex;
@@ -126,27 +126,33 @@ public:
 			return "Error 500: Internal server error: " + reason + ".";
 		});
 	}
+
 public:
-    static constexpr bool init(unsigned int code = 0) 
+    static constexpr bool initHttpCodes(const unsigned int code = 0) {
+		std::visit ([](auto code){
+			constexpr auto __attribute__((unused)) _1 = http_codes::get_reason_by_code(_compile_time::codes[code]);
+			constexpr auto __attribute__((unused)) _2 = http_codes::get_reason_by_code(_compile_time::strCodes[code]);
+		}, _compile_time::var_index<_compile_time::codes.size()>(code));
+
+		return (code + 1 >= _compile_time::codes.size()) ? true : initHttpCodes(code + 1);
+	}
+    static constexpr bool init()
     {
-        if (code >= sizeof(_compile_time::strCodes)/sizeof(const char*)) return true;
-		if (code == 0) 
-		{
-			static_assert(mime_types::get_mime_type(".zip").size() > 0, "mime_types were not initialized.");
-			
-			static_assert(string_to_method(method_to_string(method::GET    )) == method::GET, "method::GET was not able to be converted properly");
-			static_assert(string_to_method(method_to_string(method::HEAD   )) == method::HEAD, "method::HEAD was not able to be converted properly");
-			static_assert(string_to_method(method_to_string(method::POST   )) == method::POST, "method::POST was not able to be converted properly");
-			static_assert(string_to_method(method_to_string(method::PUT    )) == method::PUT, "method::PUT was not able to be converted properly");
-			static_assert(string_to_method(method_to_string(method::DDELETE)) == method::DDELETE, "method::DDELETE was not able to be converted properly");
-			static_assert(string_to_method(method_to_string(method::CONNECT)) == method::CONNECT, "method::CONNECT was not able to be converted properly");
-			static_assert(string_to_method(method_to_string(method::OPTIONS)) == method::OPTIONS, "method::OPTIONS was not able to be converted properly");
-			static_assert(string_to_method(method_to_string(method::TRACE  )) == method::TRACE, "method::TRACE was not able to be converted properly");
-			static_assert(string_to_method(method_to_string(method::PATCH  )) == method::PATCH, "method::PATCH was not able to be converted properly");
-		}
-		http_codes::get_reason_by_code(_compile_time::codes[code]);
-		http_codes::get_reason_by_code(_compile_time::strCodes[code]);
-		return init(code + 1);
+		static_assert(mime_types::get_mime_type(".zip").size() > 0, "mime_types were not initialized.");
+		
+		static_assert(string_to_method(method_to_string(method::GET    )) == method::GET, "method::GET was not able to be converted properly");
+		static_assert(string_to_method(method_to_string(method::HEAD   )) == method::HEAD, "method::HEAD was not able to be converted properly");
+		static_assert(string_to_method(method_to_string(method::POST   )) == method::POST, "method::POST was not able to be converted properly");
+		static_assert(string_to_method(method_to_string(method::PUT    )) == method::PUT, "method::PUT was not able to be converted properly");
+		static_assert(string_to_method(method_to_string(method::DDELETE)) == method::DDELETE, "method::DDELETE was not able to be converted properly");
+		static_assert(string_to_method(method_to_string(method::CONNECT)) == method::CONNECT, "method::CONNECT was not able to be converted properly");
+		static_assert(string_to_method(method_to_string(method::OPTIONS)) == method::OPTIONS, "method::OPTIONS was not able to be converted properly");
+		static_assert(string_to_method(method_to_string(method::TRACE  )) == method::TRACE, "method::TRACE was not able to be converted properly");
+		static_assert(string_to_method(method_to_string(method::PATCH  )) == method::PATCH, "method::PATCH was not able to be converted properly");
+
+		static_assert(initHttpCodes(), "The initiation of HTTP code and their reasons failed");
+		
+		return true;
     }
 
 	template <typename F>
@@ -372,13 +378,13 @@ private:
 	void handler(int client, const std::function<void()>& callback)
 	{
 		int status = this->responder(client);
+		this->logger << "Responded status: " << status << "\n";
+		CLOSE(client);
+		this->logger << "Closing client: " << client << "\n";
 		if (status != -2)
 		{
 			callback();
 		}
-		this->logger << "Responded status: " << status << "\n";
-		CLOSE(client);
-		this->logger << "Closing client: " << client << "\n";
 	}
 	
 	struct thread_pool;
@@ -410,7 +416,7 @@ private:
 		void join(std::shared_ptr<std::function<void(int)>> f, int socket) 
 		{
 			this->lock();
-			std::thread([this, f](int socket) {
+			std::jthread([this, f](int socket) {
 				f->operator()(socket);
 				this->unlock();
 			}, socket).join();
@@ -419,7 +425,7 @@ private:
 		void detach(std::shared_ptr<std::function<void(int)>> f, int socket) 
 		{
 			this->lock();
-			std::thread([this, f](int socket) {
+			std::jthread([this, f](int socket) {
 				f->operator()(socket);
 				this->unlock();
 			}, socket).detach();
@@ -474,7 +480,7 @@ public:
 	webframe& run(const char* PORT, const unsigned int cores, bool limited = false, int requests = -1) 
 	{
 		this->port_status.initiate(PORT);
-		std::thread([this](const char* PORT, const unsigned int cores, bool limited, int requests) {
+		std::jthread([this](const char* PORT, const unsigned int cores, bool limited, int requests) {
 			#ifdef _WIN32
 				//----------------------
 				// Initialize Winsock.
@@ -604,24 +610,17 @@ public:
 
 				this->logger << "Requestor " << client << " is still valid\n";
 
-				if (getsockname(client, nullptr, nullptr) < 0 && errno == ENOTSOCK) continue;
-				
-				this->logger << "Requestor " << client << " is still valid\n";
-
 				this->logger << thread.value() << " thread will handle client " << client << "\n";
 				
 				threads_ptr->get(thread.value())->detach(std::make_shared<std::function<void(int)>>([this, &limited, &requests, PORT](int socket) -> void {
-					this->logger << "YEEEEEEEEEEEEEAP" << "\n";
 					this->handler (socket, [this, &limited, &requests, PORT]() {
 						if (!limited) return;
 						requests--;
 						this->logger << "Requests: " << requests << "\n";
-						if (requests <= 0) {
-							this->port_status.alert_end(PORT);
-						}
 					});
 				}), client);
 			}
+			this->port_status.alert_end(PORT);
 			#ifdef _WIN32
 				WSACleanup();
 			#endif
@@ -632,13 +631,16 @@ public:
 	void wait_start(const char* PORT) 
 	{
 		port_status.get_start(PORT).lock();
-		port_status.get_start(PORT).unlock();
 	}
 
 	void wait_end(const char* PORT) 
 	{
 		port_status.get_end(PORT).lock();
-		port_status.get_end(PORT).unlock();
+	}
+
+	void reset(const char* PORT) 
+	{
+		port_status.reset(PORT);
 	}
 	private:
 	server_status port_status;

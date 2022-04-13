@@ -1,5 +1,6 @@
 .vscode/settings.json
 *.exe
+**/*.exe
 buffer.txt
 log.txt
 curl.txt
@@ -13,4 +14,3 @@ bin/
 benchmark/tmp/
 package-lock.json
 build/
-*.exe

@@ -68,12 +68,14 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		.route ("/", []() { // static setup
 				return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 		})
-		.run("8887", cores, 1, 1)
+		.run("8887", 1, true, 1)
 		.wait_start("8887");
 		
-		system("curl http://localhost:8887/ > ./bin/log/curl.txt 2>> ./bin/log/log.txt &");
+		system("curl http://localhost:8887/ > ./bin/log/curl.txt 2>> ./bin/log/log.txt");
 		
 		app.wait_end("8887");
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // wait for curl to parse the output and write it to the file
 		
 		std::ifstream fin ("./bin/log/curl.txt");
 		std::string response; 
@@ -98,18 +100,28 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 			}
 			return "Hello, World!";
 		})
-		.run("8889", cores, 1, 31)
+		.run("8889", cores, true, 31)
 		.wait_start("8889");
 
 		char buffer [3];
 		std::string command;
 		for (int i = 0 ; i <= 30 ; i ++)
 		{
-			command = std::string("curl http://localhost:8889/") + std::string(webframe::itoa(i, buffer, 10)) + " > ./bin/log/curl.txt 2>> ./bin/log/log.txt &";
+			command = std::string("curl http://localhost:8889/") + std::string(webframe::itoa(i, buffer, 10)) + " > ./bin/log/curl" + std::string(webframe::itoa(i, buffer, 10)) + ".txt 2>> ./bin/log/log.txt";
 			system(command.c_str());
 		}
 		
 		app.wait_end("8889");
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000)); // wait for curl to parse the output and write it to the file
+
+		for (int i = 0 ; i <= 30 ; i ++)
+		{
+			std::ifstream fin ("./bin/log/curl" + std::string(webframe::itoa(i, buffer, 10)) + ".txt");
+			std::string response;
+			std::getline(fin, response);
+			must_equal(response, "Hello, World!");
+		}
 
 		std::ifstream fin ("./bin/log/performance.txt");
 		double sum = 0;

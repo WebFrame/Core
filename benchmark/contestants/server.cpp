@@ -23,5 +23,5 @@ int main()
 			return "Hello World!";
 		});
 	const char* port = "8888";
-	app.run(port, 1);
+	app.run(port, 1).wait_end(port);
 }

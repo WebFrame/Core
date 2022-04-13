@@ -34,26 +34,30 @@ build:
 build_tests:
 	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./tests/main.cpp -o ./bin/test.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(INJACPP)
 
+debug_build_all: debug_build debug_build_tests debug_benchmark_build
+
 debug_build:
 	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./src/main.cpp -o ./bin/main.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP)
 
 debug_build_tests:
 	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./tests/main.cpp -o ./bin/test.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP)
 
+benchmark_build:
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server.exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP) -fconcepts
+
+debug_benchmark_build:
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server.exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP) -fconcepts
+
+clean:
+	rm -rf ./bin
+	mkdir -p ./bin/log
+
 run:
 	./bin/main.exe
 
 run_tests:
-	mkdir -p ./bin/log
 	./bin/test.exe
 	cat ./bin/log/performance_summary.txt
-
-clean:
-	rm -rf ./bin
-	mkdir -p ./bin
-
-benchmark_build:
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server.exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP) -fconcepts
 
 benchmark: benchmark_build
 	npm install express; \
@@ -74,28 +78,28 @@ local-benchmark:
 	mkdir -p ./benchmark/performance/$(DIR_PREFIX); \
 	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O ; \
 	cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-O.txt ; \
-	cp ./bin/log/performance_summary.txt ./benchmark/$(DIR_PREFIX)performance/performance_summary-O.txt ; \
+	cp ./bin/log/performance_summary.txt ./benchmark/performance/$(DIR_PREFIX)performance_summary-O.txt ; \
 
 	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O1 ; \
 	cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-O1.txt ; \
-	cp ./bin/log/performance_summary.txt ./benchmark/$(DIR_PREFIX)performance/performance_summary-O1.txt ; \
+	cp ./bin/log/performance_summary.txt ./benchmark/performance/$(DIR_PREFIX)performance_summary-O1.txt ; \
 
 	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O2 ; \
 	cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-O2.txt ; \
-	cp ./bin/log/performance_summary.txt ./benchmark/$(DIR_PREFIX)performance/performance_summary-O3.txt ; \
+	cp ./bin/log/performance_summary.txt ./benchmark/performance/$(DIR_PREFIX)performance_summary-O2.txt ; \
 
 	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O3 ; \
 	cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-O3.txt ; \
-	cp ./bin/log/performance_summary.txt ./benchmark/$(DIR_PREFIX)performance/performance_summary-O3.txt ; \
+	cp ./bin/log/performance_summary.txt ./benchmark/performance/$(DIR_PREFIX)performance_summary-O3.txt ; \
 
 	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-Ofast ; \
 	cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-Ofast.txt ; \
-	cp ./bin/log/performance_summary.txt ./benchmark/$(DIR_PREFIX)performance/performance_summary-Ofast.txt ; \
+	cp ./bin/log/performance_summary.txt ./benchmark/performance/$(DIR_PREFIX)performance_summary-Ofast.txt ; \
 
 	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-Og ; \
 	cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-Og.txt ; \
-	cp ./bin/log/performance_summary.txt ./benchmark/$(DIR_PREFIX)performance/performance_summary-Og.txt ; \
+	cp ./bin/log/performance_summary.txt ./benchmark/performance/$(DIR_PREFIX)performance_summary-Og.txt ; \
 
 	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-Os ; \
 	cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-Os.txt ; \
-	cp ./bin/log/performance_summary.txt ./benchmark/$(DIR_PREFIX)performance/performance_summary-Os.txt ; \
+	cp ./bin/log/performance_summary.txt ./benchmark/performance/$(DIR_PREFIX)performance_summary-Os.txt ; \
