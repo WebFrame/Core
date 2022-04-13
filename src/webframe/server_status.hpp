@@ -13,7 +13,9 @@ namespace webframe {
 	class server_status {
 	public:
         server_status() {
-
+			for (int i = 0 ; i < 65536 ; i++) {
+				start[i] = dead[i] = nullptr;
+			}
         }
     private:
 		std::mutex* start [65536];

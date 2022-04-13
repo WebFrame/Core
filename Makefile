@@ -79,15 +79,15 @@ local-benchmark:
 	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O ; \
 	cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-O.txt ; \
 	cp ./bin/log/performance_summary.txt ./benchmark/performance/$(DIR_PREFIX)performance_summary-O.txt ; \
-
+ 
 	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O1 ; \
 	cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-O1.txt ; \
 	cp ./bin/log/performance_summary.txt ./benchmark/performance/$(DIR_PREFIX)performance_summary-O1.txt ; \
-
+ 
 	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O2 ; \
 	cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-O2.txt ; \
 	cp ./bin/log/performance_summary.txt ./benchmark/performance/$(DIR_PREFIX)performance_summary-O2.txt ; \
-
+ 
 	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O3 ; \
 	cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-O3.txt ; \
 	cp ./bin/log/performance_summary.txt ./benchmark/performance/$(DIR_PREFIX)performance_summary-O3.txt ; \
