@@ -71,9 +71,31 @@ save-benchmark:
 	cp tmp/*.result results/ 
 
 local-benchmark:
-	mkdir -p ./benchmark/performance/$(DIR_PREFIX)\
-	for i in "" 0 1 2 3 fast g s; do \
-	 	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O$$i ; \
-		cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-O$$i.txt ; \
-		cp ./bin/log/performance_summary.txt ./benchmark/$(DIR_PREFIX)performance/performance_summary-O$$i.txt ; \
-	done
+	mkdir -p ./benchmark/performance/$(DIR_PREFIX); \
+	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O ; \
+	cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-O.txt ; \
+	cp ./bin/log/performance_summary.txt ./benchmark/$(DIR_PREFIX)performance/performance_summary-O.txt ; \
+
+	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O1 ; \
+	cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-O1.txt ; \
+	cp ./bin/log/performance_summary.txt ./benchmark/$(DIR_PREFIX)performance/performance_summary-O1.txt ; \
+
+	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O2 ; \
+	cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-O2.txt ; \
+	cp ./bin/log/performance_summary.txt ./benchmark/$(DIR_PREFIX)performance/performance_summary-O3.txt ; \
+
+	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O3 ; \
+	cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-O3.txt ; \
+	cp ./bin/log/performance_summary.txt ./benchmark/$(DIR_PREFIX)performance/performance_summary-O3.txt ; \
+
+	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-Ofast ; \
+	cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-Ofast.txt ; \
+	cp ./bin/log/performance_summary.txt ./benchmark/$(DIR_PREFIX)performance/performance_summary-Ofast.txt ; \
+
+	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-Og ; \
+	cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-Og.txt ; \
+	cp ./bin/log/performance_summary.txt ./benchmark/$(DIR_PREFIX)performance/performance_summary-Og.txt ; \
+
+	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-Os ; \
+	cp ./bin/log/performance.txt ./benchmark/performance/$(DIR_PREFIX)performance-Os.txt ; \
+	cp ./bin/log/performance_summary.txt ./benchmark/$(DIR_PREFIX)performance/performance_summary-Os.txt ; \
