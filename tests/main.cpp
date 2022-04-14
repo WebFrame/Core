@@ -113,7 +113,8 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 		
 		app.wait_end("8889");
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(5000)); // wait for curl to parse the output and write it to the file
+		std::this_thread::sleep_for(std::chrono::milliseconds(10000)); // wait for curl to parse the output and write it to the file
+		system("cat ./bin/log/curl*.txt");
 
 		for (int i = 0 ; i <= 30 ; i ++)
 		{
