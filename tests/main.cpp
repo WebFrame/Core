@@ -117,10 +117,11 @@ Moka::Context all ("Web++ framework - testing", [](Moka::Context& it) {
 
 		for (int i = 0 ; i <= 30 ; i ++)
 		{
-			std::ifstream fin ("./bin/log/curl" + std::string(webframe::itoa(i, buffer, 10)) + ".txt");
+			const std::string index = std::string(webframe::itoa(i, buffer, 10));
+			std::ifstream fin ("./bin/log/curl" + index + ".txt");
 			std::string response;
 			std::getline(fin, response);
-			must_equal(response, "Hello, World!");
+			must_equal(response + index, "Hello, World!" + index);
 		}
 
 		std::ifstream fin ("./bin/log/performance.txt");
