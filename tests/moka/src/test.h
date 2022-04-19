@@ -150,26 +150,42 @@ namespace Moka
 
   class Context: public Base {
   protected:
+    std::string           mPrefix;
     std::string           mName;
     std::vector<Base*>    mMembers;
     std::function<void()> mSetup;
     std::function<void()> mTeardown;
     bool                  mHasSetup;
     bool                  mHasTeardown;
+
+    Context(std::string name, std::string prefix, std::function<void(Context&)> fn) {
+      mName = std::string(name);
+      mMembers = std::vector<Base*>();
+      mPrefix = std::string(prefix + " ");
+      mHasTeardown = false;
+      mHasSetup = false;
+      fn(*this);
+    }
   public:
-    Context(std::string name): mName(name), mMembers() {
+    Context(std::string name) {
+      mName = std::string(name);
+      mMembers = std::vector<Base*>();
+      mPrefix = std::string("");
       mHasTeardown = false;
       mHasSetup = false;
     }
 
-    Context(std::string name, std::function<void(Context&)> fn): mName(name), mMembers() {
+    Context(std::string name, std::function<void(Context&)> fn) {
+      mName = std::string(name);
+      mPrefix = std::string("");
+      mMembers = std::vector<Base*>();
       mHasTeardown = false;
       mHasSetup = false;
       fn(*this);
     }
 
-    void has(std::string name, std::function<void(Context&)> fn) {
-      Context* child = new Context(name, fn);
+    void describe(std::string name, std::function<void(Context&)> fn) {
+      Context* child = new Context("", name, fn);
       mMembers.push_back(child);
     }
 
@@ -189,7 +205,7 @@ namespace Moka
     }
 
     void test(Report& report) {
-      report.enter(mName);
+      report.enter(mPrefix + mName);
       if(mHasSetup) mSetup();
       for(auto m: mMembers) m->test(report);
       if(mHasTeardown) mTeardown();

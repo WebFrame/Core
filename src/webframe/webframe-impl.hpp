@@ -170,7 +170,7 @@ public:
 		return *this;
 	}
 
-	auto get_routes() const
+	std::map<std::pair<std::vector<std::string>,std::regex>,responser,cmp> get_routes() const
 	{
 		return this->routes;
 	}

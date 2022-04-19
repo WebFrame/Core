@@ -56,12 +56,73 @@ jobs:
         shell: bash
         run: |
           make -B clean build build_tests COMPILER_CPP=${{ matrix.config.cxx }}
-      - name: Test
+      - name: Prepare speed test
         shell: bash
-        timeout-minutes: 10
         run: |
-          make -B run_tests
-      - name: Commit test score
+          mkdir -p ./benchmark/performance/${{ matrix.config.os }};
+      - name: -O
+        if: always()
+        shell: bash
+        timeout-minutes: 100
+        run: |
+          make -B clean build_tests run_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-O
+          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-O.txt
+          cp ./bin/log/performance_summary.txt ./benchmark/performance/${{ matrix.config.os }}performance_summary-O.txt
+      - name: -O1
+        if: always()
+        shell: bash
+        timeout-minutes: 100
+        run: |
+          make -B clean build_tests run_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-O1
+          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-O1.txt
+          cp ./bin/log/performance_summary.txt ./benchmark/performance/${{ matrix.config.os }}performance_summary-O1.txt
+      - name: -O2
+        if: always()
+        shell: bash
+        timeout-minutes: 100
+        run: |
+          make -B clean build_tests run_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-O2
+          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-O2.txt
+          cp ./bin/log/performance_summary.txt ./benchmark/performance/${{ matrix.config.os }}performance_summary-O2.txt
+      - name: -O3
+        if: always()
+        shell: bash
+        timeout-minutes: 100
+        run: |
+          make -B clean build_tests run_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-O3
+          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-O3.txt
+          cp ./bin/log/performance_summary.txt ./benchmark/performance/${{ matrix.config.os }}performance_summary-O3.txt
+      - name: -Ofast
+        if: always()
+        shell: bash
+        timeout-minutes: 100
+        run: |
+          make -B clean build_tests run_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-Ofast
+          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-Ofast.txt
+          cp ./bin/log/performance_summary.txt ./benchmark/performance/${{ matrix.config.os }}performance_summary-Ofast.txt
+      - name: -Og
+        if: always()
+        shell: bash
+        timeout-minutes: 100
+        run: |
+          make -B clean build_tests run_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-Og
+          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-Og.txt
+          cp ./bin/log/performance_summary.txt ./benchmark/performance/${{ matrix.config.os }}performance_summary-Og.txt
+      - name: -Os
+        if: always()
+        shell: bash
+        timeout-minutes: 100
+        run: |
+          make -B clean build_tests run_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-Os
+          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-Os.txt
+          cp ./bin/log/performance_summary.txt ./benchmark/performance/${{ matrix.config.os }}performance_summary-Os.txt
+      - name: Summarize
+        if: always()
+        shell: bash
+        timeout-minutes: 100
+        run: |
+          cat ./benchmark/performance/${{ matrix.config.os }}/performance_summary*
+      - name: Commit test results
         if: ${{ github.ref == 'refs/heads/master' && startsWith(matrix.config.name, 'Ubuntu Latest GCC') }}
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -69,18 +130,12 @@ jobs:
           echo "${{ github.sha }} ${{ matrix.config.os }}" >> benchmark/integration_tests/commit_hash
           rm -rf src-gh-pages
           mkdir -p src-gh-pages/it/
-          cp ./bin/log/performance* src-gh-pages/it/
+          cp -rf ./benchmark/performance/*/* src-gh-pages/it/
           git add .
-          git commit -m "Unit & Integation tests run" -a
+          git commit -m "Unit & Integation results" -a
       - name: Push testing results
         if: ${{ startsWith(matrix.config.name, 'Ubuntu Latest GCC') }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
-      - name: Speed test based on optimization flags
-        shell: bash
-        timeout-minutes: 100
-        run: |
-          make -B local-benchmark COMPILER_CPP=${{ matrix.config.cxx }} DIR_PREFIX=${{ matrix.config.os }}/
-          cat ./benchmark/performance/${{ matrix.config.os }}/performance_summary*
