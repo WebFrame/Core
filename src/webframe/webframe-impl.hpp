@@ -569,7 +569,7 @@ public:
 			freeaddrinfo(res);
 			
 			this->logger << "Listener setup " << listener << "\n";
-			this->port_status.alert_start(PORT);
+			bool started = false;
 
 			while (!limited || requests > 0) {
 				const std::optional<size_t> thread = threads_ptr->get_free_thread();
@@ -582,6 +582,10 @@ public:
 				int client = -1;
 				// Accept a new connection and return back the socket desciptor 
 				//this->logger << "Client accepting available...\n";
+				if (!started) {
+					this->port_status.alert_start(PORT);
+					started = true;
+				}
 				client = ACCEPT(listener, NULL, NULL);
 				
 				if (client == -1)

@@ -116,6 +116,7 @@ Moka::Context all ("WebFrame - testing", [](Moka::Context& it) {
 		});
 		
 		it.should("respond to small and big requests for less than 1 nonosecond per action", [](){
+			const int requests = 3;
 			volatile int count = 0;
 			volatile int i;
 			std::filebuf performance;
@@ -133,11 +134,11 @@ Moka::Context all ("WebFrame - testing", [](Moka::Context& it) {
 				}
 				return "Hello, World!";
 			})
-			.run("8889", cores, true, 31)
+			.run("8889", cores, true, requests)
 			.wait_start("8889");
 
 			char buffer [3];
-			for (int i = 0 ; i <= 30 ; i ++)
+			for (int i = 0 ; i < requests ; i ++)
 			{
 				const std::string response = get_response("http://localhost:8889/" + std::string(webframe::itoa(i, buffer, 10)));
 
@@ -156,7 +157,7 @@ Moka::Context all ("WebFrame - testing", [](Moka::Context& it) {
 				fin >> str >> a;
 				sum += a * 1000000;
 			}
-			sum /= ((1ll<<31) - 1ll);
+			sum /= ((1ll << requests) - 1ll);
 			std::ofstream fout;
 			fout.open("./bin/log/performance_summary.txt", std::ios::trunc);
 			fout << sum << " nanoseconds avg. per operation in the resolver\n";
