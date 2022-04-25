@@ -123,12 +123,6 @@ jobs:
           make -B run_tests
           make -B run_tests > ./bin/log/performance.txt
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-Os.txt
-      - name: Summarize
-        if: always()
-        shell: bash
-        timeout-minutes: 100
-        run: |
-          cat ./benchmark/performance/${{ matrix.config.os }}/performance_summary*
       - name: Commit test results
         if: ${{ github.ref == 'refs/heads/master' && startsWith(matrix.config.name, 'Ubuntu Latest GCC') }}
         run: |
