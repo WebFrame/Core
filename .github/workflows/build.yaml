@@ -65,57 +65,64 @@ jobs:
         shell: bash
         timeout-minutes: 100
         run: |
-          make -B clean build_tests run_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-O
+          make -B clean build_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-O
+          make -B run_tests
+          make -B run_tests > ./bin/log/performance.txt
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-O.txt
-          cp ./bin/log/performance_summary.txt ./benchmark/performance/${{ matrix.config.os }}performance_summary-O.txt
       - name: -O1
         if: always()
         shell: bash
         timeout-minutes: 100
         run: |
-          make -B clean build_tests run_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-O1
+          make -B clean build_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-O1
+          make -B run_tests
+          make -B run_tests > ./bin/log/performance.txt
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-O1.txt
-          cp ./bin/log/performance_summary.txt ./benchmark/performance/${{ matrix.config.os }}performance_summary-O1.txt
       - name: -O2
         if: always()
         shell: bash
         timeout-minutes: 100
         run: |
-          make -B clean build_tests run_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-O2
+          make -B clean build_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-O2
+          make -B run_tests
+          make -B run_tests > ./bin/log/performance.txt
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-O2.txt
-          cp ./bin/log/performance_summary.txt ./benchmark/performance/${{ matrix.config.os }}performance_summary-O2.txt
       - name: -O3
         if: always()
         shell: bash
         timeout-minutes: 100
         run: |
-          make -B clean build_tests run_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-O3
+          make -B clean build_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-O3
+          make -B run_tests
+          make -B run_tests > ./bin/log/performance.txt
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-O3.txt
-          cp ./bin/log/performance_summary.txt ./benchmark/performance/${{ matrix.config.os }}performance_summary-O3.txt
       - name: -Ofast
         if: always()
         shell: bash
         timeout-minutes: 100
         run: |
-          make -B clean build_tests run_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-Ofast
+          make -B clean build_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-Ofast
+          make -B run_tests
+          make -B run_tests > ./bin/log/performance.txt
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-Ofast.txt
-          cp ./bin/log/performance_summary.txt ./benchmark/performance/${{ matrix.config.os }}performance_summary-Ofast.txt
       - name: -Og
         if: always()
         shell: bash
         timeout-minutes: 100
         run: |
-          make -B clean build_tests run_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-Og
+          make -B clean build_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-Og
+          make -B run_tests
+          make -B run_tests > ./bin/log/performance.txt
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-Og.txt
-          cp ./bin/log/performance_summary.txt ./benchmark/performance/${{ matrix.config.os }}performance_summary-Og.txt
       - name: -Os
         if: always()
         shell: bash
         timeout-minutes: 100
         run: |
-          make -B clean build_tests run_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-Os
+          make -B clean build_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-Os
+          make -B run_tests
+          make -B run_tests > ./bin/log/performance.txt
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-Os.txt
-          cp ./bin/log/performance_summary.txt ./benchmark/performance/${{ matrix.config.os }}performance_summary-Os.txt
       - name: Summarize
         if: always()
         shell: bash

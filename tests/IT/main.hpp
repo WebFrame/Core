@@ -27,8 +27,8 @@ public:
         return *this;
     }
 
-    response_of& must_take_less (double max_time, const std::string& message) {
-        must_be_less(time, max_time, message);
+    response_of& might_take_less (double max_time, const std::string& message) {
+        would_be_nice_to_be_less(time, max_time, message);
         return *this;
     }
 };
@@ -78,7 +78,7 @@ void testCase_IntegrationTests (Moka::Report& report) {
 				it.should("respond to request with 2^" + pathParams[number] + " operations for less than 1 nanosecond per action", [&requests, number, &pathParams]() {
 					response_of("http://localhost:8889/" + pathParams[number])
                         .must_be("Hello, World!", "Incorect response for http://localhost:8889/" + pathParams[number] + ".")
-                        .must_take_less(15 * 1e-6 * (1ll << number), "The time per operation is too much."); // 15 nanosec per operation
+                        .might_take_less(15 * 1e-6 * (1ll << number), "The time per operation is too much."); // 15 nanosec per operation
 				});
 			}
 		});

@@ -15,7 +15,5 @@ int main ()
 	Moka::Report report;
 	testCase_UnitTests(report);
 	testCase_IntegrationTests(report);
-	report.print();
-
-	return 0;
+	return report.print();
 }

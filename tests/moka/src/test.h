@@ -28,6 +28,9 @@ namespace Moka
       if(i.error == nullptr) {
         return cli::g("+ ", true); //✔
       }
+      if(!i.error->is_fail()) {
+        return cli::y("? ", true); //?
+      }
       else if(i.error->file() == nullptr) {
         return cli::y("^ ", true); //▲
       }
@@ -68,10 +71,12 @@ namespace Moka
       return mNames.size();
     }
 
-    void print() const {
+    int print() const {
       std::cout << "\n";
+      unsigned int fails = 0;
       for(const Item& i: mItems) {
         if(i.error == nullptr) continue;
+        fails += i.error->is_fail();
         std::cout << prefix(i) << i.id << ") " << i.name << ":\n";
         std::cout << "  " << i.error->what() << "\n";
 
@@ -82,6 +87,7 @@ namespace Moka
 
         std::cout << "\n";
       }
+      return fails;
     }
 
     void push(std::string testname, Failure* f = nullptr) {
