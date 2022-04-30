@@ -10,25 +10,19 @@ on:
 
 jobs:
   build:
-    name: ${{ matrix.config.name }}
+    name: ${{ matrix.config.os }}${{ matrix.config.optimization }}
     runs-on: ${{ matrix.config.os }}
     strategy:
       fail-fast: false
       matrix:
-        config:
-          - {
-            name: "Windows Latest MinGW",
-            os: windows-latest,
-            cxx: "g++",
-          }
-          - {
-            name: "Ubuntu Latest GCC",
-            os: ubuntu-latest,
-            cxx: "g++-11"
-          }
-
+        os: [windows-latest, ubuntu-latest]
+        optimization: [-O, -O1, -O2, -O3, -Ofast, -Og, -Os]
+        include:
+          - cxx: g++
+            os: windows-latest
+          - cxx: g++-11
+            os: ubuntu-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
           submodules: 'recursive'
@@ -55,83 +49,20 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          make -B clean build build_tests COMPILER_CPP=${{ matrix.config.cxx }}
+          make -B clean build build_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=${{ matrix.config.optimization }}
       - name: Prepare speed test
         shell: bash
         run: |
           mkdir -p ./benchmark/performance/${{ matrix.config.os }};
-      - name: -O
-        if: always()
+      - name: ${{ matrix.config.optimization }}
         shell: bash
         timeout-minutes: 100
         run: |
-          make -B clean build_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-O
           make -B run_tests
           make -B run_tests > ./bin/log/performance.txt
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-O.txt
-          sleep 7s;
-      - name: -O1
-        if: always()
-        shell: bash
-        timeout-minutes: 100
-        run: |
-          make -B clean build_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-O1
-          make -B run_tests
-          make -B run_tests > ./bin/log/performance.txt
-          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-O1.txt
-          sleep 7s;
-      - name: -O2
-        if: always()
-        shell: bash
-        timeout-minutes: 100
-        run: |
-          make -B clean build_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-O2
-          make -B run_tests
-          make -B run_tests > ./bin/log/performance.txt
-          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-O2.txt
-          sleep 7s;
-      - name: -O3
-        if: always()
-        shell: bash
-        timeout-minutes: 100
-        run: |
-          make -B clean build_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-O3
-          make -B run_tests
-          make -B run_tests > ./bin/log/performance.txt
-          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-O3.txt
-          sleep 7s;
-      - name: -Ofast
-        if: always()
-        shell: bash
-        timeout-minutes: 100
-        run: |
-          make -B clean build_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-Ofast
-          make -B run_tests
-          make -B run_tests > ./bin/log/performance.txt
-          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-Ofast.txt
-          sleep 7s;
-      - name: -Og
-        if: always()
-        shell: bash
-        timeout-minutes: 100
-        run: |
-          make -B clean build_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-Og
-          make -B run_tests
-          make -B run_tests > ./bin/log/performance.txt
-          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-Og.txt
-          sleep 7s;
-      - name: -Os
-        if: always()
-        shell: bash
-        timeout-minutes: 100
-        run: |
-          make -B clean build_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=-Os
-          make -B run_tests
-          make -B run_tests > ./bin/log/performance.txt
-          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-Os.txt
-          sleep 7s;
       - name: Commit test results
-        if: ${{ github.ref == 'refs/heads/master' && startsWith(matrix.config.name, 'Ubuntu Latest GCC') }}
+        if: ${{ github.ref == 'refs/heads/master' && startsWith(matrix.config.os, 'ubuntu') }}
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -142,7 +73,7 @@ jobs:
           git add .
           git commit -m "Unit & Integation results" -a
       - name: Push testing results
-        if: ${{ startsWith(matrix.config.name, 'Ubuntu Latest GCC') }}
+        if: ${{ startsWith(matrix.config.os, 'ubuntu') }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
