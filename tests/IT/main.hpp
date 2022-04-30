@@ -23,21 +23,15 @@ public:
         const std::string command = "curl -w \"%{time_total}\" " + url + " -o ./bin/log/curl" + current + ".txt > ./bin/log/time" + current + ".txt 2> ./bin/log/curl_logs" + current + ".txt";
       
         const int code __attribute__((unused)) = system(command.c_str());
-		std::cout << command << " completed" << std::endl;
         {
-			std::cout << "reading response" << std::endl;
 			std::ifstream fin("./bin/log/curl" + current + ".txt");
-			std::cout << "open file" << std::endl;
-			std::cout << "fill the buffer" << std::endl;
 			std::stringstream buffer;
 			buffer << fin.rdbuf();
 			response = buffer.str();
-			std::cout << "response: " << response << std::endl;
 		}
 		{
 			std::ifstream fin("./bin/log/time" + current + ".txt");
 			fin >> time;
-			std::cout << "time: " << time << std::endl;
 		}
     }
 

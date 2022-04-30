@@ -69,6 +69,7 @@ jobs:
           make -B run_tests
           make -B run_tests > ./bin/log/performance.txt
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-O.txt
+          sleep 7s;
       - name: -O1
         if: always()
         shell: bash
@@ -78,6 +79,7 @@ jobs:
           make -B run_tests
           make -B run_tests > ./bin/log/performance.txt
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-O1.txt
+          sleep 7s;
       - name: -O2
         if: always()
         shell: bash
@@ -87,6 +89,7 @@ jobs:
           make -B run_tests
           make -B run_tests > ./bin/log/performance.txt
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-O2.txt
+          sleep 7s;
       - name: -O3
         if: always()
         shell: bash
@@ -96,6 +99,7 @@ jobs:
           make -B run_tests
           make -B run_tests > ./bin/log/performance.txt
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-O3.txt
+          sleep 7s;
       - name: -Ofast
         if: always()
         shell: bash
@@ -105,6 +109,7 @@ jobs:
           make -B run_tests
           make -B run_tests > ./bin/log/performance.txt
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-Ofast.txt
+          sleep 7s;
       - name: -Og
         if: always()
         shell: bash
@@ -114,6 +119,7 @@ jobs:
           make -B run_tests
           make -B run_tests > ./bin/log/performance.txt
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-Og.txt
+          sleep 7s;
       - name: -Os
         if: always()
         shell: bash
@@ -123,6 +129,7 @@ jobs:
           make -B run_tests
           make -B run_tests > ./bin/log/performance.txt
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-Os.txt
+          sleep 7s;
       - name: Commit test results
         if: ${{ github.ref == 'refs/heads/master' && startsWith(matrix.config.name, 'Ubuntu Latest GCC') }}
         run: |
