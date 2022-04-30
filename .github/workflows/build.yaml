@@ -10,8 +10,6 @@ on:
 
 jobs:
   build:
-    name: ${{ matrix.config.os }}${{ matrix.config.optimization }}
-    runs-on: ${{ matrix.config.os }}
     strategy:
       fail-fast: false
       matrix:
@@ -22,18 +20,20 @@ jobs:
             os: windows-latest
           - cxx: g++-11
             os: ubuntu-latest
+    name: ${{ matrix.os }}${{ matrix.optimization }}
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: 'recursive'
       - name: Install dependencies on windows
-        if: startsWith(matrix.config.os, 'windows')
+        if: startsWith(matrix.os, 'windows')
         run: |
           choco install mingw --version 11.2.0.07112021 --force
           make --version
           gcc --version
       - name: Install dependencies on ubuntu
-        if: startsWith(matrix.config.name, 'Ubuntu Latest GCC')
+        if: startsWith(matrix.name, 'Ubuntu Latest GCC')
         run: |
           sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
           sudo apt-get update
@@ -49,31 +49,31 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          make -B clean build build_tests COMPILER_CPP=${{ matrix.config.cxx }} OPTIMIZATION_LEVEL=${{ matrix.config.optimization }}
+          make -B clean build build_tests COMPILER_CPP=${{ matrix.cxx }} OPTIMIZATION_LEVEL=${{ matrix.optimization }}
       - name: Prepare speed test
         shell: bash
         run: |
-          mkdir -p ./benchmark/performance/${{ matrix.config.os }};
-      - name: ${{ matrix.config.optimization }}
+          mkdir -p ./benchmark/performance/${{ matrix.os }};
+      - name: ${{ matrix.optimization }}
         shell: bash
         timeout-minutes: 100
         run: |
           make -B run_tests
           make -B run_tests > ./bin/log/performance.txt
-          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.config.os }}performance-O.txt
+          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.os }}performance-O.txt
       - name: Commit test results
-        if: ${{ github.ref == 'refs/heads/master' && startsWith(matrix.config.os, 'ubuntu') }}
+        if: ${{ github.ref == 'refs/heads/master' && startsWith(matrix.os, 'ubuntu') }}
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          echo "${{ github.sha }} ${{ matrix.config.os }}" >> benchmark/integration_tests/commit_hash
+          echo "${{ github.sha }} ${{ matrix.os }}" >> benchmark/integration_tests/commit_hash
           rm -rf src-gh-pages
           mkdir -p src-gh-pages/it/
           cp -rf ./benchmark/performance/*/* src-gh-pages/it/
           git add .
           git commit -m "Unit & Integation results" -a
       - name: Push testing results
-        if: ${{ startsWith(matrix.config.os, 'ubuntu') }}
+        if: ${{ startsWith(matrix.os, 'ubuntu') }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
