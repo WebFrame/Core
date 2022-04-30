@@ -33,7 +33,7 @@ jobs:
           make --version
           gcc --version
       - name: Install dependencies on ubuntu
-        if: startsWith(matrix.name, 'Ubuntu Latest GCC')
+        if: startsWith(matrix.os, 'ubuntu')
         run: |
           sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
           sudo apt-get update
