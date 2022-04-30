@@ -33,6 +33,7 @@ namespace Moka
     std::string mWhat;
     bool        mFail;
   public:
+    Failure(): mFile(nullptr), mLine(0), mWhat(""), mFail(false) {}
     Failure(const std::string& m, bool is_fail = true): mFile(nullptr), mLine(0), mWhat(m), mFail(is_fail) {}
     Failure(const char* f, int l, const std::string& m, bool is_fail = true): mFile(f), mLine(l), mWhat(m), mFail(is_fail) {}
     ~Failure() throw() {}
@@ -55,74 +56,66 @@ namespace Moka
   };
 
   namespace must {
-    void contain(const char* f, int l, const std::string& a, const std::string& b, std::string msg = "") {
-      if (msg.size() > 0) msg = msg + " | ";
+    void contain(const char* f, int l, const std::string& a, const std::string& b, const std::string& msg = "") {
       if(b.find(a) == std::string::npos) {
         std::stringstream message;
-        message << msg << "Expected " << cli::g(b) << " to contain " << cli::r(a);
-        throw new Failure(f, l, message.str());
+        message << ((msg.size() > 0) ? msg + " | " : "") << "Expected " << cli::g(b) << " to contain " << cli::r(a);
+        throw Failure(f, l, message.str());
       }
     }
     
     template <class A, class B>
-    void be_equal(const char* f, int l, const A& a, const B& b, std::string msg = "") {
-      if (msg.size() > 0) msg = msg + " | ";
+    void be_equal(const char* f, int l, const A& a, const B& b, const std::string& msg = "") {
       if(a != b) {
         std::stringstream message;
-        message << msg << "Expected " << cli::g(b) << " but got " << cli::r(a);
-        throw new Failure(f, l, message.str());
+        message << ((msg.size() > 0) ? msg + " | " : "") << "Expected " << cli::g(b) << " but got " << cli::r(a);
+        throw Failure(f, l, message.str());
       }
     }   
 
     template <class A, class B>
-    void be_less(const char* f, int l, const A& a, const B& b, std::string msg = "") {
-      if (msg.size() > 0) msg = msg + " | ";
+    void be_less(const char* f, int l, const A& a, const B& b, const std::string& msg = "") {
       if(!(a < b)) {
         std::stringstream message;
-        message << msg << "Expected " << cli::g(b) << " but got " << cli::r(a);
-        throw new Failure(f, l, message.str());
+        message << ((msg.size() > 0) ? msg + " | " : "") << "Expected " << cli::g(b) << " but got " << cli::r(a);
+        throw Failure(f, l, message.str());
       }
     }
 
     template <class A, class B>
-    void be_greater(const char* f, int l, const A& a, const B& b, std::string msg = "") {
-      if (msg.size() > 0) msg = msg + " | ";
+    void be_greater(const char* f, int l, const A& a, const B& b, const std::string& msg = "") {
       if(!(a > b)) {
         std::stringstream message;
-        message << msg << "Expected " << cli::g(b) << " but got " << cli::r(a);
-        throw new Failure(f, l, message.str());
+        message << ((msg.size() > 0) ? msg + " | " : "") << "Expected " << cli::g(b) << " but got " << cli::r(a);
+        throw Failure(f, l, message.str());
       }
     }
 
-    void be_equal(const char* f, int l, const char* a, const char* b, std::string msg = "") {
-      if (msg.size() > 0) msg = msg + " | ";
+    void be_equal(const char* f, int l, const char* a, const char* b, const std::string& msg = "") {
       if(strcmp(a, b) != 0) {
         std::stringstream message;
-        message << msg << "Expected " << cli::g(b) << " but got " << cli::r(a);
-        throw new Failure(f, l, message.str());
+        message << ((msg.size() > 0) ? msg + " | " : "") << "Expected " << cli::g(b) << " but got " << cli::r(a);
+        throw Failure(f, l, message.str());
       }
     }
 
-    void fail(const char* f, int l,  const char* m, std::string msg = "") {
-      if (msg.size() > 0) msg = msg + " | ";
+    void fail(const char* f, int l,  const char* m) {
       std::stringstream message;
       message << cli::r(m);
-      throw new Failure(f, l, message.str());
+      throw Failure(f, l, message.str());
     }
 
     template <class A, class B>
-    void be_not_equal(const char* f, int l, const A& a, const B& b, std::string msg = "") {
-      if (msg.size() > 0) msg = msg + " | ";
+    void be_not_equal(const char* f, int l, const A& a, const B& b, const std::string& msg = "") {
       if(a == b) {
         std::stringstream message;
-        message << msg << "Expected anything but " << cli::r(b) << " but got " << cli::r(a);
-        throw new Failure(f, l, message.str());
+        message << ((msg.size() > 0) ? msg + " | " : "") << "Expected anything but " << cli::r(b) << " but got " << cli::r(a);
+        throw Failure(f, l, message.str());
       }
     }
 
     template <class E>
-    void throoow(const char* f, int l, const char* type, std::function<void()> fn, std::string msg = "") {
-      if (msg.size() > 0) msg = msg + " | ";
+    void throoow(const char* f, int l, const char* type, std::function<void()> fn, const std::string& msg = "") {
       try {
         fn();
       }
@@ -132,84 +125,76 @@ namespace Moka
       }
       catch(std::exception& e) {
         std::stringstream message;
-        message << msg << "Expected to catch a " << cli::g(type) << " but got " << cli::r(e.what());
-        throw new Failure(f, l, message.str());
+        message << ((msg.size() > 0) ? msg + " | " : "") << "Expected to catch a " << cli::g(type) << " but got " << cli::r(e.what());
+        throw Failure(f, l, message.str());
       }
 
       std::stringstream message;
-      message << msg << "Expected to catch a " << cli::g(type) << " but nothing was thrown!";
-      throw new Failure(f, l, message.str());
+      message << ((msg.size() > 0) ? msg + " | " : "") << "Expected to catch a " << cli::g(type) << " but nothing was thrown!";
+      throw Failure(f, l, message.str());
     }
   }
   namespace would_be_nice_to {
-    void contain(const char* f, int l, const std::string& a, const std::string& b, std::string msg = "") {
-      if (msg.size() > 0) msg = msg + " | ";
+    void contain(const char* f, int l, const std::string& a, const std::string& b, const std::string& msg = "") {
       if(b.find(a) == std::string::npos) {
         std::stringstream message;
-        message << msg << "Would have been nice " << cli::g(b) << " to contain " << cli::r(a);
-        throw new Failure(f, l, message.str(), false);
+        message << ((msg.size() > 0) ? msg + " | " : "") << "Would have been nice " << cli::g(b) << " to contain " << cli::r(a);
+        throw Failure(f, l, message.str(), false);
       }
     }
     
     template <class A, class B>
-    void be_equal(const char* f, int l, const A& a, const B& b, std::string msg = "") {
-      if (msg.size() > 0) msg = msg + " | ";
+    void be_equal(const char* f, int l, const A& a, const B& b, const std::string& msg = "") {
       if(a != b) {
         std::stringstream message;
-        message << msg << "Would have been nice " << cli::g(b) << " but got " << cli::r(a);
-        throw new Failure(f, l, message.str(), false);
+        message << ((msg.size() > 0) ? msg + " | " : "") << "Would have been nice " << cli::g(b) << " but got " << cli::r(a);
+        throw Failure(f, l, message.str(), false);
       }
     }   
 
     template <class A, class B>
-    void be_less(const char* f, int l, const A& a, const B& b, std::string msg = "") {
-      if (msg.size() > 0) msg = msg + " | ";
+    void be_less(const char* f, int l, const A& a, const B& b, const std::string& msg = "") {
       if(!(a < b)) {
         std::stringstream message;
-        message << msg << "Would have been nice " << cli::g(b) << " but got " << cli::r(a);
-        throw new Failure(f, l, message.str(), false);
+        message << ((msg.size() > 0) ? msg + " | " : "") << "Would have been nice " << cli::g(b) << " but got " << cli::r(a);
+        throw Failure(f, l, message.str(), false);
       }
     }
 
     template <class A, class B>
-    void be_greater(const char* f, int l, const A& a, const B& b, std::string msg = "") {
-      if (msg.size() > 0) msg = msg + " | ";
+    void be_greater(const char* f, int l, const A& a, const B& b, const std::string& msg = "") {
       if(!(a > b)) {
         std::stringstream message;
-        message << msg << "Would have been nice " << cli::g(b) << " but got " << cli::r(a);
-        throw new Failure(f, l, message.str(), false);
+        message << ((msg.size() > 0) ? msg + " | " : "") << "Would have been nice " << cli::g(b) << " but got " << cli::r(a);
+        throw Failure(f, l, message.str(), false);
       }
     }
 
-    void be_equal(const char* f, int l, const char* a, const char* b, std::string msg = "") {
-      if (msg.size() > 0) msg = msg + " | ";
+    void be_equal(const char* f, int l, const char* a, const char* b, const std::string& msg = "") {
       if(strcmp(a, b) != 0) {
         std::stringstream message;
-        message << msg << "Would have been nice " << cli::g(b) << " but got " << cli::r(a);
-        throw new Failure(f, l, message.str(), false);
+        message << ((msg.size() > 0) ? msg + " | " : "") << "Would have been nice " << cli::g(b) << " but got " << cli::r(a);
+        throw Failure(f, l, message.str(), false);
       }
     }
 
-    void fail(const char* f, int l,  const char* m, std::string msg = "") {
-      if (msg.size() > 0) msg = msg + " | ";
+    void fail(const char* f, int l,  const char* m) {
       std::stringstream message;
       message << cli::r(m);
-      throw new Failure(f, l, message.str(), false);
+      throw Failure(f, l, message.str(), false);
     }
 
     template <class A, class B>
-    void be_not_equal(const char* f, int l, const A& a, const B& b, std::string msg = "") {
-      if (msg.size() > 0) msg = msg + " | ";
+    void be_not_equal(const char* f, int l, const A& a, const B& b, const std::string& msg = "") {
       if(a == b) {
         std::stringstream message;
-        message << msg << "Would have been nice anything but " << cli::r(b) << " but got " << cli::r(a);
-        throw new Failure(f, l, message.str(), false);
+        message << ((msg.size() > 0) ? msg + " | " : "") << "Would have been nice anything but " << cli::r(b) << " but got " << cli::r(a);
+        throw Failure(f, l, message.str(), false);
       }
     }
 
     template <class E>
-    void throoow(const char* f, int l, const char* type, std::function<void()> fn, std::string msg = "") {
-      if (msg.size() > 0) msg = msg + " | ";
+    void throoow(const char* f, int l, const char* type, std::function<void()> fn, const std::string& msg = "") {
       try {
         fn();
       }
@@ -219,13 +204,13 @@ namespace Moka
       }
       catch(std::exception& e) {
         std::stringstream message;
-        message << msg << "Would have been nice to catch a " << cli::g(type) << " but got " << cli::r(e.what());
-        throw new Failure(f, l, message.str(), false);
+        message << ((msg.size() > 0) ? msg + " | " : "") << "Would have been nice to catch a " << cli::g(type) << " but got " << cli::r(e.what());
+        throw Failure(f, l, message.str(), false);
       }
 
       std::stringstream message;
-      message << msg << "Would have been nice to catch a " << cli::g(type) << " but nothing was thrown!";
-      throw new Failure(f, l, message.str(), false);
+      message << ((msg.size() > 0) ? msg + " | " : "") << "Would have been nice to catch a " << cli::g(type) << " but nothing was thrown!";
+      throw Failure(f, l, message.str(), false);
     }
   }
 }

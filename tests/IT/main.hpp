@@ -3,23 +3,42 @@
 #include <moka/moka.h>
 #include <webframe/webframe.hpp>
 
+#include <random>
+#include <string>
+	
 class response_of {
+	static int custom;
+	static constexpr auto chars =
+		"0123456789"
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		"abcdefghijklmnopqrstuvwxyz";
+
     std::string response;
     double time;
+	std::string current;
 public:
     response_of(const std::string& url) {
-        const std::string command = "curl  -w \"%{time_total}\" " + url + " -o ./bin/log/curl.txt > ./bin/log/time.txt 2> ./bin/log/curl_logs.txt";
+		custom = custom + 1;
+		current = chars [custom];
+        const std::string command = "curl -w \"%{time_total}\" " + url + " -o ./bin/log/curl" + current + ".txt > ./bin/log/time" + current + ".txt 2> ./bin/log/curl_logs" + current + ".txt";
       
-        int code __attribute__((unused)) = system(command.c_str());
-       
-        std::ifstream fin;
-        fin.open("./bin/log/curl.txt");
-        getline(fin, response);
-        fin.close();
-
-        fin.open("./bin/log/time.txt");
-        fin >> time;
-        fin.close();
+        const int code __attribute__((unused)) = system(command.c_str());
+		std::cout << command << " completed" << std::endl;
+        {
+			std::cout << "reading response" << std::endl;
+			std::ifstream fin("./bin/log/curl" + current + ".txt");
+			std::cout << "open file" << std::endl;
+			std::cout << "fill the buffer" << std::endl;
+			std::stringstream buffer;
+			buffer << fin.rdbuf();
+			response = buffer.str();
+			std::cout << "response: " << response << std::endl;
+		}
+		{
+			std::ifstream fin("./bin/log/time" + current + ".txt");
+			fin >> time;
+			std::cout << "time: " << time << std::endl;
+		}
     }
 
     response_of& must_be (const std::string& text, const std::string& message) {
@@ -32,6 +51,8 @@ public:
         return *this;
     }
 };
+
+int response_of::custom = 0;
 
 void testCase_IntegrationTests (Moka::Report& report) {
     const unsigned int requests = 31;
@@ -55,7 +76,7 @@ void testCase_IntegrationTests (Moka::Report& report) {
 				.set_logger(nil)
 				.set_error_logger(nil)
 				.set_performancer(performancer)
-				.route ("/", []() { // static setup
+				.route ("/", []() {
 					return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 				})
 				.route ("/{number}", [&count](int steps) {	
@@ -81,6 +102,10 @@ void testCase_IntegrationTests (Moka::Report& report) {
                         .might_take_less(15 * 1e-6 * (1ll << number), "The time per operation is too much."); // 15 nanosec per operation
 				});
 			}
+
+			it.teardown([&app]() {
+				app.request_stop("8889");
+			});
 		});
 	});
 	integration_tests.test(report);

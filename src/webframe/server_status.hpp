@@ -41,6 +41,16 @@ namespace webframe {
             this->unlock_dead(PORT);
         }
 
+        bool is_over(const char* PORT) {
+            bool locked = this->get_end(PORT).try_lock();
+			if(!locked) return false;
+			if(locked) {
+				this->get_end(PORT).unlock();
+				return true;
+			}
+			return false;
+        }
+
         std::mutex& get_start(const char* PORT) {
             return *this->start[_compile_time::string_to_uint(PORT)];
         }

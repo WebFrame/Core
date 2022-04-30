@@ -383,7 +383,9 @@ private:
 		this->logger << "Closing client: " << client << "\n";
 		if (status != -2)
 		{
+			this->logger << "Calling callback" << "\n";
 			callback();
+			this->logger << "Callback done" << "\n";
 		}
 	}
 	
@@ -538,7 +540,7 @@ public:
 			}
 
 			// Bind the socket to the address of my local machine and port number 
-			status = bind(listener, res->ai_addr, res->ai_addrlen);
+			status = bind(listener, res->ai_addr, sizeof(*res->ai_addr)/*res->ai_addrlen*/);
 			if (status < 0)
 			{
 				this->logger << "bind error: " << gai_strerror(status) << "\n";
@@ -572,6 +574,9 @@ public:
 			bool started = false;
 
 			while (!limited || requests > 0) {
+				if(this->port_status.is_over(PORT)) {
+					break;
+				}
 				const std::optional<size_t> thread = threads_ptr->get_free_thread();
 				//this->logger << "Thread available: " << !!thread << "\n";
 				if(!thread)
@@ -624,7 +629,9 @@ public:
 					});
 				}), client);
 			}
-			this->port_status.alert_end(PORT);
+			if(!this->port_status.is_over(PORT)) {
+				this->port_status.alert_end(PORT);
+			}
 			#ifdef _WIN32
 				WSACleanup();
 			#endif
@@ -640,6 +647,11 @@ public:
 	void wait_end(const char* PORT) 
 	{
 		port_status.get_end(PORT).lock();
+	}
+
+	void request_stop(const char* PORT) 
+	{
+		port_status.alert_end(PORT);
 	}
 
 	void reset(const char* PORT) 
