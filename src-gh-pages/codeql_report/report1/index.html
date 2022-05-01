@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Cppcheck - HTML report - WebFrame</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+
+    </style>
+    <script language="javascript">
+      function getStyle(el,styleProp) {
+        if (el.currentStyle)
+          var y = el.currentStyle[styleProp];
+        else if (window.getComputedStyle)
+          var y = document.defaultView.getComputedStyle(el,null).getPropertyValue(styleProp);
+        return y;
+      }
+      function toggle() {
+        var el = this.expandable_content;
+        var mark = this.expandable_marker;
+        if (el.style.display == "block") {
+          el.style.display = "none";
+          mark.innerHTML = "[+]";
+        } else {
+          el.style.display = "block";
+          mark.innerHTML = "[-]";
+        }
+      }
+      function init_expandables() {
+        var elts = document.getElementsByClassName("expandable");
+        for (var i = 0; i < elts.length; i++) {
+          var el = elts[i];
+          var clickable = el.getElementsByTagName("span")[0];
+          var marker = clickable.getElementsByClassName("marker")[0];
+          var content = el.getElementsByClassName("content")[0];
+          var width = clickable.clientWidth - parseInt(getStyle(content, "padding-left")) - parseInt(getStyle(content, "padding-right"));
+          content.style.width = width + "px";
+          clickable.expandable_content = content;
+          clickable.expandable_marker = marker;
+          clickable.onclick = toggle;
+        }
+      }
+      function set_class_display(c, st) {
+        var elements = document.querySelectorAll('.' + c),
+            len = elements.length;
+        for (i = 0; i < len; i++) {
+            elements[i].style.display = st;
+        }
+      }
+      function toggle_class_visibility(id) {
+        var box = document.getElementById(id);
+        set_class_display(id, box.checked ? '' : 'none');
+      }
+      function toggle_all(){
+        var elts = document.getElementsByTagName("input");
+        for (var i = 1; i < elts.length; i++) {           
+          var el = elts[i];
+          el.checked ? el.checked=false : el.checked=true;
+          toggle_class_visibility(el.id);        
+        }            
+      }
+
+    </script>
+  </head>
+  <body onload="init_expandables()">
+      <div id="header">
+        <h1>Cppcheck report - WebFrame:  </h1>
+      </div>
+      <div id="menu_index">
+       <p id="filename"><a href="index.html">Defect summary;</a> </p>
+
+       <label><input type="checkbox" onclick="toggle_all()" checked> Toggle all</label>
+       <table>
+           <tr><th>Show</th><th>#</th><th>Defect ID</th></tr>
+            <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='noExplicitConstructor' name='noExplicitConstructor' checked></td><td>10</td><td>noExplicitConstructor</td></tr>
+            <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='knownConditionTrueFalse' name='knownConditionTrueFalse' checked></td><td>8</td><td>knownConditionTrueFalse</td></tr>
+            <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='useInitializationList' name='useInitializationList' checked></td><td>5</td><td>useInitializationList</td></tr>
+            <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='passedByValue' name='passedByValue' checked></td><td>2</td><td>passedByValue</td></tr>
+            <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='uninitMemberVar' name='uninitMemberVar' checked></td><td>2</td><td>uninitMemberVar</td></tr>
+            <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='missingIncludeSystem' name='missingIncludeSystem' checked></td><td>1</td><td>missingIncludeSystem</td></tr>
+            <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='useStlAlgorithm' name='useStlAlgorithm' checked></td><td>1</td><td>useStlAlgorithm</td></tr>
+           <tr><td></td><td>29</td><td>total</td></tr>
+       </table>
+       <p><a href="stats.html">Statistics</a></p>
+      </div>
+      <div id="content_index">
+
+       <table>
+       <tr><th>Line</th><th>Id</th><th>CWE</th><th>Severity</th><th>Message</th></tr>
+       <tr><td colspan='5'><a href='4.html'></a></td></tr>
+       <tr class="missingIncludeSystem"><td><a href="4.html#line-0">0</a></td><td>missingIncludeSystem</td><td></td><td>information</td><td >Cppcheck cannot find all the include files (use --check-config for details)</td></tr>
+       <tr><td colspan='5'><a href='0.html'>src/webframe/base.hpp</a></td></tr>
+       <tr class="noExplicitConstructor"><td><a href="0.html#line-108">108</a></td><td>noExplicitConstructor</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Struct &apos;var&apos; has a constructor with 1 argument that is not explicit.</td></tr>
+       <tr class="noExplicitConstructor"><td><a href="0.html#line-205">205</a></td><td>noExplicitConstructor</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Struct &apos;status_line&apos; has a constructor with 1 argument that is not explicit.</td></tr>
+       <tr class="noExplicitConstructor"><td><a href="0.html#line-235">235</a></td><td>noExplicitConstructor</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Class &apos;response&apos; has a constructor with 1 argument that is not explicit.</td></tr>
+       <tr class="passedByValue"><td><a href="0.html#line-245">245</a></td><td>passedByValue</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>performance</td><td >Function parameter &apos;status&apos; should be passed by const reference.</td></tr>
+       <tr class="passedByValue"><td><a href="0.html#line-250">250</a></td><td>passedByValue</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>performance</td><td >Function parameter &apos;s&apos; should be passed by const reference.</td></tr>
+       <tr class="useStlAlgorithm"><td><a href="0.html#line-267">267</a></td><td>useStlAlgorithm</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Consider using std::accumulate algorithm instead of a raw loop.</td></tr>
+       <tr class="knownConditionTrueFalse"><td><a href="0.html#line-310">310</a></td><td>knownConditionTrueFalse</td><td><a href='https://cwe.mitre.org/data/definitions/570.html'>570</a></td><td>style</td><td >Condition &apos;method::GET&apos; is always false</td></tr>
+       <tr class="knownConditionTrueFalse"><td><a href="0.html#line-311">311</a></td><td>knownConditionTrueFalse</td><td><a href='https://cwe.mitre.org/data/definitions/571.html'>571</a></td><td>style</td><td >Condition &apos;method::HEAD&apos; is always true</td></tr>
+       <tr class="knownConditionTrueFalse"><td><a href="0.html#line-312">312</a></td><td>knownConditionTrueFalse</td><td><a href='https://cwe.mitre.org/data/definitions/571.html'>571</a></td><td>style</td><td >Condition &apos;method::POST&apos; is always true</td></tr>
+       <tr class="knownConditionTrueFalse"><td><a href="0.html#line-313">313</a></td><td>knownConditionTrueFalse</td><td><a href='https://cwe.mitre.org/data/definitions/571.html'>571</a></td><td>style</td><td >Condition &apos;method::PUT&apos; is always true</td></tr>
+       <tr class="knownConditionTrueFalse"><td><a href="0.html#line-314">314</a></td><td>knownConditionTrueFalse</td><td><a href='https://cwe.mitre.org/data/definitions/571.html'>571</a></td><td>style</td><td >Condition &apos;method::DDELETE&apos; is always true</td></tr>
+       <tr class="knownConditionTrueFalse"><td><a href="0.html#line-315">315</a></td><td>knownConditionTrueFalse</td><td><a href='https://cwe.mitre.org/data/definitions/571.html'>571</a></td><td>style</td><td >Condition &apos;method::CONNECT&apos; is always true</td></tr>
+       <tr class="knownConditionTrueFalse"><td><a href="0.html#line-316">316</a></td><td>knownConditionTrueFalse</td><td><a href='https://cwe.mitre.org/data/definitions/571.html'>571</a></td><td>style</td><td >Condition &apos;method::OPTIONS&apos; is always true</td></tr>
+       <tr class="knownConditionTrueFalse"><td><a href="0.html#line-317">317</a></td><td>knownConditionTrueFalse</td><td><a href='https://cwe.mitre.org/data/definitions/571.html'>571</a></td><td>style</td><td >Condition &apos;method::TRACE&apos; is always true</td></tr>
+       <tr class="uninitMemberVar"><td><a href="0.html#line-340">340</a></td><td>uninitMemberVar</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>warning</td><td >Member variable &apos;request::m&apos; is not initialized in the constructor.</td></tr>
+       <tr class="useInitializationList"><td><a href="0.html#line-342">342</a></td><td>useInitializationList</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>performance</td><td >Variable &apos;remaining_to_parse&apos; is assigned in constructor body. Consider performing initialization in initialization list.</td></tr>
+       <tr class="uninitMemberVar"><td><a href="0.html#line-345">345</a></td><td>uninitMemberVar</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>warning</td><td >Member variable &apos;request::loading&apos; is not initialized in the constructor.</td></tr>
+       <tr><td colspan='5'><a href='2.html'>src/webframe/file.hpp</a></td></tr>
+       <tr class="noExplicitConstructor"><td><a href="2.html#line-21">21</a></td><td>noExplicitConstructor</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Class &apos;SynchronizedFile&apos; has a constructor with 1 argument that is not explicit.</td></tr>
+       <tr><td colspan='5'><a href='3.html'>src/webframe/respond_manager.hpp</a></td></tr>
+       <tr class="noExplicitConstructor"><td><a href="3.html#line-13">13</a></td><td>noExplicitConstructor</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Struct &apos;body_t&apos; has a constructor with 1 argument that is not explicit.</td></tr>
+       <tr class="noExplicitConstructor"><td><a href="3.html#line-29">29</a></td><td>noExplicitConstructor</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Struct &apos;responser&apos; has a constructor with 1 argument that is not explicit.</td></tr>
+       <tr class="noExplicitConstructor"><td><a href="3.html#line-35">35</a></td><td>noExplicitConstructor</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Struct &apos;responser&apos; has a constructor with 1 argument that is not explicit.</td></tr>
+       <tr class="noExplicitConstructor"><td><a href="3.html#line-41">41</a></td><td>noExplicitConstructor</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Struct &apos;responser&apos; has a constructor with 1 argument that is not explicit.</td></tr>
+       <tr class="noExplicitConstructor"><td><a href="3.html#line-49">49</a></td><td>noExplicitConstructor</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Struct &apos;responser&apos; has a constructor with 1 argument that is not explicit.</td></tr>
+       <tr><td colspan='5'><a href='1.html'>src/webframe/webframe-impl.hpp</a></td></tr>
+       <tr class="useInitializationList"><td><a href="1.html#line-115">115</a></td><td>useInitializationList</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>performance</td><td >Variable &apos;performancer&apos; is assigned in constructor body. Consider performing initialization in initialization list.</td></tr>
+       <tr class="noExplicitConstructor"><td><a href="1.html#line-431">431</a></td><td>noExplicitConstructor</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Struct &apos;thread_pool&apos; has a constructor with 1 argument that is not explicit.</td></tr>
+       <tr class="useInitializationList"><td><a href="1.html#line-434">434</a></td><td>useInitializationList</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>performance</td><td >Variable &apos;pool&apos; is assigned in constructor body. Consider performing initialization in initialization list.</td></tr>
+       <tr class="useInitializationList"><td><a href="1.html#line-486">486</a></td><td>useInitializationList</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>performance</td><td >Variable &apos;started_ptr&apos; is assigned in constructor body. Consider performing initialization in initialization list.</td></tr>
+       <tr class="useInitializationList"><td><a href="1.html#line-487">487</a></td><td>useInitializationList</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>performance</td><td >Variable &apos;down_ptr&apos; is assigned in constructor body. Consider performing initialization in initialization list.</td></tr>
+       </table>
+      </div>
+      <div id="footer">
+        <p>
+         Cppcheck 1.90 - a tool for static C/C++ code analysis</br>
+         </br>
+         Internet: <a href="http://cppcheck.net">http://cppcheck.net</a></br>
+         IRC: <a href="irc://irc.freenode.net/cppcheck">irc://irc.freenode.net/cppcheck</a></br>
+        </p>
+      </div>
+  </body>
+</html>
