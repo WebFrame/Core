@@ -65,7 +65,6 @@ void testCase_IntegrationTests (Moka::Report& report) {
 	Moka::Context integration_tests ("WebFrame - integration testing", [&requests, &app, &nil, &performancer, &pathParams](Moka::Context& it) {
 		it.describe("The web server", [&requests, &app, &nil, &performancer, &pathParams](Moka::Context& it) {
 			it.setup([&app, &nil, &performancer]() {
-				volatile int count = 0;
 				app
 				.set_logger(nil)
 				.set_error_logger(nil)
@@ -73,10 +72,10 @@ void testCase_IntegrationTests (Moka::Report& report) {
 				.route ("/", []() {
 					return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 				})
-				.route ("/{number}", [&count](int steps) {	
+				.route ("/{number}", [](int steps) {	
 					for (int i = 0; i < (1 << steps); )
 					{
-						count = count + 1; 
+						__asm__("");
 						i = i + 1;
 					}
 					return "Hello, World!";

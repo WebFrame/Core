@@ -6,7 +6,7 @@
 int main()
 {
 	constexpr int fasten = webframe::webframe::init();
-	volatile int pass = fasten;
+	int pass = fasten;
 	webframe::webframe app;
 	app.route("/{number}/2", [&](int steps) {
 			for (int i = 0; i < (1 << steps); i++)
@@ -18,7 +18,7 @@ int main()
 		.route("/{number}", [&](int steps) {
 			for (int i = 0; i < (1 << steps); i++)
 			{
-				pass = pass + 1;
+				__asm__("");
 			}
 			return "Hello World!";
 		});
