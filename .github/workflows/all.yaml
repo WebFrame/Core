@@ -169,7 +169,7 @@ jobs:
           name: benchmark_report
           path: benchmark/report/
   deploy:
-    needs: [cppcheck,doxygen,benchmark]
+    needs: [cppcheck, doxygen, benchmark]
     if: github.ref == 'refs/heads/master'
     steps:
       - name: Checkout 🛎️
