@@ -22,6 +22,8 @@
 #include <webframe/respond_manager.hpp>
 #include <webframe/file.hpp>
 #include <webframe/host.h>
+#include <webframe/constexpr.hpp>
+#include <webframe/server_status.hpp>
 
 namespace webframe
 {
@@ -81,7 +83,7 @@ private:
 				if (curr_val_regex == "digit")
 					curr_val_regex = "[0-9]";
 				if (curr_val_regex == "number")
-					curr_val_regex = "[1-9][0-9]*";
+					curr_val_regex = "[0-9]+";
 				if (curr_val_regex == "path")
 					curr_val_regex = "[" + regexAnyChar + "\\/]+";
 				format += curr_val_regex;
@@ -125,29 +127,32 @@ public:
 		});
 	}
 
-private:
-    static constexpr const char* strCodes[] = {"0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117","200","201","202","203","204","205","206","207","208","209","210","211","212","213","214","215","216","217","300","301","302","303","304","305","306","307","308","309","310","311","312","313","314","315","316","317","400","401","402","403","404","405","406","407","408","409","410","411","412","413","414","415","416","417","500","501","502","503","504","505","506","507","508","509","510","511","512","513","514","515","516","517"};
-    static constexpr unsigned int codes[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,400,401,402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,417,500,501,502,503,504,505,506,507,508,509,510,511,512,513,514,515,516,517};
 public:
-    static constexpr int init(unsigned int code = 0) 
+    static constexpr bool initHttpCodes(const unsigned int code = 0) {
+		std::visit ([](auto code){
+			constexpr auto __attribute__((unused)) _1 = http_codes::get_reason_by_code(_compile_time::codes[code]);
+			constexpr auto __attribute__((unused)) _2 = http_codes::get_reason_by_code(_compile_time::strCodes[code]);
+		}, _compile_time::var_index<_compile_time::codes.size()>(code));
+
+		return (code + 1 >= _compile_time::codes.size()) ? true : initHttpCodes(code + 1);
+	}
+    static constexpr bool init()
     {
-        if (code >= sizeof(strCodes)/sizeof(const char*)) return 0;
-        if (code == 0)
-        {
-            mime_types::get_mime_type(".zip");
-            string_to_method(method_to_string(method::GET    ));
-            string_to_method(method_to_string(method::HEAD   ));
-            string_to_method(method_to_string(method::POST   ));
-            string_to_method(method_to_string(method::PUT    ));
-            string_to_method(method_to_string(method::DDELETE));
-            string_to_method(method_to_string(method::CONNECT));
-            string_to_method(method_to_string(method::OPTIONS));
-            string_to_method(method_to_string(method::TRACE  ));
-            string_to_method(method_to_string(method::PATCH  ));
-        }
-        http_codes::get_reason_by_code(codes[code]); 
-        http_codes::get_reason_by_code(strCodes[code]);
-        return init(code + 1);
+		static_assert(mime_types::get_mime_type(".zip").size() > 0, "mime_types were not initialized.");
+		
+		static_assert(string_to_method(method_to_string(method::GET    )) == method::GET, "method::GET was not able to be converted properly");
+		static_assert(string_to_method(method_to_string(method::HEAD   )) == method::HEAD, "method::HEAD was not able to be converted properly");
+		static_assert(string_to_method(method_to_string(method::POST   )) == method::POST, "method::POST was not able to be converted properly");
+		static_assert(string_to_method(method_to_string(method::PUT    )) == method::PUT, "method::PUT was not able to be converted properly");
+		static_assert(string_to_method(method_to_string(method::DDELETE)) == method::DDELETE, "method::DDELETE was not able to be converted properly");
+		static_assert(string_to_method(method_to_string(method::CONNECT)) == method::CONNECT, "method::CONNECT was not able to be converted properly");
+		static_assert(string_to_method(method_to_string(method::OPTIONS)) == method::OPTIONS, "method::OPTIONS was not able to be converted properly");
+		static_assert(string_to_method(method_to_string(method::TRACE  )) == method::TRACE, "method::TRACE was not able to be converted properly");
+		static_assert(string_to_method(method_to_string(method::PATCH  )) == method::PATCH, "method::PATCH was not able to be converted properly");
+
+		static_assert(initHttpCodes(), "The initiation of HTTP code and their reasons failed");
+		
+		return true;
     }
 
 	template <typename F>
@@ -165,7 +170,7 @@ public:
 		return *this;
 	}
 
-	auto get_routes() const
+	std::map<std::pair<std::vector<std::string>,std::regex>,responser,cmp> get_routes() const
 	{
 		return this->routes;
 	}
@@ -373,8 +378,15 @@ private:
 	void handler(int client, const std::function<void()>& callback)
 	{
 		int status = this->responder(client);
-		if (status != -2) callback();
+		this->logger << "Responded status: " << status << "\n";
 		CLOSE(client);
+		this->logger << "Closing client: " << client << "\n";
+		if (status != -2)
+		{
+			this->logger << "Calling callback" << "\n";
+			callback();
+			this->logger << "Callback done" << "\n";
+		}
 	}
 	
 	struct thread_pool;
@@ -395,9 +407,12 @@ private:
 			return m.try_lock();
 		}
 	public:
+		std::shared_ptr<int> requestor;
+
 		thread() 
 		{
 			m.unlock();
+			requestor = std::make_shared<int>();
 		}
 
 		void join(std::shared_ptr<std::function<void(int)>> f, int socket) 
@@ -464,42 +479,10 @@ private:
 	};
  
 public:
-	class server_status {
-		private:
-			std::shared_ptr<std::promise<void>> started_ptr, down_ptr;
-			void start() {
-				try {
-					started_ptr->set_value();
-				} catch (...) {
-
-				}
-			}
-			void kill() {
-				try {
-					down_ptr->set_value();
-				} catch (...) {
-
-				}
-			}
-		public:
-			server_status () {
-				started_ptr = std::make_shared<std::promise<void>>();
-				down_ptr = std::make_shared<std::promise<void>>();
-			}
-			std::shared_future<void> started() {
-				return started_ptr->get_future().share();
-			}
-			std::shared_future<void> down() {
-				return down_ptr->get_future().share();
-			}
-			friend class webframe;
-	};
-
-	std::shared_ptr<server_status> run(const char* PORT, const unsigned int cores, bool limited = false, unsigned int requests = -1) 
+	webframe& run(const char* PORT, const unsigned int cores, bool limited = false, int requests = -1) 
 	{
-		std::shared_ptr<server_status> status_handler = std::make_shared<server_status>();
-
-		std::thread([&, this](std::shared_ptr<server_status> status_handler, bool limited) {
+		this->port_status.initiate(PORT);
+		std::thread([this](const char* PORT, const unsigned int cores, bool limited, int requests) {
 			#ifdef _WIN32
 				//----------------------
 				// Initialize Winsock.
@@ -509,7 +492,8 @@ public:
 				this->logger << "Startup finished " << iResult << "\n";
 				if (iResult != NO_ERROR) {
 					this->logger << "WSAStartup failed with error: " << iResult << "\n";
-					status_handler->kill();
+					this->port_status.alert_start(PORT);
+					this->port_status.alert_end(PORT);
 					return;
 				}
 			#endif
@@ -521,49 +505,47 @@ public:
 			this->logger << "Thread pool generated\n";	
 
 			int status;
-			struct addrinfo hints;
-			struct addrinfo *result, *rp;
-			int listener = -1;
-			memset(&hints, 0, sizeof(hints));
-			hints.ai_family = AF_UNSPEC;     /* Allow IPv4 or IPv6 */
-			hints.ai_socktype = SOCK_STREAM; /* Datagram socket */
-			hints.ai_flags = AI_PASSIVE;     /* For wildcard IP address */
-			hints.ai_protocol = 0;           /* Any protocol */
+			struct addrinfo hints, *res;
+			int listener;
+			
+			// Before using hint you have to make sure that the data structure is empty 
+			memset(&hints, 0, sizeof hints);
+			// Set the attribute for hint
+			hints.ai_family = AF_INET; // We don't care V4 AF_INET or 6 AF_INET6
+			hints.ai_socktype = SOCK_STREAM; // TCP Socket SOCK_DGRAM 
+			hints.ai_flags = AI_PASSIVE;
+			hints.ai_protocol = 0;          /* Any protocol */
 			hints.ai_canonname = NULL;
 			hints.ai_addr = NULL;
 			hints.ai_next = NULL;
 
-			status = getaddrinfo(NULL, PORT, &hints, &result);
-			if (status != 0) 
+			// Fill the res data structure and make sure that the results make sense. 
+			status = getaddrinfo(NULL, PORT, &hints, &res);
+			if (status != 0)
 			{
 				this->logger << "getaddrinfo error: " << gai_strerror(status) << "\n";
-				status_handler->kill();
+				this->port_status.alert_start(PORT);
+				this->port_status.alert_end(PORT);
 				return;
 			}
 
-			/* getaddrinfo() returns a list of address structures.
-			Try each address until we successfully bind(2).
-			If socket(2) (or bind(2)) fails, we (close the socket
-			and) try the next address. */
-
-			for (rp = result; rp != NULL; rp = rp->ai_next) 
+			// Create Socket and check if error occured afterwards
+			listener = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+			if (listener == -1)
 			{
-				listener = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
-				if (listener == -1)
-					continue;
-
-				if (bind(listener, rp->ai_addr, rp->ai_addrlen) == 0)
-					break;                  /* Success */
-
-				CLOSE(listener);
+				this->logger << "socket error: " << gai_strerror(status) << "\n";
+				this->port_status.alert_start(PORT);
+				this->port_status.alert_end(PORT);
+				return;
 			}
-			
-			freeaddrinfo(result);           /* No longer needed */
 
-			if (rp == NULL || listener == -1) /* No address succeeded */
-			{               
+			// Bind the socket to the address of my local machine and port number 
+			status = bind(listener, res->ai_addr, sizeof(*res->ai_addr)/*res->ai_addrlen*/);
+			if (status < 0)
+			{
 				this->logger << "bind error: " << gai_strerror(status) << "\n";
-				status_handler->kill();
+				this->port_status.alert_start(PORT);
+				this->port_status.alert_end(PORT);
 				return;
 			}
 
@@ -571,7 +553,8 @@ public:
 			if (status < 0)
 			{
 				this->logger << "listen error: " << gai_strerror(status) << "\n";
-				status_handler->kill();
+				this->port_status.alert_start(PORT);
+				this->port_status.alert_end(PORT);
 				return;
 			}
 
@@ -579,28 +562,43 @@ public:
 			if (status < 0)
 			{
 				this->logger << "nonblocking config error: " << gai_strerror(status) << "\n";
-				status_handler->kill();
+				this->port_status.alert_start(PORT);
+				this->port_status.alert_end(PORT);
 				return;
 			}
 
+			// Free the res linked list after we are done with it	
+			freeaddrinfo(res);
+			
 			this->logger << "Listener setup " << listener << "\n";
+			bool started = false;
 
-			status_handler->start();
-
-			while (!limited || requests != 0) {
+			while (!limited || requests > 0) {
+				if(this->port_status.is_over(PORT)) {
+					break;
+				}
 				const std::optional<size_t> thread = threads_ptr->get_free_thread();
-				//std::cout << "Thread available: " << !!thread << std::endl;
+				//this->logger << "Thread available: " << !!thread << "\n";
 				if(!thread)
 					continue;
 
+				//this->logger << "Thead " << thread.value() << "\n";
+
+				int client = -1;
 				// Accept a new connection and return back the socket desciptor 
-				//std::cout << "Client accepting available..." << std::endl;
-				int client = ACCEPT(listener, NULL, NULL);
-				//this->logger << "Client found: " << client << "\n";
+				//this->logger << "Client accepting available...\n";
+				if (!started) {
+					this->port_status.alert_start(PORT);
+					started = true;
+				}
+				client = ACCEPT(listener, NULL, NULL);
+				
 				if (client == -1)
 				{
 					continue;
 				}
+
+				this->logger << "Client found: " << client << "\n";
 
 				this->logger << "Requestor " << client << " is getting handled\n";
 
@@ -614,34 +612,53 @@ public:
 
 				this->logger << "Requestor " << client << " is checked if valid\n";
 				
-				status = SELECT(client + 1, &readSet, nullptr, nullptr, &selTimeout) + SELECT(client, &readSet, nullptr, nullptr, &selTimeout);
+				status = SELECT(client + 1, &readSet, nullptr, nullptr, &selTimeout);
 				this->logger << "SELECT status is " << status << "\n";
 				if (status <= 0)
 					continue;
 
 				this->logger << "Requestor " << client << " is still valid\n";
 
-				if (getsockname(client, nullptr, nullptr) < 0 && errno == ENOTSOCK) continue;
-				
-				this->logger << "Requestor " << client << " is still valid\n";
-
 				this->logger << thread.value() << " thread will handle client " << client << "\n";
 				
-				threads_ptr->get(thread.value())->detach(std::make_shared<std::function<void(int)>>([this, &limited, &status_handler, &requests](int socket) -> void {
-					this->handler (socket, [&limited, &status_handler, &requests]() {
+				threads_ptr->get(thread.value())->detach(std::make_shared<std::function<void(int)>>([this, &limited, &requests, PORT](int socket) -> void {
+					this->handler (socket, [this, &limited, &requests, PORT]() {
 						if (!limited) return;
 						requests--;
-						if (requests == 0) {
-							status_handler->kill();
-						}
+						this->logger << "Requests: " << requests << "\n";
 					});
 				}), client);
+			}
+			if(!this->port_status.is_over(PORT)) {
+				this->port_status.alert_end(PORT);
 			}
 			#ifdef _WIN32
 				WSACleanup();
 			#endif
-		}, status_handler, limited).detach();
-		return status_handler;
+		}, PORT, cores, limited, requests).detach();
+		return *this;
 	}
+
+	void wait_start(const char* PORT) 
+	{
+		port_status.get_start(PORT).lock();
+	}
+
+	void wait_end(const char* PORT) 
+	{
+		port_status.get_end(PORT).lock();
+	}
+
+	void request_stop(const char* PORT) 
+	{
+		port_status.alert_end(PORT);
+	}
+
+	void reset(const char* PORT) 
+	{
+		port_status.reset(PORT);
+	}
+	private:
+	server_status port_status;
 };
 } // namespace webframe

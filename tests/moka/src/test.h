@@ -16,19 +16,24 @@ namespace Moka
     struct Item {
       int         id;
       std::string name;
-      Failure*    error;
+      Failure     error;
+      bool        failed;
     public:
-      Item(int i, std::string s, Failure* f): id(i), name(s), error(f) {}
+      Item(int i, std::string s, const Failure& f): id(i), name(s), error(f), failed(true) {}
+      Item(int i, std::string s): id(i), name(s), failed(false) {}
     };
   protected:
     std::vector<Item> mItems;
     std::vector<std::string> mNames;
   protected:
     std::string prefix(const Item& i) const {
-      if(i.error == nullptr) {
+      if(!i.failed) {
         return cli::g("+ ", true); //✔
       }
-      else if(i.error->file() == nullptr) {
+      if(!i.error.is_fail()) {
+        return cli::y("? ", true); //?
+      }
+      else if(i.error.file() == nullptr) {
         return cli::y("^ ", true); //▲
       }
       else {
@@ -68,23 +73,35 @@ namespace Moka
       return mNames.size();
     }
 
-    void print() const {
+    int print() const {
       std::cout << "\n";
+      unsigned int fails = 0;
       for(const Item& i: mItems) {
-        if(i.error == nullptr) continue;
+        if(!i.failed) continue;
+        fails += i.error.is_fail();
         std::cout << prefix(i) << i.id << ") " << i.name << ":\n";
-        std::cout << "  " << i.error->what() << "\n";
+        std::cout << "  " << i.error.what() << "\n";
 
-        if(i.error->file()) {
-          std::cout << "  in " << cli::bold(i.error->file());
-          std::cout << ':' << i.error->line() << "\n";
+        if(i.error.file()) {
+          std::cout << "  in " << cli::bold(i.error.file());
+          std::cout << ':' << i.error.line() << "\n";
         }
 
         std::cout << "\n";
       }
+      return fails;
     }
 
-    void push(std::string testname, Failure* f = nullptr) {
+    void push(std::string testname) {
+      std::stringstream stream;
+      for(auto& name: mNames) stream << name << " ";
+      stream << testname;
+
+      mItems.push_back(Item(id(), stream.str()));
+      summarize(mItems.back(), testname);
+    }
+
+    void push(std::string testname, const Failure& f) {
       std::stringstream stream;
       for(auto& name: mNames) stream << name << " ";
       stream << testname;
@@ -102,7 +119,7 @@ namespace Moka
 
   class Base {
   public:
-    virtual void test(Report& report) = 0;
+    virtual void test(Report& report) const = 0;
 
     void indent(int level) {
       while(level --> 0) std::cout << "  ";
@@ -116,7 +133,7 @@ namespace Moka
       return report.items().empty();
     }
 
-    Report test() {
+    Report test() const {
       Report report;
       this->test(report);
       return report;
@@ -132,17 +149,17 @@ namespace Moka
       // All done.
     }
 
-    void test(Report& report) {
+    void test(Report& report) const {
       try {
         mFunction();
         report.push(mName);
       }
-      catch(Failure* error) {
+      catch(const Failure& error) {
         report.push(mName, error);
       }
-      catch(std::exception& error) {
+      catch(const std::exception& error) {
         std::string prefix("Unexpected exception: ");
-        Failure* e = new Failure(prefix + cli::y(error.what()));
+        Failure e = Failure(prefix + cli::y(error.what()));
         report.push(mName, e);
       }
     }
@@ -150,26 +167,42 @@ namespace Moka
 
   class Context: public Base {
   protected:
+    std::string           mPrefix;
     std::string           mName;
-    std::vector<Base*>    mMembers;
+    std::vector<const Base*>    mMembers;
     std::function<void()> mSetup;
     std::function<void()> mTeardown;
     bool                  mHasSetup;
     bool                  mHasTeardown;
+
+    Context(std::string name, std::string prefix, std::function<void(Context&)> fn) {
+      mName = std::string(name);
+      mMembers = std::vector<const Base*>();
+      mPrefix = std::string(prefix + " ");
+      mHasTeardown = false;
+      mHasSetup = false;
+      fn(*this);
+    }
   public:
-    Context(std::string name): mName(name), mMembers() {
+    Context(std::string name) {
+      mName = std::string(name);
+      mMembers = std::vector<const Base*>();
+      mPrefix = std::string("");
       mHasTeardown = false;
       mHasSetup = false;
     }
 
-    Context(std::string name, std::function<void(Context&)> fn): mName(name), mMembers() {
+    Context(std::string name, std::function<void(Context&)> fn) {
+      mName = std::string(name);
+      mPrefix = std::string("");
+      mMembers = std::vector<const Base*>();
       mHasTeardown = false;
       mHasSetup = false;
       fn(*this);
     }
 
-    void has(std::string name, std::function<void(Context&)> fn) {
-      Context* child = new Context(name, fn);
+    void describe(std::string name, std::function<void(Context&)> fn) {
+      const Context* child = new Context("", name, fn);
       mMembers.push_back(child);
     }
 
@@ -179,7 +212,7 @@ namespace Moka
     }
 
     void should(std::string name, std::function<void()> fn) {
-      Test* test = new Test("should " + name, fn);
+      const Test* test = new Test("should " + name, fn);
       mMembers.push_back(test);
     }
 
@@ -188,10 +221,10 @@ namespace Moka
       mTeardown = fn;
     }
 
-    void test(Report& report) {
-      report.enter(mName);
+    void test(Report& report) const {
+      report.enter(mPrefix + mName);
       if(mHasSetup) mSetup();
-      for(auto m: mMembers) m->test(report);
+      for(const Base* m: mMembers) m->test(report);
       if(mHasTeardown) mTeardown();
       report.leave();
     }
