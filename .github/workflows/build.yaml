@@ -59,7 +59,7 @@ jobs:
         timeout-minutes: 100
         run: |
           make -B run_tests
-          make -B run_tests > ./bin/log/performance.txt
+          make -B run_tests | sed -E "s/`printf "\e"`\[([0-9]+)(;1)?m//g" | cat > ./bin/log/performance.txt
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.os }}/performance${{ matrix.optimization }}.txt
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
@@ -86,7 +86,8 @@ jobs:
                   <(cat $i | grep "Would have been nice" | cut -d'|' -f2) | 
                 sed 's/Would have been nice/expected\t/g' | 
                 sed 's/but got/\tbut got\t/g' |
-                sed 's/[ \t][ \t]*/ /g' ; 
+                sed 's/[ \t][ \t]*/ /g' |
+                sed -E "s/`printf "\e"`\[([0-9]+)(;1)?m//g"
             echo "";
           done > summary.txt;
           cat summary.txt;
