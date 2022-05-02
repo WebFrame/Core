@@ -1,0 +1,206 @@
+name: Build & Test & Compare & Deploy
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+    types: [opened]
+  pull_request_target:
+    branches:
+      - "*"
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+        optimization: [-O, -O1, -O2, -O3, -Ofast, -Og, -Os]
+        include:
+          - cxx: g++
+            os: windows-latest
+          - cxx: g++-11
+            os: ubuntu-latest
+    name: ${{ matrix.os }}${{ matrix.optimization }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+      - name: Install dependencies on windows
+        if: startsWith(matrix.os, 'windows')
+        run: |
+          choco install mingw --version 11.2.0.07112021 --force
+          make --version
+          gcc --version
+      - name: Install dependencies on ubuntu
+        if: startsWith(matrix.os, 'ubuntu')
+        run: |
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install -y gcc-11 g++-11 make
+          make --version
+          gcc-11 --version
+          g++-11 --version
+          mkdir -p ./bin
+      - name: Configure
+        shell: bash
+        run: |
+          make -B install
+      - name: Build
+        shell: bash
+        run: |
+          make -B clean build build_tests COMPILER_CPP=${{ matrix.cxx }} OPTIMIZATION_LEVEL=${{ matrix.optimization }}
+      - name: Prepare speed test
+        shell: bash
+        run: |
+          mkdir -p ./benchmark/performance/${{ matrix.os }};
+      - name: ${{ matrix.optimization }}
+        shell: bash
+        timeout-minutes: 100
+        run: |
+          make -B run_tests
+          make -B run_tests | sed -E "s/`printf "\e"`\[([0-9]+)(;1)?m//g" | cat > ./bin/log/performance.txt
+          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.os }}/performance${{ matrix.optimization }}.txt
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.os }}${{ matrix.optimization }}
+          path: |
+            ./benchmark/performance/${{ matrix.os }}/performance${{ matrix.optimization }}.txt
+  group-results:
+    name: Summarize
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v3
+      - name: Display structure of downloaded files
+        run: ls -R
+      - name: Craft final document
+        shell: bash
+        run: |
+          for i in */* ; 
+          do 
+            echo $i | cut -d'/' -f1 ; 
+            paste <(cat $i | grep ') WebFrame - integration testing The web server  should respond to request with' | cut -d'^' -f2 | sed -e 's/^/2\^/') \
+                  <(cat $i | grep "Would have been nice" | cut -d'|' -f2) | 
+                sed 's/Would have been nice/expected\t/g' | 
+                sed 's/but got/\tbut got\t/g' |
+                sed 's/[ \t][ \t]*/ /g' |
+                sed -E "s/`printf "\e"`\[([0-9]+)(;1)?m//g"
+            echo "";
+          done > summary.txt;
+          cat summary.txt;
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Summary
+          path: |
+            summary.txt
+  cppcheck:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+    - name: Install CppCheck
+      run: |
+        sudo -H apt-get update -y
+        sudo -H apt-get install cppcheck
+    - name: Run Cppcheck
+      run: cppcheck --std=c++20 -I./src --xml --xml-version=2 --force --enable=all src 2> cppcheck_res.xml
+    - name: Generate Report
+      run: cppcheck-htmlreport --title=WebFrame --file=cppcheck_res.xml --report-dir=codeql_report
+    - name: Upload Report
+      uses: actions/upload-artifact@v1
+      with:
+        name: cppcheck
+        path: codeql_report
+  doxygen:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+      - name: Configure
+        shell: bash
+        run: |
+          sudo apt install doxygen
+          doxygen Doxyfile
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: doxygen
+          path: |
+            src-gh-pages/docs
+  benchmark:
+    needs: build
+    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+      - name: Install & Build 🔧
+        shell: bash
+        run: |
+          make install
+          make -B benchmark
+      - name: Pack 📦
+        run: |
+          mkdir -p benchmark/report;
+          mv benchmark/tmp/test1.result benchmark/report/;
+          mv benchmark/tmp/test2.result benchmark/report/;
+          echo "Test 1";
+          cat benchmark/report/test1.result;
+          echo "Test 2";
+          cat benchmark/report/test2.result;
+          echo "<style>table,th,td{border:1px solid red;border-collapse:collapse;text-align:center;}th,td{color: #111;background-color: white;}</style><table><tr><th>C++</th><th>Python</th><th>Node.JS Express</th>" > benchmark/report/test1.results.html; cat benchmark/report/test1.result | sed ':a;N;$!ba;s/C++\t//g' | sed ':a;N;$!ba;s/<1> Python//g' | sed ':a;N;$!ba;s/<2> Node.JS Express//g' | sed ':a;N;$!ba;s/\t/ /g' | sed ':a;N;$!ba;s/  /<td>/g' | sed 's/s/s<\/td>/g' | sed 's/^/<\/tr><tr><td>/g' >> benchmark/report/test1.results.html; echo "</tr></table>" >> benchmark/report/test1.results.html;
+          echo "<style>table,th,td{border:1px solid red;border-collapse:collapse;text-align:center;}th,td{color: #111;background-color: white;}</style><table><tr><th>C++</th><th>Python</th><th>Node.JS Express</th>" > benchmark/report/test2.results.html; cat benchmark/report/test2.result | sed ':a;N;$!ba;s/C++\t//g' | sed ':a;N;$!ba;s/<1> Python//g' | sed ':a;N;$!ba;s/<2> Node.JS Express//g' | sed ':a;N;$!ba;s/\t/ /g' | sed ':a;N;$!ba;s/  /<td>/g' | sed 's/s/s<\/td>/g' | sed 's/^/<\/tr><tr><td>/g' >> benchmark/report/test2.results.html; echo "</tr></table>" >> benchmark/report/test2.results.html;
+          echo "<h1>Test 1:</h1>" > benchmark/report/index.html; cat benchmark/report/test1.results.html >> benchmark/report/index.html;
+          echo "<h1>Test 2:</h1>" >> benchmark/report/index.html; cat benchmark/report/test2.results.html >> benchmark/report/index.html;
+        shell: bash
+      - name: Upload Report 🚀
+        uses: actions/upload-artifact@v1
+        with:
+          name: benchmark_report
+          path: benchmark/report/
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [cppcheck, doxygen, benchmark]
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+      - name: Download all artifacts 🔧
+        uses: actions/download-artifact@v3
+      - name: Prepare
+        shell: bash
+        run: |
+          mkdir -p ./src-gh-pages/report ./src-gh-pages/docs ./src-gh-pages/codeql_report
+          mv -f ./cppcheck/* src-gh-pages/codeql_report/
+          mv -f ./doxygen/* src-gh-pages/docs/
+          mv -f ./benchmark_report/* ./src-gh-pages/report/
+      - name: Commit the reports
+        shell: bash
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add src-gh-pages/
+          git commit -m "Pipeline reports"
+      - name: Push pipeline reports
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+      - name: Deploy to GitHub Pages 🚀
+        continue-on-error: true
+        if: ${{ always() && github.ref == 'refs/heads/master' }}
+        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: ./src-gh-pages # The folder the action should deploy.

@@ -73,25 +73,22 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a6f12039722c4a559b3e7f9fa93d9862b"><td class="memItemLeft" align="right" valign="top">constexpr unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d97/namespacehttp__codes.html#a6f12039722c4a559b3e7f9fa93d9862b">string_to_uint</a> (const char *str, unsigned int value=0)</td></tr>
-<tr class="memdesc:a6f12039722c4a559b3e7f9fa93d9862b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates number off of string.  <a href="../../d2/d97/namespacehttp__codes.html#a6f12039722c4a559b3e7f9fa93d9862b">More...</a><br /></td></tr>
-<tr class="separator:a6f12039722c4a559b3e7f9fa93d9862b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1da85d37b4907bf16a42b10192d49e5"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d97/namespacehttp__codes.html#af1da85d37b4907bf16a42b10192d49e5">get_reason_by_code</a> (unsigned int code)</td></tr>
-<tr class="memdesc:af1da85d37b4907bf16a42b10192d49e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms HTTP code into HTTP response message.  <a href="../../d2/d97/namespacehttp__codes.html#af1da85d37b4907bf16a42b10192d49e5">More...</a><br /></td></tr>
-<tr class="separator:af1da85d37b4907bf16a42b10192d49e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3b2b758a2705833ad062b482f2b5fc7"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d97/namespacehttp__codes.html#af3b2b758a2705833ad062b482f2b5fc7">get_reason_by_code</a> (const char *code_str)</td></tr>
-<tr class="memdesc:af3b2b758a2705833ad062b482f2b5fc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms HTTP code to HTTP response message.  <a href="../../d2/d97/namespacehttp__codes.html#af3b2b758a2705833ad062b482f2b5fc7">More...</a><br /></td></tr>
-<tr class="separator:af3b2b758a2705833ad062b482f2b5fc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ea78a909fbeaa3020acb3b413de5b17"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d97/namespacehttp__codes.html#a3ea78a909fbeaa3020acb3b413de5b17">get_reason_by_code</a> (unsigned int code)</td></tr>
+<tr class="memdesc:a3ea78a909fbeaa3020acb3b413de5b17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms HTTP code into HTTP response message.  <a href="../../d2/d97/namespacehttp__codes.html#a3ea78a909fbeaa3020acb3b413de5b17">More...</a><br /></td></tr>
+<tr class="separator:a3ea78a909fbeaa3020acb3b413de5b17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab31813171da73d4792e4cd9e01dac96c"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d97/namespacehttp__codes.html#ab31813171da73d4792e4cd9e01dac96c">get_reason_by_code</a> (const std::string_view &amp;code_str)</td></tr>
+<tr class="memdesc:ab31813171da73d4792e4cd9e01dac96c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms HTTP code to HTTP response message.  <a href="../../d2/d97/namespacehttp__codes.html#ab31813171da73d4792e4cd9e01dac96c">More...</a><br /></td></tr>
+<tr class="separator:ab31813171da73d4792e4cd9e01dac96c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ad45061f67abd1da8b34293cf53345bc6"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d97/namespacehttp__codes.html#ad45061f67abd1da8b34293cf53345bc6">codes</a> [6][18]</td></tr>
-<tr class="memdesc:ad45061f67abd1da8b34293cf53345bc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of all HTTP response messages (grouped by first digit of the code)  <a href="../../d2/d97/namespacehttp__codes.html#ad45061f67abd1da8b34293cf53345bc6">More...</a><br /></td></tr>
-<tr class="separator:ad45061f67abd1da8b34293cf53345bc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64b1d16f985541221497e1ecbc96ef08"><td class="memItemLeft" align="right" valign="top">constexpr std::array&lt; std::array&lt; std::string_view, 18 &gt;, 6 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d97/namespacehttp__codes.html#a64b1d16f985541221497e1ecbc96ef08">codes</a></td></tr>
+<tr class="memdesc:a64b1d16f985541221497e1ecbc96ef08"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of all HTTP response messages (grouped by first digit of the code)  <a href="../../d2/d97/namespacehttp__codes.html#a64b1d16f985541221497e1ecbc96ef08">More...</a><br /></td></tr>
+<tr class="separator:a64b1d16f985541221497e1ecbc96ef08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="af3b2b758a2705833ad062b482f2b5fc7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3b2b758a2705833ad062b482f2b5fc7">&#9670;&nbsp;</a></span>get_reason_by_code() <span class="overload">[1/2]</span></h2>
+<a id="ab31813171da73d4792e4cd9e01dac96c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab31813171da73d4792e4cd9e01dac96c">&#9670;&nbsp;</a></span>get_reason_by_code() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -100,9 +97,9 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr const char* http_codes::get_reason_by_code </td>
+          <td class="memname">constexpr std::string_view http_codes::get_reason_by_code </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
+          <td class="paramtype">const std::string_view &amp;&#160;</td>
           <td class="paramname"><em>code_str</em></td><td>)</td>
           <td></td>
         </tr>
@@ -122,15 +119,15 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../da/da7/http__codes_8hpp_source.html#l00046">46</a> of file <a class="el" href="../../da/da7/http__codes_8hpp_source.html">http_codes.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                                                                   {</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="../../d2/d97/namespacehttp__codes.html#af3b2b758a2705833ad062b482f2b5fc7">get_reason_by_code</a>(<a class="code" href="../../d2/d97/namespacehttp__codes.html#a6f12039722c4a559b3e7f9fa93d9862b">string_to_uint</a>(code_str));</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    }</div>
+<p class="definition">Definition at line <a class="el" href="../../da/da7/http__codes_8hpp_source.html#l00039">39</a> of file <a class="el" href="../../da/da7/http__codes_8hpp_source.html">http_codes.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;                                                                                {</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="../../d2/d97/namespacehttp__codes.html#ab31813171da73d4792e4cd9e01dac96c">get_reason_by_code</a>(<a class="code" href="../../d8/df7/namespacewebframe_1_1__compile__time.html#a4feda887d261992c9c217be348d326d9">webframe::_compile_time::string_to_uint</a>(code_str));</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    }</div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="af1da85d37b4907bf16a42b10192d49e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af1da85d37b4907bf16a42b10192d49e5">&#9670;&nbsp;</a></span>get_reason_by_code() <span class="overload">[2/2]</span></h2>
+<a id="a3ea78a909fbeaa3020acb3b413de5b17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ea78a909fbeaa3020acb3b413de5b17">&#9670;&nbsp;</a></span>get_reason_by_code() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -139,7 +136,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr const char* http_codes::get_reason_by_code </td>
+          <td class="memname">constexpr std::string_view http_codes::get_reason_by_code </td>
           <td>(</td>
           <td class="paramtype">unsigned int&#160;</td>
           <td class="paramname"><em>code</em></td><td>)</td>
@@ -161,65 +158,16 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../da/da7/http__codes_8hpp_source.html#l00038">38</a> of file <a class="el" href="../../da/da7/http__codes_8hpp_source.html">http_codes.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;                                                                {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="../../d2/d97/namespacehttp__codes.html#ad45061f67abd1da8b34293cf53345bc6">codes</a>[code / 100][code % 100];</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    }</div>
-</div><!-- fragment -->
-</div>
-</div>
-<a id="a6f12039722c4a559b3e7f9fa93d9862b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f12039722c4a559b3e7f9fa93d9862b">&#9670;&nbsp;</a></span>string_to_uint()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr unsigned int http_codes::string_to_uint </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>str</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>value</em> = <code>0</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Generates number off of string. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">str</td><td>A number in string form </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="../../da/da7/http__codes_8hpp_source.html#l00030">30</a> of file <a class="el" href="../../da/da7/http__codes_8hpp_source.html">http_codes.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;                                                                                   {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="keywordflow">return</span> (*str) == <span class="charliteral">&#39;\0&#39;</span> ? value : <a class="code" href="../../d2/d97/namespacehttp__codes.html#a6f12039722c4a559b3e7f9fa93d9862b">string_to_uint</a>(str + 1, value * 10 + ((*str) - <span class="charliteral">&#39;0&#39;</span>));</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    }</div>
+<p class="definition">Definition at line <a class="el" href="../../da/da7/http__codes_8hpp_source.html#l00031">31</a> of file <a class="el" href="../../da/da7/http__codes_8hpp_source.html">http_codes.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;                                                                   {</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="../../d2/d97/namespacehttp__codes.html#a64b1d16f985541221497e1ecbc96ef08">codes</a>[code / 100][code % 100];</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    }</div>
 </div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="ad45061f67abd1da8b34293cf53345bc6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad45061f67abd1da8b34293cf53345bc6">&#9670;&nbsp;</a></span>codes</h2>
+<a id="a64b1d16f985541221497e1ecbc96ef08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64b1d16f985541221497e1ecbc96ef08">&#9670;&nbsp;</a></span>codes</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -228,7 +176,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr const char* http_codes::codes[6][18]</td>
+          <td class="memname">constexpr std::array&lt;std::array&lt;std::string_view, 18&gt;, 6&gt; http_codes::codes</td>
         </tr>
       </table>
   </td>
@@ -237,25 +185,25 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">        {},</div>
-<div class="line">        {<span class="stringliteral">&quot;Continue&quot;</span>, <span class="stringliteral">&quot;Switching Protocols&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;OK&quot;</span>, <span class="stringliteral">&quot;Created&quot;</span>, <span class="stringliteral">&quot;Accepted&quot;</span>, <span class="stringliteral">&quot;Non-Authoritative Information&quot;</span>, <span class="stringliteral">&quot;No Content&quot;</span>, <span class="stringliteral">&quot;Reset Content&quot;</span>, <span class="stringliteral">&quot;Partial Content&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;Multiple Choices&quot;</span>, <span class="stringliteral">&quot;Moved Permanently&quot;</span>, <span class="stringliteral">&quot;Found&quot;</span>, <span class="stringliteral">&quot;See Other&quot;</span>, <span class="stringliteral">&quot;Not Modified&quot;</span>, <span class="stringliteral">&quot;Use Proxy&quot;</span>, <span class="stringliteral">&quot;Temporary Redirect&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;Bad Request&quot;</span>, <span class="stringliteral">&quot;Unauthorized&quot;</span>, <span class="stringliteral">&quot;Payment Required&quot;</span>, <span class="stringliteral">&quot;Forbidden&quot;</span>, <span class="stringliteral">&quot;Not Found&quot;</span>, <span class="stringliteral">&quot;Method Not Allowed&quot;</span>, <span class="stringliteral">&quot;Not Acceptable&quot;</span>, <span class="stringliteral">&quot;Proxy Authentication Required&quot;</span>, <span class="stringliteral">&quot;Request Time-out&quot;</span>, <span class="stringliteral">&quot;Conflict&quot;</span>, <span class="stringliteral">&quot;Gone&quot;</span>, <span class="stringliteral">&quot;Length Required&quot;</span>, <span class="stringliteral">&quot;Precondition Failed&quot;</span>, <span class="stringliteral">&quot;Request Entity Too Large&quot;</span>, <span class="stringliteral">&quot;Request-URI Too Large&quot;</span>, <span class="stringliteral">&quot;Unsupported Media Type&quot;</span>, <span class="stringliteral">&quot;Requested range not satisfiable&quot;</span>, <span class="stringliteral">&quot;Expectation Failed&quot;</span>},</div>
-<div class="line">        {<span class="stringliteral">&quot;Internal Server Error&quot;</span>, <span class="stringliteral">&quot;Not Implemented&quot;</span>, <span class="stringliteral">&quot;Bad Gateway&quot;</span>, <span class="stringliteral">&quot;Service Unavailable&quot;</span>, <span class="stringliteral">&quot;Gateway Time-out&quot;</span>, <span class="stringliteral">&quot;HTTP Version not supported&quot;</span>},</div>
-<div class="line">    }</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= {{</div>
+<div class="line">        {{}},</div>
+<div class="line">        {{<span class="stringliteral">&quot;Continue&quot;</span>, <span class="stringliteral">&quot;Switching Protocols&quot;</span>}},</div>
+<div class="line">        {{<span class="stringliteral">&quot;OK&quot;</span>, <span class="stringliteral">&quot;Created&quot;</span>, <span class="stringliteral">&quot;Accepted&quot;</span>, <span class="stringliteral">&quot;Non-Authoritative Information&quot;</span>, <span class="stringliteral">&quot;No Content&quot;</span>, <span class="stringliteral">&quot;Reset Content&quot;</span>, <span class="stringliteral">&quot;Partial Content&quot;</span>}},</div>
+<div class="line">        {{<span class="stringliteral">&quot;Multiple Choices&quot;</span>, <span class="stringliteral">&quot;Moved Permanently&quot;</span>, <span class="stringliteral">&quot;Found&quot;</span>, <span class="stringliteral">&quot;See Other&quot;</span>, <span class="stringliteral">&quot;Not Modified&quot;</span>, <span class="stringliteral">&quot;Use Proxy&quot;</span>, <span class="stringliteral">&quot;Temporary Redirect&quot;</span>}},</div>
+<div class="line">        {{<span class="stringliteral">&quot;Bad Request&quot;</span>, <span class="stringliteral">&quot;Unauthorized&quot;</span>, <span class="stringliteral">&quot;Payment Required&quot;</span>, <span class="stringliteral">&quot;Forbidden&quot;</span>, <span class="stringliteral">&quot;Not Found&quot;</span>, <span class="stringliteral">&quot;Method Not Allowed&quot;</span>, <span class="stringliteral">&quot;Not Acceptable&quot;</span>, <span class="stringliteral">&quot;Proxy Authentication Required&quot;</span>, <span class="stringliteral">&quot;Request Time-out&quot;</span>, <span class="stringliteral">&quot;Conflict&quot;</span>, <span class="stringliteral">&quot;Gone&quot;</span>, <span class="stringliteral">&quot;Length Required&quot;</span>, <span class="stringliteral">&quot;Precondition Failed&quot;</span>, <span class="stringliteral">&quot;Request Entity Too Large&quot;</span>, <span class="stringliteral">&quot;Request-URI Too Large&quot;</span>, <span class="stringliteral">&quot;Unsupported Media Type&quot;</span>, <span class="stringliteral">&quot;Requested range not satisfiable&quot;</span>, <span class="stringliteral">&quot;Expectation Failed&quot;</span>}},</div>
+<div class="line">        {{<span class="stringliteral">&quot;Internal Server Error&quot;</span>, <span class="stringliteral">&quot;Not Implemented&quot;</span>, <span class="stringliteral">&quot;Bad Gateway&quot;</span>, <span class="stringliteral">&quot;Service Unavailable&quot;</span>, <span class="stringliteral">&quot;Gateway Time-out&quot;</span>, <span class="stringliteral">&quot;HTTP Version not supported&quot;</span>}},</div>
+<div class="line">    }}</div>
 </div><!-- fragment -->
 <p>List of all HTTP response messages (grouped by first digit of the code) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../da/da7/http__codes_8hpp_source.html#l00017">17</a> of file <a class="el" href="../../da/da7/http__codes_8hpp_source.html">http_codes.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../da/da7/http__codes_8hpp_source.html#l00018">18</a> of file <a class="el" href="../../da/da7/http__codes_8hpp_source.html">http_codes.hpp</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
-<div class="ttc" id="anamespacehttp__codes_html_a6f12039722c4a559b3e7f9fa93d9862b"><div class="ttname"><a href="../../d2/d97/namespacehttp__codes.html#a6f12039722c4a559b3e7f9fa93d9862b">http_codes::string_to_uint</a></div><div class="ttdeci">constexpr unsigned int string_to_uint(const char *str, unsigned int value=0)</div><div class="ttdoc">Generates number off of string.</div><div class="ttdef"><b>Definition:</b> <a href="../../da/da7/http__codes_8hpp_source.html#l00030">http_codes.hpp:30</a></div></div>
-<div class="ttc" id="anamespacehttp__codes_html_af3b2b758a2705833ad062b482f2b5fc7"><div class="ttname"><a href="../../d2/d97/namespacehttp__codes.html#af3b2b758a2705833ad062b482f2b5fc7">http_codes::get_reason_by_code</a></div><div class="ttdeci">constexpr const char * get_reason_by_code(const char *code_str)</div><div class="ttdoc">Transforms HTTP code to HTTP response message.</div><div class="ttdef"><b>Definition:</b> <a href="../../da/da7/http__codes_8hpp_source.html#l00046">http_codes.hpp:46</a></div></div>
-<div class="ttc" id="anamespacehttp__codes_html_ad45061f67abd1da8b34293cf53345bc6"><div class="ttname"><a href="../../d2/d97/namespacehttp__codes.html#ad45061f67abd1da8b34293cf53345bc6">http_codes::codes</a></div><div class="ttdeci">constexpr const char * codes[6][18]</div><div class="ttdoc">List of all HTTP response messages (grouped by first digit of the code)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/da7/http__codes_8hpp_source.html#l00017">http_codes.hpp:17</a></div></div>
+<div class="ttc" id="anamespacehttp__codes_html_a64b1d16f985541221497e1ecbc96ef08"><div class="ttname"><a href="../../d2/d97/namespacehttp__codes.html#a64b1d16f985541221497e1ecbc96ef08">http_codes::codes</a></div><div class="ttdeci">constexpr std::array&lt; std::array&lt; std::string_view, 18 &gt;, 6 &gt; codes</div><div class="ttdoc">List of all HTTP response messages (grouped by first digit of the code)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/da7/http__codes_8hpp_source.html#l00018">http_codes.hpp:18</a></div></div>
+<div class="ttc" id="anamespacewebframe_1_1__compile__time_html_a4feda887d261992c9c217be348d326d9"><div class="ttname"><a href="../../d8/df7/namespacewebframe_1_1__compile__time.html#a4feda887d261992c9c217be348d326d9">webframe::_compile_time::string_to_uint</a></div><div class="ttdeci">constexpr unsigned int string_to_uint(const std::string_view &amp;str, unsigned int value=0, size_t ind=0)</div><div class="ttdoc">Generates number off of string.</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/dce/constexpr_8hpp_source.html#l00035">constexpr.hpp:35</a></div></div>
+<div class="ttc" id="anamespacehttp__codes_html_ab31813171da73d4792e4cd9e01dac96c"><div class="ttname"><a href="../../d2/d97/namespacehttp__codes.html#ab31813171da73d4792e4cd9e01dac96c">http_codes::get_reason_by_code</a></div><div class="ttdeci">constexpr std::string_view get_reason_by_code(const std::string_view &amp;code_str)</div><div class="ttdoc">Transforms HTTP code to HTTP response message.</div><div class="ttdef"><b>Definition:</b> <a href="../../da/da7/http__codes_8hpp_source.html#l00039">http_codes.hpp:39</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
