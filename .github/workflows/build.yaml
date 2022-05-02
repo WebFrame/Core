@@ -60,13 +60,13 @@ jobs:
         run: |
           make -B run_tests
           make -B run_tests > ./bin/log/performance.txt
-          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.os }}performance${{ matrix.optimization }}.txt
+          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.os }}/performance${{ matrix.optimization }}.txt
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
         with:
           name: ${{ matrix.os }}${{ matrix.optimization }}
           path: |
-            ./benchmark/performance/${{ matrix.os }}performance${{ matrix.optimization }}.txt
+            ./benchmark/performance/${{ matrix.os }}/performance${{ matrix.optimization }}.txt
   group-results:
     name: Summarize
     runs-on: ubuntu-latest
@@ -79,4 +79,20 @@ jobs:
       - name: Craft final document
         shell: bash
         run: |
-          cat */*
+          for i in */* ; 
+          do 
+            echo $i | cut -d'/' -f1 ; 
+            paste <(cat $i | grep ') WebFrame - integration testing The web server  should respond to request with' | cut -d'^' -f2 | sed -e 's/^/2\^/') \
+                  <(cat $i | grep "Would have been nice" | cut -d'|' -f2) | 
+                sed 's/Would have been nice/expected\t/g' | 
+                sed 's/but got/\tbut got\t/g' |
+                sed 's/[ \t][ \t]*/ /g' ; 
+            echo "";
+          done > summary.txt;
+          cat summary.txt;
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Summary
+          path: |
+            summary.txt

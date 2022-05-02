@@ -150,7 +150,7 @@ namespace Moka
         message << ((msg.size() > 0) ? msg + " | " : "") << "Would have been nice " << cli::g(b) << " but got " << cli::r(a);
         throw Failure(f, l, message.str(), false);
       }
-    }   
+    }
 
     template <class A, class B>
     void be_less(const char* f, int l, const A& a, const B& b, const std::string& msg = "") {
