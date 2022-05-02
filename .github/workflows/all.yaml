@@ -181,10 +181,10 @@ jobs:
       - name: Prepare
         shell: bash
         run: |
-          mkdir -p ./src-gh-pages
-          mv -f ./cppcheck/* src-gh-pages/
-          mv -f ./doxygen/* src-gh-pages/
-          mv -f ./benchmark_report/report/* ./src-gh-pages/
+          mkdir -p ./src-gh-pages/report ./src-gh-pages/docs ./src-gh-pages/codeql_report
+          mv -f ./cppcheck/* src-gh-pages/codeql_report/
+          mv -f ./doxygen/* src-gh-pages/docs/
+          mv -f ./benchmark_report/* ./src-gh-pages/report/
       - name: Commit the reports
         shell: bash
         run: |
