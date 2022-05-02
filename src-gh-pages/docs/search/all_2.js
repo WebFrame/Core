@@ -1,10 +1,6 @@
 var searchData=
 [
-  ['call_7',['call',['../d4/d5e/structwebframe_1_1responser.html#ab8afba60bd932912bc5d5d40a7480522',1,'webframe::responser']]],
-  ['clearerr_8',['CLEARERR',['../df/ded/host_8h.html#a691146e702d1b6d3692117d76c4c65d4',1,'host.h']]],
-  ['cmp_9',['cmp',['../dc/d8b/structwebframe_1_1webframe_1_1cmp.html',1,'webframe::webframe']]],
-  ['code_10',['code',['../db/de3/structwebframe_1_1status__line.html#a346372f9f4d0f5d89201d6570bf950ad',1,'webframe::status_line']]],
-  ['codes_11',['codes',['../d4/d2c/classwebframe_1_1webframe.html#ac075d5bf34fa8a0d4301ae4551650aac',1,'webframe::webframe::codes()'],['../d2/d97/namespacehttp__codes.html#ad45061f67abd1da8b34293cf53345bc6',1,'http_codes::codes()']]],
-  ['connect_12',['CONNECT',['../d8/d8d/namespacewebframe.html#a69de9ca7fb84de6611aeee42515e4d02ab57e2519e26151feacdbe52076bc39ec',1,'webframe']]],
-  ['convert_5fpath_5fto_5fregex_13',['convert_path_to_regex',['../d4/d2c/classwebframe_1_1webframe.html#a748cbab0553cd6afc541de8c8dfe64f2',1,'webframe::webframe']]]
+  ['base_2ehpp_6',['base.hpp',['../dd/d3c/base_8hpp.html',1,'']]],
+  ['body_7',['body',['../d6/d7e/classwebframe_1_1response.html#abfc6bafac699117ce3c44e8a4f677ed6',1,'webframe::response::body()'],['../d1/dfa/classwebframe_1_1request.html#a3b411ca2fae104a1a855d4336f0dcbbb',1,'webframe::request::body()'],['../d8/d06/structwebframe_1_1body__t.html#a8b115633521e75e1ef04967f4569c7ce',1,'webframe::body_t::body()'],['../d8/d8d/namespacewebframe.html#a4801e5865e0737ad9f40f5b14f0d96cfa786329b34bbe53ab40a54a19cd597f2d',1,'webframe::BODY()']]],
+  ['body_5ft_8',['body_t',['../d8/d06/structwebframe_1_1body__t.html',1,'webframe::body_t'],['../d8/d06/structwebframe_1_1body__t.html#a0fb8c0974fe648440b433d567dd9372e',1,'webframe::body_t::body_t()']]]
 ];

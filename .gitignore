@@ -1,5 +1,6 @@
 .vscode/settings.json
 *.exe
+**/*.exe
 buffer.txt
 log.txt
 curl.txt
