@@ -181,6 +181,7 @@ jobs:
       - name: Prepare
         shell: bash
         run: |
+        rm -rf ./src-gh-pages
           mkdir -p ./src-gh-pages/report ./src-gh-pages/docs ./src-gh-pages/codeql_report
           mv -f ./cppcheck/* src-gh-pages/codeql_report/
           mv -f ./doxygen/* src-gh-pages/docs/
