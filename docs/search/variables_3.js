@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['down_5fptr_271',['down_ptr',['../da/dc4/classwebframe_1_1webframe_1_1server__status.html#a311ba029d19113dc9443939df3566024',1,'webframe::webframe::server_status']]]
+  ['dead_318',['dead',['../dc/d90/classwebframe_1_1server__status.html#aa5f0c7196700d4203333b11a265a07d3',1,'webframe::server_status']]]
 ];

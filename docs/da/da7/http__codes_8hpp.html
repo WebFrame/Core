@@ -80,6 +80,7 @@ $(function() {
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;string_view&gt;</code><br />
+<code>#include &lt;<a class="el" href="../../d4/dce/constexpr_8hpp_source.html">webframe/constexpr.hpp</a>&gt;</code><br />
 </div>
 <p><a href="../../da/da7/http__codes_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -90,21 +91,18 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a6f12039722c4a559b3e7f9fa93d9862b"><td class="memItemLeft" align="right" valign="top">constexpr unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d97/namespacehttp__codes.html#a6f12039722c4a559b3e7f9fa93d9862b">http_codes::string_to_uint</a> (const char *str, unsigned int value=0)</td></tr>
-<tr class="memdesc:a6f12039722c4a559b3e7f9fa93d9862b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates number off of string.  <a href="../../d2/d97/namespacehttp__codes.html#a6f12039722c4a559b3e7f9fa93d9862b">More...</a><br /></td></tr>
-<tr class="separator:a6f12039722c4a559b3e7f9fa93d9862b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1da85d37b4907bf16a42b10192d49e5"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d97/namespacehttp__codes.html#af1da85d37b4907bf16a42b10192d49e5">http_codes::get_reason_by_code</a> (unsigned int code)</td></tr>
-<tr class="memdesc:af1da85d37b4907bf16a42b10192d49e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms HTTP code into HTTP response message.  <a href="../../d2/d97/namespacehttp__codes.html#af1da85d37b4907bf16a42b10192d49e5">More...</a><br /></td></tr>
-<tr class="separator:af1da85d37b4907bf16a42b10192d49e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3b2b758a2705833ad062b482f2b5fc7"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d97/namespacehttp__codes.html#af3b2b758a2705833ad062b482f2b5fc7">http_codes::get_reason_by_code</a> (const char *code_str)</td></tr>
-<tr class="memdesc:af3b2b758a2705833ad062b482f2b5fc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms HTTP code to HTTP response message.  <a href="../../d2/d97/namespacehttp__codes.html#af3b2b758a2705833ad062b482f2b5fc7">More...</a><br /></td></tr>
-<tr class="separator:af3b2b758a2705833ad062b482f2b5fc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ea78a909fbeaa3020acb3b413de5b17"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d97/namespacehttp__codes.html#a3ea78a909fbeaa3020acb3b413de5b17">http_codes::get_reason_by_code</a> (unsigned int code)</td></tr>
+<tr class="memdesc:a3ea78a909fbeaa3020acb3b413de5b17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms HTTP code into HTTP response message.  <a href="../../d2/d97/namespacehttp__codes.html#a3ea78a909fbeaa3020acb3b413de5b17">More...</a><br /></td></tr>
+<tr class="separator:a3ea78a909fbeaa3020acb3b413de5b17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab31813171da73d4792e4cd9e01dac96c"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d97/namespacehttp__codes.html#ab31813171da73d4792e4cd9e01dac96c">http_codes::get_reason_by_code</a> (const std::string_view &amp;code_str)</td></tr>
+<tr class="memdesc:ab31813171da73d4792e4cd9e01dac96c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms HTTP code to HTTP response message.  <a href="../../d2/d97/namespacehttp__codes.html#ab31813171da73d4792e4cd9e01dac96c">More...</a><br /></td></tr>
+<tr class="separator:ab31813171da73d4792e4cd9e01dac96c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ad45061f67abd1da8b34293cf53345bc6"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d97/namespacehttp__codes.html#ad45061f67abd1da8b34293cf53345bc6">http_codes::codes</a> [6][18]</td></tr>
-<tr class="memdesc:ad45061f67abd1da8b34293cf53345bc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of all HTTP response messages (grouped by first digit of the code)  <a href="../../d2/d97/namespacehttp__codes.html#ad45061f67abd1da8b34293cf53345bc6">More...</a><br /></td></tr>
-<tr class="separator:ad45061f67abd1da8b34293cf53345bc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64b1d16f985541221497e1ecbc96ef08"><td class="memItemLeft" align="right" valign="top">constexpr std::array&lt; std::array&lt; std::string_view, 18 &gt;, 6 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d97/namespacehttp__codes.html#a64b1d16f985541221497e1ecbc96ef08">http_codes::codes</a></td></tr>
+<tr class="memdesc:a64b1d16f985541221497e1ecbc96ef08"><td class="mdescLeft">&#160;</td><td class="mdescRight">List of all HTTP response messages (grouped by first digit of the code)  <a href="../../d2/d97/namespacehttp__codes.html#a64b1d16f985541221497e1ecbc96ef08">More...</a><br /></td></tr>
+<tr class="separator:a64b1d16f985541221497e1ecbc96ef08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Utils for all possible HTTP response codes. </p>
