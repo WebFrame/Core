@@ -6,23 +6,22 @@
 int main(int argc, char** argv)
 {
 	constexpr int fasten = webframe::webframe::init();
-	int pass = fasten;
+	std::atomic<int> pass{faster};
 	webframe::webframe app;
 	app.route("/{number}/2", [&](int steps) {
 			for (int i = 0; i < (1 << steps); i++)
 			{
-				pass = pass + rand();
+				pass.fetch_add(rand(), std::memory_order_relaxed);
 			}
 			return "Hello World!";
 		})
 		.route("/{number}", [&](int steps) {
 			for (int i = 0; i < (1 << steps); i++)
 			{
-				__asm__("");
+				pass.fetch_add(1, std::memory_order_relaxed);
 			}
 			return "Hello World!";
 		});
 	const char* port = argv[1];
-	std::cout << port << std::endl;
 	app.run(port, 1).wait_end(port);
 }

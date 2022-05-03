@@ -2,7 +2,7 @@ COMPILER_CPP=g++
 CPP_STD=-std=c++2a
 OPTIMIZATION_LEVEL=-O2
 OPT=-fconstexpr-depth=700
-INCLUDE_DIRS=-I./tests -I./src
+INCLUDE_DIRS=-I./tests -I./lib/
 LIB_FLAGS=-pthread -lpthread
 DEBUG_FLAGS=-fsanitize=undefined -fsanitize=address
 INJACPP=-I./lib/inja/single_include/ -I./lib/inja/third_party/include
@@ -17,7 +17,7 @@ endif
 
 WARNING_FLAGS=-Wall -Wextra -pedantic
 
-all: build run
+all: build_all run
 
 test: clean build_tests run_tests
 
@@ -29,7 +29,7 @@ install_inja:
 build_all: build build_tests benchmark_build
 
 build:
-	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./src/main.cpp -o ./bin/main.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./example/main.cpp -o ./bin/main.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(INJACPP)
 
 build_tests:
 	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./tests/main.cpp -o ./bin/test.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(INJACPP)
@@ -37,16 +37,22 @@ build_tests:
 debug_build_all: debug_build debug_build_tests debug_benchmark_build
 
 debug_build:
-	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./src/main.cpp -o ./bin/main.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./example/main.cpp -o ./bin/main.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP)
 
 debug_build_tests:
 	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./tests/main.cpp -o ./bin/test.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP)
 
 benchmark_build:
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server.exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP) -fconcepts
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O     ./benchmark/contestants/server-O.cpp     -o ./benchmark/contestants/server-O.exe      $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O1    ./benchmark/contestants/server-O1.cpp    -o ./benchmark/contestants/server-O1.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O2    ./benchmark/contestants/server-O2.cpp    -o ./benchmark/contestants/server-O2.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O3    ./benchmark/contestants/server-O3.cpp    -o ./benchmark/contestants/server-O3.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -Ofast ./benchmark/contestants/server-Ofast.cpp -o ./benchmark/contestants/server-Ofast.exe  $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -Og    ./benchmark/contestants/server-Og.cpp    -o ./benchmark/contestants/server-Og.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -Os    ./benchmark/contestants/server-Os.cpp    -o ./benchmark/contestants/server-Os.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
 
 debug_benchmark_build:
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server.exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP) -fconcepts
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server.exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP)
 
 clean:
 	rm -rf ./bin
@@ -61,13 +67,19 @@ run_tests:
 benchmark: benchmark_build
 	npm install express; \
 	python -m pip install flask; \
-	./benchmark/contestants/server.exe & \
+	./benchmark/contestants/server-O.exe 8888 & \
+	./benchmark/contestants/server-O1.exe 8889 & \
+	./benchmark/contestants/server-O2.exe 8890 & \
+	./benchmark/contestants/server-O3.exe 8891 & \
+	./benchmark/contestants/server-Ofast.exe 8892 & \
+	./benchmark/contestants/server-Og.exe 8893 & \
+	./benchmark/contestants/server-Os.exe 8894 & \
 	python benchmark/contestants/server.py & \
 	node benchmark/contestants/server.js & \
 	sleep 10s; \
 	cd benchmark; \
 	mkdir tmp; \
-	bash benchmark.sh
+	bash benchmark.sh;
 
 save-benchmark:
 	cd benchmark; \
