@@ -43,13 +43,13 @@ debug_build_tests:
 	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./tests/main.cpp -o ./bin/test.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP)
 
 benchmark_build:
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O     ./benchmark/contestants/server-O.cpp     -o ./benchmark/contestants/server-O.exe      $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O1    ./benchmark/contestants/server-O1.cpp    -o ./benchmark/contestants/server-O1.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O2    ./benchmark/contestants/server-O2.cpp    -o ./benchmark/contestants/server-O2.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O3    ./benchmark/contestants/server-O3.cpp    -o ./benchmark/contestants/server-O3.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) -Ofast ./benchmark/contestants/server-Ofast.cpp -o ./benchmark/contestants/server-Ofast.exe  $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) -Og    ./benchmark/contestants/server-Og.cpp    -o ./benchmark/contestants/server-Og.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) -Os    ./benchmark/contestants/server-Os.cpp    -o ./benchmark/contestants/server-Os.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O     ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server-O.exe      $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O1    ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server-O1.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O2    ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server-O2.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O3    ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server-O3.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -Ofast ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server-Ofast.exe  $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -Og    ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server-Og.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -Os    ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server-Os.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
 
 debug_benchmark_build:
 	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server.exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP)
