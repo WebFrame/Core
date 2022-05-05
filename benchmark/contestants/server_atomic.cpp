@@ -15,7 +15,7 @@ int main(int argc, char** argv)
 			}
 			return "Hello World!";
 		})
-		.route("/{number}", [&](int steps) {
+		.route("/{number}/1", [&](int steps) {
 			for (int i = 0; i < (1 << steps); i++)
 			{
 				pass.fetch_add(1, std::memory_order_relaxed);

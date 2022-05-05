@@ -43,6 +43,14 @@ debug_build_tests:
 	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./tests/main.cpp -o ./bin/test.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP)
 
 benchmark_build:
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O     ./benchmark/contestants/server_atomic.cpp -o ./benchmark/contestants/server_atomic-O.exe      $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O1    ./benchmark/contestants/server_atomic.cpp -o ./benchmark/contestants/server_atomic-O1.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O2    ./benchmark/contestants/server_atomic.cpp -o ./benchmark/contestants/server_atomic-O2.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O3    ./benchmark/contestants/server_atomic.cpp -o ./benchmark/contestants/server_atomic-O3.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -Ofast ./benchmark/contestants/server_atomic.cpp -o ./benchmark/contestants/server_atomic-Ofast.exe  $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -Og    ./benchmark/contestants/server_atomic.cpp -o ./benchmark/contestants/server_atomic-Og.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) -Os    ./benchmark/contestants/server_atomic.cpp -o ./benchmark/contestants/server_atomic-Os.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+
 	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O     ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server-O.exe      $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
 	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O1    ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server-O1.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
 	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O2    ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server-O2.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
@@ -65,20 +73,32 @@ run_tests:
 	./bin/test.exe
 
 benchmark: benchmark_build
-	npm install express; \
-	python -m pip install flask; \
-	./benchmark/contestants/server-O.exe 8888 & \
-	./benchmark/contestants/server-O1.exe 8889 & \
-	./benchmark/contestants/server-O2.exe 8890 & \
-	./benchmark/contestants/server-O3.exe 8891 & \
-	./benchmark/contestants/server-Ofast.exe 8892 & \
-	./benchmark/contestants/server-Og.exe 8893 & \
-	./benchmark/contestants/server-Os.exe 8894 & \
-	python benchmark/contestants/server.py & \
-	node benchmark/contestants/server.js & \
-	sleep 10s; \
-	cd benchmark; \
-	mkdir tmp; \
+	npm install express
+	python -m pip install flask
+
+	./benchmark/contestants/server-O.exe 8888 &
+	./benchmark/contestants/server-O1.exe 8889 &
+	./benchmark/contestants/server-O2.exe 8890 &
+	./benchmark/contestants/server-O3.exe 8891 &
+	./benchmark/contestants/server-Ofast.exe 8892 &
+	./benchmark/contestants/server-Og.exe 8893 &
+	./benchmark/contestants/server-Os.exe 8894 &
+	
+	./benchmark/contestants/server_atomic-O.exe 8895 &
+	./benchmark/contestants/server_atomic-O1.exe 8896 &
+	./benchmark/contestants/server_atomic-O2.exe 8897 &
+	./benchmark/contestants/server_atomic-O3.exe 8898 &
+	./benchmark/contestants/server_atomic-Ofast.exe 8899 &
+	./benchmark/contestants/server_atomic-Og.exe 8900 &
+	./benchmark/contestants/server_atomic-Os.exe 8901 &
+
+	python benchmark/contestants/server.py &
+	
+	node benchmark/contestants/server.js &
+	
+	sleep 10s;
+	cd benchmark;
+	mkdir tmp;
 	bash benchmark.sh;
 
 save-benchmark:

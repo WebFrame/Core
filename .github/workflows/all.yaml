@@ -152,16 +152,17 @@ jobs:
       - name: Pack 📦
         run: |
           mkdir -p benchmark/report;
-          mv benchmark/tmp/test1.result benchmark/report/;
-          mv benchmark/tmp/test2.result benchmark/report/;
-          echo "Test 1";
-          cat benchmark/report/test1.result;
-          echo "Test 2";
-          cat benchmark/report/test2.result;
-          echo "<style>table,th,td{border:1px solid red;border-collapse:collapse;text-align:center;}th,td{color: #111;background-color: white;}</style><table><tr><th>C++</th><th>Python</th><th>Node.JS Express</th>" > benchmark/report/test1.results.html; cat benchmark/report/test1.result | sed ':a;N;$!ba;s/C++\t//g' | sed ':a;N;$!ba;s/<1> Python//g' | sed ':a;N;$!ba;s/<2> Node.JS Express//g' | sed ':a;N;$!ba;s/\t/ /g' | sed ':a;N;$!ba;s/  /<td>/g' | sed 's/s/s<\/td>/g' | sed 's/^/<\/tr><tr><td>/g' >> benchmark/report/test1.results.html; echo "</tr></table>" >> benchmark/report/test1.results.html;
-          echo "<style>table,th,td{border:1px solid red;border-collapse:collapse;text-align:center;}th,td{color: #111;background-color: white;}</style><table><tr><th>C++</th><th>Python</th><th>Node.JS Express</th>" > benchmark/report/test2.results.html; cat benchmark/report/test2.result | sed ':a;N;$!ba;s/C++\t//g' | sed ':a;N;$!ba;s/<1> Python//g' | sed ':a;N;$!ba;s/<2> Node.JS Express//g' | sed ':a;N;$!ba;s/\t/ /g' | sed ':a;N;$!ba;s/  /<td>/g' | sed 's/s/s<\/td>/g' | sed 's/^/<\/tr><tr><td>/g' >> benchmark/report/test2.results.html; echo "</tr></table>" >> benchmark/report/test2.results.html;
-          echo "<h1>Test 1:</h1>" > benchmark/report/index.html; cat benchmark/report/test1.results.html >> benchmark/report/index.html;
-          echo "<h1>Test 2:</h1>" >> benchmark/report/index.html; cat benchmark/report/test2.results.html >> benchmark/report/index.html;
+          mv benchmark/tmp/*.csv benchmark/report/;
+          mv benchmark/tmp/*.html benchmark/report/;
+          for i in benchmark/report/*.csv ; do 
+            echo -e "\n\e[44m$i\e[0m"; 
+            cat $i;
+          done
+          for i in benchmark/report/*.html ; do 
+            echo "<h1>$i</h1>"; 
+            cat $i;
+            echo "";
+          done > benchmark/report/index.html
         shell: bash
       - name: Upload Report 🚀
         uses: actions/upload-artifact@v1

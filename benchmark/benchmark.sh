@@ -1,55 +1,57 @@
 #!/bin/bash
 
-rm tmp/test1.result;
+chmod +x ./csv2html.sh
 
-for i in `seq 1 30`; do
-    echo -n "$i ";
-    (
-        echo -en "C++-O\t" ; 
-        curl -w "%{time_total}" http://localhost:8888/$i -o /dev/null 2> /dev/null ;
-        echo -en "\tC++-O1\t" ;
-        curl -w "%{time_total}" http://localhost:8889/$i -o /dev/null 2> /dev/null ;
-        echo -en "\tC++-O2\t" ;
-        curl -w "%{time_total}" http://localhost:8890/$i -o /dev/null 2> /dev/null ;
-        echo -en "\tC++-O3\t" ;
-        curl -w "%{time_total}" http://localhost:8891/$i -o /dev/null 2> /dev/null ;
-        echo -en "\tC++-Ofast\t" ;
-        curl -w "%{time_total}" http://localhost:8892/$i -o /dev/null 2> /dev/null ;
-        echo -en "\tC++-Og\t" ;
-        curl -w "%{time_total}" http://localhost:88893/$i -o /dev/null 2> /dev/null ;
-        echo -en "\tC++-Os\t" ;
-        curl -w "%{time_total}" http://localhost:8894/$i -o /dev/null 2> /dev/null ;
-        echo -en "\tPython\t" ;
-        curl -w "%{time_total}" http://localhost:5000/$i -o /dev/null 2> /dev/null ;
-        echo -en "\tNode.JS Express\t" ;
-        curl -w "%{time_total}" http://localhost:3000/$i -o /dev/null 2> /dev/null
-    ) | sed ':a;N;$!ba;s/\n/ /g' >> tmp/test1.result
-    echo "" >> tmp/test1.result
-done
+declare -r n=5
 
-rm tmp/test2.result;
-
-for i in `seq 1 30`; do
-    echo -n "$i ";
-    (
-        echo -en "C++-O\t" ; 
-        curl -w "%{time_total}" http://localhost:8888/$i -o /dev/null 2> /dev/null ;
-        echo -en "\tC++-O1\t" ;
-        curl -w "%{time_total}" http://localhost:8889/$i -o /dev/null 2> /dev/null ;
-        echo -en "\tC++-O2\t" ;
-        curl -w "%{time_total}" http://localhost:8890/$i -o /dev/null 2> /dev/null ;
-        echo -en "\tC++-O3\t" ;
-        curl -w "%{time_total}" http://localhost:8891/$i -o /dev/null 2> /dev/null ;
-        echo -en "\tC++-Ofast\t" ;
-        curl -w "%{time_total}" http://localhost:8892/$i -o /dev/null 2> /dev/null ;
-        echo -en "\tC++-Og\t" ;
-        curl -w "%{time_total}" http://localhost:88893/$i -o /dev/null 2> /dev/null ;
-        echo -en "\tC++-Os\t" ;
-        curl -w "%{time_total}" http://localhost:8894/$i -o /dev/null 2> /dev/null ;
-        echo -en "\tPython\t" ;
-        curl -w "%{time_total}" http://localhost:5000/$i -o /dev/null 2> /dev/null ;
-        echo -en "\tNode.JS Express\t" ;
-        curl -w "%{time_total}" http://localhost:3000/$i -o /dev/null 2> /dev/null
-    ) | sed ':a;N;$!ba;s/\n/ /g' >> tmp/test2.result
-    echo "" >> tmp/test2.result
+for url in "1" "2"; do
+    rm tmp/test$url.curl.csv;
+    rm tmp/test$url.time.csv;
+    echo -en "C++-O,C++-O1,C++-O2,C++-O3,C++-Ofast,C++-Og,C++-Os,C++-O-atomic,C++-O1-atomic,C++-O2-atomic,C++-O3-atomic,C++-Ofast-atomic,C++-Og-atomic,C++-Os-atomic,Python,Node.JS Express" > tmp/test$url.curl.csv;
+    echo -en "C++-O,C++-O1,C++-O2,C++-O3,C++-Ofast,C++-Og,C++-Os,C++-O-atomic,C++-O1-atomic,C++-O2-atomic,C++-O3-atomic,C++-Ofast-atomic,C++-Og-atomic,C++-Os-atomic,Python,Node.JS Express" > tmp/test$url.time.csv;
+    for i in `seq 1 $n`; do
+        echo -n "$i ";
+        ( 
+            curl -w "%{time_total}" http://localhost:8888/$i/$url -o /dev/null --silent ; echo -en "," ; # asm("")
+            curl -w "%{time_total}" http://localhost:8889/$i/$url -o /dev/null --silent ; echo -en "," ; # asm("")
+            curl -w "%{time_total}" http://localhost:8890/$i/$url -o /dev/null --silent ; echo -en "," ; # asm("")
+            curl -w "%{time_total}" http://localhost:8891/$i/$url -o /dev/null --silent ; echo -en "," ; # asm("")
+            curl -w "%{time_total}" http://localhost:8892/$i/$url -o /dev/null --silent ; echo -en "," ; # asm("")
+            curl -w "%{time_total}" http://localhost:8893/$i/$url -o /dev/null --silent ; echo -en "," ; # asm("")
+            curl -w "%{time_total}" http://localhost:8894/$i/$url -o /dev/null --silent ; echo -en "," ; # asm("")
+            curl -w "%{time_total}" http://localhost:8895/$i/$url -o /dev/null --silent ; echo -en "," ; # using atomic variable
+            curl -w "%{time_total}" http://localhost:8896/$i/$url -o /dev/null --silent ; echo -en "," ; # using atomic variable
+            curl -w "%{time_total}" http://localhost:8897/$i/$url -o /dev/null --silent ; echo -en "," ; # using atomic variable
+            curl -w "%{time_total}" http://localhost:8898/$i/$url -o /dev/null --silent ; echo -en "," ; # using atomic variable
+            curl -w "%{time_total}" http://localhost:8899/$i/$url -o /dev/null --silent ; echo -en "," ; # using atomic variable
+            curl -w "%{time_total}" http://localhost:8900/$i/$url -o /dev/null --silent ; echo -en "," ; # using atomic variable
+            curl -w "%{time_total}" http://localhost:8901/$i/$url -o /dev/null --silent ; echo -en "," ; # using atomic variable
+            curl -w "%{time_total}" http://localhost:5000/$i/$url -o /dev/null --silent ; echo -en "," ;
+            curl -w "%{time_total}" http://localhost:3000/$i/$url -o /dev/null --silent
+        ) | sed ':a;N;$!ba;s/\n/ /g' >> tmp/test$url.curl.csv
+        echo "" >> tmp/test$url.curl.csv
+        
+        echo -n "$i ";
+        ( 
+            /usr/bin/time -f "%e" curl http://localhost:8888/$i/$url -o /dev/null --silent ; echo -en "," ; # asm("")
+            /usr/bin/time -f "%e" curl http://localhost:8889/$i/$url -o /dev/null --silent ; echo -en "," ; # asm("")
+            /usr/bin/time -f "%e" curl http://localhost:8890/$i/$url -o /dev/null --silent ; echo -en "," ; # asm("")
+            /usr/bin/time -f "%e" curl http://localhost:8891/$i/$url -o /dev/null --silent ; echo -en "," ; # asm("")
+            /usr/bin/time -f "%e" curl http://localhost:8892/$i/$url -o /dev/null --silent ; echo -en "," ; # asm("")
+            /usr/bin/time -f "%e" curl http://localhost:8893/$i/$url -o /dev/null --silent ; echo -en "," ; # asm("")
+            /usr/bin/time -f "%e" curl http://localhost:8894/$i/$url -o /dev/null --silent ; echo -en "," ; # asm("")
+            /usr/bin/time -f "%e" curl http://localhost:8895/$i/$url -o /dev/null --silent ; echo -en "," ; # using atomic variable
+            /usr/bin/time -f "%e" curl http://localhost:8896/$i/$url -o /dev/null --silent ; echo -en "," ; # using atomic variable
+            /usr/bin/time -f "%e" curl http://localhost:8897/$i/$url -o /dev/null --silent ; echo -en "," ; # using atomic variable
+            /usr/bin/time -f "%e" curl http://localhost:8898/$i/$url -o /dev/null --silent ; echo -en "," ; # using atomic variable
+            /usr/bin/time -f "%e" curl http://localhost:8899/$i/$url -o /dev/null --silent ; echo -en "," ; # using atomic variable
+            /usr/bin/time -f "%e" curl http://localhost:8900/$i/$url -o /dev/null --silent ; echo -en "," ; # using atomic variable
+            /usr/bin/time -f "%e" curl http://localhost:8901/$i/$url -o /dev/null --silent ; echo -en "," ; # using atomic variable
+            /usr/bin/time -f "%e" curl http://localhost:5000/$i/$url -o /dev/null --silent ; echo -en "," ;
+            /usr/bin/time -f "%e" curl http://localhost:3000/$i/$url -o /dev/null --silent
+        ) | sed ':a;N;$!ba;s/\n/ /g' >> tmp/test$url.time.csv
+        echo "" >> tmp/test$url.time.csv
+    done
+    ./csv2html.sh tmp/test$url.curl.csv > tmp/test$url.curl.html
+    ./csv2html.sh tmp/test$url.time.csv > tmp/test$url.time.html
 done

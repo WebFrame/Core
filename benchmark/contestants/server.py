@@ -2,7 +2,7 @@ from flask import Flask, g
 import random
 app = Flask(__name__)
 
-@app.route("/<steps>")
+@app.route("/<steps>/1")
 def hello(steps):
     x = 0
     for i in range(2 ** int(steps)):
