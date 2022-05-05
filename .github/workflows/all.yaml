@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest]
+        os: [ubuntu-latest] # [windows-latest, ubuntu-latest]
         optimization: [-O, -O1, -O2, -O3, -Ofast, -Og, -Os]
         include:
           - cxx: g++
@@ -155,14 +155,15 @@ jobs:
           mv benchmark/tmp/*.csv benchmark/report/;
           mv benchmark/tmp/*.html benchmark/report/;
           for i in benchmark/report/*.csv ; do 
-            echo -e "\n\e[44m$i\e[0m"; 
+            echo -e "\n\e[36m$i\e[0m"; 
             cat $i;
           done
           for i in benchmark/report/*.html ; do 
             echo "<h1>$i</h1>"; 
             cat $i;
             echo "";
-          done > benchmark/report/index.html
+          done > benchmark/report/index;
+          mv benchmark/report/index benchmark/report/index.html
         shell: bash
       - name: Upload Report 🚀
         uses: actions/upload-artifact@v1
