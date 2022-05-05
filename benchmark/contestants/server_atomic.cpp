@@ -6,7 +6,7 @@
 int main(int argc, char** argv)
 {
 	constexpr int fasten = webframe::webframe::init();
-	std::atomic<int> pass{faster};
+	std::atomic<int> pass{fasten};
 	webframe::webframe app;
 	app.route("/{number}/2", [&](int steps) {
 			for (int i = 0; i < (1 << steps); i++)
