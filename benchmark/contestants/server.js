@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const port = 3000
 
-app.get('/:step/1s', (req, res) => {
+app.get('/:steps/1', (req, res) => {
     let x = 0;
     for (let i = 0; i <
         (1 << parseInt(req.params['steps'])); i += 1) {

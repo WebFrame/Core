@@ -158,12 +158,6 @@ jobs:
             echo -e "\n\e[36m$i\e[0m"; 
             cat $i;
           done
-          for i in benchmark/report/*.html ; do 
-            echo "<h1>$i</h1>"; 
-            cat $i;
-            echo "";
-          done > benchmark/report/index;
-          mv benchmark/report/index benchmark/report/index.html
         shell: bash
       - name: Upload Report 🚀
         uses: actions/upload-artifact@v1

@@ -94,7 +94,8 @@ benchmark: benchmark_build
 	sleep 10s; \
 	cd benchmark; \
 	mkdir tmp; \
-	bash benchmark.sh;
+	bash benchmark.sh; \
+	for i in -O -O1 -O2 -O3 -Ofast -Og -Os; do killall server$i.exe server_atomic$i.exe ; done
 
 save-benchmark:
 	cd benchmark; \
