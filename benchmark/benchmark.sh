@@ -2,14 +2,14 @@
 
 chmod +x ./csv2html.sh
 
-declare -r n=30
+declare -r n=29
 
 for url in "1" "2"; do
     rm tmp/test$url.curl.csv;
     rm tmp/test$url.time.csv;
     echo -e "C++-O,C++-O1,C++-O2,C++-O3,C++-Ofast,C++-Og,C++-Os,C++-O-atomic,C++-O1-atomic,C++-O2-atomic,C++-O3-atomic,C++-Ofast-atomic,C++-Og-atomic,C++-Os-atomic,Python,Node.JS Express" > tmp/test$url.curl.csv;
     echo -e "C++-O,C++-O1,C++-O2,C++-O3,C++-Ofast,C++-Og,C++-Os,C++-O-atomic,C++-O1-atomic,C++-O2-atomic,C++-O3-atomic,C++-Ofast-atomic,C++-Og-atomic,C++-Os-atomic,Python,Node.JS Express" > tmp/test$url.time.csv;
-    for i in `seq 1 $n`; do
+    for i in `seq 0 $n`; do
         echo -n "$i ";
         ( 
             curl -w "%{time_total}" http://localhost:8888/$i/$url -o /dev/null --silent ; echo -en "," ; # asm("")
