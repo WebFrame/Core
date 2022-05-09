@@ -2,7 +2,7 @@
 
 chmod +x ./csv2html.sh
 
-declare -r n=20
+declare -r n=25
 
 for url in "1" "2"; do
     rm tmp/test$url.curl.csv;
