@@ -5,18 +5,18 @@
 
 int main(int argc, char** argv)
 {
-	constexpr int64_t fasten = webframe::webframe::init();
-	int64_t pass = fasten;
+	constexpr long long fasten = webframe::webframe::init();
+	long long pass = fasten;
 	webframe::webframe app;
-	app.route("/{number}/2", [&](int64_t steps) {
-			for (int64_t i = 0; i < (1 << steps); i++)
+	app.route("/{number}/2", [&](long long steps) {
+			for (long long i = 0; i < (1 << steps); i++)
 			{
 				pass = pass + rand();
 			}
 			return "Hello World!";
 		})
-		.route("/{number}/1", [&](int64_t steps) {
-			for (int64_t i = 0; i < (1 << steps); i++)
+		.route("/{number}/1", [&](long long steps) {
+			for (long long i = 0; i < (1 << steps); i++)
 			{
 				__asm__("");
 			}
