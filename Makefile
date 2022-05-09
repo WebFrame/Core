@@ -94,19 +94,7 @@ benchmark: benchmark_build
 	sleep 10s; \
 	cd benchmark; \
 	mkdir tmp; \
-	bash benchmark.sh; \
-	for i in -O -O1 -O2 -O3 -Ofast -Og -Os; do killall server$i.exe server_atomic$i.exe ; done
+	bash benchmark.sh;
 
-save-benchmark:
-	cd benchmark; \
-	cp tmp/*.result results/ 
-
-local-benchmark:
-	mkdir -p ./benchmark/performance/$(DIR_PREFIX); \
-	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O ; \
-	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O1 ; \
-	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O2 ; \
-	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-O3 ; \
-	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-Ofast ; \
-	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-Og ; \
-	make -B clean build_tests run_tests COMPILER_CPP=$(COMPILER_CPP) OPTIMIZATION_LEVEL=-Os ;
+kill-benchmark:
+	killall server-O.exe server_atomic-O.exe server-O1.exe server_atomic-O1.exe server-O2.exe server_atomic-O2.exe server-O3.exe server_atomic-O3.exe server-Ofast.exe server_atomic-Ofast.exe server-Og.exe server_atomic-Og.exe server-Os.exe server_atomic-Os.exe
