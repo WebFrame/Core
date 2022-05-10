@@ -141,7 +141,36 @@ jobs:
       matrix:
         os: [ubuntu-latest] # [windows-latest, ubuntu-latest]
         port: [8888]
-        server: [ac++-O, ac++-O1, ac++-O2, ac++-O3, ac++-Ofast, ac++-Og, ac++-Os, c++-O, c++-O1, c++-O2, c++-O3, c++-Ofast, c++-Og, c++-Os, python, node]
+        server: [ac++, c++, python, node]
+        include: 
+          - optimzation: -O
+            server: c++
+          - optimzation: -O1
+            server: c++
+          - optimzation: -O2
+            server: c++
+          - optimzation: -O3
+            server: c++
+          - optimzation: -Ofast
+            server: c++
+          - optimzation: -Og
+            server: c++
+          - optimzation: -Os
+            server: c++
+          - optimzation: -O
+            server: ac++
+          - optimzation: -O1
+            server: ac++
+          - optimzation: -O2
+            server: ac++
+          - optimzation: -O3
+            server: ac++
+          - optimzation: -Ofast
+            server: ac++
+          - optimzation: -Og
+            server: ac++
+          - optimzation: -Os
+            server: ac++
     needs: build
     name: ${{ matrix.os }}-${{ matrix.server }}
     runs-on: ${{ matrix.os }}
@@ -155,14 +184,14 @@ jobs:
         shell: bash
         run: |
           make install
-          make -B benchmark_build OPTIMIZATION_LEVEL=-`echo "${{ matrix.server }} | cut -d'-' -f2`
+          make -B benchmark_build OPTIMIZATION_LEVEL=${{ matrix.optimzation }}
           make -B benchmark_run PORT=8888 &
       - name: Install WebFrame & Build Atomic server 🔧
         if: startsWith(matrix.server, 'ac++')
         shell: bash
         run: |
           make install
-          make -B benchmark_build OPTIMIZATION_LEVEL=-`echo "${{ matrix.server }} | cut -d'-' -f2`
+          make -B benchmark_build OPTIMIZATION_LEVEL=${{ matrix.optimzation }}
           make -B benchmark_run_atomic PORT=8888 &
       - name: Install Flask & Run 🔧
         if: startsWith(matrix.server, 'python')
