@@ -1,7 +1,5 @@
 #!/bin/bash
 
-chmod +x ./csv2html.sh
-
 declare -r n=15
 
 for url in "1" "2"; do
