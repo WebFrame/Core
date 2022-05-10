@@ -1,6 +1,6 @@
 #!/bin/bash
 
-declare -r n=15
+declare -r n=30
 
 for url in "1" "2"; do
     rm tmp/test$url.curl.csv;
