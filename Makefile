@@ -35,8 +35,8 @@ build_tests:
 	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./tests/main.cpp -o ./bin/test.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(INJACPP)
 
 benchmark_build:
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) $(OPTIMIZATION_LEVEL) ./benchmark/contestants/server_atomic.cpp -o ./benchmark/contestants/server_atomic$(OPTIMIZATION_LEVEL).exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) $(OPTIMIZATION_LEVEL) ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server$(OPTIMIZATION_LEVEL).exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) $(OPTIMIZATION_LEVEL) ./benchmark/contestants/server_atomic.cpp -o ./benchmark/contestants/server_atomic.exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) $(OPTIMIZATION_LEVEL) ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server.exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
 
 debug_build_all: debug_build debug_build_tests debug_benchmark_build
 
@@ -75,3 +75,9 @@ run:
 
 run_tests:
 	./bin/test.exe
+
+benchmark_run_atomic:
+	./benchmark/contestants/server_atomic.exe $(PORT)
+
+benchmark_run:
+	./benchmark/contestants/server.exe $(PORT)
