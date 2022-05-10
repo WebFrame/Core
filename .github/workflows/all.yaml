@@ -215,6 +215,7 @@ jobs:
           paste -d "," benchmark_*/test2.curl.csv > benchmark/report/test2.curl.csv;
           paste -d "," benchmark_*/test2.time.csv > benchmark/report/test2.time.csv;
           cd benchmark;
+          chmod +x ./csv2html.sh;
           ./csv2html.sh report/test1.curl.csv "Test 1 / CURL total time" > report/test1.curl.html
           ./csv2html.sh report/test1.time.csv "Test 1 / CURL time %e" > report/test1.time.html
           ./csv2html.sh report/test2.curl.csv "Test 2 / CURL total time" > report/test2.curl.html
