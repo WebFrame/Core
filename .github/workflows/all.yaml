@@ -49,7 +49,7 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          make -B clean build build_tests COMPILER_CPP=${{ matrix.cxx }} OPTIMIZATION_LEVEL=${{ matrix.optimization }}
+          make -B clean build_all COMPILER_CPP=${{ matrix.cxx }} OPTIMIZATION_LEVEL=${{ matrix.optimization }}
       - name: Prepare speed test
         shell: bash
         run: |
@@ -135,8 +135,52 @@ jobs:
           name: doxygen
           path: |
             src-gh-pages/docs
+  benchmarks:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest] # [windows-latest, ubuntu-latest]
+        port: [8888]
+        server: [c++-O, c++-O1, c++-O2, c++-O3, c++-Ofast, c++-Og, c++-Os, python, node]
+    needs: ${{ matrix.os }}
+    name: ${{ matrix.os }}-${{ matrix.server }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+      - name: Install WebFrame & Build 🔧
+        if: startsWith(matrix.server, 'c++')
+        shell: bash
+        run: |
+          make install
+          make -B benchmark_build OPTIMIZATION_LEVEL=-`echo "${{ matrix.server }} | cut -d'-' -f2`
+      - name: Install Flask & Run 🔧
+        if: startsWith(matrix.server, 'python')
+        shell: bash
+        run: |
+	        python -m pip install flask;
+          python benchmark/contestants/server.py &
+      - name: Install Express & Run 🔧
+        if: startsWith(matrix.server, 'node')
+        shell: bash
+        run: |
+          npm install express;
+          node benchmark/contestants/server.js &
+      - name: Run benchmark 🚀
+        shell: bash
+        run: |      
+          cd benchmark;
+          mkdir tmp;
+          bash benchmarker.sh 8888 ${{ matrix.server }};
+      - name: Upload Report 🚀
+        uses: actions/upload-artifact@v1
+        with:
+          name: benchmark_${{ matrix.server }}
+          path: benchmark/tmp/
   benchmark:
-    needs: build
+    needs: [ubuntu-latest-c++-O, ubuntu-latest-c++-O1, ubuntu-latest-c++-O2, ubuntu-latest-c++-O3, ubuntu-latest-c++-Ofast, ubuntu-latest-c++-Og, ubuntu-latest-c++-Os, ubuntu-latest-python, ubuntu-latest-node]
     concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
     runs-on: ubuntu-latest
     steps:
@@ -144,21 +188,21 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: 'recursive'
-      - name: Install & Build 🔧
+      - name: Download all artifacts 🔧
+        uses: actions/download-artifact@v3
+      - name: Prepare
         shell: bash
         run: |
-          make install
-          make -B benchmark
-      - name: Pack 📦
-        run: |
-          mkdir -p benchmark/report;
-          mv benchmark/tmp/*.csv benchmark/report/;
-          mv benchmark/tmp/*.html benchmark/report/;
-          for i in benchmark/report/*.csv ; do 
-            echo -e "\n\e[36m$i\e[0m"; 
-            cat $i;
-          done
-        shell: bash
+          mkdir -p benchmark/report/;
+          paste -d "," benchmark_*/test1.curl.csv > benchmark/report/test1.curl.csv;
+          paste -d "," benchmark_*/test1.time.csv > benchmark/report/test1.time.csv;
+          paste -d "," benchmark_*/test2.curl.csv > benchmark/report/test2.curl.csv;
+          paste -d "," benchmark_*/test2.time.csv > benchmark/report/test2.time.csv;
+          cd benchmark;
+          ./csv2html.sh report/test1.curl.csv "Test 1 / CURL total time" > report/test1.curl.html
+          ./csv2html.sh report/test1.time.csv "Test 1 / CURL time %e" > report/test1.time.html
+          ./csv2html.sh report/test2.curl.csv "Test 2 / CURL total time" > report/test2.curl.html
+          ./csv2html.sh report/test2.time.csv "Test 2 / CURL time %e" > report/test2.time.html
       - name: Upload Report 🚀
         uses: actions/upload-artifact@v1
         with:

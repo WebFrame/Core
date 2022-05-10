@@ -34,6 +34,10 @@ build:
 build_tests:
 	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./tests/main.cpp -o ./bin/test.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(INJACPP)
 
+benchmark_build:
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) $(OPTIMIZATION_LEVEL) ./benchmark/contestants/server_atomic.cpp -o ./benchmark/contestants/server_atomic$(OPTIMIZATION_LEVEL).exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) $(OPTIMIZATION_LEVEL) ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server$(OPTIMIZATION_LEVEL).exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
+
 debug_build_all: debug_build debug_build_tests debug_benchmark_build
 
 debug_build:
@@ -42,7 +46,10 @@ debug_build:
 debug_build_tests:
 	$(COMPILER_CPP) $(CPP_STD) $(OPTIMIZATION_LEVEL) $(OPT) ./tests/main.cpp -o ./bin/test.exe $(INCLUDE_DIRS) $(WARNING_FLAGS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP)
 
-benchmark_build:
+debug_benchmark_build:
+	$(COMPILER_CPP) $(CPP_STD) $(OPT) $(OPTIMIZATION_LEVEL) ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server.exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP)
+
+benchmark_builds:
 	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O     ./benchmark/contestants/server_atomic.cpp -o ./benchmark/contestants/server_atomic-O.exe      $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
 	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O1    ./benchmark/contestants/server_atomic.cpp -o ./benchmark/contestants/server_atomic-O1.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
 	$(COMPILER_CPP) $(CPP_STD) $(OPT) -O2    ./benchmark/contestants/server_atomic.cpp -o ./benchmark/contestants/server_atomic-O2.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
@@ -59,9 +66,6 @@ benchmark_build:
 	$(COMPILER_CPP) $(CPP_STD) $(OPT) -Og    ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server-Og.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
 	$(COMPILER_CPP) $(CPP_STD) $(OPT) -Os    ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server-Os.exe     $(INCLUDE_DIRS) $(LIB_FLAGS) $(INJACPP)
 
-debug_benchmark_build:
-	$(COMPILER_CPP) $(CPP_STD) $(OPT) ./benchmark/contestants/server.cpp -o ./benchmark/contestants/server.exe $(INCLUDE_DIRS) $(LIB_FLAGS) $(DEBUG_FLAGS) $(INJACPP)
-
 clean:
 	rm -rf ./bin
 	mkdir -p ./bin/log
@@ -71,30 +75,3 @@ run:
 
 run_tests:
 	./bin/test.exe
-
-benchmark: benchmark_build
-	npm install express; \
-	python -m pip install flask; \
-	./benchmark/contestants/server-O.exe 8888 & \
-	./benchmark/contestants/server-O1.exe 8889 & \
-	./benchmark/contestants/server-O2.exe 8890 & \
-	./benchmark/contestants/server-O3.exe 8891 & \
-	./benchmark/contestants/server-Ofast.exe 8892 & \
-	./benchmark/contestants/server-Og.exe 8893 & \
-	./benchmark/contestants/server-Os.exe 8894 & \
-	./benchmark/contestants/server_atomic-O.exe 8895 & \
-	./benchmark/contestants/server_atomic-O1.exe 8896 & \
-	./benchmark/contestants/server_atomic-O2.exe 8897 & \
-	./benchmark/contestants/server_atomic-O3.exe 8898 & \
-	./benchmark/contestants/server_atomic-Ofast.exe 8899 & \
-	./benchmark/contestants/server_atomic-Og.exe 8900 & \
-	./benchmark/contestants/server_atomic-Os.exe 8901 & \
-	python benchmark/contestants/server.py & \
-	node benchmark/contestants/server.js & \
-	sleep 10s; \
-	cd benchmark; \
-	mkdir tmp; \
-	bash benchmark.sh;
-
-kill-benchmark:
-	killall server-O.exe server_atomic-O.exe server-O1.exe server_atomic-O1.exe server-O2.exe server_atomic-O2.exe server-O3.exe server_atomic-O3.exe server-Ofast.exe server_atomic-Ofast.exe server-Og.exe server_atomic-Og.exe server-Os.exe server_atomic-Os.exe

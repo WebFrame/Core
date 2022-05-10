@@ -12,3 +12,4 @@ bin/
 benchmark/tmp/
 package-lock.json
 build/
+benchmark/benchmark.sh
