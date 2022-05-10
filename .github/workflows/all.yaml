@@ -142,7 +142,7 @@ jobs:
         os: [ubuntu-latest] # [windows-latest, ubuntu-latest]
         port: [8888]
         server: [c++-O, c++-O1, c++-O2, c++-O3, c++-Ofast, c++-Og, c++-Os, python, node]
-    needs: ${{ matrix.os }}
+    needs: build
     name: ${{ matrix.os }}-${{ matrix.server }}
     runs-on: ${{ matrix.os }}
     steps:
