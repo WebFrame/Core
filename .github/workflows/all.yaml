@@ -141,44 +141,19 @@ jobs:
       matrix:
         os: [ubuntu-latest] # [windows-latest, ubuntu-latest]
         port: [8888]
-        server: [ac++, c++, python, node]
-        include: 
-          - optimzation: -O
-            server: c++
-          - optimzation: -O1
-            server: c++
-          - optimzation: -O2
-            server: c++
-          - optimzation: -O3
-            server: c++
-          - optimzation: -Ofast
-            server: c++
-          - optimzation: -Og
-            server: c++
-          - optimzation: -Os
-            server: c++
-          - optimzation: -O
-            server: ac++
-          - optimzation: -O1
-            server: ac++
-          - optimzation: -O2
-            server: ac++
-          - optimzation: -O3
-            server: ac++
-          - optimzation: -Ofast
-            server: ac++
-          - optimzation: -Og
-            server: ac++
-          - optimzation: -Os
-            server: ac++
-          - optimzation: default
-            server: python
-          - optimzation: default
-            server: node
+        server: [ac++-O, ac++-O1, ac++-O2, ac++-O3, ac++-Ofast, ac++-Og, ac++-Os, c++-O, c++-O1, c++-O2, c++-O3, c++-Ofast, c++-Og, c++-Os, python, node]
     needs: build
-    name: ${{ matrix.os }}-${{ matrix.server }}-${{ matrix.optimzation }}
+    name: ${{ matrix.os }}-${{ matrix.server }}-${{ matrix.optimization }}
     runs-on: ${{ matrix.os }}
     steps:
+      - id: env
+        uses: actions/github-script@v6.0.0
+        with:
+          script: |
+            console.log(context)
+            const server = "${{ matrix.server }}"
+            const optimization = (server[0] != "a" && server[0] != "c") ? "default" : ( (server[0] == "a") ? server.substring(4) : server.substring(3) ))
+            core.setOutput('optimization', optimization)
       - name: Checkout 🛎️
         uses: actions/checkout@v3
         with:
@@ -188,14 +163,14 @@ jobs:
         shell: bash
         run: |
           make install
-          make -B benchmark_build OPTIMIZATION_LEVEL=${{ matrix.optimzation }}
+          make -B benchmark_build OPTIMIZATION_LEVEL=${{ steps.env.outputs.optimization }}
           make -B benchmark_run PORT=8888 &
       - name: Install WebFrame & Build Atomic server 🔧
         if: startsWith(matrix.server, 'ac++')
         shell: bash
         run: |
           make install
-          make -B benchmark_build OPTIMIZATION_LEVEL=${{ matrix.optimzation }}
+          make -B benchmark_build OPTIMIZATION_LEVEL=${{ steps.env.outputs.optimization }}
           make -B benchmark_run_atomic PORT=8888 &
       - name: Install Flask & Run 🔧
         if: startsWith(matrix.server, 'python')
@@ -218,7 +193,7 @@ jobs:
       - name: Upload Report 🚀
         uses: actions/upload-artifact@v1
         with:
-          name: benchmark_${{ matrix.server }}-${{ matrix.optimzation }}
+          name: benchmark_${{ matrix.server }}-${{ steps.env.outputs.optimization }}
           path: benchmark/tmp/
   benchmark:
     needs: [benchmarks]
@@ -240,11 +215,11 @@ jobs:
           paste -d "," benchmark_*/test2.curl.csv > benchmark/report/test2.curl.csv;
           paste -d "," benchmark_*/test2.time.csv > benchmark/report/test2.time.csv;
           cd benchmark;
-          chmod +x ./csv2html.sh;
           ./csv2html.sh report/test1.curl.csv "Test 1 / CURL total time" > report/test1.curl.html
           ./csv2html.sh report/test1.time.csv "Test 1 / CURL time %e" > report/test1.time.html
           ./csv2html.sh report/test2.curl.csv "Test 2 / CURL total time" > report/test2.curl.html
           ./csv2html.sh report/test2.time.csv "Test 2 / CURL time %e" > report/test2.time.html
+          cat report/*.*.html > report/index.html 
       - name: Upload Report 🚀
         uses: actions/upload-artifact@v1
         with:
