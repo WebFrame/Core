@@ -130,6 +130,20 @@ namespace webframe
 							throw std::invalid_argument("path_vars::var::value is not matching path_vars::var::type (not integer)"); 
 					return ans;
 				}
+				explicit operator long long () const
+				{
+					if (value.size () == 0)
+						throw std::invalid_argument("path_vars::var::value is empty.");
+					int ans = 0;
+					if (value[0] == '-')
+						ans = -(value[1] - '0');
+					for (size_t i = (value[0] == '-') ; i < value.size () ; i ++)
+						if (value[i] >= '0' and value[i] <= '9')
+							ans = ans * 10 + value[i] - '0';
+						else
+							throw std::invalid_argument("path_vars::var::value is not matching path_vars::var::type (not integer)"); 
+					return ans;
+				}
 				explicit operator const char* () const
 				{
 					if (value.size () == 0)

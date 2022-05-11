@@ -2,7 +2,7 @@ from flask import Flask, g
 import random
 app = Flask(__name__)
 
-@app.route("/<steps>")
+@app.route("/<steps>/1")
 def hello(steps):
     x = 0
     for i in range(2 ** int(steps)):
@@ -19,4 +19,4 @@ def hello2(steps):
     return "Hello World!"
 
 if __name__ == "__main__":
-    app.run(port=5000)
+    app.run(port=8888)
