@@ -1,4 +1,4 @@
-.vscode/settings.json
+.vscode/
 *.exe
 **/*.exe
 buffer.txt
@@ -7,10 +7,9 @@ curl.txt
 lib/Jinja2Cpp/**
 cppcheck*.*
 check_report.xml
-linux.yaml
-windows.yaml
 node_modules/
 bin/
 benchmark/tmp/
 package-lock.json
 build/
+benchmark/benchmark.sh
