@@ -14,7 +14,7 @@ Check the documentation of the library [here](https://webframe.github.io/Core/do
 Check the static code analysis of the project [here](https://webframe.github.io/Core/codeql_report/).
 
 ## Performance
-Check the performance check of the project [here](https://webframe.github.io/Core/report/).
+Check the performance check of the project [here](https://webframe.github.io/Core/benchmark/).
 
 # Additional info
 - Currently working on setting up ![CMake](https://img.shields.io/badge/CMake-%23008FBA.svg?&logo=cmake&logoColor=while)
