@@ -1,5 +1,5 @@
 COMPILER_CPP=g++
-CPP_STD=-std=c++2a
+CPP_STD=-std=c++20
 OPTIMIZATION_LEVEL=-O2
 OPT=-fconstexpr-depth=700
 INCLUDE_DIRS=-I./tests -I./lib/
