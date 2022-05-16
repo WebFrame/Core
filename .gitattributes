@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+src-gh-pages/** linguist-documentation
+src-gh-pages/** linguist-generated
+src-gh-pages/** linguist-vendored
