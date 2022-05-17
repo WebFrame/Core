@@ -120,7 +120,7 @@ app.wait_end(port);
 ```
 or
 ```cpp
-app.run(port, cores).wait_start(port);
+app.run(port, cores).wait_end(port);
 ```
 3. Set up custom loggers
 - logger is the stream for standard logs from the server
