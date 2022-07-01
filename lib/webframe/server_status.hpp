@@ -44,11 +44,8 @@ namespace webframe {
         bool is_over(const char* PORT) {
             bool locked = this->get_end(PORT).try_lock();
 			if(!locked) return false;
-			if(locked) {
-				this->get_end(PORT).unlock();
-				return true;
-			}
-			return false;
+			this->get_end(PORT).unlock();
+			return true;
         }
 
         std::mutex& get_start(const char* PORT) {
