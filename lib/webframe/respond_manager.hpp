@@ -26,19 +26,19 @@ struct responser
         std::function<response(const std::string&, const std::string&, const path_vars&)> call;
 
         template<typename Ret, typename... Ts>
-        responser (std::function<Ret(Ts...)> f)
+        explicit responser (std::function<Ret(Ts...)> f)
         {
             set_without_body (f, std::make_index_sequence<sizeof...(Ts)>{});
         }
 
         template<typename Ret, typename... Ts>
-        responser (std::function<Ret(body_t, Ts...)> f)
+        explicit responser (std::function<Ret(body_t, Ts...)> f)
         {
             set_with_body (f, std::make_index_sequence<sizeof...(Ts)>{});
         }
 
         template<typename Ret>
-        responser (std::function<Ret()> f)
+        explicit responser (std::function<Ret()> f)
         {
             call = [=](const std::string& http, __attribute__((unused)) const std::string& body, __attribute__((unused)) const path_vars& vars) -> response {
                 return response(http, f());
@@ -46,7 +46,7 @@ struct responser
         }
 
         template<typename Ret>
-        responser (std::function<Ret(body_t)> f)
+        explicit responser (std::function<Ret(body_t)> f)
         {
             call = [=](const std::string& http, const std::string& body, __attribute__((unused)) const path_vars& vars) -> response {
                 return response(http, f(body));
