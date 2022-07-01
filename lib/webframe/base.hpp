@@ -14,6 +14,7 @@
 #include <any>
 #include <stdexcept>
 #include <utility>
+#include <numeric>
 #include <webframe/http_codes.hpp>
 #include <webframe/mime.hpp>
 
@@ -216,7 +217,7 @@ namespace webframe
 			output = "HTTP/" + this->http + " " + this->code + " " + std::string(http_codes::get_reason_by_code(this->code.c_str())) + end_line;
 		}
 	public:
-		status_line (const std::string& _code) : http ("1.1"), code (_code) 
+		explicit status_line (const std::string& _code) : http ("1.1"), code (_code) 
 		{
 			rebuild_string();
 		}
@@ -246,7 +247,7 @@ namespace webframe
 			std::string body;
 			std::string output;
 		public:
-			response (const std::string& html): 
+			explicit response (const std::string& html): 
 				response(status_line ("1.1", "200"), {{"Content-type", "text/html"}}, html)
 			{
 				rebuild_string();
@@ -256,12 +257,12 @@ namespace webframe
 			{
 				rebuild_string();
 			}
-			response (status_line status, const std::string& html): 
+			response (const status_line& status, const std::string& html): 
 				response(status, {{"Content-type", "text/html"}}, html)
 			{
 				rebuild_string();
 			}
-			response (status_line s = status_line ("2.0", "204"), const std::map < std::string, std::string >& m = {}, const std::string& _body = ""): 
+			response (const status_line& s = status_line ("2.0", "204"), const std::map < std::string, std::string >& m = {}, const std::string& _body = ""): 
 				status (s), header (m), body (_body)
 			{
 				rebuild_string();
@@ -276,10 +277,10 @@ namespace webframe
 			{
 				output.clear();
 				output += status.to_string();
-				for (auto& x : header)
-				{
-					output += x.first + ": " + x.second + end_line;
-				}
+				output += std::accumulate(std::begin(header), std::end(header), std::string(""), 
+				[](const std::string& all, const std::pair<std::string, std::string>& x) -> std::string {
+					return all + x.first + ": " + x.second + end_line;
+				});
 				output += end_line;
 				output += body;
 			}
@@ -354,9 +355,16 @@ namespace webframe
 			request () {
 				loading = LoadingState::NOT_STARTED;
 				remaining_to_parse = "";
+				m = method::undefined;
+				uri = "";
+				request_params = {};
+				http = "";
+				header = {};
+				body = "";
 			}
 
-			request (method _m, const std::string& h, const std::map<std::string, std::string>& m, const std::string& _body) : m (_m), http (h), header (m), body (_body)
+			request (method _m, const std::string& h, const std::map<std::string, std::string>& m, const std::string& _body) : loading (LoadingState::NOT_STARTED), 
+				m (_m), http (h), header (m), body (_body)
 			{}
 
 			LoadingState getState() const 

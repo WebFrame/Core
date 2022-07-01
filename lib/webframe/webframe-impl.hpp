@@ -108,17 +108,16 @@ private:
 	std::map<std::string, responser> responses;
 
 public:
+	SynchronizedFile performancer;
 	SynchronizedFile logger;
 	SynchronizedFile errors;
-	SynchronizedFile performancer;
 
-	webframe()
+	webframe() :
+		template_dir {"."},
+		performancer {SynchronizedFile(std::clog)},
+		logger {SynchronizedFile(std::clog)},
+		errors {SynchronizedFile(std::cout)}
 	{
-		performancer = SynchronizedFile(std::clog);
-		logger = SynchronizedFile(std::clog);
-		errors = SynchronizedFile(std::cout);
-		template_dir = ".";
-
 		this->handle("404", [&](const std::string& path) {
 			return "Error 404: " + path + " was not found.";
 		})
@@ -439,14 +438,14 @@ private:
 	struct thread_pool 
 	{
 	private:
-		std::shared_ptr<std::vector<std::shared_ptr<thread>>> pool;
 		size_t size;
+		std::shared_ptr<std::vector<std::shared_ptr<thread>>> pool;
 		std::mutex extract;
 	public:
-		thread_pool(size_t _size) 
+		explicit thread_pool(size_t _size) : 
+			size {_size},
+			pool {std::make_shared<std::vector<std::shared_ptr<thread>>>(_size)}
 		{
-			size = _size;
-			pool = std::make_shared<std::vector<std::shared_ptr<thread>>>(_size);
 			for (size_t i = 0 ; i < _size ; i ++)
 			{	
 				pool->at(i) = std::make_shared<thread>();
@@ -484,7 +483,6 @@ public:
 		this->port_status.initiate(PORT);
 		std::thread([this](const char* PORT, const unsigned int cores, bool limited, int requests) {
 			#ifdef _WIN32
-				//----------------------
 				// Initialize Winsock.
 				WSADATA wsaData;
 				this->logger << "Startup called\n";
@@ -543,7 +541,7 @@ public:
 			status = bind(listener, res->ai_addr, sizeof(*res->ai_addr)/*res->ai_addrlen*/);
 			if (status < 0)
 			{
-				this->logger << "bind error: " << gai_strerror(status) << "\n";
+				this->logger << "bind error: " << status << " " << gai_strerror(status) << "\n";
 				this->port_status.alert_start(PORT);
 				this->port_status.alert_end(PORT);
 				return;
@@ -574,53 +572,53 @@ public:
 			bool started = false;
 
 			while (!limited || requests > 0) {
+
+				// Check if abort was requested
 				if(this->port_status.is_over(PORT)) {
 					break;
 				}
+
+				// Check if thread is available to handle a new request
 				const std::optional<size_t> thread = threads_ptr->get_free_thread();
-				//this->logger << "Thread available: " << !!thread << "\n";
 				if(!thread)
 					continue;
 
-				//this->logger << "Thead " << thread.value() << "\n";
-
-				int client = -1;
-				// Accept a new connection and return back the socket desciptor 
-				//this->logger << "Client accepting available...\n";
+				// Alert waiting for the first request
 				if (!started) {
 					this->port_status.alert_start(PORT);
 					started = true;
 				}
+
+				// Accept a request
+				int client = -1;
 				client = ACCEPT(listener, NULL, NULL);
-				
 				if (client == -1)
 				{
 					continue;
 				}
 
 				this->logger << "Client found: " << client << "\n";
-
 				this->logger << "Requestor " << client << " is getting handled\n";
-
-				struct timeval selTimeout;
-				selTimeout.tv_sec = 2;
-				selTimeout.tv_usec = 0;
-				fd_set readSet;
-				FD_ZERO(&readSet);
-				FD_SET(client + 1, &readSet);
-				FD_SET(client, &readSet);
-
-				this->logger << "Requestor " << client << " is checked if valid\n";
 				
-				status = SELECT(client + 1, &readSet, nullptr, nullptr, &selTimeout);
-				this->logger << "SELECT status is " << status << "\n";
-				if (status <= 0)
-					continue;
+				// Check if the socket is valid
+				{
+					struct timeval selTimeout;
+					selTimeout.tv_sec = 2;
+					selTimeout.tv_usec = 0;
+					fd_set readSet;
+					FD_ZERO(&readSet);
+					FD_SET(client + 1, &readSet);
+					FD_SET(client, &readSet);
 
-				this->logger << "Requestor " << client << " is still valid\n";
+					status = SELECT(client + 1, &readSet, nullptr, nullptr, &selTimeout);
+					this->logger << "SELECT status is " << status << "\n";
+					if (status <= 0)
+						continue;
+
+					this->logger << "Requestor " << client << " is still valid\n";
+				}
 
 				this->logger << thread.value() << " thread will handle client " << client << "\n";
-				
 				threads_ptr->get(thread.value())->detach(std::make_shared<std::function<void(int)>>([this, &limited, &requests, PORT](int socket) -> void {
 					this->handler (socket, [this, &limited, &requests, PORT]() {
 						if (!limited) return;
@@ -629,6 +627,7 @@ public:
 					});
 				}), client);
 			}
+
 			if(!this->port_status.is_over(PORT)) {
 				this->port_status.alert_end(PORT);
 			}
