@@ -18,7 +18,7 @@
  ***********************************************/
 class SynchronizedFile {
 public:
-    SynchronizedFile (std::basic_ostream<char>& path) : _path(&path) {
+    explicit SynchronizedFile (std::basic_ostream<char>& path) : _path(&path) {
     }
 
     SynchronizedFile () : _path(nullptr) {

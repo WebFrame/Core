@@ -11,6 +11,7 @@ namespace webframe
 {
 	enum class method
 	{
+		undefined,
 		GET,
 		HEAD,
 		POST,
