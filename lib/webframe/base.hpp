@@ -99,18 +99,17 @@ namespace webframe
 	{
 			struct var 
 			{
-				var () 
-				{
-					this->type = "string";
-					this->value = "";
-				}
-				std::string type;
 				std::string value;
-				var (const std::string& value, const std::string& type = "string")
-				{
-					this->type = type;
-					this->value = value;
-				}
+				std::string type;
+				
+				var () : value (""), type ("string")
+				{ }
+				
+				explicit var (const std::string& _value) : value (_value), type ("string")
+				{ }
+
+				var (const std::string& _value, const std::string& _type) : value (_value), type (_type)
+				{ }
 
 				const std::string& get() const
 				{
@@ -352,15 +351,17 @@ namespace webframe
 			std::map < std::string, std::string > header;
 			std::string body;
 		public:
-			request () {
-				loading = LoadingState::NOT_STARTED;
-				remaining_to_parse = "";
-				m = method::undefined;
-				uri = "";
-				request_params = {};
-				http = "";
-				header = {};
-				body = "";
+			request () : 
+				loading (LoadingState::NOT_STARTED),
+				remaining_to_parse (""),
+				m (method::undefined),
+				uri (""),
+				request_params ({}),
+				http (""),
+				header ({}),
+				body ("")
+			{
+
 			}
 
 			request (method _m, const std::string& h, const std::map<std::string, std::string>& m, const std::string& _body) : loading (LoadingState::NOT_STARTED), 
