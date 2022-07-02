@@ -9,8 +9,8 @@ int main()
 	static_assert(webframe::webframe::init(), "constexpr initiation failed");
 	std::atomic<int> pass{0};
 	webframe::webframe app;
-	app.set_static("./src/static", "/static")
-		.set_templates("./src/static/templates")
+	app.set_static("./example/static", "/static")
+		.set_templates("./example/static/templates")
 		.handle("404", [&](const std::string& path) {
 			return "Error 404: " + path + " was not found.";
 		})

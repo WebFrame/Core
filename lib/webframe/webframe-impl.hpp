@@ -38,13 +38,12 @@ private:
 	std::map<
 		std::pair<std::vector<std::string>, // var type
 				  std::regex>,				// regex
-		responser,
-		cmp>
-		routes;
+		responser,                          // function returning the response of the request
+		cmp> routes;
 
 	static std::pair<std::vector<std::string>, // var type
 					 std::regex>			   // regex
-	convert_path_to_regex(std::string str, webframe& app)
+	convert_path_to_regex(const std::string& str)
 	{
 		static const std::string regexAnyChar = "A-Za-z_%0-9.-";
 		std::vector<std::string> v;
@@ -98,7 +97,6 @@ private:
 			}
 		}
 		format += "$";
-		app.logger << format << '\n';
 		return {v, std::regex(format)};
 	}
 
@@ -169,7 +167,7 @@ public:
 		return *this;
 	}
 
-	std::map<std::pair<std::vector<std::string>,std::regex>,responser,cmp> get_routes() const
+	const std::map<std::pair<std::vector<std::string>,std::regex>,responser, cmp>& get_routes() const
 	{
 		return this->routes;
 	}
@@ -251,7 +249,7 @@ public:
 	template <typename Ret, typename... Ts>
 	webframe &route(const std::string& path, std::function<Ret(Ts...)> const &res)
 	{
-		auto x = convert_path_to_regex(path, *this);
+		auto x = convert_path_to_regex(path);
 		if (routes.find(x) == routes.end())
 			routes[x] = responser(res);
 		else // rewriting path
@@ -263,7 +261,7 @@ public:
 	webframe &route(const std::string& path, F _res)
 	{
 		const auto res = wrap(_res);
-		auto x = convert_path_to_regex(path, *this);
+		auto x = convert_path_to_regex(path);
 		if (routes.find(x) == routes.end())
 			routes[x] = responser(res);
 		else // rewriting path
