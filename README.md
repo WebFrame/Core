@@ -32,9 +32,9 @@ webframe::webframe app;
 app.set_static(relative or absolute path/directory to the static files, web alias); 
 ```
 
-Ex. the files are in ``./example/static`` and the route for them is ``/static``:
+Ex. the files are in ``./example/Sample/static`` and the route for them is ``/static``:
 ```cpp
-app.set_static("./example/static", "/static"); 
+app.set_static("./example/Sample/static", "/static"); 
 ```
 _You can list multiple static folders_
 4. Set Jinja template folder
@@ -43,9 +43,9 @@ _You can list multiple static folders_
 app.set_templates(relative or absolute path/directory to the JINJA templates); 
 ```
 
-Ex. the Jinja template files are in ``./example/static/templates``:
+Ex. the Jinja template files are in ``./example/Sample/static/templates``:
 ```cpp
-app.set_templates("./example/static/templates");
+app.set_templates("./example/Sample/static/templates");
 ```
 _You can list multiple template folders_
 5. Set up error handling
@@ -104,8 +104,8 @@ app.run(port, cores);
 
 You can list different app setups consequently:
 ```cpp
-app.set_static("./example/static", "/static")
-    .set_templates("./example/static/templates")
+app.set_static("./example/Sample/static", "/static")
+    .set_templates("./example/Sample/static/templates")
     .handle("404", [](const std::string& path) {
         return "Error 404: " + path + " was not found.";
     })
@@ -149,7 +149,7 @@ app.request_stop(port);
 
 **Note:** _port should be ``const char*``_
 
-Check [example/](https://github.com/WebFrame/Core/blob/master/example) for more information.
+Check [example/Sample/](https://github.com/WebFrame/Core/blob/master/example) for more information.
 # Additional info
 - Currently working on setting up ![CMake](https://img.shields.io/badge/CMake-%23008FBA.svg?&logo=cmake&logoColor=while)
 
