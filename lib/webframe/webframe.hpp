@@ -37,6 +37,7 @@ namespace webframe
 		LOADED = 8
 	};
 	
+	class router;
 	class webframe;
 	struct path_vars;
 	class response;
@@ -53,3 +54,5 @@ namespace webframe
 #include <webframe/lambda2function.hpp>
 #include <webframe/respond_manager.hpp>
 #include <webframe/webframe-impl.hpp>
+
+#define init_routes(name) const webframe::router name = webframe::router()
