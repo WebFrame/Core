@@ -423,7 +423,6 @@ namespace webframe
 		{
 			int status = this->responder(client);
 			this->logger << "(handler) Responded status: " << status << "\n";
-			//CLOSE(client);
 			shutdown(client, SHUT_RDWR);
 			this->logger << "(handler) Closing client: " << client << "\n";
 			if (status != -2)
@@ -656,7 +655,7 @@ namespace webframe
 						FD_SET(client, &readSet);
 
 						status = SELECT(client, &readSet, nullptr, nullptr, &selTimeout);
-						//this->logger << "SELECT status is " << status << "\n";
+
 						if (status < 0) {
 							this->logger << "(main) INVALID SOCKET: " << client << " was skipped (" << status << ")\n";
 							continue;
