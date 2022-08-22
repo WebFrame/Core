@@ -1275,7 +1275,7 @@
 <a name="line-423"></a>		<span class="p">{</span>
 <a name="line-424"></a>			<span class="kt">int</span> <span class="n">status</span> <span class="o">=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">responder</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
 <a name="line-425"></a>			<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;(handler) Responded status: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">status</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
-<a name="line-426"></a>			<span class="n">shutdown</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">SHUT_RDWR</span><span class="p">);</span>
+<a name="line-426"></a>			<span class="n">CLOSE</span><span class="p">(</span><span class="n">client</span><span class="p">);</span>
 <a name="line-427"></a>			<span class="k">this</span><span class="o">-&gt;</span><span class="n">logger</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;(handler) Closing client: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">client</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
 <a name="line-428"></a>			<span class="k">if</span> <span class="p">(</span><span class="n">status</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
 <a name="line-429"></a>			<span class="p">{</span>
