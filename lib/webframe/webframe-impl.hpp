@@ -423,7 +423,7 @@ namespace webframe
 		{
 			int status = this->responder(client);
 			this->logger << "(handler) Responded status: " << status << "\n";
-			shutdown(client, SHUT_RDWR);
+			CLOSE(client);
 			this->logger << "(handler) Closing client: " << client << "\n";
 			if (status != -2)
 			{
