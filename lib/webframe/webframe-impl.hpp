@@ -26,8 +26,7 @@
 #include <webframe/server_status.hpp>
 
 namespace webframe
-{
-	
+{		
 	class router {
 	private:
 		std::map<std::string, responser> routes;
@@ -297,7 +296,7 @@ namespace webframe
 				routes[x] = responser(res);
 			return *this;
 		}
-
+	private:
 		webframe &route(const std::string& path, responser res)
 		{
 			auto x = convert_path_to_regex(path);
@@ -307,7 +306,7 @@ namespace webframe
 				routes[x] = responser(res);
 			return *this;
 		}
-
+	public:
 		webframe& extend_with(const router& routes, const std::string& prefix = "")
 		{
 			for (const auto& route : routes.routes) {
@@ -386,7 +385,7 @@ namespace webframe
 						break;
 				} while (n > 0);
 
-				this->logger << (int)r.getState() << " " << total_recv << "\n";
+				this->logger << "(responder) Read state: " << (int)r.getState() << " " << total_recv << "\n";
 
 				if (r.getState() != LoadingState::LOADED)
 					throw std::string("Request was not loaded completely and data with size=" + std::to_string(total_recv) + " was sent.");
@@ -405,7 +404,7 @@ namespace webframe
 			}
 			catch (std::exception const& e)
 			{
-				this->logger << "Responding Exception: " << e.what() << "\n";
+				this->logger << "(responder) Responding Exception: " << e.what() << "\n";
 				response res = this->responses.at("500").call(r.http, "", path_vars() += {std::string(e.what()), "string"});
 				const std::string& response = res.to_string();
 				const size_t responseSize = response.size();
@@ -530,22 +529,22 @@ namespace webframe
 				#ifdef _WIN32
 					// Initialize Winsock.
 					WSADATA wsaData;
-					this->logger << "Startup called\n";
+					this->logger << "(main) Startup called\n";
 					int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-					this->logger << "Startup finished " << iResult << "\n";
+					this->logger << "(main) Startup finished " << iResult << "\n";
 					if (iResult != NO_ERROR) {
-						this->logger << "WSAStartup failed with error: " << iResult << "\n";
+						this->logger << "(main) WSAStartup failed with error: " << iResult << "\n";
 						this->port_status.alert_start(PORT);
 						this->port_status.alert_end(PORT);
 						return;
 					}
 				#endif
-				this->logger << "Startup called\n";
+				this->logger << "(main) Startup called\n";
 		
 				const unsigned int threads = std::min(cores, limited ? requests : cores);
 				std::shared_ptr<thread_pool> threads_ptr = std::make_shared<thread_pool>(threads);
 				
-				this->logger << "Thread pool generated\n";	
+				this->logger << "(main) Thread pool generated\n";	
 
 				int status;
 				struct addrinfo hints, *res;
@@ -566,7 +565,7 @@ namespace webframe
 				status = getaddrinfo(NULL, PORT, &hints, &res);
 				if (status != 0)
 				{
-					this->logger << "getaddrinfo error: " << gai_strerror(status) << "\n";
+					this->logger << "(main) getaddrinfo error: " << gai_strerror(status) << "\n";
 					this->port_status.alert_start(PORT);
 					this->port_status.alert_end(PORT);
 					return;
@@ -576,7 +575,7 @@ namespace webframe
 				listener = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
 				if (listener == -1)
 				{
-					this->logger << "socket error: " << gai_strerror(status) << "\n";
+					this->logger << "(main) socket error: " << gai_strerror(status) << "\n";
 					this->port_status.alert_start(PORT);
 					this->port_status.alert_end(PORT);
 					return;
@@ -586,7 +585,7 @@ namespace webframe
 				status = bind(listener, res->ai_addr, sizeof(*res->ai_addr)/*res->ai_addrlen*/);
 				if (status < 0)
 				{
-					this->logger << "bind error: " << status << " " << gai_strerror(status) << "\n";
+					this->logger << "(main) bind error: " << status << " " << gai_strerror(status) << "\n";
 					this->port_status.alert_start(PORT);
 					this->port_status.alert_end(PORT);
 					return;
@@ -595,7 +594,7 @@ namespace webframe
 				status = listen(listener, 10);
 				if (status < 0)
 				{
-					this->logger << "listen error: " << gai_strerror(status) << "\n";
+					this->logger << "(main) listen error: " << gai_strerror(status) << "\n";
 					this->port_status.alert_start(PORT);
 					this->port_status.alert_end(PORT);
 					return;
@@ -604,7 +603,7 @@ namespace webframe
 				status = nonblock_config(listener);
 				if (status < 0)
 				{
-					this->logger << "nonblocking config error: " << gai_strerror(status) << "\n";
+					this->logger << "(main) nonblocking config error: " << gai_strerror(status) << "\n";
 					this->port_status.alert_start(PORT);
 					this->port_status.alert_end(PORT);
 					return;
@@ -613,7 +612,7 @@ namespace webframe
 				// Free the res linked list after we are done with it	
 				freeaddrinfo(res);
 				
-				this->logger << "Listener setup " << listener << "\n";
+				this->logger << "(main) Listener setup " << listener << "\n";
 				bool started = false;
 
 				while (!limited || requests > 0) {
@@ -652,10 +651,11 @@ namespace webframe
 						selTimeout.tv_usec = 0;
 						fd_set readSet;
 						FD_ZERO(&readSet);
+						FD_SET(client + 1, &readSet);
 						FD_SET(client, &readSet);
 
-						status = SELECT(client, &readSet, nullptr, nullptr, &selTimeout);
-
+						status = SELECT(client + 1, &readSet, nullptr, nullptr, &selTimeout);
+						this->logger << "(main) SELECT status is " << status << "\n";
 						if (status < 0) {
 							this->logger << "(main) INVALID SOCKET: " << client << " was skipped (" << status << ")\n";
 							continue;
@@ -669,7 +669,7 @@ namespace webframe
 						this->handler (socket, [this, &limited, &requests, PORT]() {
 							if (!limited) return;
 							requests--;
-							this->logger << "(main) Requests: " << requests << "\n";
+							this->logger << "(callback) Requests: " << requests << "\n";
 						});
 					}), client);
 				}
