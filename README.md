@@ -32,22 +32,28 @@ webframe::webframe app;
 app.set_static(relative or absolute path/directory to the static files, web alias); 
 ```
 
-Ex. the files are in ``./example/static`` and the route for them is ``/static``:
+Ex. the files are in ``./example/Sample/static`` and the route for them is ``/static``:
 ```cpp
-app.set_static("./example/static", "/static"); 
+app.set_static("./example/Sample/static", "/static"); 
 ```
-_You can list multiple static folders_
+_**NOTE:** You can list multiple static folders_
+
+_**NOTE:** Relative paths depend on where you execute the executable from and not on where the source file is located._
+
 4. Set Jinja template folder
 
 ```cpp
 app.set_templates(relative or absolute path/directory to the JINJA templates); 
 ```
 
-Ex. the Jinja template files are in ``./example/static/templates``:
+Ex. the Jinja template files are in ``./example/Sample/static/templates``:
 ```cpp
-app.set_templates("./example/static/templates");
+app.set_templates("./example/Sample/static/templates");
 ```
-_You can list multiple template folders_
+_**NOTE:** You can list multiple template folders_
+
+_**NOTE:** Relative paths depend on where you execute the executable from and not on where the source file is located._
+
 5. Set up error handling
 - Set the code of the error
 - Implement the responding function using lambda that takes 1 string as parameter
@@ -104,8 +110,8 @@ app.run(port, cores);
 
 You can list different app setups consequently:
 ```cpp
-app.set_static("./example/static", "/static")
-    .set_templates("./example/static/templates")
+app.set_static("./example/Sample/static", "/static")
+    .set_templates("./example/Sample/static/templates")
     .handle("404", [](const std::string& path) {
         return "Error 404: " + path + " was not found.";
     })
@@ -148,6 +154,36 @@ app.request_stop(port);
 ```
 
 **Note:** _port should be ``const char*``_
+
+5. Organize projects
+- Create set of routes
+```cpp
+init_routes(home)
+    .route("/home", []() {
+        return "This is my home page";
+    });
+```
+or if you need to use ``webframe::webframe`` functions
+```cpp
+webframe::webframe app;
+...
+init_routes(home)
+    .route("/home", [&app]() {
+        return app.render("template.html", {{"username", user}});
+    });
+```
+- Import the set of routes to your app
+```cpp
+init_routes(home) 
+...
+app.extend_with(home);
+```
+or if you want to add prefix to the set of routes
+```cpp
+init_routes(home) 
+...
+app.extend_with(home, "/prefix");
+```
 
 Check [example/](https://github.com/WebFrame/Core/blob/master/example) for more information.
 # Additional info
