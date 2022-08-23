@@ -14,6 +14,7 @@ void testCase_UnitTests (Moka::Report& report) {
                 webframe::webframe app;
                 app
                 .set_logger(nil)
+				.set_warner(nil)
                 .set_error_logger(nil)
                 .route ("/", []() { // static setup
                     return "";
@@ -26,6 +27,7 @@ void testCase_UnitTests (Moka::Report& report) {
                 webframe::webframe app;
                 app
                 .set_logger(nil)
+				.set_warner(nil)
                 .set_error_logger(nil)
                 .route ("/", []() { // static setup
                     return webframe::response (webframe::status_line ("500"), {{"Content-Type", "text/html; charset=utf-8"}}, "");
@@ -41,6 +43,7 @@ void testCase_UnitTests (Moka::Report& report) {
                 webframe::webframe app;
                 app
                 .set_logger(nil)
+				.set_warner(nil)
                 .set_error_logger(nil)
                 .route ("/", [text]() { // static setup
                     return text;
@@ -56,6 +59,7 @@ void testCase_UnitTests (Moka::Report& report) {
                 webframe::webframe app;
                 app
                 .set_logger(nil)
+				.set_warner(nil)
                 .set_error_logger(nil)
                 .route ("/{.*}", [](std::string username) { // static setup
                     return webframe::response (webframe::status_line ("1.1", "201"), {{"Content-Type", "text/html; charset=utf-8"}}, username);
@@ -73,6 +77,7 @@ void testCase_UnitTests (Moka::Report& report) {
                 webframe::webframe app;
                 app
                 .set_logger(nil)
+				.set_warner(nil)
                 .set_error_logger(nil)
                 .route ("/{.*}", [testing_header](std::string username) { // static setup
                     return webframe::response (webframe::status_line ("1.1", "201"), {{"Custom-header", testing_header}, {"Content-Type", "text/html; charset=utf-8"}}, username);

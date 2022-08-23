@@ -67,6 +67,7 @@ void testCase_IntegrationTests (Moka::Report& report) {
 			it.setup([&app, &nil, &performancer]() {
 				app
 				.set_logger(nil)
+				.set_warner(nil)
 				.set_error_logger(nil)
 				.set_performancer(performancer)
 				.route ("/", []() {

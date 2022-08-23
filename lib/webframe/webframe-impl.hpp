@@ -135,14 +135,16 @@ namespace webframe
 
 	public:
 		SynchronizedFile performancer;
-		SynchronizedFile logger;
-		SynchronizedFile errors;
+		InfoSynchronizedFile logger;
+		WarningSynchronizedFile warn;
+		ErrorSynchronizedFile errors;
 
 		webframe() :
 			template_dir {"."},
 			performancer {SynchronizedFile(std::clog)},
-			logger {SynchronizedFile(std::clog)},
-			errors {SynchronizedFile(std::cout)}
+			logger {InfoSynchronizedFile(std::cout)},
+			warn {WarningSynchronizedFile(std::clog)},
+			errors {ErrorSynchronizedFile(std::cerr)}
 		{
 			this->handle("404", [&](const std::string& path) {
 				return "Error 404: " + path + " was not found.";
@@ -206,15 +208,21 @@ namespace webframe
 			return *this;
 		}
 
-		webframe &set_logger(std::ostream &_logger = std::clog)
+		webframe &set_logger(std::ostream &_logger = std::cout)
 		{
-			logger = SynchronizedFile(_logger);
+			logger = InfoSynchronizedFile(_logger);
 			return *this;
 		}
 
-		webframe &set_error_logger(std::ostream &_logger = std::clog)
+		webframe &set_warner(std::ostream &_logger = std::clog)
 		{
-			errors = SynchronizedFile(_logger);
+			warn = WarningSynchronizedFile(_logger);
+			return *this;
+		}
+
+		webframe &set_error_logger(std::ostream &_logger = std::cerr)
+		{
+			errors = ErrorSynchronizedFile(_logger);
 			return *this;
 		}
 
@@ -404,7 +412,7 @@ namespace webframe
 			}
 			catch (std::exception const& e)
 			{
-				this->logger << "(responder) Responding Exception: " << e.what() << "\n";
+				this->errors << "(responder) Responding Exception: " << e.what() << "\n";
 				response res = this->responses.at("500").call(r.http, "", path_vars() += {std::string(e.what()), "string"});
 				const std::string& response = res.to_string();
 				const size_t responseSize = response.size();
@@ -533,7 +541,7 @@ namespace webframe
 					int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
 					this->logger << "(main) Startup finished " << iResult << "\n";
 					if (iResult != NO_ERROR) {
-						this->logger << "(main) WSAStartup failed with error: " << iResult << "\n";
+						this->errors << "(main) WSAStartup failed with error: " << iResult << "\n";
 						this->port_status.alert_start(PORT);
 						this->port_status.alert_end(PORT);
 						return;
@@ -565,7 +573,7 @@ namespace webframe
 				status = getaddrinfo(NULL, PORT, &hints, &res);
 				if (status != 0)
 				{
-					this->logger << "(main) getaddrinfo error: " << gai_strerror(status) << "\n";
+					this->errors << "(main) getaddrinfo error: " << gai_strerror(status) << "\n";
 					this->port_status.alert_start(PORT);
 					this->port_status.alert_end(PORT);
 					return;
@@ -575,7 +583,7 @@ namespace webframe
 				listener = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
 				if (listener == -1)
 				{
-					this->logger << "(main) socket error: " << gai_strerror(status) << "\n";
+					this->errors << "(main) socket error: " << gai_strerror(status) << "\n";
 					this->port_status.alert_start(PORT);
 					this->port_status.alert_end(PORT);
 					return;
@@ -585,7 +593,7 @@ namespace webframe
 				status = bind(listener, res->ai_addr, sizeof(*res->ai_addr)/*res->ai_addrlen*/);
 				if (status < 0)
 				{
-					this->logger << "(main) bind error: " << status << " " << gai_strerror(status) << "\n";
+					this->errors << "(main) bind error: " << status << " " << gai_strerror(status) << "\n";
 					this->port_status.alert_start(PORT);
 					this->port_status.alert_end(PORT);
 					return;
@@ -594,7 +602,7 @@ namespace webframe
 				status = listen(listener, 10);
 				if (status < 0)
 				{
-					this->logger << "(main) listen error: " << gai_strerror(status) << "\n";
+					this->errors << "(main) listen error: " << gai_strerror(status) << "\n";
 					this->port_status.alert_start(PORT);
 					this->port_status.alert_end(PORT);
 					return;
@@ -603,7 +611,7 @@ namespace webframe
 				status = nonblock_config(listener);
 				if (status < 0)
 				{
-					this->logger << "(main) nonblocking config error: " << gai_strerror(status) << "\n";
+					this->errors << "(main) nonblocking config error: " << gai_strerror(status) << "\n";
 					this->port_status.alert_start(PORT);
 					this->port_status.alert_end(PORT);
 					return;
@@ -657,7 +665,7 @@ namespace webframe
 						status = SELECT(client + 1, &readSet, nullptr, nullptr, &selTimeout);
 						this->logger << "(main) SELECT status is " << status << "\n";
 						if (status < 0) {
-							this->logger << "(main) INVALID SOCKET: " << client << " was skipped (" << status << ")\n";
+							this->errors << "(main) INVALID SOCKET: " << client << " was skipped (" << status << ")\n";
 							continue;
 						}
 

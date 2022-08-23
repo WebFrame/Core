@@ -79,6 +79,9 @@ run:
 run_tests:
 	./bin/test.exe
 
+run_project:
+	./bin/proj_main.exe
+
 benchmark_run_atomic:
 	./benchmark/contestants/server_atomic.exe $(PORT)
 
