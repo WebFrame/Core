@@ -31,13 +31,83 @@ public:
 
     template<typename T>
     friend SynchronizedFile& operator << (SynchronizedFile&, T);
-private:
+protected:
     std::ostream* _path;
     std::mutex _writerMutex;
 };
 
+class WarningSynchronizedFile : public SynchronizedFile {
+public:
+    explicit WarningSynchronizedFile (std::basic_ostream<char>& path) : SynchronizedFile(path) {
+    }
+
+    WarningSynchronizedFile () : SynchronizedFile() {
+    }
+
+    template<typename T>
+    friend WarningSynchronizedFile& operator << (WarningSynchronizedFile&, T);
+};
+class InfoSynchronizedFile : public SynchronizedFile {
+public:
+    explicit InfoSynchronizedFile (std::basic_ostream<char>& path) : SynchronizedFile(path) {
+    }
+
+    InfoSynchronizedFile () : SynchronizedFile() {
+    }
+
+    template<typename T>
+    friend InfoSynchronizedFile& operator << (InfoSynchronizedFile&, T);
+};
+class ErrorSynchronizedFile : public SynchronizedFile {
+public:
+    explicit ErrorSynchronizedFile (std::basic_ostream<char>& path) : SynchronizedFile(path) {
+    }
+
+    ErrorSynchronizedFile () : SynchronizedFile() {
+    }
+
+    template<typename T>
+    friend ErrorSynchronizedFile& operator << (ErrorSynchronizedFile&, T);
+};
+
 template<typename T>
 SynchronizedFile& operator << (SynchronizedFile& file,  T val) {
+    file._writerMutex.lock();
+
+    (*file._path) << val;
+    (*file._path).flush();
+
+    file._writerMutex.unlock();
+
+    return file;
+}
+
+template<typename T>
+InfoSynchronizedFile& operator << (InfoSynchronizedFile& file,  T val) {
+    file._writerMutex.lock();
+
+    (*file._path) << val;
+    (*file._path).flush();
+
+    file._writerMutex.unlock();
+
+    return file;
+}
+
+template<typename T>
+WarningSynchronizedFile& operator << (WarningSynchronizedFile& file,  T val) {
+    file._writerMutex.lock();
+
+    (*file._path) << val;
+    (*file._path).flush();
+
+    file._writerMutex.unlock();
+
+    return file;
+}
+
+template<typename T>
+ErrorSynchronizedFile& operator << (ErrorSynchronizedFile& file,  T val) {
     file._writerMutex.lock();
 
     (*file._path) << val;
