@@ -77,7 +77,8 @@
             <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='shadowFunction' name='shadowFunction' checked></td><td>2</td><td>shadowFunction</td></tr>
             <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='unusedPrivateFunction' name='unusedPrivateFunction' checked></td><td>2</td><td>unusedPrivateFunction</td></tr>
             <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='missingIncludeSystem' name='missingIncludeSystem' checked></td><td>1</td><td>missingIncludeSystem</td></tr>
-           <tr><td></td><td>21</td><td>total</td></tr>
+            <tr><td><input type='checkbox' onclick='toggle_class_visibility(this.id)' id='shadowVariable' name='shadowVariable' checked></td><td>1</td><td>shadowVariable</td></tr>
+           <tr><td></td><td>22</td><td>total</td></tr>
        </table>
        <p><a href="stats.html">Statistics</a></p>
       </div>
@@ -85,8 +86,10 @@
 
        <table>
        <tr><th>Line</th><th>Id</th><th>CWE</th><th>Severity</th><th>Message</th></tr>
-       <tr><td colspan='5'><a href='3.html'></a></td></tr>
-       <tr class="missingIncludeSystem"><td><a href="3.html#line-0">0</a></td><td>missingIncludeSystem</td><td></td><td>information</td><td >Cppcheck cannot find all the include files (use --check-config for details)</td></tr>
+       <tr><td colspan='5'><a href='4.html'></a></td></tr>
+       <tr class="missingIncludeSystem"><td><a href="4.html#line-0">0</a></td><td>missingIncludeSystem</td><td></td><td>information</td><td >Cppcheck cannot find all the include files (use --check-config for details)</td></tr>
+       <tr><td colspan='5'><a href='3.html'>example/Project/routes/home_with_render.hpp</a></td></tr>
+       <tr class="shadowVariable"><td><a href="3.html#line-7">7</a></td><td>shadowVariable</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Local variable &apos;home&apos; shadows outer variable</td></tr>
        <tr><td colspan='5'><a href='1.html'>lib/webframe/base.hpp</a></td></tr>
        <tr class="knownConditionTrueFalse"><td><a href="1.html#line-324">324</a></td><td>knownConditionTrueFalse</td><td><a href='https://cwe.mitre.org/data/definitions/571.html'>571</a></td><td>style</td><td >Condition &apos;method::GET&apos; is always true</td></tr>
        <tr class="knownConditionTrueFalse"><td><a href="1.html#line-324">324</a></td><td>knownConditionTrueFalse</td><td><a href='https://cwe.mitre.org/data/definitions/571.html'>571</a></td><td>style</td><td >Condition &apos;method::GET&apos; is always true</td></tr>
@@ -108,8 +111,8 @@
        <tr class="unusedPrivateFunction"><td><a href="0.html#line-58">58</a></td><td>unusedPrivateFunction</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Unused private function: &apos;responser::set_without_body&apos;</td></tr>
        <tr class="unusedPrivateFunction"><td><a href="0.html#line-58">58</a></td><td>unusedPrivateFunction</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Unused private function: &apos;responser::set_without_body&apos;</td></tr>
        <tr><td colspan='5'><a href='2.html'>lib/webframe/webframe-impl.hpp</a></td></tr>
-       <tr class="shadowFunction"><td><a href="2.html#line-312">312</a></td><td>shadowFunction</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Local variable &apos;route&apos; shadows outer function</td></tr>
-       <tr class="shadowFunction"><td><a href="2.html#line-312">312</a></td><td>shadowFunction</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Local variable &apos;route&apos; shadows outer function</td></tr>
+       <tr class="shadowFunction"><td><a href="2.html#line-320">320</a></td><td>shadowFunction</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Local variable &apos;route&apos; shadows outer function</td></tr>
+       <tr class="shadowFunction"><td><a href="2.html#line-320">320</a></td><td>shadowFunction</td><td><a href='https://cwe.mitre.org/data/definitions/398.html'>398</a></td><td>style</td><td >Local variable &apos;route&apos; shadows outer function</td></tr>
        </table>
       </div>
       <div id="footer">
