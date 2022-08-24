@@ -1,10 +1,14 @@
 var searchData=
 [
-  ['end_5fline_0',['end_line',['../d8/d8d/namespacewebframe.html#ab1ef189fbe45646703c170154c6b54bb',1,'webframe']]],
-  ['env_1',['env',['../d4/d2c/classwebframe_1_1webframe.html#a6224a343b26c69ccbc102923f5f772cd',1,'webframe::webframe']]],
-  ['errors_2',['errors',['../d4/d2c/classwebframe_1_1webframe.html#af94ce6e144bcd995eda2625dba9d019d',1,'webframe::webframe']]],
-  ['errorsynchronizedfile_3',['ErrorSynchronizedFile',['../db/da4/class_error_synchronized_file.html',1,'ErrorSynchronizedFile'],['../db/da4/class_error_synchronized_file.html#a6f6d77e067cde78e5762f4c72b1df326',1,'ErrorSynchronizedFile::ErrorSynchronizedFile(std::basic_ostream&lt; char &gt; &amp;path)'],['../db/da4/class_error_synchronized_file.html#ae50df2d82548eb72ab3f5d388d90daf1',1,'ErrorSynchronizedFile::ErrorSynchronizedFile()']]],
-  ['export_4',['EXPORT',['../df/ded/host_8h.html#a3472d8cdbb788d5f1815b3522595bc49',1,'host.h']]],
-  ['extend_5fwith_5',['extend_with',['../d4/d2c/classwebframe_1_1webframe.html#a354e23ba8b6189f58b81058e24efe606',1,'webframe::webframe']]],
-  ['extract_6',['extract',['../d0/d7e/structwebframe_1_1webframe_1_1thread__pool.html#a0ce3a5f731674c63f39ec623efcb36e4',1,'webframe::webframe::thread_pool']]]
+  ['false_32',['FALSE',['../df/ded/host_8h.html#aa93f0eb578d23995850d61f7d61c55c1',1,'host.h']]],
+  ['fclose_33',['FCLOSE',['../df/ded/host_8h.html#a734fdddfd354177d67337218bc963d67',1,'host.h']]],
+  ['feof_34',['FEOF',['../df/ded/host_8h.html#a200607336b636785c23a6eaf1a9d273b',1,'host.h']]],
+  ['ferror_35',['FERROR',['../df/ded/host_8h.html#adc8a5c942dca5d18314df825433aadde',1,'host.h']]],
+  ['fflush_36',['FFLUSH',['../df/ded/host_8h.html#aa857bcc839eae3ac151748ca9c38a992',1,'host.h']]],
+  ['file_2ehpp_37',['file.hpp',['../db/d3b/file_8hpp.html',1,'']]],
+  ['file_5fhandle_38',['FILE_HANDLE',['../df/ded/host_8h.html#ab00d7bdead70fa34f855541305b0c89e',1,'host.h']]],
+  ['fileno_39',['FILENO',['../df/ded/host_8h.html#a782479312f943a0ce9e81593479d309b',1,'host.h']]],
+  ['fopen_40',['FOPEN',['../df/ded/host_8h.html#a9f31e04e07b52efc12d779c05d5c1664',1,'host.h']]],
+  ['fprintf_41',['FPRINTF',['../df/ded/host_8h.html#ae6d03ea01910257a961b0937d3cb0e2f',1,'host.h']]],
+  ['fstat_42',['FSTAT',['../df/ded/host_8h.html#af9db4765792b0724990d6b7e3162842e',1,'host.h']]]
 ];
