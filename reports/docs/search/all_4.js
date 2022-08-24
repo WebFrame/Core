@@ -1,13 +1,9 @@
 var searchData=
 [
-  ['call_0',['call',['../d4/d5e/structwebframe_1_1responser.html#ab8afba60bd932912bc5d5d40a7480522',1,'webframe::responser']]],
-  ['clearerr_1',['CLEARERR',['../df/ded/host_8h.html#a691146e702d1b6d3692117d76c4c65d4',1,'host.h']]],
-  ['cmp_2',['cmp',['../dc/d8b/structwebframe_1_1webframe_1_1cmp.html',1,'webframe::webframe']]],
-  ['code_3',['code',['../db/de3/structwebframe_1_1status__line.html#a346372f9f4d0f5d89201d6570bf950ad',1,'webframe::status_line']]],
-  ['codes_4',['codes',['../d8/df7/namespacewebframe_1_1__compile__time.html#a11115131749411f867e63916d9eaca95',1,'webframe::_compile_time::codes()'],['../d2/d97/namespacehttp__codes.html#a64b1d16f985541221497e1ecbc96ef08',1,'http_codes::codes()']]],
-  ['connect_5',['CONNECT',['../d8/d8d/namespacewebframe.html#a69de9ca7fb84de6611aeee42515e4d02ab57e2519e26151feacdbe52076bc39ec',1,'webframe']]],
-  ['constant_5ft_6',['constant_t',['../d8/df7/namespacewebframe_1_1__compile__time.html#a31f821c71cbff538f6a1c5a88f067f4e',1,'webframe::_compile_time']]],
-  ['constant_5fv_7',['constant_v',['../d8/df7/namespacewebframe_1_1__compile__time.html#acfa34449041cf9109ab1e2a3f0921deb',1,'webframe::_compile_time']]],
-  ['constexpr_2ehpp_8',['constexpr.hpp',['../d4/dce/constexpr_8hpp.html',1,'']]],
-  ['convert_5fpath_5fto_5fregex_9',['convert_path_to_regex',['../d4/d2c/classwebframe_1_1webframe.html#a438f4b27a7b94adcefc8d2e5c1737489',1,'webframe::webframe']]]
+  ['ddelete_19',['DDELETE',['../d8/d8d/namespacewebframe.html#a69de9ca7fb84de6611aeee42515e4d02aa411e38bec92b6b745d90fb89b288f51',1,'webframe']]],
+  ['dead_20',['dead',['../dc/d90/classwebframe_1_1server__status.html#aa5f0c7196700d4203333b11a265a07d3',1,'webframe::server_status']]],
+  ['deduce_5ftype_21',['deduce_type',['../d6/d2b/structdetail_1_1deduce__type.html',1,'detail']]],
+  ['deduce_5ftype_3c_20return_5ftype_28class_5ftype_3a_3a_2a_29_28args_2e_2e_2e_29_20const_20_3e_22',['deduce_type&lt; RETURN_TYPE(CLASS_TYPE::*)(ARGS...) const &gt;',['../d4/d92/structdetail_1_1deduce__type_3_01_r_e_t_u_r_n___t_y_p_e_07_c_l_a_s_s___t_y_p_e_1_1_5_08_07_a_r_g_s_8_8_8_08_01const_01_4.html',1,'detail']]],
+  ['detach_23',['detach',['../d5/d0d/structwebframe_1_1webframe_1_1thread.html#a9fc416c045d81cd09dd517e27ff87c03',1,'webframe::webframe::thread']]],
+  ['detail_24',['detail',['../dd/d39/namespacedetail.html',1,'']]]
 ];
