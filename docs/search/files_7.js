@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['server_5fstatus_2ehpp_222',['server_status.hpp',['../dd/d2b/server__status_8hpp.html',1,'']]]
+  ['inja_2ehpp_2538',['inja.hpp',['../d4/d7d/include_2inja_2inja_8hpp.html',1,'(Global Namespace)'],['../dc/d7e/single__include_2inja_2inja_8hpp.html',1,'(Global Namespace)']]]
 ];
