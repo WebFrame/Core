@@ -1,13 +1,12 @@
 var searchData=
 [
-  ['value_0',['value',['../d6/d55/structwebframe_1_1path__vars_1_1var.html#a8feaff26f9b778547d6d54877419399a',1,'webframe::path_vars::var']]],
-  ['var_1',['var',['../d6/d55/structwebframe_1_1path__vars_1_1var.html#a9f479d16e5694ca3534911db48714a76',1,'webframe::path_vars::var::var()'],['../d6/d55/structwebframe_1_1path__vars_1_1var.html#a7b9088993b4d76915cf00459728d7c0a',1,'webframe::path_vars::var::var(const std::string &amp;_value)'],['../d6/d55/structwebframe_1_1path__vars_1_1var.html#a5e3ce1aeb87052b6f4e6d048c2e58112',1,'webframe::path_vars::var::var(const std::string &amp;_value, const std::string &amp;_type)'],['../d6/d55/structwebframe_1_1path__vars_1_1var.html',1,'webframe::path_vars::var']]],
-  ['var_5fenum_5fover_2',['var_enum_over',['../d2/dc5/structwebframe_1_1__compile__time_1_1var__enum__over.html',1,'webframe::_compile_time']]],
-  ['var_5fenum_5fover_3c_20std_3a_3ainteger_5fsequence_3c_20t_2c_20is_2e_2e_2e_20_3e_20_3e_3',['var_enum_over&lt; std::integer_sequence&lt; T, Is... &gt; &gt;',['../d1/d66/structwebframe_1_1__compile__time_1_1var__enum__over_3_01std_1_1integer__sequence_3_01_t_00_01_is_8_8_8_01_4_01_4.html',1,'webframe::_compile_time']]],
-  ['var_5fenum_5fover_5ft_4',['var_enum_over_t',['../d8/df7/namespacewebframe_1_1__compile__time.html#a4173e9ff39407e38460a9940bc46dd96',1,'webframe::_compile_time']]],
-  ['var_5fenum_5ft_5',['var_enum_t',['../d8/df7/namespacewebframe_1_1__compile__time.html#aa7eff3f8b1536e1446bb97e1c8f10a12',1,'webframe::_compile_time']]],
-  ['var_5findex_6',['var_index',['../d8/df7/namespacewebframe_1_1__compile__time.html#a07e38ac4f714f56af9b9f3bc65ccd85e',1,'webframe::_compile_time']]],
-  ['var_5findex_5ft_7',['var_index_t',['../d8/df7/namespacewebframe_1_1__compile__time.html#a9f6808dc765550c61b85458c3fc4731b',1,'webframe::_compile_time']]],
-  ['vars_8',['vars',['../d2/d7f/structwebframe_1_1path__vars.html#aa072f32ce0292c68b384834f970880f0',1,'webframe::path_vars']]],
-  ['vprintf_9',['VPRINTF',['../df/ded/host_8h.html#a94e90c730d9ee7ea56e27166616bd1bb',1,'host.h']]]
+  ['_5fcompile_5ftime_190',['_compile_time',['../d8/df7/namespacewebframe_1_1__compile__time.html',1,'webframe']]],
+  ['wait_5fend_191',['wait_end',['../d4/d2c/classwebframe_1_1webframe.html#a4f652564d54ca7cef545cb530696ff82',1,'webframe::webframe']]],
+  ['wait_5fstart_192',['wait_start',['../d4/d2c/classwebframe_1_1webframe.html#acc4ca0ecf92e6585ca69dab78938488b',1,'webframe::webframe']]],
+  ['warn_193',['warn',['../d4/d2c/classwebframe_1_1webframe.html#aa78a6967f5e48438f503a42a510006e6',1,'webframe::webframe']]],
+  ['warningsynchronizedfile_194',['WarningSynchronizedFile',['../d2/d95/class_warning_synchronized_file.html',1,'WarningSynchronizedFile'],['../d2/d95/class_warning_synchronized_file.html#af53a02e52732b57744c4449a11c3e540',1,'WarningSynchronizedFile::WarningSynchronizedFile(std::basic_ostream&lt; char &gt; &amp;path)'],['../d2/d95/class_warning_synchronized_file.html#a498fa75988da037eacf43f448220bd72',1,'WarningSynchronizedFile::WarningSynchronizedFile()']]],
+  ['webframe_195',['webframe',['../d4/d2c/classwebframe_1_1webframe.html',1,'webframe::webframe'],['../d8/d8d/namespacewebframe.html',1,'webframe'],['../d4/d5e/structwebframe_1_1responser.html#ac5bf09d2cc9640a25aca14d65121ddc4',1,'webframe::responser::webframe()'],['../d3/d1a/classwebframe_1_1router.html#ac5bf09d2cc9640a25aca14d65121ddc4',1,'webframe::router::webframe()'],['../d4/d2c/classwebframe_1_1webframe.html#a7ee0f243b6b5640dfa85aad9ab90b6c0',1,'webframe::webframe::webframe()']]],
+  ['webframe_2dimpl_2ehpp_196',['webframe-impl.hpp',['../d6/d81/webframe-impl_8hpp.html',1,'']]],
+  ['webframe_2ehpp_197',['webframe.hpp',['../d2/dce/webframe_8hpp.html',1,'']]],
+  ['wrap_198',['wrap',['../df/dd9/lambda2function_8hpp.html#a47f7bdc85fce92b9a89892a50580dfad',1,'lambda2function.hpp']]]
 ];

@@ -1,9 +1,10 @@
 var searchData=
 [
-  ['ddelete_0',['DDELETE',['../d8/d8d/namespacewebframe.html#a69de9ca7fb84de6611aeee42515e4d02aa411e38bec92b6b745d90fb89b288f51',1,'webframe']]],
-  ['dead_1',['dead',['../dc/d90/classwebframe_1_1server__status.html#aa5f0c7196700d4203333b11a265a07d3',1,'webframe::server_status']]],
-  ['deduce_5ftype_2',['deduce_type',['../d6/d2b/structdetail_1_1deduce__type.html',1,'detail']]],
-  ['deduce_5ftype_3c_20return_5ftype_28class_5ftype_3a_3a_2a_29_28args_2e_2e_2e_29_20const_20_3e_3',['deduce_type&lt; RETURN_TYPE(CLASS_TYPE::*)(ARGS...) const &gt;',['../d4/d92/structdetail_1_1deduce__type_3_01_r_e_t_u_r_n___t_y_p_e_07_c_l_a_s_s___t_y_p_e_1_1_5_08_07_a_r_g_s_8_8_8_08_01const_01_4.html',1,'detail']]],
-  ['detach_4',['detach',['../d5/d0d/structwebframe_1_1webframe_1_1thread.html#afaa25fd39db9f5136d6d665ad9ed96ef',1,'webframe::webframe::thread']]],
-  ['detail_5',['detail',['../dd/d39/namespacedetail.html',1,'']]]
+  ['end_5fline_25',['end_line',['../d8/d8d/namespacewebframe.html#ab1ef189fbe45646703c170154c6b54bb',1,'webframe']]],
+  ['env_26',['env',['../d4/d2c/classwebframe_1_1webframe.html#a6224a343b26c69ccbc102923f5f772cd',1,'webframe::webframe']]],
+  ['errors_27',['errors',['../d4/d2c/classwebframe_1_1webframe.html#af94ce6e144bcd995eda2625dba9d019d',1,'webframe::webframe']]],
+  ['errorsynchronizedfile_28',['ErrorSynchronizedFile',['../db/da4/class_error_synchronized_file.html',1,'ErrorSynchronizedFile'],['../db/da4/class_error_synchronized_file.html#a6f6d77e067cde78e5762f4c72b1df326',1,'ErrorSynchronizedFile::ErrorSynchronizedFile(std::basic_ostream&lt; char &gt; &amp;path)'],['../db/da4/class_error_synchronized_file.html#ae50df2d82548eb72ab3f5d388d90daf1',1,'ErrorSynchronizedFile::ErrorSynchronizedFile()']]],
+  ['export_29',['EXPORT',['../df/ded/host_8h.html#a3472d8cdbb788d5f1815b3522595bc49',1,'host.h']]],
+  ['extend_5fwith_30',['extend_with',['../d4/d2c/classwebframe_1_1webframe.html#ac9d9cb4bc7452364cf0dd60dfae0a72a',1,'webframe::webframe']]],
+  ['extract_31',['extract',['../d0/d7e/structwebframe_1_1webframe_1_1thread__pool.html#a0ce3a5f731674c63f39ec623efcb36e4',1,'webframe::webframe::thread_pool']]]
 ];
