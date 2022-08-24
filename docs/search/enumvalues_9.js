@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['join_3892',['Join',['../d2/d9f/classinja_1_1_function_storage.html#aeb78440163bb7cd83add1d3dfbd31522aa286d9991c6a547ae25a5f5216164b8f',1,'inja::FunctionStorage::Join()'],['../d2/d9f/classinja_1_1_function_storage.html#aeb78440163bb7cd83add1d3dfbd31522aa286d9991c6a547ae25a5f5216164b8f',1,'inja::FunctionStorage::Join()'],['../d2/d9f/classinja_1_1_function_storage.html#aeb78440163bb7cd83add1d3dfbd31522aa286d9991c6a547ae25a5f5216164b8f',1,'inja::FunctionStorage::Join()'],['../d2/d9f/classinja_1_1_function_storage.html#aeb78440163bb7cd83add1d3dfbd31522aa286d9991c6a547ae25a5f5216164b8f',1,'inja::FunctionStorage::Join()']]],
-  ['json_3893',['json',['../dc/df0/namespacenlohmann_1_1detail.html#aa554fc6a11519e4f347deb25a9f0db40a466deec76ecdf5fca6d38571f6324d54',1,'nlohmann::detail']]]
+  ['param_5fkey_389',['PARAM_KEY',['../d8/d8d/namespacewebframe.html#a4801e5865e0737ad9f40f5b14f0d96cfa97675cc85a90832f856d20eea1e2a599',1,'webframe']]],
+  ['param_5fvalue_390',['PARAM_VALUE',['../d8/d8d/namespacewebframe.html#a4801e5865e0737ad9f40f5b14f0d96cfa9bb914d2eaedd80abc450b5a48f4bf67',1,'webframe']]],
+  ['patch_391',['PATCH',['../d8/d8d/namespacewebframe.html#a69de9ca7fb84de6611aeee42515e4d02a63bc9a3997d66d835d9f3ec29451407d',1,'webframe']]],
+  ['post_392',['POST',['../d8/d8d/namespacewebframe.html#a69de9ca7fb84de6611aeee42515e4d02aa02439ec229d8be0e74b0c1602392310',1,'webframe']]],
+  ['put_393',['PUT',['../d8/d8d/namespacewebframe.html#a69de9ca7fb84de6611aeee42515e4d02a3e75383a5992a6d15fb81e872e46e256',1,'webframe']]]
 ];

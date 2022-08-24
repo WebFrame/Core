@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['basic_5fjson_4015',['basic_json',['../da/de8/classnlohmann_1_1json__pointer.html#ada3100cdb8700566051828f1355fa745',1,'nlohmann::json_pointer']]]
+  ['router_398',['router',['../d4/d2c/classwebframe_1_1webframe.html#a3e49d0f90762e42306d6a037b8d3e9c2',1,'webframe::webframe']]]
 ];
