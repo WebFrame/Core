@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['lstat_4493',['LSTAT',['../df/ded/host_8h.html#a81b6b023bc11d11ae31bcbcafc24a12f',1,'host.h']]]
+  ['vprintf_425',['VPRINTF',['../df/ded/host_8h.html#a94e90c730d9ee7ea56e27166616bd1bb',1,'host.h']]]
 ];
