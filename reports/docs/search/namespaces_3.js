@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['inja_2500',['inja',['../df/d96/namespaceinja.html',1,'']]],
-  ['string_5fview_2501',['string_view',['../d8/d59/namespaceinja_1_1string__view.html',1,'inja']]]
+  ['_5fcompile_5ftime_0',['_compile_time',['../d8/df7/namespacewebframe_1_1__compile__time.html',1,'webframe']]],
+  ['webframe_1',['webframe',['../d8/d8d/namespacewebframe.html',1,'']]]
 ];
