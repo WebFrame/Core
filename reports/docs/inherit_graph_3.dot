@@ -1,0 +1,8 @@
+digraph "Graphical Class Hierarchy"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="webframe::_compile\l_time::var_enum_over\l\< Indexes \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/dc5/structwebframe_1_1__compile__time_1_1var__enum__over.html",tooltip=" "];
+}
