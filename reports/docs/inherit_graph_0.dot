@@ -1,8 +1,0 @@
-digraph "Graphical Class Hierarchy"
-{
- // LATEX_PDF_SIZE
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=record];
-  rankdir="LR";
-  Node0 [label="detail::deduce_type\l\< RETURN_TYPE(CLASS\l_TYPE::*)(ARGS...) const \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d92/structdetail_1_1deduce__type_3_01_r_e_t_u_r_n___t_y_p_e_07_c_l_a_s_s___t_y_p_e_1_1_5_08_07_a_r_g_s_8_8_8_08_01const_01_4.html",tooltip=" "];
-}
