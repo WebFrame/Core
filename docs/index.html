@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>WebFrame++: Readme</title>
+<title>WebFrame++: WebFrame++ v3</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -13,8 +13,6 @@
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
 <link href="doxygen.css" rel="stylesheet" type="text/css" />
-<link href="custom.css" rel="stylesheet" type="text/css"/>
-<link href="custom_dark_theme.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <div id="top"><!-- do not remove this div, it is closed by doxygen! -->
@@ -66,137 +64,279 @@ $(function() {
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Readme </div>  </div>
+<div class="title">WebFrame++ v3 </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><span style="font-size: 2.25em;"> WebFrame++ <object type="image/svg+xml" data="https://img.shields.io/badge/c++-%2300599C.svg?&amp;logo=c%2B%2B&amp;logoColor=white" style="pointer-events: none;">C++</object> <img src="https://img.shields.io/badge/-mocha-%238D6748?logo=mocha&amp;logoColor=white" alt="Mocha" class="inline"/><br  />
-<a href="https://github.com/WebFrame/Core/actions/workflows/all.yaml"><object type="image/svg+xml" data="https://github.com/WebFrame/Core/actions/workflows/all.yaml/badge.svg" style="pointer-events: none;">Build, Test, Benchmark, Deploy</object></a> <a href="https://github.com/WebFrame/Core/actions/workflows/codeql-analysis.yml"><object type="image/svg+xml" data="https://github.com/WebFrame/Core/actions/workflows/codeql-analysis.yml/badge.svg" style="pointer-events: none;">Code Quality</object></a><br  />
-<a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/issues/WebFrame/Core?" alt="Issues" class="inline"/></a> <a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/forks/WebFrame/Core?" alt="Forks" class="inline"/></a> <a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/stars/WebFrame/Core?" alt="Stars" class="inline"/></a> <a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/license/WebFrame/Core?" alt="License" class="inline"/></a></span> </p>
-<h2><a class="anchor" id="autotoc_md1"></a>
-Make your web application faster now!</h2>
-<hr  />
-<h3><a class="anchor" id="autotoc_md2"></a>
-Requirements</h3>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadCenter">Compiler version </th><th class="markdownTableHeadCenter">Minimum C++ standard required  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter">GCC &lt;= 9.x </td><td class="markdownTableBodyCenter">-std=c++2a  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter">GCC &gt;= 10.x </td><td class="markdownTableBodyCenter">-std=c++20  </td></tr>
-</table>
-<h1><a class="anchor" id="autotoc_md3"></a>
-Testing</h1>
-<h2><a class="anchor" id="autotoc_md4"></a>
-Cppcheck - static code analysis</h2>
-<p>Check the static code analysis of the project <a href="https://webframe.github.io/Core/codeql_report/">here</a>. </p>
-<h2><a class="anchor" id="autotoc_md5"></a>
-Performance</h2>
-<p>Check the performance check of the project <a href="https://webframe.github.io/Core/benchmark/">here</a>. </p>
-<h2><a class="anchor" id="autotoc_md6"></a>
-Code documentation</h2>
-<p>Check the Doxygen documentation of the library <a href="https://webframe.github.io/Core/docs/">here</a>. </p>
-<h1><a class="anchor" id="autotoc_md7"></a>
-How to use</h1>
-<ol type="1">
-<li>Make sure to include the library ```cpp #include &lt;<a class="el" href="d2/dce/webframe_8hpp.html" title="Single header containing all the necessary tools regarding WebFrame.">webframe/webframe.hpp</a>&gt; ```</li>
-<li>Initiate your Web application ```cpp <a class="el" href="d4/d2c/classwebframe_1_1webframe.html">webframe::webframe</a> app; ```</li>
-<li><p class="startli">Set directories for your static files ```cpp app.set_static(relative or absolute path/directory to the static files, web alias); `<code> Ex. the files are in</code>./example/Sample/static<code>and the route for them is</code>/static<code>: </code>`cpp app.set_static("./example/Sample/static", "/static"); ``` <em><b>NOTE:</b> You can list multiple static folders</em></p>
-<p class="startli"><em><b>NOTE:</b> Relative paths depend on where you execute the executable from and not on where the source file is located.</em></p>
-</li>
-<li><p class="startli">Set Inja template folder ```cpp app.set_templates(relative or absolute path/directory to the INJA templates); `<code> Ex. the Inja template files are in</code>./example/Sample/static/templates<code>: </code>`cpp app.set_templates("./example/Sample/static/templates"); ```</p>
-<p class="startli"><em><b>NOTE:</b> You can list multiple template folders</em></p>
-<p class="startli"><em><b>NOTE:</b> Relative paths depend on where you execute the executable from and not on where the source file is located.</em></p>
-</li>
-<li>Set up error handling<ul>
-<li>Set the code of the error</li>
-<li>Implement the responding function using lambda that takes 1 string as parameter ```cpp app.handle("404", [](const std::string&amp; path) { return "Error 404: " + path + " was not found."; }); app.handle("500", [](const std::string&amp; reason) { return "Error 500: Internal server error: " + reason + "."; }); ```</li>
-</ul>
-</li>
-<li>Set up your routes<ul>
-<li>Set up headers and status code yourself ```cpp app.route ("/", []() { return <a class="el" href="d6/d7e/classwebframe_1_1response.html" title="Type of the response.">webframe::response</a> (<a class="el" href="db/de3/structwebframe_1_1status__line.html" title="Type of the status line of the response.">webframe::status_line</a> ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "&lt;h1&gt;Hello, World!&lt;/h1&gt;"); }); ```</li>
-<li>or let WebFrame do it for you ```cpp app.route ("/", []() { return "&lt;h1&gt;Hello, World!&lt;/h1&gt;"; }); <code></code></li>
-<li><code>To render your Jinja templates use</code>app.render(filename/file path, json with variables)```</li>
-<li>You can also use path/route variables<ul>
-<li>using predefined regex <pre class="fragment">  app.route("/{text}", [&amp;app](const std::string&amp; user) {
-      return app.render("template.html", {{"username", user}});
-  });
-</pre></li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-<table class="markdownTable">
-<tr class="markdownTableHead">
-<th class="markdownTableHeadCenter">Predefined </th><th class="markdownTableHeadCenter">Raw regex equivalent  </th></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter">string </td><td class="markdownTableBodyCenter">[A-Za-z_%0-9.-]+  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter">text </td><td class="markdownTableBodyCenter">[A-Za-z_%0-9.-]+  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter">char </td><td class="markdownTableBodyCenter">[A-Za-z_%0-9.-]  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter">symbol </td><td class="markdownTableBodyCenter">[A-Za-z_%0-9.-]  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter">digit </td><td class="markdownTableBodyCenter">[0-9]  </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyCenter">number </td><td class="markdownTableBodyCenter">[0-9.]+  </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyCenter">path </td><td class="markdownTableBodyCenter">[A-Za-z_%0-9.-\/]+  </td></tr>
-</table>
+<div class="textblock"><p> 
+<link rel="stylesheet" href="./Doxygen-css/custom.css">
+<link rel="stylesheet" href="./Doxygen-css/custom_dark_theme.css">
+
+<h1 id="spanstylefontsize225emwebframechttpsimgshieldsiobadgec2300599csvglogoc2b2blogocolorwhitemochahttpsimgshieldsiobadgemocha238d6748logomochalogocolorwhitebrbuildtestbenchmarkdeployhttpsgithubcomwebframecoreactionsworkflowsallyamlbadgesvghttpsgithubcomwebframecoreactionsworkflowsallyamlcodequalityhttpsgithubcomwebframecoreactionsworkflowscodeqlanalysisymlbadgesvghttpsgithubcomwebframecoreactionsworkflowscodeqlanalysisymlbrissueshttpsimgshieldsiogithubissueswebframecorehttpsgithubcomwebframecoreforkshttpsimgshieldsiogithubforkswebframecorehttpsgithubcomwebframecorestarshttpsimgshieldsiogithubstarswebframecorehttpsgithubcomwebframecorelicensehttpsimgshieldsiogithublicensewebframecorehttpsgithubcomwebframecorespan"><span style="font-size: 2.25em;"><img src="https://img.shields.io/badge/c++-%2300599C.svg?&amp;logo=c%2B%2B&amp;logoColor=white" alt="C++" /> <img src="https://img.shields.io/badge/-mocha-%238D6748?logo=mocha&amp;logoColor=white" alt="Mocha" /><br><a href="https://github.com/WebFrame/Core/actions/workflows/all.yaml"><img src="https://github.com/WebFrame/Core/actions/workflows/all.yaml/badge.svg" alt="Build, Test, Benchmark, Deploy" /></a> <a href="https://github.com/WebFrame/Core/actions/workflows/codeql-analysis.yml"><img src="https://github.com/WebFrame/Core/actions/workflows/codeql-analysis.yml/badge.svg" alt="Code Quality" /></a><br><a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/issues/WebFrame/Core?" alt="Issues" /></a> <a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/forks/WebFrame/Core?" alt="Forks" /></a> <a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/stars/WebFrame/Core?" alt="Stars" /></a> <a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/license/WebFrame/Core?" alt="License" /></a></span></h1>
+
+<h3 id="makeyourwebapplicationfasternow">Make your web application faster now!</h3>
+
+<hr>
+
+<h4 id="requirements">Requirements</h4>
+
+<p>
+  <table class="fieldtable">
+    <tr><th class="fieldname">Compiler version</th><th class="fieldname">Minimum C++ standard required</th></tr>
+    <tr><td class="fieldname">GCC &lt;= 9.x   </td><td class="fieldname">-std=c++2a</td></tr>
+    <tr><td class="fieldname">GCC &gt;= 10.x  </td><td class="fieldname">-std=c++20</td></tr>
+  </table>
+</p>
+
+<h1 id="testing">Testing</h1>
+
+<h2 id="cppcheckstaticcodeanalysis">Cppcheck - static code analysis</h2>
+
+<p>Check the static code analysis of the project <a href="https://webframe.github.io/Core/codeql_report/">here</a>.</p>
+
+<h2 id="performance">Performance</h2>
+
+<p>Check the performance check of the project <a href="https://webframe.github.io/Core/benchmark/">here</a>.</p>
+
+<h2 id="codedocumentation">Code documentation</h2>
+
+<p>Check the Doxygen documentation of the library <a href="https://webframe.github.io/Core/docs/">here</a>.</p>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/monokai-sublime.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/androidstudio.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"></script>
+
+<h1 id="howtouse">How to use</h1>
+
+<ol>
+<li><p>Make sure to include the library</p>
+
+<pre><code class="cpp language-cpp">#include &lt;webframe/webframe.hpp&gt;
+</code></pre></li>
+
+<li><p>Initiate your Web application</p>
+
+<pre><code class="cpp language-cpp">webframe::webframe app;
+</code></pre>
+
+<p></p></li>
+
+<li><p>Set directories for your static files</p>
+
+<pre><code class="cpp language-cpp">app.set_static(relative or absolute path/directory to the static files, web alias); 
+</code></pre>
+
+<p>Ex. the files are in <code>./example/Sample/static</code> and the route for them is <code>/static</code>:</p>
+
+<pre><code class="cpp language-cpp">app.set_static("./example/Sample/static", "/static"); 
+</code></pre>
+
+<p><em><strong>NOTE:</strong> You can list multiple static folders</em></p>
+
+<p><em><strong>NOTE:</strong> Relative paths depend on where you execute the executable from and not on where the source file is located.</em></p></li>
+
+<li><p>Set Inja template folder</p>
+
+<pre><code class="cpp language-cpp">app.set_templates(relative or absolute path/directory to the INJA templates); 
+</code></pre>
+
+<p>Ex. the Inja template files are in <code>./example/Sample/static/templates</code>:</p>
+
+<pre><code class="cpp language-cpp">app.set_templates("./example/Sample/static/templates");
+</code></pre>
+
+<p><em><strong>NOTE:</strong> You can list multiple template folders</em></p>
+
+<p><em><strong>NOTE:</strong> Relative paths depend on where you execute the executable from and not on where the source file is located.</em></p></li>
+
+<li><p>Set up error handling</p>
+
 <ul>
-<li>or using your own regex <pre class="fragment">  app.route("/{[a-z]+}", [&amp;app](const std::string&amp; user) {
-      return app.render("template.html", {{"username", user}});
-  });
-</pre></li>
-</ul>
-<p>Make sure to run your app (async run)</p>
-<p>```cpp app.run(port, cores); ```</p>
-<h2><a class="anchor" id="autotoc_md8"></a>
-Advanced usage</h2>
-<ol type="1">
-<li><p class="startli">Stack multiple setups</p>
-<p class="startli">You can list different app setups consequently:</p>
-<p class="startli">```cpp app.set_static("./example/Sample/static", "/static") .set_templates("./example/Sample/static/templates") .handle("404", [](const std::string&amp; path) { return "Error 404: " + path + " was not found."; }) .handle("500", [](const std::string&amp; reason) { return "Error 500: Internal server error: " + reason + "."; }) .route ("/", []() { return <a class="el" href="d6/d7e/classwebframe_1_1response.html" title="Type of the response.">webframe::response</a> (<a class="el" href="db/de3/structwebframe_1_1status__line.html" title="Type of the status line of the response.">webframe::status_line</a> ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "&lt;h1&gt;Hello, World!&lt;/h1&gt;"); }); ```</p>
-</li>
-<li>Multithreading<ul>
-<li>Wait until the server starts accepting requests: (sync function) ```cpp app.wait_start(port); ``` or ```cpp app.run(port, cores).wait_start(port); ```</li>
-<li>Wait until the server stops accepting requests: (sync function) ```cpp app.wait_end(port); ``` or ```cpp app.run(port, cores).wait_end(port); ```</li>
-</ul>
-</li>
-<li>Set up custom loggers<ul>
-<li>logger is the stream for standard logs from the server</li>
-<li>error_logger is the stream for error messages</li>
-<li><p class="startli">perfomancer is the stream for performance logs</p>
-<p class="startli">```cpp app.set_logger(ostream&amp;) .set_error_logger(ostream&amp;) .set_performancer(ostream&amp;); <br  />
- ```</p>
-</li>
-</ul>
-</li>
-<li><p class="startli">Force server stop</p>
-<p class="startli">```cpp app.request_stop(port); ```</p>
-<p class="startli"><b>Note:</b> <em>port should be <code>const char*</code></em></p>
-</li>
-<li>Organize projects<ul>
-<li><p class="startli">Create set of routes</p>
-<p class="startli">```cpp init_routes(home) .route("/home", []() { return "This is my home page"; }); `<code> or if you need to use</code>webframe::webframe&lt;tt&gt;functions `cpp <a class="el" href="d4/d2c/classwebframe_1_1webframe.html">webframe::webframe</a> app; ... init_routes(home) .route("/home", [&amp;app]() { return app.render("template.html", {{"username", user}}); }); ```</p>
-</li>
-<li><p class="startli">Import the set of routes to your app</p>
-<p class="startli">```cpp init_routes(home) ... app.extend_with(home); ``` or if you want to add prefix to the set of routes ```cpp init_routes(home) ... app.extend_with(home, "/prefix"); ```</p>
-</li>
-</ul>
-</li>
-</ol>
-<p>Check <a href="https://github.com/WebFrame/Core/blob/master/example">example/</a> for more information. </p>
-<h1><a class="anchor" id="autotoc_md9"></a>
-Additional info</h1>
+<li><p>Set the code of the error</p></li>
+
+<li><p>Implement the responding function using lambda that takes 1 string as parameter</p>
+
+<pre><code class="cpp language-cpp">app.handle("404", [](const std::string&amp; path) {
+    return "Error 404: " + path + " was not found.";
+});
+app.handle("500", [](const std::string&amp; reason) {
+    return "Error 500: Internal server error: " + reason + ".";
+});
+</code></pre></li></ul></li>
+
+<li><p>Set up your routes</p>
+
 <ul>
-<li>Currently working on setting up <object type="image/svg+xml" data="https://img.shields.io/badge/CMake-%23008FBA.svg?&amp;logo=cmake&amp;logoColor=while" style="pointer-events: none;">CMake</object></li>
+<li><p>Set up headers and status code yourself</p>
+
+<pre><code class="cpp language-cpp">app.route ("/", []() {
+    return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "&lt;h1&gt;Hello, World!&lt;/h1&gt;");
+});
+</code></pre></li>
+
+<li><p>or let WebFrame do it for you</p>
+
+<pre><code class="cpp language-cpp">app.route ("/", []() {
+    return "&lt;h1&gt;Hello, World!&lt;/h1&gt;";
+});
+</code></pre></li>
+
+<li><p>To render your Jinja templates use <code>app.render(filename/file path, json with variables)</code></p></li>
+
+<li><p>You can also use path/route variables </p>
+
+<ul>
+<li><p>using predefined regex</p>
+
+<pre><code class="cpp language-cpp">app.route("/{text}", [&amp;app](const std::string&amp; user) {
+    return app.render("template.html", {{"username", user}});
+});
+</code></pre>
+
+<p>
+<table class="fieldtable">
+<tr><th class="fieldname">Predefined </th><th class="fieldname">Raw regex equivalent </th></tr>
+<tr><td class="fieldname">string     </td><td class="fieldname">[A-Za-z_%0-9.-]+  </td></tr>
+<tr><td class="fieldname">text       </td><td class="fieldname">[A-Za-z_%0-9.-]+ </td></tr>
+<tr><td class="fieldname">char       </td><td class="fieldname">[A-Za-z_%0-9.-]   </td></tr>
+<tr><td class="fieldname">symbol     </td><td class="fieldname">[A-Za-z_%0-9.-]  </td></tr>
+<tr><td class="fieldname">digit      </td><td class="fieldname">[0-9]                </td></tr>
+<tr><td class="fieldname">number     </td><td class="fieldname">[0-9.]+              </td></tr>
+<tr><td class="fieldname">path       </td><td class="fieldname">[A-Za-z_%0-9.-\/]+   </td></tr>
+</table>
+</p></li>
+
+<li><p>or using your own regex</p>
+<pre><code class="cpp language-cpp">app.route("/{[a-z]+}", [&amp;app](const std::string&amp; user) {
+    return app.render("template.html", {{"username", user}});
+});
+</code></pre></li></ul></li></ul></li>
+
+<li><p>Make sure to run your app (async run)</p>
+
+<pre><code class="cpp language-cpp">app.run(port, cores);
+</code></pre></li>
+</ol>
+
+<h2 id="advancedusage">Advanced usage</h2>
+
+<ol>
+<li><p>Stack multiple setups</p>
+
+<p>You can list different app setups consequently:</p>
+
+<pre><code class="cpp language-cpp">app.set_static("./example/Sample/static", "/static")
+    .set_templates("./example/Sample/static/templates")
+    .handle("404", [](const std::string&amp; path) {
+        return "Error 404: " + path + " was not found.";
+    })
+    .handle("500", [](const std::string&amp; reason) {
+        return "Error 500: Internal server error: " + reason + ".";
+    })
+    .route ("/", []() {
+        return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "&lt;h1&gt;Hello, World!&lt;/h1&gt;");
+    });
+</code></pre></li>
+
+<li><p>Multithreading</p>
+
+<ul>
+<li><p>Wait until the server starts accepting requests: (sync function)</p>
+
+<pre><code class="cpp language-cpp">app.wait_start(port);
+</code></pre>
+
+<p>or</p>
+
+<pre><code class="cpp language-cpp">app.run(port, cores).wait_start(port);
+</code></pre></li>
+
+<li><p>Wait until the server stops accepting requests: (sync function)</p>
+
+<pre><code class="cpp language-cpp">app.wait_end(port);
+</code></pre>
+
+<p>or</p>
+
+<pre><code class="cpp language-cpp">app.run(port, cores).wait_end(port);
+</code></pre></li></ul></li>
+
+<li><p>Set up custom loggers</p>
+
+<ul>
+<li><p>logger is the stream for standard logs from the server</p></li>
+
+<li><p>error_logger is the stream for error messages</p></li>
+
+<li><p>perfomancer is the stream for performance logs</p>
+
+<pre><code class="cpp language-cpp">app.set_logger(ostream&amp;)
+    .set_error_logger(ostream&amp;)
+    .set_performancer(ostream&amp;);        
+</code></pre></li></ul></li>
+
+<li><p>Force server stop</p>
+
+<pre><code class="cpp language-cpp">app.request_stop(port);
+</code></pre>
+
+<p><strong>Note:</strong> <em>port should be <code>const char*</code></em></p></li>
+
+<li><p>Organize projects</p>
+
+<ul>
+<li><p>Create set of routes</p>
+
+<pre><code class="cpp language-cpp">init_routes(home)
+    .route("/home", []() {
+        return "This is my home page";
+    });
+</code></pre>
+
+<p>or if you need to use <code>webframe::webframe</code> functions</p>
+
+<pre><code class="cpp language-cpp">webframe::webframe app;
+...
+init_routes(home)
+    .route("/home", [&amp;app]() {
+        return app.render("template.html", {{"username", user}});
+    });
+</code></pre></li>
+
+<li><p>Import the set of routes to your app</p>
+
+<pre><code class="cpp language-cpp">init_routes(home)
+...
+app.extend_with(home);
+</code></pre>
+
+<p>or if you want to add prefix to the set of routes</p>
+
+<pre><code class="cpp language-cpp">init_routes(home)
+...
+app.extend_with(home, "/prefix");
+</code></pre></li></ul></li>
+</ol>
+
+<p>Check <a href="https://github.com/WebFrame/Core/blob/master/example">example/</a> for more information.</p>
+
+<h1 id="additionalinfo">Additional info</h1>
+
+<ul>
+<li>Currently working on setting up <img src="https://img.shields.io/badge/CMake-%23008FBA.svg?&amp;logo=cmake&amp;logoColor=while" alt="CMake" /></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md10"></a>
-Socials</h1>
-<p><a href="https://www.linkedin.com/in/alex-tsvetanov/"><object type="image/svg+xml" data="https://img.shields.io/badge/linkedin-%230077B5.svg?logo=linkedin&amp;logoColor=white" style="pointer-events: none;">LinkedIn</object></a> </p>
+
+<h1 id="socials">Socials</h1>
+
+<p><a href="https://www.linkedin.com/in/alex-tsvetanov/"><img src="https://img.shields.io/badge/linkedin-%230077B5.svg?logo=linkedin&amp;logoColor=white" alt="LinkedIn" /></a></p>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      document.querySelectorAll('pre code').forEach((el) => {
+        hljs.highlightElement(el);
+      });
+    });
+</script>
+ </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
