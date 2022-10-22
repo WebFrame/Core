@@ -17,9 +17,9 @@ jobs:
                 optimization: [-O, -O1, -O2, -O3, -Ofast, -Og, -Os]
                 include:
                     - cxx: g++
-                        os: windows-latest
+                      os: windows-latest
                     - cxx: g++-11
-                        os: ubuntu-latest
+                      os: ubuntu-latest
         name: ${{ matrix.os }}${{ matrix.optimization }}
         runs-on: ${{ matrix.os }}
         steps:
