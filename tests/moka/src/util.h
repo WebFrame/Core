@@ -41,17 +41,17 @@ namespace Moka
     std::string color(const T& t, int c, bool bold = false) {
     #endif
     #ifndef __linux__
-    std::string color(const T& t, __attribute__((unused)) int c, __attribute__((unused)) bool bold = false) {
+    std::string color(const T& t, [[maybe_unused]] int c, [[maybe_unused]] bool bold = false) {
     #endif
       std::stringstream result;
       #ifdef __linux__
-      result << "\e[" << c;
+      result << "\033[" << c;
       if(bold) result << ";1";
       result << 'm';
       #endif
       result << rep(t);
       #ifdef __linux__
-      result << "\e[0m";
+      result << "\033[0m";
       #endif
       return result.str();
     }
