@@ -1,5 +1,5 @@
 # Readme
-# <span style="font-size: 2.25em;"> WebFrame++ ![C++](https://img.shields.io/badge/c++-%2300599C.svg?&logo=c%2B%2B&logoColor=white) ![Mocha](https://img.shields.io/badge/-mocha-%238D6748?logo=mocha&logoColor=white)<br>[![Build, Test, Benchmark, Deploy](https://github.com/WebFrame/Core/actions/workflows/all.yaml/badge.svg)](https://github.com/WebFrame/Core/actions/workflows/all.yaml) [![Code Quality](https://github.com/WebFrame/Core/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/WebFrame/Core/actions/workflows/codeql-analysis.yml)<br>[![Issues](https://img.shields.io/github/issues/WebFrame/Core?)](https://github.com/WebFrame/Core) [![Forks](https://img.shields.io/github/forks/WebFrame/Core?)](https://github.com/WebFrame/Core) [![Stars](https://img.shields.io/github/stars/WebFrame/Core?)](https://github.com/WebFrame/Core) [![License](https://img.shields.io/github/license/WebFrame/Core?)](https://github.com/WebFrame/Core)</span>
+# <span style="font-size: 2.25em;"> WebFrame++ ![C++](https://img.shields.io/badge/c++-%2300599C.svg?&logo=c%2B%2B&logoColor=white) ![Mocha](https://img.shields.io/badge/-mocha-%238D6748?logo=mocha&logoColor=white)<br>[![Build, Test, Benchmark, Deploy](https://github.com/core/Core/actions/workflows/all.yaml/badge.svg)](https://github.com/core/Core/actions/workflows/all.yaml) [![Code Quality](https://github.com/core/Core/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/core/Core/actions/workflows/codeql-analysis.yml)<br>[![Issues](https://img.shields.io/github/issues/core/Core?)](https://github.com/core/Core) [![Forks](https://img.shields.io/github/forks/core/Core?)](https://github.com/core/Core) [![Stars](https://img.shields.io/github/stars/core/Core?)](https://github.com/core/Core) [![License](https://img.shields.io/github/license/core/Core?)](https://github.com/core/Core)</span>
 ### Make your web application faster now!
 <hr>
 
@@ -20,7 +20,7 @@ Check the Doxygen documentation of the library [here](https://webframe.github.io
 1. Make sure to include the library
 
     ```cpp
-    #include <webframe/webframe.hpp>
+    #include <core/webframe.hpp>
     ```
 
 2. Initiate your Web application
@@ -219,7 +219,7 @@ Check the Doxygen documentation of the library [here](https://webframe.github.io
         app.extend_with(home, "/prefix");
         ```
 
-Check [example/](https://github.com/WebFrame/Core/blob/master/example) for more information.
+Check [example/](https://github.com/core/Core/blob/master/example) for more information.
 # Additional info
 - Currently working on setting up ![CMake](https://img.shields.io/badge/CMake-%23008FBA.svg?&logo=cmake&logoColor=while)
 
