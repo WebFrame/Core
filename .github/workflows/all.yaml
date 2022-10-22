@@ -30,7 +30,7 @@ jobs:
         if: startsWith(matrix.os, 'windows')
         run: |
           choco install mingw --version 11.2.0.07112021 --force
-          make --version
+          cmake --version
           gcc --version
       - name: Install dependencies on ubuntu
         if: startsWith(matrix.os, 'ubuntu')
@@ -38,19 +38,15 @@ jobs:
           sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
           sudo apt-get update
           sudo apt-get install -y gcc-11 g++-11 make
-          make --version
+          cmake --version
           gcc-11 --version
           g++-11 --version
           mkdir -p ./bin
-      - name: Configure
+      - name: Configure & Build
         shell: bash
         run: |
-          make -B install
-      - name: Build
-        shell: bash
-        run: |
-          make -B clean build_all COMPILER_CPP=${{ matrix.cxx }} OPTIMIZATION_LEVEL=${{ matrix.optimization }}
-      - name: Prepare speed test
+          CXX_COMPILE=${{ matrix.cxx }} cmake .    
+     - name: Prepare speed test
         shell: bash
         run: |
           mkdir -p ./benchmark/performance/${{ matrix.os }};
@@ -58,8 +54,8 @@ jobs:
         shell: bash
         timeout-minutes: 100
         run: |
-          make -B run_tests
-          make -B run_tests | sed -E "s/`printf "\e"`\[([0-9]+)(;1)?m//g" | cat > ./bin/log/performance.txt
+          ./tests/Core-Tests
+          ./tests/Core-Tests | sed -E "s/`printf "\033"`\[([0-9]+)(;1)?m//g" | cat > ./bin/log/performance.txt
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.os }}/performance${{ matrix.optimization }}.txt
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
@@ -87,7 +83,7 @@ jobs:
                 sed 's/Would have been nice/expected\t/g' | 
                 sed 's/but got/\tbut got\t/g' |
                 sed 's/[ \t][ \t]*/ /g' |
-                sed -E "s/`printf "\e"`\[([0-9]+)(;1)?m//g"
+                sed -E "s/`printf "\033"`\[([0-9]+)(;1)?m//g"
             echo "";
           done > summary.txt;
           cat summary.txt;
@@ -109,7 +105,7 @@ jobs:
         sudo -H apt-get update -y
         sudo -H apt-get install cppcheck
     - name: Run Cppcheck
-      run: cppcheck --std=c++20 -I./lib --xml --xml-version=2 --force --enable=all example lib/webframe 2> cppcheck_res.xml
+      run: cppcheck --std=c++20 -I./lib --xml --xml-version=2 --force --enable=all example lib/core 2> cppcheck_res.xml
     - name: Generate Report
       run: cppcheck-htmlreport --title=WebFrame --file=cppcheck_res.xml --report-dir=codeql_report
     - name: Upload Report
@@ -167,20 +163,20 @@ jobs:
           make --version
           gcc-11 --version
           g++-11 --version
-      - name: Install WebFrame & Build Non-Atomic server 🔧
-        if: startsWith(matrix.server, 'c++')
+      - name: Install WebFrame & Build servers 🔧
         shell: bash
         run: |
-          make install
-          make -B benchmark_build COMPILER_CPP=g++-11 OPTIMIZATION_LEVEL=${{ steps.env.outputs.optimization }}
-          make -B benchmark_run PORT=8888 &
-      - name: Install WebFrame & Build Atomic server 🔧
+          CXX_COMPILER=${{ matrix.cxx }} cmake ..
+      - name: Run Atomic server 🔧
         if: startsWith(matrix.server, 'ac++')
         shell: bash
         run: |
-          make install
-          make -B benchmark_build COMPILER_CPP=g++-11 OPTIMIZATION_LEVEL=${{ steps.env.outputs.optimization }}
-          make -B benchmark_run_atomic PORT=8888 &
+          ./BenchmarkAtomic
+      - name: Run Normal server 🔧
+        if: startsWith(matrix.server, 'c++')
+        shell: bash
+        run: |
+          ./BenchmarkNormal
       - name: Install Flask & Run 🔧
         if: startsWith(matrix.server, 'python')
         shell: bash

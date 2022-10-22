@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>WebFrame++: lib/webframe/webframe-impl.hpp Source File</title>
+<title>WebFrame++: lib/core/webframe-impl.hpp Source File</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -92,11 +92,11 @@ $(function() {
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;inja/inja.hpp&gt;</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="../../d7/d20/respond__manager_8hpp.html">webframe/respond_manager.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="../../db/d3b/file_8hpp.html">webframe/file.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="../../df/ded/host_8h.html">webframe/host.h</a>&gt;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="../../d4/dce/constexpr_8hpp.html">webframe/constexpr.hpp</a>&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="../../dd/d2b/server__status_8hpp.html">webframe/server_status.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="../../d7/d20/respond__manager_8hpp.html">core/respond_manager.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="../../db/d3b/file_8hpp.html">core/file.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="../../df/ded/host_8h.html">core/host.h</a>&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="../../d4/dce/constexpr_8hpp.html">core/constexpr.hpp</a>&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="../../dd/d2b/server__status_8hpp.html">core/server_status.hpp</a>&gt;</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">namespace </span><a class="code" href="../../d8/d8d/namespacewebframe.html">webframe</a></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{       </div>
@@ -230,8 +230,8 @@ $(function() {
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00158"></a><span class="lineno"><a class="line" href="../../d4/d2c/classwebframe_1_1webframe.html#a1b23bf51eeeefc651e6e3b86080bbfdb">  158</a></span>&#160;        <span class="keyword">static</span> constexpr <span class="keywordtype">bool</span> <a class="code" href="../../d4/d2c/classwebframe_1_1webframe.html#a1b23bf51eeeefc651e6e3b86080bbfdb">initHttpCodes</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> code = 0) {</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;            std::visit ([](<span class="keyword">auto</span> code){</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                constexpr <span class="keyword">auto</span> __attribute__((unused)) _1 = <a class="code" href="../../d2/d97/namespacehttp__codes.html#a3ea78a909fbeaa3020acb3b413de5b17">http_codes::get_reason_by_code</a>(<a class="code" href="../../d8/df7/namespacewebframe_1_1__compile__time.html#a11115131749411f867e63916d9eaca95">_compile_time::codes</a>[code]);</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                constexpr <span class="keyword">auto</span> __attribute__((unused)) _2 = <a class="code" href="../../d2/d97/namespacehttp__codes.html#a3ea78a909fbeaa3020acb3b413de5b17">http_codes::get_reason_by_code</a>(<a class="code" href="../../d8/df7/namespacewebframe_1_1__compile__time.html#ac04df9e4322a5a089baf514a26164fcd">_compile_time::strCodes</a>[code]);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;                constexpr <span class="keyword">auto</span> [[maybe_unused]] _1 = <a class="code" href="../../d2/d97/namespacehttp__codes.html#a3ea78a909fbeaa3020acb3b413de5b17">http_codes::get_reason_by_code</a>(<a class="code" href="../../d8/df7/namespacewebframe_1_1__compile__time.html#a11115131749411f867e63916d9eaca95">_compile_time::codes</a>[code]);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;                constexpr <span class="keyword">auto</span> [[maybe_unused]] _2 = <a class="code" href="../../d2/d97/namespacehttp__codes.html#a3ea78a909fbeaa3020acb3b413de5b17">http_codes::get_reason_by_code</a>(<a class="code" href="../../d8/df7/namespacewebframe_1_1__compile__time.html#ac04df9e4322a5a089baf514a26164fcd">_compile_time::strCodes</a>[code]);</div>
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            }, <a class="code" href="../../d8/df7/namespacewebframe_1_1__compile__time.html#a5602122db241221c7f297dc42e61c56c">_compile_time::var_index</a>&lt;<a class="code" href="../../d8/df7/namespacewebframe_1_1__compile__time.html#a11115131749411f867e63916d9eaca95">_compile_time::codes</a>.size()&gt;(code));</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;            <span class="keywordflow">return</span> (code + 1 &gt;= <a class="code" href="../../d8/df7/namespacewebframe_1_1__compile__time.html#a11115131749411f867e63916d9eaca95">_compile_time::codes</a>.size()) ? true : initHttpCodes(code + 1);</div>
