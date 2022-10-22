@@ -1,0 +1,76 @@
+# Core main CMakeLists with all sub projects
+cmake_minimum_required (VERSION 3.14)
+
+project ("Core" VERSION 3.0)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+if (WIN32)
+    add_compile_options(-lwsock32 -lws2_32)
+endif()
+
+if (MSVC)
+    # warning level 4 and all warnings as errors
+    add_compile_options(/W4 /WX)
+else()
+    # lots of warnings and all warnings as errors
+    add_compile_options(-Wall -Wextra -pedantic -Werror -pthread -lpthread)
+endif()
+
+option(USE_INJA "Use Inja" ON)
+option(RUN_TESTS "Run unit & integration tests" ON)
+
+configure_file(Core.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/lib/core/Core-version.hpp)
+
+# Include sub-projects.
+if(USE_INJA)
+    add_subdirectory("lib/inja")
+    add_definitions(-DUSE_INJA)
+endif()
+
+find_package(Threads REQUIRED)
+
+add_library(Core STATIC "lib/core/core.cpp")
+target_link_libraries(Core PUBLIC single_inja pthread)
+target_include_directories(Core INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/lib")
+set_target_properties(Core PROPERTIES LINKER_LANGUAGE CXX)
+install(TARGETS Core DESTINATION ${PROJECT_BINARY_DIR})
+
+list(APPEND EXTRA_LIBS Core)
+list(APPEND EXTRA_INCLUDES "${CMAKE_CURRENT_SOURCE_DIR}/lib")
+
+if(RUN_TESTS)
+    message("Core-Tests build:")
+    add_subdirectory("tests/")
+endif()
+
+find_package(Threads REQUIRED)
+list(APPEND EXTRA_LIBS pthread)
+
+# Generate example source code
+add_executable(BenchmarkNormal benchmark/contestants/server.cpp)
+target_link_libraries(BenchmarkNormal PUBLIC ${EXTRA_LIBS})
+target_include_directories(BenchmarkNormal PUBLIC
+                          "${PROJECT_BINARY_DIR}"
+                          )
+                          
+add_executable(BenchmarkAtomic benchmark/contestants/server_atomic.cpp)
+target_link_libraries(BenchmarkAtomic PUBLIC ${EXTRA_LIBS})
+target_include_directories(BenchmarkAtomic PUBLIC
+                          "${PROJECT_BINARY_DIR}"
+                          )
+
+add_executable(SampleExample example/Sample/main.cpp)
+target_link_libraries(SampleExample PUBLIC ${EXTRA_LIBS})
+target_include_directories(SampleExample PUBLIC
+                          "${PROJECT_BINARY_DIR}"
+                          )
+
+add_executable(ProjectExample example/Project/main.cpp)
+target_link_libraries(ProjectExample PUBLIC ${EXTRA_LIBS})
+target_include_directories(ProjectExample PUBLIC
+                          "${PROJECT_BINARY_DIR}"
+                          )
+
+#include(CPack)

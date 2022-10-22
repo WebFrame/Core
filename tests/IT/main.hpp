@@ -1,7 +1,7 @@
 #pragma once
 
 #include <moka/moka.h>
-#include <webframe/webframe.hpp>
+#include <core/core.hpp>
 
 #include <random>
 #include <string>
@@ -22,7 +22,7 @@ public:
 		current = chars [custom];
         const std::string command = "curl -w \"%{time_total}\" " + url + " -o ./bin/log/curl" + current + ".txt > ./bin/log/time" + current + ".txt 2> ./bin/log/curl_logs" + current + ".txt";
       
-        const int code __attribute__((unused)) = system(command.c_str());
+        const int code [[maybe_unused]] = system(command.c_str());
         {
 			std::ifstream fin("./bin/log/curl" + current + ".txt");
 			std::stringstream buffer;
@@ -50,7 +50,7 @@ int response_of::custom = 0;
 
 void testCase_IntegrationTests (Moka::Report& report) {
     const unsigned int requests = 31;
-	webframe::webframe app;
+	webframe::core::application app;
 
 	std::filebuf fileBuffer;
 	fileBuffer.open ("./bin/log/buffer-IT.txt", std::ios::out);
@@ -71,7 +71,7 @@ void testCase_IntegrationTests (Moka::Report& report) {
 				.set_error_logger(nil)
 				.set_performancer(performancer)
 				.route ("/", []() {
-					return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
+					return webframe::core::response (webframe::core::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 				})
 				.route ("/{number}", [](int steps) {	
 					for (int i = 0; i < (1 << steps); )
