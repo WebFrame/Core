@@ -46,7 +46,7 @@ jobs:
         shell: bash
         run: |
           CXX_COMPILE=${{ matrix.cxx }} cmake .    
-     - name: Prepare speed test
+      - name: Prepare speed test
         shell: bash
         run: |
           mkdir -p ./benchmark/performance/${{ matrix.os }};
