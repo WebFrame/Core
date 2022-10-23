@@ -41,6 +41,7 @@ jobs:
           cmake --version
           gcc-11 --version
           g++-11 --version
+          mkdir -p ./tests/bin
           mkdir -p ./bin
       - name: Configure & Build
         shell: bash
@@ -61,6 +62,7 @@ jobs:
         run: |
           ./tests/Core-Tests
           ./tests/Core-Tests | sed -E "s/`printf "\033"`\[([0-9]+)(;1)?m//g" | cat > ./bin/log/performance.txt
+          cp -r ./tests/bin/* ./bin/
           cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.os }}/performance${{ matrix.optimization }}.txt
       - name: Archive production artifacts
         uses: actions/upload-artifact@v3
