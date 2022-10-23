@@ -41,8 +41,8 @@ jobs:
           cmake --version
           gcc-11 --version
           g++-11 --version
-          mkdir -p ./tests/bin
-          mkdir -p ./bin
+          mkdir -p ./tests/bin/log
+          mkdir -p ./bin/log
       - name: Configure & Build
         shell: bash
         run: |
