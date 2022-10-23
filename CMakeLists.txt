@@ -6,10 +6,6 @@ project ("Core" VERSION 3.0)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-if (WIN32)
-    add_compile_options(-lwsock32 -lws2_32)
-endif()
-
 if (MSVC)
     # warning level 4 and all warnings as errors
     add_compile_options(/W4 /WX)
@@ -32,7 +28,11 @@ endif()
 find_package(Threads REQUIRED)
 
 add_library(Core STATIC "lib/core/core.cpp")
+if(WIN32)
 target_link_libraries(Core PUBLIC single_inja pthread)
+else()
+target_link_libraries(Core PUBLIC single_inja pthread wsock32 ws2_32)
+endif()
 target_include_directories(Core INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 set_target_properties(Core PROPERTIES LINKER_LANGUAGE CXX)
 install(TARGETS Core DESTINATION ${PROJECT_BINARY_DIR})
