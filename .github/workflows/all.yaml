@@ -45,12 +45,13 @@ jobs:
       - name: Configure & Build
         shell: bash
         run: |
-          CXX_COMPILE=${{ matrix.cxx }} cmake .    
+          CXX_COMPILE=${{ matrix.cxx }} cmake . && make 
       - name: Prepare speed test
         shell: bash
         run: |
           mkdir -p ./benchmark/performance/${{ matrix.os }};
       - name: Files
+        if: startsWith(matrix.os, 'ubuntu')
         shell: bash
         run: |
             tree
