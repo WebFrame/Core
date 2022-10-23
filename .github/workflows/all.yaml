@@ -44,9 +44,15 @@ jobs:
           mkdir -p ./tests/bin/log
           mkdir -p ./bin/log
       - name: Configure & Build
+        if: startsWith(matrix.os, 'windows')
         shell: bash
         run: |
-          CXX_COMPILE=${{ matrix.cxx }} cmake . && make 
+          CXX_COMPILE=${{ matrix.cxx }} cmake -G 'MinGW Makefiles' . && make 
+      - name: Configure & Build
+        if: startsWith(matrix.os, 'ubuntu')
+        shell: bash
+        run: |
+          CXX_COMPILE=${{ matrix.cxx }} cmake -G 'Unix Makefiles' . && make 
       - name: Prepare speed test
         shell: bash
         run: |
