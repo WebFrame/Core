@@ -9,7 +9,8 @@
 
 #include <string_view>
 
-namespace mime_types {
+namespace mime_types 
+{
     constexpr std::string_view mime_types[][2] = {
         {".323", "text/h323; charset=utf-8"},
         {".3g2", "video/3gpp2"},
