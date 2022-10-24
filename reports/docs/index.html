@@ -115,7 +115,7 @@ $(function() {
 
 <li><p>Initiate your Web application</p>
 
-<pre><code class="cpp language-cpp">webframe::webframe app;
+<pre><code class="cpp language-cpp">webframe::core::application app;
 </code></pre>
 
 <p></p></li>
@@ -169,7 +169,7 @@ app.handle("500", [](const std::string&amp; reason) {
 <li><p>Set up headers and status code yourself</p>
 
 <pre><code class="cpp language-cpp">app.route ("/", []() {
-    return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "&lt;h1&gt;Hello, World!&lt;/h1&gt;");
+    return webframe::core::response (webframe::core::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "&lt;h1&gt;Hello, World!&lt;/h1&gt;");
 });
 </code></pre></li>
 
@@ -233,7 +233,7 @@ app.handle("500", [](const std::string&amp; reason) {
         return "Error 500: Internal server error: " + reason + ".";
     })
     .route ("/", []() {
-        return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "&lt;h1&gt;Hello, World!&lt;/h1&gt;");
+        return webframe::core::response (webframe::core::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "&lt;h1&gt;Hello, World!&lt;/h1&gt;");
     });
 </code></pre></li>
 
@@ -292,9 +292,9 @@ app.handle("500", [](const std::string&amp; reason) {
     });
 </code></pre>
 
-<p>or if you need to use <code>webframe::webframe</code> functions</p>
+<p>or if you need to use <code>webframe::core::application</code> functions</p>
 
-<pre><code class="cpp language-cpp">webframe::webframe app;
+<pre><code class="cpp language-cpp">webframe::core::application app;
 ...
 init_routes(home)
     .route("/home", [&amp;app]() {

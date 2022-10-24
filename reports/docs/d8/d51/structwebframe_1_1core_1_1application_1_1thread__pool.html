@@ -97,7 +97,7 @@ Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="../../da/d47/core_8hpp_source.html#l00564">564</a> of file <a class="el" href="../../da/d47/core_8hpp_source.html">core.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../da/d47/core_8hpp_source.html#l00559">559</a> of file <a class="el" href="../../da/d47/core_8hpp_source.html">core.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2b1541a15e47650eab0ccc35e1a1a1c6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2b1541a15e47650eab0ccc35e1a1a1c6">&#9670;&nbsp;</a></span>thread_pool()</h2>
@@ -123,16 +123,16 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../da/d47/core_8hpp_source.html#l00571">571</a> of file <a class="el" href="../../da/d47/core_8hpp_source.html">core.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;                                                   :</div>
-<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;                    <a class="code" href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a964a98a37ddbf963e168c8a2d135bb51">size</a>{ _size },</div>
-<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;                    <a class="code" href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a49e9c17ffe7859502ed21ec361cc1967">pool</a>{ std::make_shared&lt;std::vector&lt;std::shared_ptr&lt;thread&gt;&gt;&gt;(_size) }</div>
-<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;                {</div>
-<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;                    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; _size; i++)</div>
-<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;                    {</div>
-<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;                        <a class="code" href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a49e9c17ffe7859502ed21ec361cc1967">pool</a>-&gt;at(i) = std::make_shared&lt;thread&gt;();</div>
-<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;                    }</div>
-<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;                }</div>
+<p class="definition">Definition at line <a class="el" href="../../da/d47/core_8hpp_source.html#l00566">566</a> of file <a class="el" href="../../da/d47/core_8hpp_source.html">core.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;                                               :</div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160;                <a class="code" href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a964a98a37ddbf963e168c8a2d135bb51">size</a>{ _size },</div>
+<div class="line"><a name="l00568"></a><span class="lineno">  568</span>&#160;                <a class="code" href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a49e9c17ffe7859502ed21ec361cc1967">pool</a>{ std::make_shared&lt;std::vector&lt;std::shared_ptr&lt;thread&gt;&gt;&gt;(_size) }</div>
+<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;            {</div>
+<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; _size; i++)</div>
+<div class="line"><a name="l00571"></a><span class="lineno">  571</span>&#160;                {</div>
+<div class="line"><a name="l00572"></a><span class="lineno">  572</span>&#160;                    <a class="code" href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a49e9c17ffe7859502ed21ec361cc1967">pool</a>-&gt;at(i) = std::make_shared&lt;thread&gt;();</div>
+<div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;                }</div>
+<div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160;            }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -161,10 +161,10 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../da/d47/core_8hpp_source.html#l00581">581</a> of file <a class="el" href="../../da/d47/core_8hpp_source.html">core.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;                {</div>
-<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;                    <span class="keywordflow">return</span> <a class="code" href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a49e9c17ffe7859502ed21ec361cc1967">pool</a>-&gt;at(index);</div>
-<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;                }</div>
+<p class="definition">Definition at line <a class="el" href="../../da/d47/core_8hpp_source.html#l00576">576</a> of file <a class="el" href="../../da/d47/core_8hpp_source.html">core.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;            {</div>
+<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;                <span class="keywordflow">return</span> <a class="code" href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a49e9c17ffe7859502ed21ec361cc1967">pool</a>-&gt;at(index);</div>
+<div class="line"><a name="l00579"></a><span class="lineno">  579</span>&#160;            }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -191,19 +191,19 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../da/d47/core_8hpp_source.html#l00591">591</a> of file <a class="el" href="../../da/d47/core_8hpp_source.html">core.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;                {</div>
-<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;                    std::lock_guard locker(this-&gt;<a class="code" href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a2237349e80ef35ab219b556568a7e3ad">extract</a>);</div>
-<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;                    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> index = 0; index &lt; this-&gt;<a class="code" href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a964a98a37ddbf963e168c8a2d135bb51">size</a>; index++)</div>
-<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;                    {</div>
-<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;                        <span class="keywordflow">if</span> (<a class="code" href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a49e9c17ffe7859502ed21ec361cc1967">pool</a>-&gt;at(index)-&gt;try_lock())</div>
-<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;                        {</div>
-<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;                            <a class="code" href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a49e9c17ffe7859502ed21ec361cc1967">pool</a>-&gt;at(index)-&gt;unlock();</div>
-<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;                            <span class="keywordflow">return</span> index;</div>
-<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160;                        }</div>
-<div class="line"><a name="l00601"></a><span class="lineno">  601</span>&#160;                    }</div>
-<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;                    <span class="keywordflow">return</span> {};</div>
-<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160;                }</div>
+<p class="definition">Definition at line <a class="el" href="../../da/d47/core_8hpp_source.html#l00586">586</a> of file <a class="el" href="../../da/d47/core_8hpp_source.html">core.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;            {</div>
+<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;                std::lock_guard locker(this-&gt;<a class="code" href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a2237349e80ef35ab219b556568a7e3ad">extract</a>);</div>
+<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;                <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> index = 0; index &lt; this-&gt;<a class="code" href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a964a98a37ddbf963e168c8a2d135bb51">size</a>; index++)</div>
+<div class="line"><a name="l00590"></a><span class="lineno">  590</span>&#160;                {</div>
+<div class="line"><a name="l00591"></a><span class="lineno">  591</span>&#160;                    <span class="keywordflow">if</span> (<a class="code" href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a49e9c17ffe7859502ed21ec361cc1967">pool</a>-&gt;at(index)-&gt;try_lock())</div>
+<div class="line"><a name="l00592"></a><span class="lineno">  592</span>&#160;                    {</div>
+<div class="line"><a name="l00593"></a><span class="lineno">  593</span>&#160;                        <a class="code" href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a49e9c17ffe7859502ed21ec361cc1967">pool</a>-&gt;at(index)-&gt;unlock();</div>
+<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;                        <span class="keywordflow">return</span> index;</div>
+<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160;                    }</div>
+<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;                }</div>
+<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160;                <span class="keywordflow">return</span> {};</div>
+<div class="line"><a name="l00598"></a><span class="lineno">  598</span>&#160;            }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -231,10 +231,10 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../da/d47/core_8hpp_source.html#l00586">586</a> of file <a class="el" href="../../da/d47/core_8hpp_source.html">core.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00587"></a><span class="lineno">  587</span>&#160;                {</div>
-<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;                    <span class="keywordflow">return</span> this-&gt;<a class="code" href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#ad4d94834121e131b10ae3ae31f8da244">get</a>(index);</div>
-<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160;                }</div>
+<p class="definition">Definition at line <a class="el" href="../../da/d47/core_8hpp_source.html#l00581">581</a> of file <a class="el" href="../../da/d47/core_8hpp_source.html">core.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00582"></a><span class="lineno">  582</span>&#160;            {</div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;                <span class="keywordflow">return</span> this-&gt;<a class="code" href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#ad4d94834121e131b10ae3ae31f8da244">get</a>(index);</div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160;            }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -259,7 +259,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../da/d47/core_8hpp_source.html#l00569">569</a> of file <a class="el" href="../../da/d47/core_8hpp_source.html">core.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../da/d47/core_8hpp_source.html#l00564">564</a> of file <a class="el" href="../../da/d47/core_8hpp_source.html">core.hpp</a>.</p>
 
 </div>
 </div>
@@ -283,7 +283,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../da/d47/core_8hpp_source.html#l00568">568</a> of file <a class="el" href="../../da/d47/core_8hpp_source.html">core.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../da/d47/core_8hpp_source.html#l00563">563</a> of file <a class="el" href="../../da/d47/core_8hpp_source.html">core.hpp</a>.</p>
 
 </div>
 </div>
@@ -307,7 +307,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../da/d47/core_8hpp_source.html#l00567">567</a> of file <a class="el" href="../../da/d47/core_8hpp_source.html">core.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../da/d47/core_8hpp_source.html#l00562">562</a> of file <a class="el" href="../../da/d47/core_8hpp_source.html">core.hpp</a>.</p>
 
 </div>
 </div>
@@ -315,10 +315,10 @@ Private Attributes</h2></td></tr>
 <li>lib/core/<a class="el" href="../../da/d47/core_8hpp_source.html">core.hpp</a></li>
 </ul>
 </div><!-- contents -->
-<div class="ttc" id="astructwebframe_1_1core_1_1application_1_1thread__pool_html_a2237349e80ef35ab219b556568a7e3ad"><div class="ttname"><a href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a2237349e80ef35ab219b556568a7e3ad">webframe::core::application::thread_pool::extract</a></div><div class="ttdeci">std::mutex extract</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d47/core_8hpp_source.html#l00569">core.hpp:569</a></div></div>
-<div class="ttc" id="astructwebframe_1_1core_1_1application_1_1thread__pool_html_ad4d94834121e131b10ae3ae31f8da244"><div class="ttname"><a href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#ad4d94834121e131b10ae3ae31f8da244">webframe::core::application::thread_pool::get</a></div><div class="ttdeci">std::shared_ptr&lt; thread &gt; &amp; get(const size_t index) const</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d47/core_8hpp_source.html#l00581">core.hpp:581</a></div></div>
-<div class="ttc" id="astructwebframe_1_1core_1_1application_1_1thread__pool_html_a964a98a37ddbf963e168c8a2d135bb51"><div class="ttname"><a href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a964a98a37ddbf963e168c8a2d135bb51">webframe::core::application::thread_pool::size</a></div><div class="ttdeci">size_t size</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d47/core_8hpp_source.html#l00567">core.hpp:567</a></div></div>
-<div class="ttc" id="astructwebframe_1_1core_1_1application_1_1thread__pool_html_a49e9c17ffe7859502ed21ec361cc1967"><div class="ttname"><a href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a49e9c17ffe7859502ed21ec361cc1967">webframe::core::application::thread_pool::pool</a></div><div class="ttdeci">std::shared_ptr&lt; std::vector&lt; std::shared_ptr&lt; thread &gt; &gt; &gt; pool</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d47/core_8hpp_source.html#l00568">core.hpp:568</a></div></div>
+<div class="ttc" id="astructwebframe_1_1core_1_1application_1_1thread__pool_html_a2237349e80ef35ab219b556568a7e3ad"><div class="ttname"><a href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a2237349e80ef35ab219b556568a7e3ad">webframe::core::application::thread_pool::extract</a></div><div class="ttdeci">std::mutex extract</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d47/core_8hpp_source.html#l00564">core.hpp:564</a></div></div>
+<div class="ttc" id="astructwebframe_1_1core_1_1application_1_1thread__pool_html_ad4d94834121e131b10ae3ae31f8da244"><div class="ttname"><a href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#ad4d94834121e131b10ae3ae31f8da244">webframe::core::application::thread_pool::get</a></div><div class="ttdeci">std::shared_ptr&lt; thread &gt; &amp; get(const size_t index) const</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d47/core_8hpp_source.html#l00576">core.hpp:576</a></div></div>
+<div class="ttc" id="astructwebframe_1_1core_1_1application_1_1thread__pool_html_a964a98a37ddbf963e168c8a2d135bb51"><div class="ttname"><a href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a964a98a37ddbf963e168c8a2d135bb51">webframe::core::application::thread_pool::size</a></div><div class="ttdeci">size_t size</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d47/core_8hpp_source.html#l00562">core.hpp:562</a></div></div>
+<div class="ttc" id="astructwebframe_1_1core_1_1application_1_1thread__pool_html_a49e9c17ffe7859502ed21ec361cc1967"><div class="ttname"><a href="../../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a49e9c17ffe7859502ed21ec361cc1967">webframe::core::application::thread_pool::pool</a></div><div class="ttdeci">std::shared_ptr&lt; std::vector&lt; std::shared_ptr&lt; thread &gt; &gt; &gt; pool</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d47/core_8hpp_source.html#l00563">core.hpp:563</a></div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by &#160;<a href="http://www.doxygen.org/index.html">
