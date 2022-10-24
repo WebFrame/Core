@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['body_5ft_200',['body_t',['../d8/d06/structwebframe_1_1body__t.html',1,'webframe']]]
+  ['application_204',['application',['../d1/d67/classwebframe_1_1core_1_1application.html',1,'webframe::core']]]
 ];

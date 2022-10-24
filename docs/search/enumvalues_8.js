@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['options_389',['OPTIONS',['../d8/d8d/namespacewebframe.html#a69de9ca7fb84de6611aeee42515e4d02a164dd62adb30ca051b5289672a572f9b',1,'webframe']]]
+  ['options_393',['OPTIONS',['../d2/dab/namespacewebframe_1_1core.html#a4d3dbfb2f01c284d2f64b03e9303ba9da164dd62adb30ca051b5289672a572f9b',1,'webframe::core']]]
 ];

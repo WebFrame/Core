@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['body_378',['BODY',['../d8/d8d/namespacewebframe.html#a4801e5865e0737ad9f40f5b14f0d96cfa786329b34bbe53ab40a54a19cd597f2d',1,'webframe']]]
+  ['body_382',['BODY',['../d2/dab/namespacewebframe_1_1core.html#a198e079c6b72d7c5c9c7b03cccbd3ecfa786329b34bbe53ab40a54a19cd597f2d',1,'webframe::core']]]
 ];

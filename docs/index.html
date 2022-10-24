@@ -71,7 +71,7 @@ $(function() {
 <link rel="stylesheet" href="./Doxygen-css/custom.css">
 <link rel="stylesheet" href="./Doxygen-css/custom_dark_theme.css">
 
-<h1 id="spanstylefontsize225emwebframechttpsimgshieldsiobadgec2300599csvglogoc2b2blogocolorwhitemochahttpsimgshieldsiobadgemocha238d6748logomochalogocolorwhitebrbuildtestbenchmarkdeployhttpsgithubcomwebframecoreactionsworkflowsallyamlbadgesvghttpsgithubcomwebframecoreactionsworkflowsallyamlcodequalityhttpsgithubcomwebframecoreactionsworkflowscodeqlanalysisymlbadgesvghttpsgithubcomwebframecoreactionsworkflowscodeqlanalysisymlbrissueshttpsimgshieldsiogithubissueswebframecorehttpsgithubcomwebframecoreforkshttpsimgshieldsiogithubforkswebframecorehttpsgithubcomwebframecorestarshttpsimgshieldsiogithubstarswebframecorehttpsgithubcomwebframecorelicensehttpsimgshieldsiogithublicensewebframecorehttpsgithubcomwebframecorespan"><span style="font-size: 2.25em;"><img src="https://img.shields.io/badge/c++-%2300599C.svg?&amp;logo=c%2B%2B&amp;logoColor=white" alt="C++" /> <img src="https://img.shields.io/badge/-mocha-%238D6748?logo=mocha&amp;logoColor=white" alt="Mocha" /><br><a href="https://github.com/WebFrame/Core/actions/workflows/all.yaml"><img src="https://github.com/WebFrame/Core/actions/workflows/all.yaml/badge.svg" alt="Build, Test, Benchmark, Deploy" /></a> <a href="https://github.com/WebFrame/Core/actions/workflows/codeql-analysis.yml"><img src="https://github.com/WebFrame/Core/actions/workflows/codeql-analysis.yml/badge.svg" alt="Code Quality" /></a><br><a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/issues/WebFrame/Core?" alt="Issues" /></a> <a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/forks/WebFrame/Core?" alt="Forks" /></a> <a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/stars/WebFrame/Core?" alt="Stars" /></a> <a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/license/WebFrame/Core?" alt="License" /></a></span></h1>
+<h1 id="spanstylefontsize225emwebframechttpsimgshieldsiobadgec2300599csvglogoc2b2blogocolorwhitemochahttpsimgshieldsiobadgemocha238d6748logomochalogocolorwhitebrbuildtestbenchmarkdeployhttpsgithubcomwebframecoreactionsworkflowsallyamlbadgesvghttpsgithubcomwebframecoreactionsworkflowsallyamlcodequalityhttpsgithubcomwebframecoreactionsworkflowscodeqlanalysisymlbadgesvghttpsgithubcomwebframecoreactionsworkflowscodeqlanalysisymlbrissueshttpsimgshieldsiogithubissueswebframecorehttpsgithubcomwebframecoreforkshttpsimgshieldsiogithubforkswebframecorehttpsgithubcomwebframecorestarshttpsimgshieldsiogithubstarswebframecorehttpsgithubcomwebframecorelicensehttpsimgshieldsiogithublicensewebframecorehttpsgithubcomwebframecorespan"><span style="font-size: 2.25em;"><img src="https://img.shields.io/badge/c++-%2300599C.svg?&amp;logo=c%2B%2B&amp;logoColor=white" alt="C++" /> <img src="https://img.shields.io/badge/-mocha-%238D6748?logo=mocha&amp;logoColor=white" alt="Mocha" /><br><a href="https://github.com/WebFrame/Core/actions/workflows/all.yaml"><img src="https://github.com/WebFrame/Core/actions/workflows/all.yaml/badge.svg" alt="Build, Test, Benchmark, Deploy" /></a> <a href="https://github.com/WebFrame/Core/actions/workflows/codeql-analysis.yml"><img src="https://github.com/WebFrame/Core/actions/workflows/codeql-analysis.yml/badge.svg" alt="Code Quality" /></a><br><a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/issues/core/Core?" alt="Issues" /></a> <a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/forks/core/Core?" alt="Forks" /></a> <a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/stars/core/Core?" alt="Stars" /></a> <a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/license/core/Core?" alt="License" /></a></span></h1>
 
 <h3 id="makeyourwebapplicationfasternow">Make your web application faster now!</h3>
 
@@ -110,12 +110,12 @@ $(function() {
 <ol>
 <li><p>Make sure to include the library</p>
 
-<pre><code class="cpp language-cpp">#include &lt;webframe/webframe.hpp&gt;
+<pre><code class="cpp language-cpp">#include &lt;core/webframe.hpp&gt;
 </code></pre></li>
 
 <li><p>Initiate your Web application</p>
 
-<pre><code class="cpp language-cpp">webframe::webframe app;
+<pre><code class="cpp language-cpp">webframe::core::application app;
 </code></pre>
 
 <p></p></li>
@@ -169,7 +169,7 @@ app.handle("500", [](const std::string&amp; reason) {
 <li><p>Set up headers and status code yourself</p>
 
 <pre><code class="cpp language-cpp">app.route ("/", []() {
-    return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "&lt;h1&gt;Hello, World!&lt;/h1&gt;");
+    return webframe::core::response (webframe::core::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "&lt;h1&gt;Hello, World!&lt;/h1&gt;");
 });
 </code></pre></li>
 
@@ -233,7 +233,7 @@ app.handle("500", [](const std::string&amp; reason) {
         return "Error 500: Internal server error: " + reason + ".";
     })
     .route ("/", []() {
-        return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "&lt;h1&gt;Hello, World!&lt;/h1&gt;");
+        return webframe::core::response (webframe::core::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "&lt;h1&gt;Hello, World!&lt;/h1&gt;");
     });
 </code></pre></li>
 
@@ -292,9 +292,9 @@ app.handle("500", [](const std::string&amp; reason) {
     });
 </code></pre>
 
-<p>or if you need to use <code>webframe::webframe</code> functions</p>
+<p>or if you need to use <code>webframe::core::application</code> functions</p>
 
-<pre><code class="cpp language-cpp">webframe::webframe app;
+<pre><code class="cpp language-cpp">webframe::core::application app;
 ...
 init_routes(home)
     .route("/home", [&amp;app]() {
