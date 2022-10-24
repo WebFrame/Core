@@ -10,7 +10,8 @@
 #include <string_view>
 #include "constexpr.hpp"
 
-namespace http_codes {
+namespace http_codes 
+{
     /**
      *  @brief   List of all HTTP response messages (grouped by first digit of the code)
      ***********************************************/
