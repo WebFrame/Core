@@ -9,11 +9,15 @@
 #include "../http_consts/constexpr.hpp"
 #include <shared_mutex>
 
-namespace webframe {
-	class server_status {
+namespace webframe 
+{
+	class server_status 
+	{
 	public:
-        server_status() {
-			for (int i = 0 ; i < 65536 ; i++) {
+        server_status() 
+		{
+			for (int i = 0 ; i < 65536 ; i++) 
+			{
 				start[i] = dead[i] = nullptr;
 			}
         }
@@ -22,7 +26,8 @@ namespace webframe {
 		std::mutex* dead  [65536];
 		
     public:
-		void initiate(const char* PORT) {
+		void initiate(const char* PORT) 
+		{
 			if (this->get_start_ptr(PORT) != nullptr)
 				throw std::ios_base::failure("start mutex is not cleaned up.");
 			if (this->get_end_ptr(PORT) != nullptr)
@@ -33,30 +38,36 @@ namespace webframe {
 			this->lock_dead(PORT);
 		}
 
-        void alert_start(const char* PORT) {
+        void alert_start(const char* PORT) 
+		{
             this->unlock_working(PORT);
         }
 
-        void alert_end(const char* PORT) {
+        void alert_end(const char* PORT) 
+		{
             this->unlock_dead(PORT);
         }
 
-        bool is_over(const char* PORT) {
+        bool is_over(const char* PORT) 
+		{
             bool locked = this->get_end(PORT).try_lock();
 			if(!locked) return false;
 			this->get_end(PORT).unlock();
 			return true;
         }
 
-        std::mutex& get_start(const char* PORT) {
+        std::mutex& get_start(const char* PORT) 
+		{
             return *this->start[_compile_time::string_to_uint(PORT)];
         }
 
-        std::mutex& get_end(const char* PORT) {
+        std::mutex& get_end(const char* PORT) 
+		{
             return *this->dead[_compile_time::string_to_uint(PORT)];
         }
 
-		void reset (const char* PORT) {
+		void reset (const char* PORT) 
+		{
 			delete this->get_start_ptr(PORT);
 			delete this->get_end_ptr(PORT);
 			this->get_start_ptr(PORT) = nullptr;
@@ -64,27 +75,33 @@ namespace webframe {
 		}
 
     private:
-        std::mutex*& get_start_ptr(const char* PORT) {
+        std::mutex*& get_start_ptr(const char* PORT) 
+		{
             return this->start[_compile_time::string_to_uint(PORT)];
         }
 
-        std::mutex*& get_end_ptr(const char* PORT) {
+        std::mutex*& get_end_ptr(const char* PORT) 
+		{
             return this->dead[_compile_time::string_to_uint(PORT)];
         }
 
-		void lock_working(const char* PORT) {
+		void lock_working(const char* PORT) 
+		{
 			this->start[_compile_time::string_to_uint(PORT)]->lock();
 		}
 
-		void unlock_working(const char* PORT) {
+		void unlock_working(const char* PORT) 
+		{
 			this->start[_compile_time::string_to_uint(PORT)]->unlock();
 		}
 
-		void lock_dead(const char* PORT) {
+		void lock_dead(const char* PORT) 
+		{
 			this->dead[_compile_time::string_to_uint(PORT)]->lock();
 		}
 
-		void unlock_dead(const char* PORT) {
+		void unlock_dead(const char* PORT) 
+		{
 			this->dead[_compile_time::string_to_uint(PORT)]->unlock();
 		}
 	};
