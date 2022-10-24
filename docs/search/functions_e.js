@@ -1,18 +1,17 @@
 var searchData=
 [
-  ['server_5fstatus_299',['server_status',['../dc/d90/classwebframe_1_1server__status.html#a06e2209fcbfc9ab4e50d8b97883feca6',1,'webframe::server_status']]],
-  ['set_5ferror_5flogger_300',['set_error_logger',['../d4/d2c/classwebframe_1_1webframe.html#a6153ac6ff149230447ea313571ef61f7',1,'webframe::webframe']]],
-  ['set_5flogger_301',['set_logger',['../d4/d2c/classwebframe_1_1webframe.html#a003ec90ec0d48d22255621363f7dad53',1,'webframe::webframe']]],
-  ['set_5fperformancer_302',['set_performancer',['../d4/d2c/classwebframe_1_1webframe.html#a6fb3f70a2f8c4ff75154de26becd775d',1,'webframe::webframe']]],
-  ['set_5fstatic_303',['set_static',['../d4/d2c/classwebframe_1_1webframe.html#ac6412e4b227322812cad84e6efd952ea',1,'webframe::webframe']]],
-  ['set_5ftemplates_304',['set_templates',['../d4/d2c/classwebframe_1_1webframe.html#ab77f0c68adb6bd0238b9fceafec8b196',1,'webframe::webframe']]],
-  ['set_5fwarner_305',['set_warner',['../d4/d2c/classwebframe_1_1webframe.html#a8b3868f42a951622c16949c2670c547a',1,'webframe::webframe']]],
-  ['set_5fwith_5fbody_306',['set_with_body',['../d4/d5e/structwebframe_1_1responser.html#a52e303d707bb5ebf86dad31b4fd360ea',1,'webframe::responser']]],
-  ['set_5fwithout_5fbody_307',['set_without_body',['../d4/d5e/structwebframe_1_1responser.html#a61bc1228beaaec65c2309662c7a4eec3',1,'webframe::responser']]],
-  ['size_308',['size',['../d2/d7f/structwebframe_1_1path__vars.html#a2f8f21d553e0ca4f85a22c1437848869',1,'webframe::path_vars']]],
-  ['status_5fline_309',['status_line',['../db/de3/structwebframe_1_1status__line.html#a6b7f876986924844406b05169dff8d88',1,'webframe::status_line::status_line(const std::string &amp;_code)'],['../db/de3/structwebframe_1_1status__line.html#a8b321379037405a3db3b624936ebd284',1,'webframe::status_line::status_line(const std::string &amp;_http, const std::string &amp;_code)']]],
-  ['string_5fto_5fmethod_310',['string_to_method',['../d8/d8d/namespacewebframe.html#ab3ca26aff12b90730bef0aa7b6d054f1',1,'webframe']]],
-  ['string_5fto_5fuint_311',['string_to_uint',['../d8/df7/namespacewebframe_1_1__compile__time.html#a4feda887d261992c9c217be348d326d9',1,'webframe::_compile_time']]],
-  ['strings_5fequal_312',['strings_equal',['../d8/d8d/namespacewebframe.html#a36ed87451a4a22c806b1889afbdc9126',1,'webframe']]],
-  ['synchronizedfile_313',['SynchronizedFile',['../de/d22/class_synchronized_file.html#a5b7be5468889f0be809c640f7daa52a4',1,'SynchronizedFile::SynchronizedFile(std::basic_ostream&lt; char &gt; &amp;path)'],['../de/d22/class_synchronized_file.html#af2ff3452b1668d626f1def36a524025d',1,'SynchronizedFile::SynchronizedFile()']]]
+  ['server_5fstatus_308',['server_status',['../dc/d90/classwebframe_1_1server__status.html#a06e2209fcbfc9ab4e50d8b97883feca6',1,'webframe::server_status']]],
+  ['set_5ferror_5flogger_309',['set_error_logger',['../d1/d67/classwebframe_1_1core_1_1application.html#a0e38042a7fa43364b03a3c164d01599a',1,'webframe::core::application']]],
+  ['set_5flogger_310',['set_logger',['../d1/d67/classwebframe_1_1core_1_1application.html#a72f01010079e5a4ec219e8da8f4d6769',1,'webframe::core::application']]],
+  ['set_5fperformancer_311',['set_performancer',['../d1/d67/classwebframe_1_1core_1_1application.html#a5d4d7e9748e4206f6a82121cad4ce7ba',1,'webframe::core::application']]],
+  ['set_5fstatic_312',['set_static',['../d1/d67/classwebframe_1_1core_1_1application.html#a9a492b947b30341c29a13c9a9ebc7c68',1,'webframe::core::application']]],
+  ['set_5fwarner_313',['set_warner',['../d1/d67/classwebframe_1_1core_1_1application.html#af5670f71679f79e1f1d28f04bb895ee4',1,'webframe::core::application']]],
+  ['set_5fwith_5fbody_314',['set_with_body',['../d8/df4/structwebframe_1_1core_1_1responser.html#a2cde6f34cc8e69258afabc67e30591c9',1,'webframe::core::responser']]],
+  ['set_5fwithout_5fbody_315',['set_without_body',['../d8/df4/structwebframe_1_1core_1_1responser.html#ab91b835b64eb4794c6b1545fad84284c',1,'webframe::core::responser']]],
+  ['size_316',['size',['../dc/d1d/structwebframe_1_1core_1_1path__vars.html#a5c6b95cb5ffde751331732b1509638bc',1,'webframe::core::path_vars']]],
+  ['status_5fline_317',['status_line',['../db/d97/structwebframe_1_1core_1_1status__line.html#adcaf9bbfc982aa9e299e7ed0cda6c83c',1,'webframe::core::status_line::status_line(const std::string &amp;_code)'],['../db/d97/structwebframe_1_1core_1_1status__line.html#a2a2f4a2742fd7d233af4b626704376ea',1,'webframe::core::status_line::status_line(const std::string &amp;_http, const std::string &amp;_code)']]],
+  ['string_5fto_5fmethod_318',['string_to_method',['../d2/dab/namespacewebframe_1_1core.html#af2a3a8ac18c2b1cf1a919b388a49d52c',1,'webframe::core']]],
+  ['string_5fto_5fuint_319',['string_to_uint',['../d8/df7/namespacewebframe_1_1__compile__time.html#a4feda887d261992c9c217be348d326d9',1,'webframe::_compile_time']]],
+  ['strings_5fequal_320',['strings_equal',['../d2/dab/namespacewebframe_1_1core.html#aa69568f9f612ee58a961429b46d290f8',1,'webframe::core']]],
+  ['synchronizedfile_321',['SynchronizedFile',['../de/d22/class_synchronized_file.html#a5b7be5468889f0be809c640f7daa52a4',1,'SynchronizedFile::SynchronizedFile(std::basic_ostream&lt; char &gt; &amp;path)'],['../de/d22/class_synchronized_file.html#af2ff3452b1668d626f1def36a524025d',1,'SynchronizedFile::SynchronizedFile()']]]
 ];

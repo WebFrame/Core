@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['path_5fvars_206',['path_vars',['../d2/d7f/structwebframe_1_1path__vars.html',1,'webframe']]]
+  ['infosynchronizedfile_210',['InfoSynchronizedFile',['../de/d4e/class_info_synchronized_file.html',1,'']]]
 ];

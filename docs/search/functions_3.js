@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['detach_242',['detach',['../d5/d0d/structwebframe_1_1webframe_1_1thread.html#a9fc416c045d81cd09dd517e27ff87c03',1,'webframe::webframe::thread']]]
+  ['detach_252',['detach',['../d0/d53/structwebframe_1_1core_1_1application_1_1thread.html#a1f5d60448e0c18613d0dc47f0f63e2b5',1,'webframe::core::application::thread']]]
 ];

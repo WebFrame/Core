@@ -1,13 +1,19 @@
 var searchData=
 [
-  ['call_9',['call',['../d4/d5e/structwebframe_1_1responser.html#ab8afba60bd932912bc5d5d40a7480522',1,'webframe::responser']]],
+  ['call_9',['call',['../d8/df4/structwebframe_1_1core_1_1responser.html#aa1470a91b12342341e67060a64cc7eb1',1,'webframe::core::responser']]],
   ['clearerr_10',['CLEARERR',['../df/ded/host_8h.html#a691146e702d1b6d3692117d76c4c65d4',1,'host.h']]],
-  ['cmp_11',['cmp',['../dc/d8b/structwebframe_1_1webframe_1_1cmp.html',1,'webframe::webframe']]],
-  ['code_12',['code',['../db/de3/structwebframe_1_1status__line.html#a346372f9f4d0f5d89201d6570bf950ad',1,'webframe::status_line']]],
-  ['codes_13',['codes',['../d8/df7/namespacewebframe_1_1__compile__time.html#a11115131749411f867e63916d9eaca95',1,'webframe::_compile_time::codes()'],['../d2/d97/namespacehttp__codes.html#a64b1d16f985541221497e1ecbc96ef08',1,'http_codes::codes()']]],
-  ['connect_14',['CONNECT',['../d8/d8d/namespacewebframe.html#a69de9ca7fb84de6611aeee42515e4d02ab57e2519e26151feacdbe52076bc39ec',1,'webframe']]],
-  ['constant_5ft_15',['constant_t',['../d8/df7/namespacewebframe_1_1__compile__time.html#a31f821c71cbff538f6a1c5a88f067f4e',1,'webframe::_compile_time']]],
-  ['constant_5fv_16',['constant_v',['../d8/df7/namespacewebframe_1_1__compile__time.html#acfa34449041cf9109ab1e2a3f0921deb',1,'webframe::_compile_time']]],
-  ['constexpr_2ehpp_17',['constexpr.hpp',['../d4/dce/constexpr_8hpp.html',1,'']]],
-  ['convert_5fpath_5fto_5fregex_18',['convert_path_to_regex',['../d4/d2c/classwebframe_1_1webframe.html#a5e7639a0722f6c58d1d5e8246d52b79e',1,'webframe::webframe']]]
+  ['cmp_11',['cmp',['../db/dc0/structwebframe_1_1core_1_1application_1_1cmp.html',1,'webframe::core::application']]],
+  ['code_12',['code',['../db/d97/structwebframe_1_1core_1_1status__line.html#a8254cefa8653407a352849760e0efe79',1,'webframe::core::status_line']]],
+  ['codes_13',['codes',['../d2/d97/namespacehttp__codes.html#a64b1d16f985541221497e1ecbc96ef08',1,'http_codes::codes()'],['../d8/df7/namespacewebframe_1_1__compile__time.html#a11115131749411f867e63916d9eaca95',1,'webframe::_compile_time::codes()']]],
+  ['codes_2ehpp_14',['codes.hpp',['../d7/dd0/codes_8hpp.html',1,'']]],
+  ['connect_15',['CONNECT',['../d2/dab/namespacewebframe_1_1core.html#a4d3dbfb2f01c284d2f64b03e9303ba9dab57e2519e26151feacdbe52076bc39ec',1,'webframe::core']]],
+  ['constant_5ft_16',['constant_t',['../d8/df7/namespacewebframe_1_1__compile__time.html#a31f821c71cbff538f6a1c5a88f067f4e',1,'webframe::_compile_time']]],
+  ['constant_5fv_17',['constant_v',['../d8/df7/namespacewebframe_1_1__compile__time.html#acfa34449041cf9109ab1e2a3f0921deb',1,'webframe::_compile_time']]],
+  ['constexpr_2ehpp_18',['constexpr.hpp',['../d4/dce/constexpr_8hpp.html',1,'']]],
+  ['convert_5fpath_5fto_5fregex_19',['convert_path_to_regex',['../d1/d67/classwebframe_1_1core_1_1application.html#a7d48ebe2fd207278fd50f707df284518',1,'webframe::core::application']]],
+  ['core_2dversion_2ehpp_20',['Core-version.hpp',['../d1/dcd/_core-version_8hpp.html',1,'']]],
+  ['core_2ecpp_21',['core.cpp',['../da/de0/core_8cpp.html',1,'']]],
+  ['core_2ehpp_22',['core.hpp',['../da/d47/core_8hpp.html',1,'']]],
+  ['core_5fversion_5fmajor_23',['Core_VERSION_MAJOR',['../d1/dcd/_core-version_8hpp.html#aca79252db25df2c907e95273bc73c1bb',1,'Core-version.hpp']]],
+  ['core_5fversion_5fminor_24',['Core_VERSION_MINOR',['../d1/dcd/_core-version_8hpp.html#a7e17333cb151f6a0499ea1212c06f142',1,'Core-version.hpp']]]
 ];
