@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>WebFrame++: lib/core/base.hpp File Reference</title>
+<title>WebFrame++: lib/core/old/base.hpp File Reference</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -63,7 +63,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="../../dir_97aefd0d527b934f1d99a682da8fe6a9.html">lib</a></li><li class="navelem"><a class="el" href="../../dir_06b04658fa5c72d9a7094cae91ca2dc7.html">webframe</a></li>  </ul>
+<li class="navelem"><a class="el" href="../../dir_97aefd0d527b934f1d99a682da8fe6a9.html">lib</a></li><li class="navelem"><a class="el" href="../../dir_a2d5e495f4b604d04f57d90095a59dd6.html">core</a></li><li class="navelem"><a class="el" href="../../dir_63f08d5bc9517cadf22116cc95386716.html">old</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -84,12 +84,11 @@ $(function() {
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;regex&gt;</code><br />
-<code>#include &lt;any&gt;</code><br />
 <code>#include &lt;stdexcept&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
 <code>#include &lt;numeric&gt;</code><br />
-<code>#include &lt;<a class="el" href="../../da/da7/http__codes_8hpp_source.html">core/http_codes.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="../../d2/d5d/mime_8hpp_source.html">core/mime.hpp</a>&gt;</code><br />
+<code>#include &quot;<a class="el" href="../../da/da7/http__codes_8hpp_source.html">http_codes.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../dd/de4/old_2mime_8hpp_source.html">mime.hpp</a>&quot;</code><br />
 </div>
 <p><a href="../../dd/d3c/base_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -129,13 +128,13 @@ Functions</h2></td></tr>
 <tr class="memitem:a4cc5776c37868d1827db3853b1f4e9d2"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d8d/namespacewebframe.html#a4cc5776c37868d1827db3853b1f4e9d2">webframe::itoa</a> (int num, char *str, int base)</td></tr>
 <tr class="memdesc:a4cc5776c37868d1827db3853b1f4e9d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation of itoa.  <a href="../../d8/d8d/namespacewebframe.html#a4cc5776c37868d1827db3853b1f4e9d2">More...</a><br /></td></tr>
 <tr class="separator:a4cc5776c37868d1827db3853b1f4e9d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a176891be494b5211d65d798cef945b6b"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d8d/namespacewebframe.html#a176891be494b5211d65d798cef945b6b">webframe::method_to_string</a> (const method &amp;m)</td></tr>
-<tr class="memdesc:a176891be494b5211d65d798cef945b6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts <a class="el" href="../../d8/d8d/namespacewebframe.html#a69de9ca7fb84de6611aeee42515e4d02">webframe::method</a> to const char*.  <a href="../../d8/d8d/namespacewebframe.html#a176891be494b5211d65d798cef945b6b">More...</a><br /></td></tr>
-<tr class="separator:a176891be494b5211d65d798cef945b6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a840f776d7bd7e3171ad631b2a5905aef"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d8d/namespacewebframe.html#a840f776d7bd7e3171ad631b2a5905aef">webframe::method_to_string</a> (const method &amp;m)</td></tr>
+<tr class="memdesc:a840f776d7bd7e3171ad631b2a5905aef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts webframe::method to const char*.  <a href="../../d8/d8d/namespacewebframe.html#a840f776d7bd7e3171ad631b2a5905aef">More...</a><br /></td></tr>
+<tr class="separator:a840f776d7bd7e3171ad631b2a5905aef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36ed87451a4a22c806b1889afbdc9126"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d8d/namespacewebframe.html#a36ed87451a4a22c806b1889afbdc9126">webframe::strings_equal</a> (char const *a, char const *b)</td></tr>
 <tr class="separator:a36ed87451a4a22c806b1889afbdc9126"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3ca26aff12b90730bef0aa7b6d054f1"><td class="memItemLeft" align="right" valign="top">constexpr method&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d8d/namespacewebframe.html#ab3ca26aff12b90730bef0aa7b6d054f1">webframe::string_to_method</a> (const char *m)</td></tr>
-<tr class="memdesc:ab3ca26aff12b90730bef0aa7b6d054f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts const char* to <a class="el" href="../../d8/d8d/namespacewebframe.html#a69de9ca7fb84de6611aeee42515e4d02">webframe::method</a>.  <a href="../../d8/d8d/namespacewebframe.html#ab3ca26aff12b90730bef0aa7b6d054f1">More...</a><br /></td></tr>
+<tr class="memdesc:ab3ca26aff12b90730bef0aa7b6d054f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts const char* to webframe::method.  <a href="../../d8/d8d/namespacewebframe.html#ab3ca26aff12b90730bef0aa7b6d054f1">More...</a><br /></td></tr>
 <tr class="separator:ab3ca26aff12b90730bef0aa7b6d054f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>

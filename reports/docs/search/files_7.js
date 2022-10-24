@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['server_5fstatus_2ehpp_235',['server_status.hpp',['../dd/d2b/server__status_8hpp.html',1,'']]]
+  ['path_5fvariables_2ehpp_247',['path_variables.hpp',['../de/dd8/path__variables_8hpp.html',1,'']]]
 ];
