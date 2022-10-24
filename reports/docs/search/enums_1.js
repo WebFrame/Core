@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['method_377',['method',['../d8/d8d/namespacewebframe.html#a69de9ca7fb84de6611aeee42515e4d02',1,'webframe']]]
+  ['method_388',['method',['../d2/dab/namespacewebframe_1_1core.html#a4d3dbfb2f01c284d2f64b03e9303ba9d',1,'webframe::core']]]
 ];

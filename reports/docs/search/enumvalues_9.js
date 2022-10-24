@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['param_5fkey_390',['PARAM_KEY',['../d8/d8d/namespacewebframe.html#a4801e5865e0737ad9f40f5b14f0d96cfa97675cc85a90832f856d20eea1e2a599',1,'webframe']]],
-  ['param_5fvalue_391',['PARAM_VALUE',['../d8/d8d/namespacewebframe.html#a4801e5865e0737ad9f40f5b14f0d96cfa9bb914d2eaedd80abc450b5a48f4bf67',1,'webframe']]],
-  ['patch_392',['PATCH',['../d8/d8d/namespacewebframe.html#a69de9ca7fb84de6611aeee42515e4d02a63bc9a3997d66d835d9f3ec29451407d',1,'webframe']]],
-  ['post_393',['POST',['../d8/d8d/namespacewebframe.html#a69de9ca7fb84de6611aeee42515e4d02aa02439ec229d8be0e74b0c1602392310',1,'webframe']]],
-  ['put_394',['PUT',['../d8/d8d/namespacewebframe.html#a69de9ca7fb84de6611aeee42515e4d02a3e75383a5992a6d15fb81e872e46e256',1,'webframe']]]
+  ['param_5fkey_401',['PARAM_KEY',['../d2/dab/namespacewebframe_1_1core.html#a198e079c6b72d7c5c9c7b03cccbd3ecfa97675cc85a90832f856d20eea1e2a599',1,'webframe::core']]],
+  ['param_5fvalue_402',['PARAM_VALUE',['../d2/dab/namespacewebframe_1_1core.html#a198e079c6b72d7c5c9c7b03cccbd3ecfa9bb914d2eaedd80abc450b5a48f4bf67',1,'webframe::core']]],
+  ['patch_403',['PATCH',['../d2/dab/namespacewebframe_1_1core.html#a4d3dbfb2f01c284d2f64b03e9303ba9da63bc9a3997d66d835d9f3ec29451407d',1,'webframe::core']]],
+  ['post_404',['POST',['../d2/dab/namespacewebframe_1_1core.html#a4d3dbfb2f01c284d2f64b03e9303ba9daa02439ec229d8be0e74b0c1602392310',1,'webframe::core']]],
+  ['put_405',['PUT',['../d2/dab/namespacewebframe_1_1core.html#a4d3dbfb2f01c284d2f64b03e9303ba9da3e75383a5992a6d15fb81e872e46e256',1,'webframe::core']]]
 ];

@@ -1,13 +1,13 @@
-#include <webframe/webframe.hpp>
+#include <core/core.hpp>
 #include <iostream>
 #include <sstream>
 #include <stdlib.h>
 
-int main(int argc, char** argv)
+int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 {
-	constexpr long long fasten = webframe::webframe::init();
+	constexpr long long fasten = webframe::core::application::init();
 	std::atomic<long long> pass{fasten};
-	webframe::webframe app;
+	webframe::core::application app;
 	app.route("/{number}/2", [&](long long steps) {
 			for (long long i = 0; i < (1 << steps); i++)
 			{

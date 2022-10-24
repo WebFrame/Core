@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['cmp_201',['cmp',['../dc/d8b/structwebframe_1_1webframe_1_1cmp.html',1,'webframe::webframe']]]
+  ['body_5ft_208',['body_t',['../d8/d06/structwebframe_1_1body__t.html',1,'webframe::body_t'],['../df/d36/structwebframe_1_1core_1_1body__t.html',1,'webframe::core::body_t']]]
 ];
