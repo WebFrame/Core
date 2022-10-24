@@ -41,21 +41,25 @@ jobs:
           cmake --version
           gcc-11 --version
           g++-11 --version
-          mkdir -p ./tests/bin/log
-          mkdir -p ./bin/log
-      - name: Configure & Build
+      - name: Configure for Windows
         if: startsWith(matrix.os, 'windows')
         shell: bash
         run: |
-          CXX_COMPILE=${{ matrix.cxx }} cmake -G 'MinGW Makefiles' . && make 
-      - name: Configure & Build
+          CXX_COMPILE=${{ matrix.cxx }} cmake -G 'MinGW Makefiles' . 
+      - name: Configure for Ubuntu
         if: startsWith(matrix.os, 'ubuntu')
         shell: bash
         run: |
-          CXX_COMPILE=${{ matrix.cxx }} cmake -G 'Unix Makefiles' . && make 
+          CXX_COMPILE=${{ matrix.cxx }} cmake -G 'Unix Makefiles' . 
+      - name: Build
+        shell: bash
+        run: |
+          make
       - name: Prepare speed test
         shell: bash
         run: |
+          mkdir -p ./tests/bin/log
+          mkdir -p ./bin/log
           mkdir -p ./benchmark/performance/${{ matrix.os }};
       - name: Files
         if: startsWith(matrix.os, 'ubuntu')
