@@ -1,5 +1,5 @@
 #include <moka/moka.h>
-#include <webframe/webframe.hpp>
+#include <core/core.hpp>
 
 #include <stdio.h>
 
@@ -8,7 +8,7 @@
 
 int main ()
 {
-	static_assert(webframe::webframe::init(), "constexpr initiation failed");
+	static_assert(webframe::core::application::init(), "constexpr initiation failed");
 	
 	std::cout << "===============================  Testing  ===============================" << "\n";
 
