@@ -1,5 +1,4 @@
-# Readme
-# <span style="font-size: 2.25em;"> WebFrame++ ![C++](https://img.shields.io/badge/c++-%2300599C.svg?&logo=c%2B%2B&logoColor=white) ![Mocha](https://img.shields.io/badge/-mocha-%238D6748?logo=mocha&logoColor=white)<br>[![Build, Test, Benchmark, Deploy](https://github.com/core/Core/actions/workflows/all.yaml/badge.svg)](https://github.com/core/Core/actions/workflows/all.yaml) [![Code Quality](https://github.com/core/Core/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/core/Core/actions/workflows/codeql-analysis.yml)<br>[![Issues](https://img.shields.io/github/issues/core/Core?)](https://github.com/core/Core) [![Forks](https://img.shields.io/github/forks/core/Core?)](https://github.com/core/Core) [![Stars](https://img.shields.io/github/stars/core/Core?)](https://github.com/core/Core) [![License](https://img.shields.io/github/license/core/Core?)](https://github.com/core/Core)</span>
+# <span style="font-size: 2.25em;"> WebFrame++ ![C++](https://img.shields.io/badge/c++-%2300599C.svg?&logo=c%2B%2B&logoColor=white) ![Mocha](https://img.shields.io/badge/-mocha-%238D6748?logo=mocha&logoColor=white)<br>[![Build, Test, Benchmark, Deploy](https://github.com/WebFrame/Core/actions/workflows/all.yaml/badge.svg)](https://github.com/WebFrame/Core/actions/workflows/all.yaml) [![Code Quality](https://github.com/WebFrame/Core/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/WebFrame/Core/actions/workflows/codeql-analysis.yml)<br>[![Issues](https://img.shields.io/github/issues/core/Core?)](https://github.com/WebFrame/Core) [![Forks](https://img.shields.io/github/forks/core/Core?)](https://github.com/WebFrame/Core) [![Stars](https://img.shields.io/github/stars/core/Core?)](https://github.com/WebFrame/Core) [![License](https://img.shields.io/github/license/core/Core?)](https://github.com/WebFrame/Core)</span>
 ### Make your web application faster now!
 <hr>
 
@@ -20,13 +19,13 @@ Check the Doxygen documentation of the library [here](https://webframe.github.io
 1. Make sure to include the library
 
     ```cpp
-    #include <core/webframe.hpp>
+    #include <core/core.hpp>
     ```
 
 2. Initiate your Web application
 
     ```cpp
-    webframe::webframe app;
+    webframe::core::application app;
     ``` 
 
 3. Set directories for your static files
@@ -79,7 +78,7 @@ Check the Doxygen documentation of the library [here](https://webframe.github.io
     
         ```cpp
         app.route ("/", []() {
-            return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
+            return webframe::core::response (webframe::core::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
         });
         ```
     * or let WebFrame do it for you
@@ -134,7 +133,7 @@ Check the Doxygen documentation of the library [here](https://webframe.github.io
             return "Error 500: Internal server error: " + reason + ".";
         })
         .route ("/", []() {
-            return webframe::response (webframe::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
+            return webframe::core::response (webframe::core::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
         });
     ```
 
@@ -192,10 +191,10 @@ Check the Doxygen documentation of the library [here](https://webframe.github.io
             });
         ```
 
-        or if you need to use ``webframe::webframe`` functions
+        or if you need to use ``webframe::core::application`` functions
 
         ```cpp
-        webframe::webframe app;
+        webframe::core::application app;
         ...
         init_routes(home)
             .route("/home", [&app]() {
@@ -219,7 +218,7 @@ Check the Doxygen documentation of the library [here](https://webframe.github.io
         app.extend_with(home, "/prefix");
         ```
 
-Check [example/](https://github.com/core/Core/blob/master/example) for more information.
+Check [example/](https://github.com/WebFrame/Core/blob/master/example) for more information.
 # Additional info
 - Currently working on setting up ![CMake](https://img.shields.io/badge/CMake-%23008FBA.svg?&logo=cmake&logoColor=while)
 

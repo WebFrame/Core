@@ -160,13 +160,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - id: env
-        uses: actions/github-script@v6.0.0
-        with:
-          script: |
-            console.log(context)
-            const server = "${{ matrix.server }}"
-            const optimization = (server[0] != "a" && server[0] != "c") ? "default" : ( (server[0] == "a") ? server.substring(4) : server.substring(3) )
-            core.setOutput('optimization', optimization)
+        name: Get optimization
+        if: startsWith(matrix.server, 'c++') || startsWith(matrix.server, 'ac++')
+        shell: bash
+        run: |
+          declare -x optimization="`echo ${{ matrix.server }} | cut -d'-' -f2`"
+          [[ "$optimization" = "" ]] && optimization="default" || optimization="-$optimization"
+          echo "optmization=$optimization" >> $GITHUB_OUTPUT
+          cat $GITHUB_OUTPUT
       - name: Checkout 🛎️
         uses: actions/checkout@v3
         with:
