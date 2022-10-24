@@ -155,9 +155,9 @@
 13</pre></div></td><td class="code"><div class="highlight"><pre><span></span><a name="line-1"></a><span class="cp">#ifndef _Project_home_with_render_route</span>
 <a name="line-2"></a><span class="cp">#define _Project_home_with_render_route</span>
 <a name="line-3"></a>
-<a name="line-4"></a><span class="cp">#include</span> <span class="cpf">&lt;core/webframe.hpp&gt;</span><span class="cp"></span>
+<a name="line-4"></a><span class="cp">#include</span> <span class="cpf">&lt;core/core.hpp&gt;</span><span class="cp"></span>
 <a name="line-5"></a>
-<a name="line-6"></a><span class="n">webframe</span><span class="o">::</span><span class="n">router</span> <span class="n">home_with_render</span><span class="p">(</span><span class="n">webframe</span><span class="o">::</span><span class="n">webframe</span><span class="o">&amp;</span> <span class="n">app</span><span class="p">)</span> <span class="p">{</span>
+<a name="line-6"></a><span class="n">webframe</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">router</span> <span class="n">home_with_render</span><span class="p">(</span><span class="n">webframe</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">application</span><span class="o">&amp;</span> <span class="n">app</span><span class="p">)</span> <span class="p">{</span>
 <a name="line-7"></a><span class="hll">    <span class="n">init_routes</span><span class="p">(</span><span class="n">home</span><span class="p">)</span><span class='error2'>&lt;--- Shadow variable</span>
 </span><a name="line-8"></a>        <span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="s">&quot;/home&quot;</span><span class="p">,</span> <span class="p">[</span><span class="o">&amp;</span><span class="n">app</span><span class="p">]()</span> <span class="p">{</span>
 <a name="line-9"></a>			<span class="k">return</span> <span class="n">app</span><span class="p">.</span><span class="n">render</span><span class="p">(</span><span class="s">&quot;template.html&quot;</span><span class="p">);</span>

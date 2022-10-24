@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['warn_369',['warn',['../d4/d2c/classwebframe_1_1webframe.html#aa78a6967f5e48438f503a42a510006e6',1,'webframe::webframe']]]
+  ['warn_380',['warn',['../d1/d67/classwebframe_1_1core_1_1application.html#a217f59234e68d40905e8673ec7032ec1',1,'webframe::core::application']]]
 ];

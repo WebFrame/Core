@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['thread_214',['thread',['../d5/d0d/structwebframe_1_1webframe_1_1thread.html',1,'webframe::webframe']]],
-  ['thread_5fpool_215',['thread_pool',['../d0/d7e/structwebframe_1_1webframe_1_1thread__pool.html',1,'webframe::webframe']]]
+  ['server_5fstatus_219',['server_status',['../dc/d90/classwebframe_1_1server__status.html',1,'webframe']]],
+  ['status_5fline_220',['status_line',['../db/d97/structwebframe_1_1core_1_1status__line.html',1,'webframe::core::status_line'],['../db/de3/structwebframe_1_1status__line.html',1,'webframe::status_line']]],
+  ['synchronizedfile_221',['SynchronizedFile',['../de/d22/class_synchronized_file.html',1,'']]]
 ];
