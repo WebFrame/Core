@@ -22,9 +22,11 @@ int main()
 		.route ("/", [&]() { // static setup
 			return webframe::core::response (webframe::core::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 		})
+#ifdef USE_INJA
 		.route("/{text}", [&](const std::string& user) {
 			return app.render("template.html", {{"username", user}});
 		})
+#endif
 		.route("/favicon.ico", [&]() {
 			return "";
 		})
