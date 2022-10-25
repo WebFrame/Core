@@ -16,9 +16,10 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 			return "Hello World!";
 		})
 		.route("/{number}/1", [&](long long steps) {
+			volatile unsigned long long int test = 0;
 			for (long long i = 0; i < (1 << steps); i++)
 			{
-				__asm__("");
+				test++;
 			}
 			return "Hello World!";
 		});
