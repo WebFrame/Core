@@ -47,6 +47,8 @@ if(RUN_TESTS)
     add_subdirectory("tests/")
 endif()
 
+find_package(Threads REQUIRED)
+
 # Generate example source code
 add_executable(BenchmarkNormal benchmark/contestants/server.cpp)
 target_link_libraries(BenchmarkNormal PUBLIC ${EXTRA_LIBS})
