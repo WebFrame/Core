@@ -432,7 +432,7 @@ namespace webframe::core
 
 	private:
 
-		static std::chrono::duration<double, std::milli> timer(const std::chrono::time_point<std::chrono::_V2::system_clock, std::chrono::duration<long long int, std::ratio<1, 1000000000> > > start)
+		static std::chrono::duration<double, std::milli> timer(const std::chrono::time_point<std::chrono::system_clock, std::chrono::duration<long long int, std::ratio<1, 1000000000> > > start)
 		{
 			return std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start);
 		}
