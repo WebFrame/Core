@@ -27,7 +27,7 @@ endif()
 if(USE_INJA)
     add_subdirectory("lib/inja")
     add_definitions(-DUSE_INJA)
-    list(EXTRA_LIBS APPEND single_inja)
+    list(APPEND EXTRA_LIBS single_inja)
 endif()
 
 find_package(Threads REQUIRED)
