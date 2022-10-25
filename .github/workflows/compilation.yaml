@@ -1,4 +1,4 @@
-name: Compile & Build
+run-name: Compile & Build
 on:
   workflow_dispatch:
   push:
