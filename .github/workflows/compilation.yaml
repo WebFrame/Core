@@ -32,7 +32,7 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
-          ./Core-Tests
+          ./tests/Core-Tests
   windows-msvc-build-inja:
     runs-on: windows-latest
     name: Windows MSVC++ Build + Inja
@@ -55,7 +55,7 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
-          ./Core-Tests
+          ./tests/Core-Tests
   windows-mingw-build-inja:
     runs-on: windows-latest
     name: Windows MinGW Build + Inja
@@ -79,7 +79,7 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
-          ./Core-Tests
+          ./tests/Core-Tests
   windows-clang-build-inja:
     runs-on: windows-latest
     name: Windows Clang Build + Inja
@@ -103,7 +103,7 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
-          ./Core-Tests
+          ./tests/Core-Tests
   ubuntu-gcc-build-inja:
     name: Ubuntu GNU Build + Inja
     runs-on: ubuntu-latest
@@ -134,7 +134,7 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
-          ./Core-Tests
+          ./tests/Core-Tests
   ubuntu-clang-build-inja:
     name: Ubuntu Clang Build + Inja
     runs-on: ubuntu-latest
@@ -164,7 +164,7 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
-          ./Core-Tests
+          ./tests/Core-Tests
   macos-clang-build:
     runs-on: macos-latest
     name: MacOS Clang Build
@@ -188,7 +188,7 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
-          ./Core-Tests
+          ./tests/Core-Tests
   windows-msvc-build:
     runs-on: windows-latest
     name: Windows MSVC++ Build
@@ -211,7 +211,7 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
-          ./Core-Tests
+          ./tests/Core-Tests
   windows-mingw-build:
     runs-on: windows-latest
     name: Windows MinGW Build
@@ -235,7 +235,7 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
-          ./Core-Tests
+          ./tests/Core-Tests
   windows-clang-build:
     runs-on: windows-latest
     name: Windows Clang Build
@@ -259,7 +259,7 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
-          ./Core-Tests
+          ./tests/Core-Tests
   ubuntu-gcc-build:
     name: Ubuntu GNU Build
     runs-on: ubuntu-latest
@@ -290,7 +290,7 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
-          ./Core-Tests
+          ./tests/Core-Tests
   ubuntu-clang-build:
     name: Ubuntu Clang Build
     runs-on: ubuntu-latest
@@ -320,4 +320,4 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
-          ./Core-Tests
+          ./tests/Core-Tests

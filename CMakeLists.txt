@@ -11,7 +11,7 @@ if (MSVC)
     add_compile_options(/W4 /WX)
 else()
     # lots of warnings and all warnings as errors
-    add_compile_options(-Wall -Wextra -pedantic -Werror -pthread -lpthread)
+    add_compile_options(-Wall -Wextra -pedantic -Werror)
 endif()
 
 option(USE_INJA "Use Inja" ON)
@@ -19,20 +19,22 @@ option(RUN_TESTS "Run unit & integration tests" ON)
 
 configure_file(Core.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/lib/core/Core-version.hpp)
 
+if (WIN32)
+    list(EXTRA_LIBS APPEND wsock32 ws2_32)
+endif()
+
 # Include sub-projects.
 if(USE_INJA)
     add_subdirectory("lib/inja")
     add_definitions(-DUSE_INJA)
+    list(EXTRA_LIBS APPEND single_inja)
 endif()
 
 find_package(Threads REQUIRED)
+list(APPEND EXTRA_LIBS pthread)
 
 add_library(Core STATIC "lib/core/core.cpp")
-if(WIN32)
-    target_link_libraries(Core PUBLIC single_inja pthread wsock32 ws2_32)
-else()
-    target_link_libraries(Core PUBLIC single_inja pthread)
-endif()
+target_link_libraries(Core PUBLIC ${EXTRA_LIBS})
 target_include_directories(Core INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 set_target_properties(Core PROPERTIES LINKER_LANGUAGE CXX)
 install(TARGETS Core DESTINATION ${PROJECT_BINARY_DIR})
@@ -44,9 +46,6 @@ if(RUN_TESTS)
     message("Core-Tests build:")
     add_subdirectory("tests/")
 endif()
-
-find_package(Threads REQUIRED)
-list(APPEND EXTRA_LIBS pthread)
 
 # Generate example source code
 add_executable(BenchmarkNormal benchmark/contestants/server.cpp)
