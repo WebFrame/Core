@@ -11,7 +11,7 @@
   #include <time.h>
 #endif
 
-#ifdef __unix__
+#if !defined(_WIN32) && (defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__)))
   #include <unistd.h>
   #include <fcntl.h>
   #include <stdio.h>
@@ -40,7 +40,7 @@ extern "C"
   #define __WORDSIZE 32
 #endif
 
-#ifdef __unix__
+#if !defined(_WIN32) && (defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__)))
     typedef unsigned char  uint8;
     typedef char           int8;
     typedef unsigned short uint16;
@@ -155,7 +155,7 @@ extern "C"
 #define GETHOSTBYNAME(a)       gethostbyname(a)
 #endif
 
-#ifdef __unix__
+#if !defined(_WIN32) && (defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__)))
 #define SOCKET_ERROR           (-1)
 #define INVALID_SOCKET         (-1)
 #define ACCEPT(a,b,c)          accept(a,b,c)
@@ -287,7 +287,7 @@ int block_config(SOCKET socket)
   return ioctlsocket(socket, FIONBIO, &iMode);
 }
 #endif
-#ifdef __unix__
+#if !defined(_WIN32) && (defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__)))
 int nonblock_config(SOCKET s) {
   return fcntl(s, F_SETFL, O_NONBLOCK);
 }

@@ -6,7 +6,9 @@
 webframe::core::router home_with_render(webframe::core::application& app) {
     init_routes(home)
         .route("/home", [&app]() {
+#ifdef USE_INJA
 			return app.render("template.html");
+#endif
         });
     return home;
 }
