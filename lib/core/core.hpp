@@ -34,6 +34,11 @@
 
 namespace webframe::core
 {
+	template <typename T1>
+	T1 min(T1 a, T1 b) {
+		return (((a) < (b)) ? (a) : (b));
+	}
+
 	enum class method
 	{
 		undefined,
@@ -618,7 +623,7 @@ namespace webframe::core
 #endif
 				this->logger << "(main) Startup called\n";
 
-				const unsigned int threads = std::min(cores, limited ? requests : cores);
+				const unsigned int threads = min(cores, limited ? requests : cores);
 				std::shared_ptr<thread_pool> threads_ptr = std::make_shared<thread_pool>(threads);
 
 				this->logger << "(main) Thread pool generated\n";
