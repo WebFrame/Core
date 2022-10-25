@@ -8,6 +8,8 @@ webframe::core::router home_with_render(webframe::core::application& app) {
         .route("/home", [&app]() {
 #ifdef USE_INJA
 			return app.render("template.html");
+#else
+            return "";
 #endif
         });
     return home;

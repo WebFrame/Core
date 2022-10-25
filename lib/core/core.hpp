@@ -742,7 +742,7 @@ namespace webframe::core
 					}
 
 					this->logger << "(main) " << thread.value() << " thread will handle client " << client << "\n";
-					threads_ptr->get(thread.value())->detach(std::make_shared<std::function<void(int)>>([this, &limited, &requests, PORT](int socket) -> void {
+					threads_ptr->get(thread.value())->detach(std::make_shared<std::function<void(int)>>([this, &limited, &requests](int socket) -> void {
 						this->handler(socket, [this, &limited, &requests]() {
 							if (!limited) return;
 							requests--;
