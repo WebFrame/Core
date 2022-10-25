@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-10.15, macos-11, macos-12, macos-latest]
+        os: [macos-11, macos-12]
         inja: [ON, OFF]
     name: MacOS / ${{ matrix.os }} / clang++ / Inja ${{ matrix.inja }}
     runs-on: ${{ matrix.os }}
@@ -38,12 +38,14 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
+          mkdir -p ./tests/bin/log ./bin/log
           ./tests/Core-Tests
+          ./tests/Core-Tests | sed -E "s/`printf "\033"`\[([0-9]+)(;1)?m//g" | cat > ./bin/log/performance.txt
   windows-build:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-2019, windows-2022, windows-latest]
+        os: [windows-2019, windows-2022]
         compiler: [cl, clang++, g++]
         inja: [ON, OFF]
     name: Windows / ${{ matrix.os }} / ${{ matrix.compiler }} / Inja ${{ matrix.inja }}
@@ -68,12 +70,14 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
+          mkdir -p ./tests/bin/log ./bin/log
           ./tests/Core-Tests
+          ./tests/Core-Tests | sed -E "s/`printf "\033"`\[([0-9]+)(;1)?m//g" | cat > ./bin/log/performance.txt
   ubuntu-build:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, ubuntu-18.04, ubuntu-20.04, ubuntu-latest]
+        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-22.04]
         compiler: [clang++, g++]
         inja: [ON, OFF]
     name: Ubuntu / ${{ matrix.os }} / ${{ matrix.compiler }} / Inja ${{ matrix.inja }}
@@ -90,7 +94,7 @@ jobs:
       - name: Configure with ${{ matrix.compiler }}
         shell: bash
         run: |
-          CXX_COMPILE=${{ matrix.compiler }} cmake -DUSE_INJA=${{ matrix.inja }} -G 'MinGW Makefiles' .
+          CXX_COMPILE=${{ matrix.compiler }} cmake -DUSE_INJA=${{ matrix.inja }} -G 'Unix Makefiles' .
       - name: Build
         shell: bash
         run: |
@@ -98,4 +102,6 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
+          mkdir -p ./tests/bin/log ./bin/log
           ./tests/Core-Tests
+          ./tests/Core-Tests | sed -E "s/`printf "\033"`\[([0-9]+)(;1)?m//g" | cat > ./bin/log/performance.txt
