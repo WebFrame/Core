@@ -74,10 +74,10 @@ void testCase_IntegrationTests (Moka::Report& report) {
 					return webframe::core::response (webframe::core::status_line ("1.1", "200"), {{"Content-Type", "text/html; charset=utf-8"}}, "<h1>Hello, World!</h1>");
 				})
 				.route ("/{number}", [](int steps) {	
-					for (int i = 0; i < (1 << steps); )
+					volatile unsigned long long int test = 0;
+					for (int i = 0; i < (1 << steps); i ++)
 					{
-						__asm__("");
-						i = i + 1;
+						test++;
 					}
 					return "Hello, World!";
 				})
