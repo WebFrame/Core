@@ -79,7 +79,7 @@ jobs:
         run: |
           mkdir -p ./tests/bin/log
           mkdir -p ./bin/log
-          tree
+          ls . ./tests/
       - name: Run tests
         shell: bash
         run: |
