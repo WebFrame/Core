@@ -1,4 +1,4 @@
-name: Benchmark & Deploy
+run-name: Benchmark & Deploy
 on:
   workflow_dispatch:
   push:
