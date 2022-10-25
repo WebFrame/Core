@@ -1,4 +1,4 @@
-name: Build & Test & Compare & Deploy
+name: Benchmark & Deploy
 on:
   workflow_dispatch:
   push:
@@ -9,109 +9,7 @@ on:
       - "*"
 
 jobs:
-  build:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [windows-latest, ubuntu-latest]
-        optimization: [-O, -O1, -O2, -O3, -Ofast, -Og, -Os]
-        include:
-          - cxx: g++
-            os: windows-latest
-          - cxx: g++-11
-            os: ubuntu-latest
-    name: ${{ matrix.os }}${{ matrix.optimization }}
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: 'recursive'
-      - name: Install dependencies on windows
-        if: startsWith(matrix.os, 'windows')
-        run: |
-          choco install mingw --version 11.2.0.07112021
-          cmake --version
-          gcc --version
-      - name: Install dependencies on ubuntu
-        if: startsWith(matrix.os, 'ubuntu')
-        run: |
-          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-          sudo apt-get update
-          sudo apt-get install -y gcc-11 g++-11 make tree
-          cmake --version
-          gcc-11 --version
-          g++-11 --version
-      - name: Configure for Windows
-        if: startsWith(matrix.os, 'windows')
-        shell: bash
-        run: |
-          CXX_COMPILE=${{ matrix.cxx }} cmake -G 'MinGW Makefiles' . 
-      - name: Configure for Ubuntu
-        if: startsWith(matrix.os, 'ubuntu')
-        shell: bash
-        run: |
-          CXX_COMPILE=${{ matrix.cxx }} cmake -G 'Unix Makefiles' . 
-      - name: Build
-        shell: bash
-        run: |
-          make
-      - name: Prepare speed test
-        shell: bash
-        run: |
-          mkdir -p ./tests/bin/log
-          mkdir -p ./bin/log
-          mkdir -p ./benchmark/performance/${{ matrix.os }};
-      - name: Files
-        if: startsWith(matrix.os, 'ubuntu')
-        shell: bash
-        run: |
-            tree
-      - name: ${{ matrix.optimization }}
-        shell: bash
-        timeout-minutes: 100
-        run: |
-          ./tests/Core-Tests
-          ./tests/Core-Tests | sed -E "s/`printf "\033"`\[([0-9]+)(;1)?m//g" | cat > ./bin/log/performance.txt
-          cp -r ./tests/bin/* ./bin/
-          cp ./bin/log/performance.txt ./benchmark/performance/${{ matrix.os }}/performance${{ matrix.optimization }}.txt
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ matrix.os }}${{ matrix.optimization }}
-          path: |
-            ./benchmark/performance/${{ matrix.os }}/performance${{ matrix.optimization }}.txt
-  group-results:
-    name: Summarize
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Download all workflow run artifacts
-        uses: actions/download-artifact@v3
-      - name: Display structure of downloaded files
-        run: ls -R
-      - name: Craft final document
-        shell: bash
-        run: |
-          for i in */* ; 
-          do 
-            echo $i | cut -d'/' -f1 ; 
-            paste <(cat $i | grep ') WebFrame - integration testing The web server  should respond to request with' | cut -d'^' -f2 | sed -e 's/^/2\^/') \
-                  <(cat $i | grep "Would have been nice" | cut -d'|' -f2) | 
-                sed 's/Would have been nice/expected\t/g' | 
-                sed 's/but got/\tbut got\t/g' |
-                sed 's/[ \t][ \t]*/ /g' |
-                sed -E "s/`printf "\033"`\[([0-9]+)(;1)?m//g"
-            echo "";
-          done > summary.txt;
-          cat summary.txt;
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: Summary
-          path: |
-            summary.txt
   cppcheck:
-    needs: build
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -131,7 +29,6 @@ jobs:
         name: cppcheck
         path: codeql_report
   doxygen:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -155,7 +52,6 @@ jobs:
         os: [ubuntu-latest]
         port: [8888]
         server: [ac++-O, ac++-O1, ac++-O2, ac++-O3, ac++-Ofast, ac++-Og, ac++-Os, c++-O, c++-O1, c++-O2, c++-O3, c++-Ofast, c++-Og, c++-Os, python, node]
-    needs: build
     name: ${{ matrix.os }}-${{ matrix.server }}
     runs-on: ${{ matrix.os }}
     steps:
