@@ -30,7 +30,7 @@ jobs:
       - name: Configure with Clang
         shell: bash
         run: |
-          CXX_COMPILER=clang++ cmake -DUSE_INJA=${{ matrix.inja }} -G 'Unix Makefiles' .
+          CXX=clang++ cmake -DUSE_INJA=${{ matrix.inja }} -G 'Unix Makefiles' .
       - name: Build
         shell: bash
         run: |
@@ -62,7 +62,7 @@ jobs:
       - name: Configure with ${{ matrix.compiler }}
         shell: bash
         run: |
-          CXX_COMPILER=${{ matrix.compiler }} cmake -DUSE_INJA=${{ matrix.inja }} -G 'MinGW Makefiles' .
+          CXX=${{ matrix.compiler }} cmake -DUSE_INJA=${{ matrix.inja }} -G 'MinGW Makefiles' .
       - name: Build
         shell: bash
         run: |
@@ -94,7 +94,7 @@ jobs:
       - name: Configure with ${{ matrix.compiler }}
         shell: bash
         run: |
-          CXX_COMPILER=${{ matrix.compiler }} cmake -DUSE_INJA=${{ matrix.inja }} -G 'Unix Makefiles' .
+          CXX=${{ matrix.compiler }} cmake -DUSE_INJA=${{ matrix.inja }} -G 'Unix Makefiles' .
       - name: Build
         shell: bash
         run: |
