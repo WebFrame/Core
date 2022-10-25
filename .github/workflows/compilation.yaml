@@ -47,8 +47,14 @@ jobs:
       matrix:
         os: [windows-2019, windows-2022]
         cxx: [cl, clang++, g++]
-        cc: [cl, clang, gcc]
         inja: [ON, OFF]
+        include:
+          - cxx: clang++
+            cc: clang
+          - cxx: g++
+            cc: gcc
+          - cxx: cl
+            cc: cl
     name: Windows / ${{ matrix.os }} / ${{ matrix.compiler }} / Inja ${{ matrix.inja }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -60,7 +66,7 @@ jobs:
         run: |
           choco install llvm
           choco install mingw --version 11.2.0.07112021
-      - name: Configure with ${{ matrix.compiler }}
+      - name: Configure with ${{ matrix.cxx }}
         shell: bash
         run: |
           CC=${{ matrix.cc }} CXX=${{ matrix.cxx }} cmake -DUSE_INJA=${{ matrix.inja }} -G 'MinGW Makefiles' .
@@ -83,9 +89,13 @@ jobs:
       matrix:
         os: [ubuntu-20.04, ubuntu-22.04]
         cxx: [clang++, g++]
-        cc: [clang, gcc]
         inja: [ON, OFF]
-    name: Ubuntu / ${{ matrix.os }} / ${{ matrix.compiler }} / Inja ${{ matrix.inja }}
+        include:
+          - cxx: clang++
+            cc: clang
+          - cxx: g++
+            cc: gcc
+    name: Ubuntu / ${{ matrix.os }} / ${{ matrix.cxx }} / Inja ${{ matrix.inja }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
