@@ -1,4 +1,5 @@
-run-name: Compile & Build
+run-name: Compile & Build / ${{ github.event.head_commit.message }}
+name: Compile & Build
 on:
   workflow_dispatch:
   push:

@@ -20,7 +20,7 @@ option(RUN_TESTS "Run unit & integration tests" ON)
 configure_file(Core.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/lib/core/Core-version.hpp)
 
 if (WIN32)
-    list(EXTRA_LIBS APPEND wsock32 ws2_32)
+    list(APPEND EXTRA_LIBS wsock32 ws2_32)
 endif()
 
 # Include sub-projects.
