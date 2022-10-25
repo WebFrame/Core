@@ -434,7 +434,7 @@ namespace webframe::core
 
 		static std::chrono::duration<double, std::milli> timer(const std::chrono::time_point<std::chrono::system_clock, std::chrono::duration<long long int, std::ratio<1, 1000000000> > > start)
 		{
-			return std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start);
+			return std::chrono::duration<double, std::milli>(std::chrono::system_clock::now() - start);
 		}
 
 		int responder(int socket)
@@ -467,7 +467,7 @@ namespace webframe::core
 				if (r.getState() != LoadingState::LOADED)
 					throw std::string("Request was not loaded completely and data with size=" + std::to_string(total_recv) + " was sent.");
 
-				const auto t1 = std::chrono::high_resolution_clock::now();
+				const auto t1 = std::chrono::system_clock::now();
 				response res;
 				res = this->respond(r, r.http);
 				const std::string& response = res.to_string();
@@ -743,7 +743,7 @@ namespace webframe::core
 
 					this->logger << "(main) " << thread.value() << " thread will handle client " << client << "\n";
 					threads_ptr->get(thread.value())->detach(std::make_shared<std::function<void(int)>>([this, &limited, &requests, PORT](int socket) -> void {
-						this->handler(socket, [this, &limited, &requests, PORT]() {
+						this->handler(socket, [this, &limited, &requests]() {
 							if (!limited) return;
 							requests--;
 							this->logger << "(callback) Requests: " << requests << "\n";
