@@ -21,6 +21,9 @@ configure_file(Core.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/lib/core/Core-version.hpp
 
 if (WIN32)
     list(APPEND EXTRA_LIBS wsock32 ws2_32)
+else()
+    find_package(Threads REQUIRED)
+    list(APPEND EXTRA_LIBS pthread)
 endif()
 
 # Include sub-projects.
@@ -29,9 +32,6 @@ if(USE_INJA)
     add_definitions(-DUSE_INJA)
     list(APPEND EXTRA_LIBS single_inja)
 endif()
-
-find_package(Threads REQUIRED)
-list(APPEND EXTRA_LIBS pthread)
 
 add_library(Core STATIC "lib/core/core.cpp")
 target_link_libraries(Core PUBLIC ${EXTRA_LIBS})
