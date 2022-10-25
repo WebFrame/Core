@@ -389,9 +389,9 @@ namespace webframe::core
 			return *this;
 		}
 	public:
-		application& extend_with(const router& routes, const std::string& prefix = "")
+		application& extend_with(const router& set_of_routes, const std::string& prefix = "")
 		{
-			for (const auto& route : routes.routes) {
+			for (const auto& route : set_of_routes.routes) {
 				this->route(prefix + route.first, route.second);
 			}
 			return *this;
@@ -654,7 +654,7 @@ namespace webframe::core
 				}
 
 				// Create Socket and check if error occured afterwards
-				listener = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+				listener = static_cast<int>(socket(res->ai_family, res->ai_socktype, res->ai_protocol));
 				if (listener == -1)
 				{
 					this->errors << "(main) socket error: " << gai_strerror(status) << "\n";
@@ -717,7 +717,7 @@ namespace webframe::core
 
 					// Accept a request
 					int client = -1;
-					client = ACCEPT(listener, NULL, NULL);
+					client = static_cast<int>(ACCEPT(listener, NULL, NULL));
 					if (client == -1)
 					{
 						continue;

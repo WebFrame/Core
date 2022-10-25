@@ -90,7 +90,7 @@ void testCase_IntegrationTests (Moka::Report& report) {
             });
 			
 			for (unsigned int number = 0 ; number < requests ; number ++) {
-				it.should("respond to request with 2^" + pathParams[number] + " operations for less than 1 nanosecond per action", [&requests, number, &pathParams]() {
+				it.should("respond to request with 2^" + pathParams[number] + " operations for less than 1 nanosecond per action", [number, &pathParams]() {
 					response_of("http://localhost:8889/" + pathParams[number])
                         .must_be("Hello, World!", "Incorect response for http://localhost:8889/" + pathParams[number] + ".")
                         .might_take_less(15 * 1e-6 * (1ll << number), "The time per operation is too much."); // 15 nanosec per operation
