@@ -22,7 +22,7 @@ configure_file(Core.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/lib/core/Core-version.hpp
 if (WIN32)
     list(APPEND EXTRA_LIBS wsock32 ws2_32)
 endif()
-if (not MSVC)
+if (NOT DEFINED MSVC)
     find_package(Threads REQUIRED)
     list(APPEND EXTRA_LIBS pthread)
 endif()
