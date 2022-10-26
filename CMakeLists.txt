@@ -21,7 +21,8 @@ configure_file(Core.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/lib/core/Core-version.hpp
 
 if (WIN32)
     list(APPEND EXTRA_LIBS wsock32 ws2_32)
-else()
+endif()
+if (not MSVC)
     find_package(Threads REQUIRED)
     list(APPEND EXTRA_LIBS pthread)
 endif()
@@ -46,8 +47,6 @@ if(RUN_TESTS)
     message("Core-Tests build:")
     add_subdirectory("tests/")
 endif()
-
-find_package(Threads REQUIRED)
 
 # Generate example source code
 add_executable(BenchmarkNormal benchmark/contestants/server.cpp)
