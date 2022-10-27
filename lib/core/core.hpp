@@ -442,7 +442,7 @@ namespace webframe::core
 			return std::chrono::duration<double, std::milli>(std::chrono::system_clock::now() - start);
 		}
 
-		int responder(int socket)
+		int responder(SOCKET socket)
 		{
 			request r;
 			try
@@ -500,7 +500,7 @@ namespace webframe::core
 			return 0;
 		}
 
-		void handler(int client, const std::function<void()>& callback)
+		void handler(SOCKET client, const std::function<void()>& callback)
 		{
 			int status = this->responder(client);
 			this->logger << "(handler) Responded status: " << status << "\n";
@@ -716,9 +716,9 @@ namespace webframe::core
 					}
 
 					// Accept a request
-					int client = -1;
-					client = static_cast<int>(ACCEPT(listener, NULL, NULL));
-					if (client == -1)
+					SOCKET client = -1;
+					client = static_cast<SOCKET>(ACCEPT(listener, NULL, NULL));
+					if (static_cast<int>(client) == -1)
 					{
 						continue;
 					}
@@ -747,7 +747,7 @@ namespace webframe::core
 					}
 
 					this->logger << "(main) " << thread.value() << " thread will handle client " << client << "\n";
-					threads_ptr->get(thread.value())->detach(std::make_shared<std::function<void(int)>>([this, &limited, &requests](int socket) -> void {
+					threads_ptr->get(thread.value())->detach(std::make_shared<std::function<void(int)>>([this, &limited, &requests](SOCKET socket) -> void {
 						this->handler(socket, [this, &limited, &requests]() {
 							if (!limited) return;
 							requests--;

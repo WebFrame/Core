@@ -62,8 +62,8 @@ void testCase_IntegrationTests (Moka::Report& report) {
 
     const std::string pathParams[] = {"0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
 
-	Moka::Context integration_tests ("WebFrame - integration testing", [&requests, &app, &nil, &performancer, &pathParams](Moka::Context& it) {
-		it.describe("The web server", [&requests, &app, &nil, &performancer, &pathParams](Moka::Context& it) {
+	Moka::Context integration_tests ("WebFrame - integration testing", [&app, &nil, &performancer, &pathParams](Moka::Context& it) {
+		it.describe("The web server", [&app, &nil, &performancer, &pathParams](Moka::Context& it) {
 			it.setup([&app, &nil, &performancer]() {
 				app
 				.set_logger(nil)
