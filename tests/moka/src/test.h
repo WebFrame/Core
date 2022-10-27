@@ -43,7 +43,7 @@ namespace Moka
   public:
     void enter(std::string name) {
       indent();
-      std::cout << cli::bold(name) << "\n";
+      std::cout << cli::bold(name) << std::endl;
       mNames.push_back(name);
     }
 
@@ -74,20 +74,20 @@ namespace Moka
     }
 
     int print() const {
-      std::cout << "\n";
+      std::cout << std::endl;
       unsigned int fails = 0;
       for(const Item& i: mItems) {
         if(!i.failed) continue;
         fails += i.error.is_fail();
         std::cout << prefix(i) << i.id << ") " << i.name << ":\n";
-        std::cout << "  " << i.error.what() << "\n";
+        std::cout << "  " << i.error.what() << std::endl;
 
         if(i.error.file()) {
           std::cout << "  in " << cli::bold(i.error.file());
-          std::cout << ':' << i.error.line() << "\n";
+          std::cout << ':' << i.error.line() << std::endl;
         }
 
-        std::cout << "\n";
+        std::cout << std::endl;
       }
       return fails;
     }
@@ -113,7 +113,7 @@ namespace Moka
     void summarize(const Item& i, const std::string& name) const {
       indent();
       std::cout << prefix(i) << i.id;
-      std::cout << ") " << name << "\n";
+      std::cout << ") " << name << std::endl;
     }
   };
 

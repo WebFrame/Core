@@ -22,10 +22,9 @@ configure_file(Core.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/lib/core/Core-version.hpp
 if (WIN32)
     list(APPEND EXTRA_LIBS wsock32 ws2_32)
 endif()
-if (NOT DEFINED MSVC)
-    find_package(Threads REQUIRED)
-    list(APPEND EXTRA_LIBS pthread)
-endif()
+
+find_package(Threads REQUIRED)
+list(APPEND EXTRA_LIBS ${CMAKE_THREAD_LIBS_INIT})
 
 # Include sub-projects.
 if(USE_INJA)
@@ -40,9 +39,6 @@ target_include_directories(Core INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 set_target_properties(Core PROPERTIES LINKER_LANGUAGE CXX)
 install(TARGETS Core DESTINATION ${PROJECT_BINARY_DIR})
 
-list(APPEND EXTRA_LIBS Core)
-list(APPEND EXTRA_INCLUDES "${CMAKE_CURRENT_SOURCE_DIR}/lib")
-
 if(RUN_TESTS)
     message("Core-Tests build:")
     add_subdirectory("tests/")
@@ -50,25 +46,25 @@ endif()
 
 # Generate example source code
 add_executable(BenchmarkNormal benchmark/contestants/server.cpp)
-target_link_libraries(BenchmarkNormal PUBLIC ${EXTRA_LIBS})
+target_link_libraries(BenchmarkNormal PUBLIC Core)
 target_include_directories(BenchmarkNormal PUBLIC
                           "${PROJECT_BINARY_DIR}"
                           )
                           
 add_executable(BenchmarkAtomic benchmark/contestants/server_atomic.cpp)
-target_link_libraries(BenchmarkAtomic PUBLIC ${EXTRA_LIBS})
+target_link_libraries(BenchmarkAtomic PUBLIC Core)
 target_include_directories(BenchmarkAtomic PUBLIC
                           "${PROJECT_BINARY_DIR}"
                           )
 
 add_executable(SampleExample example/Sample/main.cpp)
-target_link_libraries(SampleExample PUBLIC ${EXTRA_LIBS})
+target_link_libraries(SampleExample PUBLIC Core)
 target_include_directories(SampleExample PUBLIC
                           "${PROJECT_BINARY_DIR}"
                           )
 
 add_executable(ProjectExample example/Project/main.cpp)
-target_link_libraries(ProjectExample PUBLIC ${EXTRA_LIBS})
+target_link_libraries(ProjectExample PUBLIC Core)
 target_include_directories(ProjectExample PUBLIC
                           "${PROJECT_BINARY_DIR}"
                           )
