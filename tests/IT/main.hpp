@@ -54,8 +54,9 @@ void testCase_IntegrationTests (Moka::Report& report) {
 
 	std::filebuf fileBuffer;
 	fileBuffer.open ("./bin/log/buffer-IT.txt", std::ios::out);
-	std::ostream nil (&fileBuffer);
-	
+	std::ostream nill(&fileBuffer);
+	std::ostream* nil = &nill;
+
 	std::filebuf performance;
 	performance.open("./bin/log/performance.txt", std::ios::out | std::ios::trunc);
 	std::ostream performancer (&performance);
@@ -102,5 +103,5 @@ void testCase_IntegrationTests (Moka::Report& report) {
 			});
 		});
 	});
-	integration_tests.test(report);
+	integration_tests.run();
 }
