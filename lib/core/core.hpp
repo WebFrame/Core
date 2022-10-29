@@ -205,30 +205,30 @@ namespace webframe::core
 		WarningSynchronizedFile warn;
 		ErrorSynchronizedFile errors;
 
-		application() :
-#ifdef USE_INJA
-			template_dir{ "." },
-#endif
-			performancer{ SynchronizedFile(std::clog) },
-			logger{ InfoSynchronizedFile(std::cout) },
-			warn{ WarningSynchronizedFile(std::clog) },
-			errors{ ErrorSynchronizedFile(std::cerr) }
+		application()
 		{
+#ifdef USE_INJA
+			template_dir = ".";
+#endif
+			performancer = SynchronizedFile(&std::clog);
+			logger = InfoSynchronizedFile(&std::cout);
+			warn = WarningSynchronizedFile(&std::clog);
+			errors = ErrorSynchronizedFile(&std::cerr);
+			
 			this->handle("404", [&](const std::string& path) {
 				return "Error 404: " + path + " was not found.";
-				})
-				.handle("500", [&](const std::string& reason) {
-					return "Error 500: Internal server error: " + reason + ".";
-					});
+			})
+			.handle("500", [&](const std::string& reason) {
+				return "Error 500: Internal server error: " + reason + ".";
+			});
 		}
 
 	public:
 		static constexpr bool initHttpCodes([[maybe_unused]] const unsigned int code = 0) {
-			/*
-			std::visit([](auto code) {
+			/*std::visit([](auto code) {
 				constexpr auto [[maybe_unused]] _1 = http_codes::get_reason_by_code(_compile_time::codes[code]);
 				constexpr auto [[maybe_unused]] _2 = http_codes::get_reason_by_code(_compile_time::strCodes[code]);
-				}, _compile_time::var_index<_compile_time::codes.size()>(code));
+			}, _compile_time::var_index<_compile_time::codes.size()>(code));
 
 			return (code + 1 >= _compile_time::codes.size()) ? true : initHttpCodes(code + 1);
 			*/
@@ -273,25 +273,25 @@ namespace webframe::core
 			return this->routes;
 		}
 
-		application& set_performancer(std::ostream& _performancer = std::clog)
+		application& set_performancer(std::ostream* _performancer)
 		{
 			performancer = SynchronizedFile(_performancer);
 			return *this;
 		}
 
-		application& set_logger(std::ostream& _logger = std::cout)
+		application& set_logger(std::ostream* _logger)
 		{
 			logger = InfoSynchronizedFile(_logger);
 			return *this;
 		}
 
-		application& set_warner(std::ostream& _logger = std::clog)
+		application& set_warner(std::ostream* _logger)
 		{
 			warn = WarningSynchronizedFile(_logger);
 			return *this;
 		}
 
-		application& set_error_logger(std::ostream& _logger = std::cerr)
+		application& set_error_logger(std::ostream* _logger)
 		{
 			errors = ErrorSynchronizedFile(_logger);
 			return *this;
@@ -467,7 +467,7 @@ namespace webframe::core
 						break;
 				} while (n > 0);
 
-				this->logger << "(responder) Read state: " << (int)r.getState() << " " << total_recv << "\n";
+				//this->logger << "(responder) Read state: " << (int)r.getState() << " " << total_recv << "\n";
 
 				if (r.getState() != LoadingState::LOADED)
 					throw std::string("Request was not loaded completely and data with size=" + std::to_string(total_recv) + " was sent.");
@@ -482,7 +482,7 @@ namespace webframe::core
 				if (status == SOCKET_ERROR) {
 					return -1;
 				}
-				this->performancer << r.uri << ": " << timer(t1).count() << "\n";
+				this->performancer << r.uri << ": " << timer(t1).count() << "miliseconds\n";
 			}
 			catch (std::exception const& e)
 			{
@@ -503,22 +503,22 @@ namespace webframe::core
 		void handler(SOCKET client, const std::function<void()>& callback)
 		{
 			int status = this->responder(client);
-			this->logger << "(handler) Responded status: " << status << "\n";
+			//this->logger << "(handler) Responded status: " << status << "\n";
 			CLOSE(client);
-			this->logger << "(handler) Closing client: " << client << "\n";
+			//this->logger << "(handler) Closing client: " << client << "\n";
 			if (status != -2)
 			{
-				this->logger << "(handler) Calling callback" << "\n";
+				//this->logger << "(handler) Calling callback" << "\n";
 				callback();
-				this->logger << "(handler) Callback done" << "\n";
+				//this->logger << "(handler) Callback done" << "\n";
 			}
 		}
 
 		struct thread_pool;
-		struct thread
+		struct procedure_thread
 		{
 		private:
-			std::mutex m;
+			mutable std::shared_mutex m;
 			void unlock()
 			{
 				m.unlock();
@@ -534,28 +534,27 @@ namespace webframe::core
 		public:
 			std::shared_ptr<int> requestor;
 
-			thread()
+			procedure_thread()
 			{
-				m.unlock();
 				requestor = std::make_shared<int>();
 			}
 
 			void join(std::shared_ptr<std::function<void(int)>> f, int socket)
 			{
-				this->lock();
 				std::thread([this, f](int socket) {
+					const std::lock_guard<std::shared_mutex> lock_thread(this->m);
+
 					f->operator()(socket);
-					this->unlock();
-					}, socket).join();
+				}, socket).join();
 			}
 
 			void detach(std::shared_ptr<std::function<void(int)>> f, int socket)
 			{
-				this->lock();
 				std::thread([this, f](int socket) {
+					const std::lock_guard<std::shared_mutex> lock_thread(this->m);
+					
 					f->operator()(socket);
-					this->unlock();
-					}, socket).detach();
+				}, socket).detach();
 			}
 
 			friend struct thread_pool;
@@ -565,25 +564,26 @@ namespace webframe::core
 		{
 		private:
 			size_t size;
-			std::shared_ptr<std::vector<std::shared_ptr<thread>>> pool;
-			std::mutex extract;
+			std::shared_ptr<std::vector<std::shared_ptr<procedure_thread>>> pool;
+			mutable std::shared_mutex extract;
 		public:
 			explicit thread_pool(size_t _size) :
 				size{ _size },
-				pool{ std::make_shared<std::vector<std::shared_ptr<thread>>>(_size) }
+				pool{ std::make_shared<std::vector<std::shared_ptr<procedure_thread>>>(_size) }
 			{
 				for (size_t i = 0; i < _size; i++)
 				{
-					pool->at(i) = std::make_shared<thread>();
+					this->get(i) = std::make_shared<procedure_thread>();
 				}
 			}
 
-			std::shared_ptr<thread>& get(const size_t index) const
+			std::shared_ptr<procedure_thread>& get(const size_t index) const
 			{
+				std::lock_guard locker(this->extract);
 				return pool->at(index);
 			}
 
-			std::shared_ptr<thread>& operator[] (const size_t index) const
+			std::shared_ptr<procedure_thread>& operator[] (const size_t index) const
 			{
 				return this->get(index);
 			}
@@ -606,23 +606,23 @@ namespace webframe::core
 	public:
 		application& run(const char* PORT, const unsigned int cores, bool limited = false, int requests = -1)
 		{
-			this->port_status.initiate(PORT);
+			webframe::core::application::port_status.initiate(PORT);
 			std::thread([this](const char* PORT, const unsigned int cores, bool limited, int requests) {
 #ifdef _WIN32
 				// Initialize Winsock.
 				WSADATA wsaData;
 				this->logger << "(main) Startup called\n";
 				int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-				this->logger << "(main) Startup finished " << iResult << "\n";
+				//this->logger << "(main) Startup finished " << iResult << "\n";
 				if (iResult != NO_ERROR) {
 					this->errors << "(main) WSAStartup failed with error: " << iResult << "\n";
-					this->port_status.alert_start(PORT);
-					this->port_status.alert_end(PORT);
+					webframe::core::application::port_status.alert_start(PORT);
+					webframe::core::application::port_status.alert_end(PORT);
 					return;
 				}
 #endif
-				this->logger << "(main) Startup called\n";
-
+				this->logger << "(main) Startup done\n";
+				
 				const unsigned int threads = min(cores, limited ? requests : cores);
 				std::shared_ptr<thread_pool> threads_ptr = std::make_shared<thread_pool>(threads);
 
@@ -648,8 +648,8 @@ namespace webframe::core
 				if (status != 0)
 				{
 					this->errors << "(main) getaddrinfo error: " << gai_strerror(status) << "\n";
-					this->port_status.alert_start(PORT);
-					this->port_status.alert_end(PORT);
+					webframe::core::application::port_status.alert_start(PORT);
+					webframe::core::application::port_status.alert_end(PORT);
 					return;
 				}
 
@@ -658,8 +658,8 @@ namespace webframe::core
 				if (listener == -1)
 				{
 					this->errors << "(main) socket error: " << gai_strerror(status) << "\n";
-					this->port_status.alert_start(PORT);
-					this->port_status.alert_end(PORT);
+					webframe::core::application::port_status.alert_start(PORT);
+					webframe::core::application::port_status.alert_end(PORT);
 					return;
 				}
 
@@ -668,8 +668,8 @@ namespace webframe::core
 				if (status < 0)
 				{
 					this->errors << "(main) bind error: " << status << " " << gai_strerror(status) << "\n";
-					this->port_status.alert_start(PORT);
-					this->port_status.alert_end(PORT);
+					webframe::core::application::port_status.alert_start(PORT);
+					webframe::core::application::port_status.alert_end(PORT);
 					return;
 				}
 
@@ -677,8 +677,8 @@ namespace webframe::core
 				if (status < 0)
 				{
 					this->errors << "(main) listen error: " << gai_strerror(status) << "\n";
-					this->port_status.alert_start(PORT);
-					this->port_status.alert_end(PORT);
+					webframe::core::application::port_status.alert_start(PORT);
+					webframe::core::application::port_status.alert_end(PORT);
 					return;
 				}
 
@@ -686,8 +686,8 @@ namespace webframe::core
 				if (status < 0)
 				{
 					this->errors << "(main) nonblocking config error: " << gai_strerror(status) << "\n";
-					this->port_status.alert_start(PORT);
-					this->port_status.alert_end(PORT);
+					webframe::core::application::port_status.alert_start(PORT);
+					webframe::core::application::port_status.alert_end(PORT);
 					return;
 				}
 
@@ -698,9 +698,8 @@ namespace webframe::core
 				bool started = false;
 
 				while (!limited || requests > 0) {
-
 					// Check if abort was requested
-					if (this->port_status.is_over(PORT)) {
+					if (webframe::core::application::port_status.is_over(PORT)) {
 						break;
 					}
 
@@ -708,10 +707,10 @@ namespace webframe::core
 					const std::optional<size_t> thread = threads_ptr->get_free_thread();
 					if (!thread)
 						continue;
-
+					
 					// Alert waiting for the first request
 					if (!started) {
-						this->port_status.alert_start(PORT);
+						webframe::core::application::port_status.alert_start(PORT);
 						started = true;
 					}
 
@@ -723,8 +722,8 @@ namespace webframe::core
 						continue;
 					}
 
-					this->logger << "(main) Client found: " << client << "\n";
-					this->logger << "(main) Requestor " << client << " is getting handled\n";
+					//this->logger << "(main) Client found: " << client << "\n";
+					//this->logger << "(main) Requestor " << client << " is getting handled\n";
 
 					// Check if the socket is valid
 					{
@@ -737,59 +736,68 @@ namespace webframe::core
 						FD_SET(client, &readSet);
 
 						status = SELECT(client + 1, &readSet, nullptr, nullptr, &selTimeout);
-						this->logger << "(main) SELECT status is " << status << "\n";
+						//this->logger << "(main) SELECT status is " << status << "\n";
 						if (status < 0) {
-							this->errors << "(main) INVALID SOCKET: " << client << " was skipped (" << status << ")\n";
+							//this->errors << "(main) INVALID SOCKET: " << client << " was skipped (" << status << ")\n";
 							continue;
 						}
 
-						this->logger << "(main) Requestor " << client << " is still valid\n";
+						//this->logger << "(main) Requestor " << client << " is still valid\n";
 					}
 
 					this->logger << "(main) " << thread.value() << " thread will handle client " << client << "\n";
 					threads_ptr->get(thread.value())->detach(std::make_shared<std::function<void(int)>>([this, &limited, &requests](SOCKET socket) -> void {
-						this->handler(socket, [this, &limited, &requests]() {
+						this->handler(socket, [&limited, &requests]() {
 							if (!limited) return;
 							requests--;
-							this->logger << "(callback) Requests: " << requests << "\n";
-							});
-						}), client);
+							//this->logger << "(callback) Requests: " << requests << "\n";
+						});
+					}), client);
 				}
 
-				if (!this->port_status.is_over(PORT)) {
-					this->port_status.alert_end(PORT);
+				if (!webframe::core::application::port_status.is_over(PORT)) {
+					webframe::core::application::port_status.alert_end(PORT);
 				}
 #ifdef _WIN32
 				WSACleanup();
 #endif
-				}, PORT, cores, limited, requests).detach();
-				return *this;
+			}, PORT, cores, limited, requests).detach();
+			return *this;
 		}
 
-		void wait_start(const char* PORT)
+		static void wait_start(const char* PORT)
 		{
-			port_status.get_start(PORT).lock();
+			webframe::core::application::port_status.get_start(PORT).lock();
 		}
 
-		void wait_end(const char* PORT)
+		static void wait_end(const char* PORT)
 		{
-			port_status.get_end(PORT).lock();
+			webframe::core::application::port_status.get_end(PORT).lock();
 		}
 
-		void request_stop(const char* PORT)
+		static void request_stop(const char* PORT)
 		{
-			port_status.alert_end(PORT);
+			webframe::core::application::port_status.alert_end(PORT);
 		}
 
-		void reset(const char* PORT)
+		static void reset(const char* PORT)
 		{
-			port_status.reset(PORT);
+			webframe::core::application::port_status.reset(PORT);
 		}
-	private:
-		server_status port_status;
+	protected:
+		static server_status port_status;
 	public:
 		friend class router;
 	};
+	server_status application::port_status = server_status();
+
 } // namespace core
 
 #define init_routes(name) const webframe::core::router name = webframe::core::router()
+
+namespace webframe::core
+{
+	application& create_app() {
+		return *(new application());
+	}
+}
