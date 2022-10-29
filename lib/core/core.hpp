@@ -536,14 +536,17 @@ namespace webframe::core
 
 			thread()
 			{
+				m.unlock();
 				requestor = std::make_shared<int>();
 			}
 
 			void join(std::shared_ptr<std::function<void(int)>> f, int socket)
 			{
-				const std::lock_guard<std::shared_mutex> lock_thread(this->m);
+				std::thread([this, f](int socket) {
+					const std::lock_guard<std::shared_mutex> lock_thread(this->m);
 
-				f->operator()(socket);
+					f->operator()(socket);
+				}, socket).join();
 			}
 
 			void detach(std::shared_ptr<std::function<void(int)>> f, int socket)
