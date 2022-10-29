@@ -15,5 +15,6 @@ var searchData=
   ['core_2ecpp_21',['core.cpp',['../da/de0/core_8cpp.html',1,'']]],
   ['core_2ehpp_22',['core.hpp',['../da/d47/core_8hpp.html',1,'']]],
   ['core_5fversion_5fmajor_23',['Core_VERSION_MAJOR',['../d1/dcd/_core-version_8hpp.html#aca79252db25df2c907e95273bc73c1bb',1,'Core-version.hpp']]],
-  ['core_5fversion_5fminor_24',['Core_VERSION_MINOR',['../d1/dcd/_core-version_8hpp.html#a7e17333cb151f6a0499ea1212c06f142',1,'Core-version.hpp']]]
+  ['core_5fversion_5fminor_24',['Core_VERSION_MINOR',['../d1/dcd/_core-version_8hpp.html#a7e17333cb151f6a0499ea1212c06f142',1,'Core-version.hpp']]],
+  ['create_5fapp_25',['create_app',['../d2/dab/namespacewebframe_1_1core.html#ac10073ac447912605740a8d9bc6f42f1',1,'webframe::core']]]
 ];
