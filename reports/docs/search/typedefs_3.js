@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['var_5fenum_5fover_5ft_377',['var_enum_over_t',['../d8/df7/namespacewebframe_1_1__compile__time.html#a4173e9ff39407e38460a9940bc46dd96',1,'webframe::_compile_time']]],
-  ['var_5fenum_5ft_378',['var_enum_t',['../d8/df7/namespacewebframe_1_1__compile__time.html#aa7eff3f8b1536e1446bb97e1c8f10a12',1,'webframe::_compile_time']]],
-  ['var_5findex_5ft_379',['var_index_t',['../d8/df7/namespacewebframe_1_1__compile__time.html#a9f6808dc765550c61b85458c3fc4731b',1,'webframe::_compile_time']]]
+  ['type_383',['type',['../d1/d66/structwebframe_1_1__compile__time_1_1var__enum__over_3_01std_1_1integer__sequence_3_01_t_00_01_is_8_8_8_01_4_01_4.html#ad2873ecdc3fa2d0ca107d507e59c1b5d',1,'webframe::_compile_time::var_enum_over&lt; std::integer_sequence&lt; T, Is... &gt; &gt;::type()'],['../d4/d92/structdetail_1_1deduce__type_3_01_r_e_t_u_r_n___t_y_p_e_07_c_l_a_s_s___t_y_p_e_1_1_5_08_07_a_r_g_s_8_8_8_08_01const_01_4.html#add7429481888a8e8f9e055dcee6508b0',1,'detail::deduce_type&lt; RETURN_TYPE(CLASS_TYPE::*)(ARGS...) const &gt;::type()']]]
 ];
