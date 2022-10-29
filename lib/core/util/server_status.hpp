@@ -14,16 +14,24 @@ namespace webframe
 	class server_status 
 	{
 	public:
-        server_status() 
+		server_status()
 		{
-			for (int i = 0 ; i < 65536 ; i++) 
+			for (int i = 0; i < 65536; i++)
 			{
 				start[i] = dead[i] = nullptr;
 			}
-        }
+		}
+		~server_status()
+		{
+			for (int i = 0; i < 65536; i++)
+			{
+				if (start[i] != nullptr) delete start[i];
+				if (dead[i] != nullptr) delete dead[i];
+			}
+		}
     private:
-		std::mutex* start [65536];
-		std::mutex* dead  [65536];
+		std::shared_mutex* start [65536];
+		std::shared_mutex* dead  [65536];
 		
     public:
 		void initiate(const char* PORT) 
@@ -32,8 +40,8 @@ namespace webframe
 				throw std::ios_base::failure("start mutex is not cleaned up.");
 			if (this->get_end_ptr(PORT) != nullptr)
 				throw std::ios_base::failure("end mutex is not cleaned up.");
-			this->get_start_ptr(PORT) = new std::mutex();
-			this->get_end_ptr(PORT) = new std::mutex();
+			this->get_start_ptr(PORT) = new std::shared_mutex();
+			this->get_end_ptr(PORT) = new std::shared_mutex();
 			this->lock_working(PORT);
 			this->lock_dead(PORT);
 		}
@@ -56,12 +64,12 @@ namespace webframe
 			return true;
         }
 
-        std::mutex& get_start(const char* PORT) 
+        std::shared_mutex& get_start(const char* PORT)
 		{
             return *this->start[_compile_time::string_to_uint(PORT)];
         }
 
-        std::mutex& get_end(const char* PORT) 
+        std::shared_mutex& get_end(const char* PORT)
 		{
             return *this->dead[_compile_time::string_to_uint(PORT)];
         }
@@ -75,12 +83,12 @@ namespace webframe
 		}
 
     private:
-        std::mutex*& get_start_ptr(const char* PORT) 
+        std::shared_mutex*& get_start_ptr(const char* PORT)
 		{
             return this->start[_compile_time::string_to_uint(PORT)];
         }
 
-        std::mutex*& get_end_ptr(const char* PORT) 
+        std::shared_mutex*& get_end_ptr(const char* PORT)
 		{
             return this->dead[_compile_time::string_to_uint(PORT)];
         }
