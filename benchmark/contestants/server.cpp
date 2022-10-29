@@ -7,7 +7,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 {
 	constexpr long long fasten = webframe::core::application::init();
 	long long pass = fasten;
-	webframe::core::application app;
+	webframe::core::application& app = webframe::core::create_app();
 	app.route("/{number}/2", [&](long long steps) {
 			for (long long i = 0; i < (1 << steps); i++)
 			{
@@ -26,4 +26,5 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char** argv)
 	const char* port = argv[1];
 	std::cout << port << std::endl;
 	app.run(port, 1).wait_end(port);
+	delete& app;
 }

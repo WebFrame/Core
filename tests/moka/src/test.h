@@ -77,6 +77,7 @@ namespace Moka
       std::cout << std::endl;
       unsigned int fails = 0;
       for(const Item& i: mItems) {
+          std::cout << "there is an item" << std::endl;
         if(!i.failed) continue;
         fails += i.error.is_fail();
         std::cout << prefix(i) << i.id << ") " << i.name << ":\n";
@@ -223,7 +224,9 @@ namespace Moka
 
     void test(Report& report) const {
       report.enter(mPrefix + mName);
+      std::cout << mPrefix + mName << std::endl;
       if(mHasSetup) mSetup();
+      std::cout << "Setup Done" << mHasSetup << " | " << (this) << std::endl;
       for(const Base* m: mMembers) m->test(report);
       if(mHasTeardown) mTeardown();
       report.leave();
