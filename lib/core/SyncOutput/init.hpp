@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <mutex>
+#include <shared_mutex>
 #include <string>
 #include <iomanip>
 #include <cstring>
@@ -18,7 +18,8 @@
   ***********************************************/
 class SynchronizedFile {
 public:
-    explicit SynchronizedFile(std::basic_ostream<char>& path) : _path(&path) {
+    explicit SynchronizedFile(std::basic_ostream<char>* path) {
+        _path = path;
     }
 
     SynchronizedFile() : _path(nullptr) {
@@ -33,12 +34,12 @@ public:
     friend SynchronizedFile& operator << (SynchronizedFile&, T);
 protected:
     std::ostream* _path;
-    std::mutex _writerMutex;
+    mutable std::shared_mutex _writerMutex;
 };
 
 class WarningSynchronizedFile : public SynchronizedFile {
 public:
-    explicit WarningSynchronizedFile(std::basic_ostream<char>& path) : SynchronizedFile(path) {
+    explicit WarningSynchronizedFile(std::basic_ostream<char>* path) : SynchronizedFile(path) {
     }
 
     WarningSynchronizedFile() : SynchronizedFile() {
@@ -49,7 +50,7 @@ public:
 };
 class InfoSynchronizedFile : public SynchronizedFile {
 public:
-    explicit InfoSynchronizedFile(std::basic_ostream<char>& path) : SynchronizedFile(path) {
+    explicit InfoSynchronizedFile(std::basic_ostream<char>* path) : SynchronizedFile(path) {
     }
 
     InfoSynchronizedFile() : SynchronizedFile() {
@@ -60,7 +61,7 @@ public:
 };
 class ErrorSynchronizedFile : public SynchronizedFile {
 public:
-    explicit ErrorSynchronizedFile(std::basic_ostream<char>& path) : SynchronizedFile(path) {
+    explicit ErrorSynchronizedFile(std::basic_ostream<char>* path) : SynchronizedFile(path) {
     }
 
     ErrorSynchronizedFile() : SynchronizedFile() {
@@ -72,48 +73,40 @@ public:
 
 template<typename T>
 SynchronizedFile& operator << (SynchronizedFile& file, T val) {
-    file._writerMutex.lock();
+    const std::lock_guard<std::shared_mutex> locker(file._writerMutex);
 
     (*file._path) << val;
     (*file._path).flush();
-
-    file._writerMutex.unlock();
 
     return file;
 }
 
 template<typename T>
 InfoSynchronizedFile& operator << (InfoSynchronizedFile& file, T val) {
-    file._writerMutex.lock();
+    const std::lock_guard<std::shared_mutex> locker(file._writerMutex);
 
     (*file._path) << val;
     (*file._path).flush();
-
-    file._writerMutex.unlock();
 
     return file;
 }
 
 template<typename T>
 WarningSynchronizedFile& operator << (WarningSynchronizedFile& file, T val) {
-    file._writerMutex.lock();
+    const std::lock_guard<std::shared_mutex> locker(file._writerMutex);
 
     (*file._path) << val;
     (*file._path).flush();
-
-    file._writerMutex.unlock();
 
     return file;
 }
 
 template<typename T>
 ErrorSynchronizedFile& operator << (ErrorSynchronizedFile& file, T val) {
-    file._writerMutex.lock();
+    const std::lock_guard<std::shared_mutex> locker(file._writerMutex);
 
     (*file._path) << val;
     (*file._path).flush();
-
-    file._writerMutex.unlock();
 
     return file;
 }
