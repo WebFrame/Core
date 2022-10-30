@@ -1,12 +1,11 @@
-# <span style="font-size: 2.25em;"> WebFrame++ ![C++](https://img.shields.io/badge/c++-%2300599C.svg?&logo=c%2B%2B&logoColor=white) ![Mocha](https://img.shields.io/badge/-mocha-%238D6748?logo=mocha&logoColor=white)<br>[![Build, Test, Benchmark, Deploy](https://github.com/WebFrame/Core/actions/workflows/all.yaml/badge.svg)](https://github.com/WebFrame/Core/actions/workflows/all.yaml) [![Code Quality](https://github.com/WebFrame/Core/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/WebFrame/Core/actions/workflows/codeql-analysis.yml)<br>[![Issues](https://img.shields.io/github/issues/WebFrame/Core?)](https://github.com/WebFrame/Core) [![Forks](https://img.shields.io/github/forks/WebFrame/Core?)](https://github.com/WebFrame/Core) [![Stars](https://img.shields.io/github/stars/WebFrame/Core?)](https://github.com/WebFrame/Core) [![License](https://img.shields.io/github/license/WebFrame/Core?)](https://github.com/WebFrame/Core)</span>
+# <span style="font-size: 2.25em;"> WebFrame++ ![C++](https://img.shields.io/badge/c++-%2300599C.svg?&logo=c%2B%2B&logoColor=white) ![Mocha](https://img.shields.io/badge/-mocha-%238D6748?logo=mocha&logoColor=white)<br>[![Compile & Build](https://github.com/WebFrame/Core/actions/workflows/compilation.yaml/badge.svg)](https://github.com/WebFrame/Core/actions/workflows/compilation.yaml) [![Benchmark & Deploy](https://github.com/WebFrame/Core/actions/workflows/benchmark-and-deploy.yaml/badge.svg)](https://github.com/WebFrame/Core/actions/workflows/benchmark-and-deploy.yaml) [![Code Quality](https://github.com/WebFrame/Core/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/WebFrame/Core/actions/workflows/codeql-analysis.yml)<br>[![Issues](https://img.shields.io/github/issues/WebFrame/Core?)](https://github.com/WebFrame/Core) [![Forks](https://img.shields.io/github/forks/WebFrame/Core?)](https://github.com/WebFrame/Core) [![Stars](https://img.shields.io/github/stars/WebFrame/Core?)](https://github.com/WebFrame/Core) [![License](https://img.shields.io/github/license/WebFrame/Core?)](https://github.com/WebFrame/Core)</span>
 ### Make your web application faster now!
 <hr>
 
 #### Requirements
-| Compiler version | Minimum C++ standard required |
-|:----------------:|:-----------------------------:|
-| GCC <= 9.x       | -std=c++2a                    |
-| GCC >= 10.x      | -std=c++20                    |
+| Compiler version  | Minimum C++ standard required |
+|:-----------------:|:-----------------------------:|
+| GCC, Clang, MSVC  | -std=c++2a _or_ -std=c++20    |
 # Testing
 ## Cppcheck - static code analysis
 Check the static code analysis of the project [here](https://webframe.github.io/Core/codeql_report/).
@@ -25,7 +24,7 @@ Check the Doxygen documentation of the library [here](https://webframe.github.io
 2. Initiate your Web application
 
     ```cpp
-    webframe::core::application app;
+    webframe::core::application& app = webframe::core::create_app();
     ``` 
 
 3. Set directories for your static files
