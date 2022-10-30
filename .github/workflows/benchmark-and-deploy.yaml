@@ -63,7 +63,7 @@ jobs:
         run: |
           declare -x optimization="`echo ${{ matrix.server }} | cut -d'-' -f2`"
           [[ "$optimization" = "" ]] && optimization="default" || optimization="-$optimization"
-          echo "optmization=$optimization" >> $GITHUB_OUTPUT
+          echo "optimization=$optimization" >> $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
       - name: Checkout 🛎️
         uses: actions/checkout@v3
