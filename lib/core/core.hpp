@@ -515,7 +515,7 @@ namespace webframe::core
 		}
 
 		struct thread_pool;
-		struct thread
+		struct procedure_thread
 		{
 		private:
 			mutable std::shared_mutex m;
@@ -534,16 +534,18 @@ namespace webframe::core
 		public:
 			std::shared_ptr<int> requestor;
 
-			thread()
+			procedure_thread()
 			{
 				requestor = std::make_shared<int>();
 			}
 
 			void join(std::shared_ptr<std::function<void(int)>> f, int socket)
 			{
-				const std::lock_guard<std::shared_mutex> lock_thread(this->m);
+				std::thread([this, f](int socket) {
+					const std::lock_guard<std::shared_mutex> lock_thread(this->m);
 
-				f->operator()(socket);
+					f->operator()(socket);
+				}, socket).join();
 			}
 
 			void detach(std::shared_ptr<std::function<void(int)>> f, int socket)
@@ -562,25 +564,26 @@ namespace webframe::core
 		{
 		private:
 			size_t size;
-			std::shared_ptr<std::vector<std::shared_ptr<thread>>> pool;
+			std::shared_ptr<std::vector<std::shared_ptr<procedure_thread>>> pool;
 			mutable std::shared_mutex extract;
 		public:
 			explicit thread_pool(size_t _size) :
 				size{ _size },
-				pool{ std::make_shared<std::vector<std::shared_ptr<thread>>>(_size) }
+				pool{ std::make_shared<std::vector<std::shared_ptr<procedure_thread>>>(_size) }
 			{
 				for (size_t i = 0; i < _size; i++)
 				{
-					pool->at(i) = std::make_shared<thread>();
+					this->get(i) = std::make_shared<procedure_thread>();
 				}
 			}
 
-			std::shared_ptr<thread>& get(const size_t index) const
+			std::shared_ptr<procedure_thread>& get(const size_t index) const
 			{
+				std::lock_guard locker(this->extract);
 				return pool->at(index);
 			}
 
-			std::shared_ptr<thread>& operator[] (const size_t index) const
+			std::shared_ptr<procedure_thread>& operator[] (const size_t index) const
 			{
 				return this->get(index);
 			}

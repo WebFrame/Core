@@ -128,7 +128,9 @@ webframe::core::application* app;
 TEMPLATE_TEST_CASE_SIG("Standart application with \"Hello, World!\" on /{number} for number", "[IT]",
 	((int V), V), (0), (1), (2), (3), (4), (5), (6), (7), (8), (9), (10), (11), (12), (13), (14), (15), (16), (17), (18), (19), (20), (21), (22), (23), (24), (25), (26), (27), (28), (29), (30), (31)) {
 	int i = V;
-	std::string number = (std::stringstream() << i).str();
+	std::stringstream ss;
+	ss << i;
+	std::string number = ss.str();
 	
 	response_of("http://localhost:8891/" + number, number).must_be("Hello, World!").might_take_less(15.0 * 1e-6 * (1ll << i));
 }
