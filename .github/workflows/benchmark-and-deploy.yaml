@@ -63,7 +63,7 @@ jobs:
         run: |
           declare -x optimization="`echo ${{ matrix.server }} | cut -d'-' -f2`"
           [[ "$optimization" = "" ]] && optimization="default" || optimization="-$optimization"
-          echo "optmization=$optimization" >> $GITHUB_OUTPUT
+          echo "optimization=$optimization" >> $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
       - name: Checkout 🛎️
         uses: actions/checkout@v3
@@ -81,7 +81,7 @@ jobs:
       - name: Install WebFrame & Build servers 🔧
         shell: bash
         run: |
-          CXX_COMPILER=g++-11 cmake . && make
+          CXX_COMPILER=g++-11 cmake -DOPTIMIZATION=${{ steps.env.outputs.optimization }} . && make
       - name: Run Atomic server 🔧
         if: startsWith(matrix.server, 'ac++')
         shell: bash
