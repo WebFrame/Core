@@ -14,21 +14,13 @@ namespace webframe
 	class server_status 
 	{
 	public:
-		server_status()
+        server_status() 
 		{
-			for (int i = 0; i < 65536; i++)
+			for (int i = 0 ; i < 65536 ; i++) 
 			{
 				start[i] = dead[i] = nullptr;
 			}
-		}
-		~server_status()
-		{
-			for (int i = 0; i < 65536; i++)
-			{
-				if (start[i] != nullptr) delete start[i];
-				if (dead[i] != nullptr) delete dead[i];
-			}
-		}
+        }
     private:
 #ifdef USE_PTHREAD
 		using mutex = std::mutex;
