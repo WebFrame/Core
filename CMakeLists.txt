@@ -26,6 +26,10 @@ endif()
 find_package(Threads REQUIRED)
 list(APPEND EXTRA_LIBS ${CMAKE_THREAD_LIBS_INIT})
 
+if(CMAKE_USE_PTHREADS_INIT) 
+    add_definitions(-DUSE_PTHREAD)
+endif()
+
 # Include sub-projects.
 if(USE_INJA)
     add_subdirectory("lib/inja")

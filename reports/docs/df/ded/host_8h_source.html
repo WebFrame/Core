@@ -84,7 +84,7 @@ $(function() {
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">  #include &lt;time.h&gt;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#ifdef __unix__</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#if !defined(_WIN32) &amp;&amp; (defined(__unix__) || defined(__unix) || (defined(__APPLE__) &amp;&amp; defined(__MACH__)))</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">  #include &lt;unistd.h&gt;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">  #include &lt;fcntl.h&gt;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">  #include &lt;stdio.h&gt;</span></div>
@@ -113,7 +113,7 @@ $(function() {
 <div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="../../df/ded/host_8h.html#aeea7ec6e47ecea02cc6812b268034b28">   40</a></span>&#160;<span class="preprocessor">  #define __WORDSIZE 32</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#ifdef __unix__</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#if !defined(_WIN32) &amp;&amp; (defined(__unix__) || defined(__unix) || (defined(__APPLE__) &amp;&amp; defined(__MACH__)))</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>  uint8;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">typedef</span> <span class="keywordtype">char</span>           int8;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> uint16;</div>
@@ -228,7 +228,7 @@ $(function() {
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="preprocessor">#define GETHOSTBYNAME(a)       gethostbyname(a)</span></div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="preprocessor">#ifdef __unix__</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="preprocessor">#if !defined(_WIN32) &amp;&amp; (defined(__unix__) || defined(__unix) || (defined(__APPLE__) &amp;&amp; defined(__MACH__)))</span></div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="preprocessor">#define SOCKET_ERROR           (-1)</span></div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="preprocessor">#define INVALID_SOCKET         (-1)</span></div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="preprocessor">#define ACCEPT(a,b,c)          accept(a,b,c)</span></div>
@@ -353,7 +353,7 @@ $(function() {
 <div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;  <span class="keywordflow">return</span> ioctlsocket(socket, FIONBIO, &amp;iMode);</div>
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;}</div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="preprocessor">#ifdef __unix__</span></div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;<span class="preprocessor">#if !defined(_WIN32) &amp;&amp; (defined(__unix__) || defined(__unix) || (defined(__APPLE__) &amp;&amp; defined(__MACH__)))</span></div>
 <div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="keywordtype">int</span> nonblock_config(SOCKET s) {</div>
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;  <span class="keywordflow">return</span> fcntl(s, F_SETFL, O_NONBLOCK);</div>
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;}</div>
