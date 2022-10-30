@@ -81,7 +81,7 @@ jobs:
       - name: Install WebFrame & Build servers 🔧
         shell: bash
         run: |
-          CXX_COMPILER=g++-11 cmake . && make
+          CXX_COMPILER=g++-11 cmake -DOPTIMIZATION=${{ steps.env.outputs.optimization }} . && make
       - name: Run Atomic server 🔧
         if: startsWith(matrix.server, 'ac++')
         shell: bash
