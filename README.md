@@ -24,7 +24,7 @@ Check the Doxygen documentation of the library [here](https://webframe.github.io
 2. Initiate your Web application
 
     ```cpp
-    webframe::core::application& app = webframe::core::create_app();
+    webframe::core::application app;
     ``` 
 
 3. Set directories for your static files

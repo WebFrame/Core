@@ -3,8 +3,6 @@
 <link rel="stylesheet" href="./Doxygen-css/custom.css">
 <link rel="stylesheet" href="./Doxygen-css/custom_dark_theme.css">
 
-<h1 id="spanstylefontsize225emwebframechttpsimgshieldsiobadgec2300599csvglogoc2b2blogocolorwhitemochahttpsimgshieldsiobadgemocha238d6748logomochalogocolorwhitebrbuildtestbenchmarkdeployhttpsgithubcomwebframecoreactionsworkflowsallyamlbadgesvghttpsgithubcomwebframecoreactionsworkflowsallyamlcodequalityhttpsgithubcomwebframecoreactionsworkflowscodeqlanalysisymlbadgesvghttpsgithubcomwebframecoreactionsworkflowscodeqlanalysisymlbrissueshttpsimgshieldsiogithubissueswebframecorehttpsgithubcomwebframecoreforkshttpsimgshieldsiogithubforkswebframecorehttpsgithubcomwebframecorestarshttpsimgshieldsiogithubstarswebframecorehttpsgithubcomwebframecorelicensehttpsimgshieldsiogithublicensewebframecorehttpsgithubcomwebframecorespan"><span style="font-size: 2.25em;"><img src="https://img.shields.io/badge/c++-%2300599C.svg?&amp;logo=c%2B%2B&amp;logoColor=white" alt="C++" /> <img src="https://img.shields.io/badge/-mocha-%238D6748?logo=mocha&amp;logoColor=white" alt="Mocha" /><br><a href="https://github.com/WebFrame/Core/actions/workflows/all.yaml"><img src="https://github.com/WebFrame/Core/actions/workflows/all.yaml/badge.svg" alt="Build, Test, Benchmark, Deploy" /></a> <a href="https://github.com/WebFrame/Core/actions/workflows/codeql-analysis.yml"><img src="https://github.com/WebFrame/Core/actions/workflows/codeql-analysis.yml/badge.svg" alt="Code Quality" /></a><br><a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/issues/core/Core?" alt="Issues" /></a> <a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/forks/core/Core?" alt="Forks" /></a> <a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/stars/core/Core?" alt="Stars" /></a> <a href="https://github.com/WebFrame/Core"><img src="https://img.shields.io/github/license/core/Core?" alt="License" /></a></span></h1>
-
 <h3 id="makeyourwebapplicationfasternow">Make your web application faster now!</h3>
 
 <hr>
@@ -14,8 +12,7 @@
 <p>
   <table class="fieldtable">
     <tr><th class="fieldname">Compiler version</th><th class="fieldname">Minimum C++ standard required</th></tr>
-    <tr><td class="fieldname">GCC &lt;= 9.x   </td><td class="fieldname">-std=c++2a</td></tr>
-    <tr><td class="fieldname">GCC &gt;= 10.x  </td><td class="fieldname">-std=c++20</td></tr>
+    <tr><td class="fieldname">GCC, Clang, MinGW, MSVC   </td><td class="fieldname">-std=c++2a <i>-std=c++20</i></td></tr>
   </table>
 </p>
 
