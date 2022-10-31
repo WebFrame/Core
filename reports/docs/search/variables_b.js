@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['remaining_5fto_5fparse_365',['remaining_to_parse',['../d7/df1/classwebframe_1_1core_1_1request.html#aedd714e8ff21432e20ef4d8241425968',1,'webframe::core::request']]],
-  ['request_5fparams_366',['request_params',['../d7/df1/classwebframe_1_1core_1_1request.html#a682e248244566bed705f2635c4ac3b9b',1,'webframe::core::request']]],
-  ['requestor_367',['requestor',['../da/d10/structwebframe_1_1core_1_1application_1_1procedure__thread.html#a7b111bcd492f7560e074a3f951b7522b',1,'webframe::core::application::procedure_thread']]],
-  ['responses_368',['responses',['../d1/d67/classwebframe_1_1core_1_1application.html#aa2bc94f903367ac810be97a31b4535e4',1,'webframe::core::application']]],
-  ['routes_369',['routes',['../d9/d72/classwebframe_1_1core_1_1router.html#a360d32f7e1f8c33e4706079a02f938ca',1,'webframe::core::router::routes()'],['../d1/d67/classwebframe_1_1core_1_1application.html#a4bb41faeece306810db6f1cebf8a31b4',1,'webframe::core::application::routes()']]]
+  ['performancer_370',['performancer',['../d8/df9/classwebframe_1_1core_1_1__application.html#ab9528aadb94b893bc080a4fc387dd09d',1,'webframe::core::_application']]],
+  ['pool_371',['pool',['../da/d82/structwebframe_1_1core_1_1__application_1_1thread__pool.html#a9600f9299fd74b6b76c9b68add71b702',1,'webframe::core::_application::thread_pool']]],
+  ['port_5fstatus_372',['port_status',['../d8/df9/classwebframe_1_1core_1_1__application.html#ac3f67ae56d4b9f2e7c49584a224ec51e',1,'webframe::core::_application']]],
+  ['ports_373',['ports',['../d8/df7/namespacewebframe_1_1__compile__time.html#a20896161e180eadeb35cb4d18954e82a',1,'webframe::_compile_time']]]
 ];
