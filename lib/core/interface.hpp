@@ -29,14 +29,14 @@ namespace webframe::core
 		template <typename F>
 		inline application& handle(std::string code, F _res)
 		{
-			app->handle(core, _res);
+			app->handle(code, _res);
 			return *this;
 		}
 
 		template <typename Ret, typename... Ts>
 		inline application& handle(std::string code, std::function<Ret(Ts...)> const& res)
 		{
-			app->handle(core, res);
+			app->handle(code, res);
 			return *this;
 		}
 
