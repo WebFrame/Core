@@ -1,7 +1,17 @@
 var searchData=
 [
-  ['thread_5fpool_329',['thread_pool',['../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a2b1541a15e47650eab0ccc35e1a1a1c6',1,'webframe::core::application::thread_pool']]],
-  ['timer_330',['timer',['../d1/d67/classwebframe_1_1core_1_1application.html#a7446871d0d4e9387cd0f4cf14e2dc41b',1,'webframe::core::application']]],
-  ['to_5fstring_331',['to_string',['../d4/db2/classwebframe_1_1core_1_1response.html#a32a880ab10b62cdeadf26ec7faa627a5',1,'webframe::core::response::to_string()'],['../db/d97/structwebframe_1_1core_1_1status__line.html#a9da10a205a0ec4ad6eb2111a30a04fe7',1,'webframe::core::status_line::to_string()']]],
-  ['try_5flock_332',['try_lock',['../da/d10/structwebframe_1_1core_1_1application_1_1procedure__thread.html#a45e6f73272aa5661ed3e60a9aef7911f',1,'webframe::core::application::procedure_thread']]]
+  ['server_5fstatus_322',['server_status',['../dc/d90/classwebframe_1_1server__status.html#a06e2209fcbfc9ab4e50d8b97883feca6',1,'webframe::server_status']]],
+  ['set_5ferror_5flogger_323',['set_error_logger',['../d8/df9/classwebframe_1_1core_1_1__application.html#a5f43158fe4286566bad0094bc041a8b1',1,'webframe::core::_application::set_error_logger()'],['../d1/d67/classwebframe_1_1core_1_1application.html#a6d2c3ca1c97952473596f5adcb9132c7',1,'webframe::core::application::set_error_logger()']]],
+  ['set_5flogger_324',['set_logger',['../d8/df9/classwebframe_1_1core_1_1__application.html#ab1666d5e5bae823d8eb4232b3079c9fc',1,'webframe::core::_application::set_logger()'],['../d1/d67/classwebframe_1_1core_1_1application.html#adb4a9d308ddab92a40b638bcaf477583',1,'webframe::core::application::set_logger()']]],
+  ['set_5fperformancer_325',['set_performancer',['../d8/df9/classwebframe_1_1core_1_1__application.html#ab04b1d396ff94ec55dd2317b4d4ee2c1',1,'webframe::core::_application::set_performancer()'],['../d1/d67/classwebframe_1_1core_1_1application.html#afa21ff6db90a13921c4cde66a9957ae5',1,'webframe::core::application::set_performancer()']]],
+  ['set_5fstatic_326',['set_static',['../d8/df9/classwebframe_1_1core_1_1__application.html#a05c7bccca0ec2383fe8cf60e501f0c2a',1,'webframe::core::_application::set_static()'],['../d1/d67/classwebframe_1_1core_1_1application.html#a9a492b947b30341c29a13c9a9ebc7c68',1,'webframe::core::application::set_static()']]],
+  ['set_5fwarner_327',['set_warner',['../d8/df9/classwebframe_1_1core_1_1__application.html#adbf4f950a45403edbfc890824bdf38e2',1,'webframe::core::_application::set_warner()'],['../d1/d67/classwebframe_1_1core_1_1application.html#a5c1218838d9fe9f205b7a1e17bf613c4',1,'webframe::core::application::set_warner()']]],
+  ['set_5fwith_5fbody_328',['set_with_body',['../d8/df4/structwebframe_1_1core_1_1responser.html#a2cde6f34cc8e69258afabc67e30591c9',1,'webframe::core::responser']]],
+  ['set_5fwithout_5fbody_329',['set_without_body',['../d8/df4/structwebframe_1_1core_1_1responser.html#ab91b835b64eb4794c6b1545fad84284c',1,'webframe::core::responser']]],
+  ['size_330',['size',['../dc/d1d/structwebframe_1_1core_1_1path__vars.html#a5c6b95cb5ffde751331732b1509638bc',1,'webframe::core::path_vars']]],
+  ['status_5fline_331',['status_line',['../db/d97/structwebframe_1_1core_1_1status__line.html#adcaf9bbfc982aa9e299e7ed0cda6c83c',1,'webframe::core::status_line::status_line(const std::string &amp;_code)'],['../db/d97/structwebframe_1_1core_1_1status__line.html#a2a2f4a2742fd7d233af4b626704376ea',1,'webframe::core::status_line::status_line(const std::string &amp;_http, const std::string &amp;_code)']]],
+  ['string_5fto_5fmethod_332',['string_to_method',['../d2/dab/namespacewebframe_1_1core.html#af2a3a8ac18c2b1cf1a919b388a49d52c',1,'webframe::core']]],
+  ['string_5fto_5fuint_333',['string_to_uint',['../d8/df7/namespacewebframe_1_1__compile__time.html#a4feda887d261992c9c217be348d326d9',1,'webframe::_compile_time']]],
+  ['strings_5fequal_334',['strings_equal',['../d2/dab/namespacewebframe_1_1core.html#aa69568f9f612ee58a961429b46d290f8',1,'webframe::core']]],
+  ['synchronizedfile_335',['SynchronizedFile',['../de/d22/class_synchronized_file.html#a1b3f026cad140a83e14974e1cc72700a',1,'SynchronizedFile::SynchronizedFile(std::basic_ostream&lt; char &gt; *path)'],['../de/d22/class_synchronized_file.html#af2ff3452b1668d626f1def36a524025d',1,'SynchronizedFile::SynchronizedFile()']]]
 ];

@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['wait_5fend_338',['wait_end',['../d1/d67/classwebframe_1_1core_1_1application.html#aa4b3f8e808cc4856ca82c894fd284236',1,'webframe::core::application']]],
-  ['wait_5fstart_339',['wait_start',['../d1/d67/classwebframe_1_1core_1_1application.html#a3bf7cdd6d80b229e7147a15101c2a38b',1,'webframe::core::application']]],
-  ['warningsynchronizedfile_340',['WarningSynchronizedFile',['../d2/d95/class_warning_synchronized_file.html#a422c94b2c7369b95ae2cb0c99f3ec40b',1,'WarningSynchronizedFile::WarningSynchronizedFile(std::basic_ostream&lt; char &gt; *path)'],['../d2/d95/class_warning_synchronized_file.html#a498fa75988da037eacf43f448220bd72',1,'WarningSynchronizedFile::WarningSynchronizedFile()']]],
-  ['wrap_341',['wrap',['../df/dd9/lambda2function_8hpp.html#a47f7bdc85fce92b9a89892a50580dfad',1,'lambda2function.hpp']]]
+  ['var_343',['var',['../d1/dc8/structwebframe_1_1core_1_1path__vars_1_1var.html#a48aad13c39081402a98f7ae3300f523f',1,'webframe::core::path_vars::var::var()'],['../d1/dc8/structwebframe_1_1core_1_1path__vars_1_1var.html#a788a9dbed80815246f4adbf0aa1dcc0e',1,'webframe::core::path_vars::var::var(const std::string &amp;_value)'],['../d1/dc8/structwebframe_1_1core_1_1path__vars_1_1var.html#a82e1fa223f13f9415adf311b16d5e54d',1,'webframe::core::path_vars::var::var(const std::string &amp;_value, const std::string &amp;_type)']]],
+  ['var_5findex_344',['var_index',['../d8/df7/namespacewebframe_1_1__compile__time.html#a5602122db241221c7f297dc42e61c56c',1,'webframe::_compile_time']]]
 ];

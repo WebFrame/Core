@@ -1,7 +1,4 @@
 var searchData=
 [
-  ['call_345',['call',['../d8/df4/structwebframe_1_1core_1_1responser.html#aa1470a91b12342341e67060a64cc7eb1',1,'webframe::core::responser']]],
-  ['code_346',['code',['../db/d97/structwebframe_1_1core_1_1status__line.html#a8254cefa8653407a352849760e0efe79',1,'webframe::core::status_line']]],
-  ['codes_347',['codes',['../d2/d97/namespacehttp__codes.html#a64b1d16f985541221497e1ecbc96ef08',1,'http_codes::codes()'],['../d8/df7/namespacewebframe_1_1__compile__time.html#a11115131749411f867e63916d9eaca95',1,'webframe::_compile_time::codes()']]],
-  ['constant_5fv_348',['constant_v',['../d8/df7/namespacewebframe_1_1__compile__time.html#acfa34449041cf9109ab1e2a3f0921deb',1,'webframe::_compile_time']]]
+  ['body_353',['body',['../d7/df1/classwebframe_1_1core_1_1request.html#a40b36175e020b98c366e73a51374b669',1,'webframe::core::request::body()'],['../d4/db2/classwebframe_1_1core_1_1response.html#af08a22b4315b715e546c72c52b1d8b7c',1,'webframe::core::response::body()'],['../df/d36/structwebframe_1_1core_1_1body__t.html#a25ac24c810c9a82c7553b264466d0243',1,'webframe::core::body_t::body()']]]
 ];

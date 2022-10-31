@@ -1,9 +1,5 @@
 var searchData=
 [
-  ['infosynchronizedfile_276',['InfoSynchronizedFile',['../de/d4e/class_info_synchronized_file.html#ac1609b14fc825123305f15d9fff642d2',1,'InfoSynchronizedFile::InfoSynchronizedFile(std::basic_ostream&lt; char &gt; *path)'],['../de/d4e/class_info_synchronized_file.html#a429db438dd36594205aaf38481e5ec34',1,'InfoSynchronizedFile::InfoSynchronizedFile()']]],
-  ['init_277',['init',['../d1/d67/classwebframe_1_1core_1_1application.html#aa04c06ccfde441020ea32dcce377fa3a',1,'webframe::core::application']]],
-  ['inithttpcodes_278',['initHttpCodes',['../d1/d67/classwebframe_1_1core_1_1application.html#a03a1cb48d000fb47802121667f167168',1,'webframe::core::application']]],
-  ['initiate_279',['initiate',['../dc/d90/classwebframe_1_1server__status.html#ad4ccdf7b30d2d018c7fd341d4aa36975',1,'webframe::server_status']]],
-  ['is_5fover_280',['is_over',['../dc/d90/classwebframe_1_1server__status.html#a9938779644b9befbe918bf823f62d81e',1,'webframe::server_status']]],
-  ['itoa_281',['itoa',['../d2/dab/namespacewebframe_1_1core.html#a29fc1ceacf514c08209131158a946ffe',1,'webframe::core']]]
+  ['handle_281',['handle',['../d8/df9/classwebframe_1_1core_1_1__application.html#aa60de851d86df93bd350a0c4df3e6b69',1,'webframe::core::_application::handle(std::string code, F _res)'],['../d8/df9/classwebframe_1_1core_1_1__application.html#a2318173e985cb73809c312e9c8979de1',1,'webframe::core::_application::handle(std::string code, std::function&lt; Ret(Ts...)&gt; const &amp;res)'],['../d1/d67/classwebframe_1_1core_1_1application.html#aa7b2e9550d630aa2a5d37421c8633952',1,'webframe::core::application::handle(std::string code, F _res)'],['../d1/d67/classwebframe_1_1core_1_1application.html#aa3ba699adffc7d7efe5967236496378f',1,'webframe::core::application::handle(std::string code, std::function&lt; Ret(Ts...)&gt; const &amp;res)']]],
+  ['handler_282',['handler',['../d8/df9/classwebframe_1_1core_1_1__application.html#a9d8dc4d0a6f976043cce6358d141bf01',1,'webframe::core::_application']]]
 ];

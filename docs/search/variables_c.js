@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['size_370',['size',['../d8/d51/structwebframe_1_1core_1_1application_1_1thread__pool.html#a964a98a37ddbf963e168c8a2d135bb51',1,'webframe::core::application::thread_pool']]],
-  ['start_371',['start',['../dc/d90/classwebframe_1_1server__status.html#a02b47ab6d036e772c9ca7a5cb05d7c91',1,'webframe::server_status']]],
-  ['status_372',['status',['../d4/db2/classwebframe_1_1core_1_1response.html#acf0246c65c36290b2cb221f5d97134a3',1,'webframe::core::response']]],
-  ['strcodes_373',['strCodes',['../d8/df7/namespacewebframe_1_1__compile__time.html#ac04df9e4322a5a089baf514a26164fcd',1,'webframe::_compile_time']]]
+  ['remaining_5fto_5fparse_374',['remaining_to_parse',['../d7/df1/classwebframe_1_1core_1_1request.html#aedd714e8ff21432e20ef4d8241425968',1,'webframe::core::request']]],
+  ['request_5fparams_375',['request_params',['../d7/df1/classwebframe_1_1core_1_1request.html#a682e248244566bed705f2635c4ac3b9b',1,'webframe::core::request']]],
+  ['requestor_376',['requestor',['../d4/d59/structwebframe_1_1core_1_1__application_1_1procedure__thread.html#afd73f3f94aa4cf595dad36ccf2907ec0',1,'webframe::core::_application::procedure_thread']]],
+  ['responses_377',['responses',['../d8/df9/classwebframe_1_1core_1_1__application.html#a05a399da1d5a475ce8423804c0744766',1,'webframe::core::_application']]],
+  ['routes_378',['routes',['../d9/d72/classwebframe_1_1core_1_1router.html#a360d32f7e1f8c33e4706079a02f938ca',1,'webframe::core::router::routes()'],['../d8/df9/classwebframe_1_1core_1_1__application.html#a73fb0b865c8120f56ee09c9bb6e273d4',1,'webframe::core::_application::routes()']]]
 ];
