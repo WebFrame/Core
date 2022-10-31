@@ -5,7 +5,7 @@
 #include "./routes/home_with_render.hpp"
 
 int main([[maybe_unused]] int args, [[maybe_unused]] char** argv) {
-	webframe::core::application app;
+	webframe::core::_application app;
 
     // setup
 #ifdef USE_INJA

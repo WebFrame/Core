@@ -6,9 +6,9 @@
 
 int main()
 {
-	static_assert(webframe::core::application::init(), "constexpr initiation failed");
+	static_assert(webframe::core::_application::init(), "constexpr initiation failed");
 	std::atomic<int> pass {0};
-	webframe::core::application app;
+	webframe::core::_application app;
 	app.set_static("./example/Sample/static", "/static")
 #ifdef USE_INJA
 		.set_templates("./example/Sample/static/templates")
