@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['loading_356',['loading',['../d7/df1/classwebframe_1_1core_1_1request.html#aa063c558fa4009bc955b3dfe41a52db1',1,'webframe::core::request']]],
-  ['logger_357',['logger',['../d1/d67/classwebframe_1_1core_1_1application.html#ac5aba9c7135d1a76f63c3cbceee81eaf',1,'webframe::core::application']]]
+  ['int64_364',['int64',['../df/ded/host_8h.html#a168afaa12b2c08e4ae1d11ea4c296e64',1,'host.h']]]
 ];
