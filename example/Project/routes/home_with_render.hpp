@@ -3,7 +3,7 @@
 
 #include <core/core.hpp>
 
-webframe::core::router home_with_render(webframe::core::application& app) {
+webframe::core::router home_with_render(webframe::core::_application& app) {
     init_routes(home)
         .route("/home", [&app]() {
 #ifdef USE_INJA
