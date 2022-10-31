@@ -68,6 +68,7 @@ namespace webframe::core
 	};
 
 	class router;
+	class _application;
 	class application;
 	struct path_vars;
 	class response;
@@ -115,10 +116,10 @@ namespace webframe::core
 			return *this;
 		}
 
-		friend class application;
+		friend class _application;
 	};
 
-	class application
+	class _application
 	{
 	private:
 		struct cmp
@@ -199,13 +200,13 @@ namespace webframe::core
 
 		std::map<std::string, responser> responses;
 
-	public:
 		SynchronizedFile performancer;
 		InfoSynchronizedFile logger;
 		WarningSynchronizedFile warn;
 		ErrorSynchronizedFile errors;
 
-		application()
+	public:
+		_application()
 		{
 #ifdef USE_INJA
 			template_dir = ".";
@@ -223,7 +224,6 @@ namespace webframe::core
 			});
 		}
 
-	public:
 		static constexpr bool initHttpCodes([[maybe_unused]] const unsigned int code = 0) {
 			/*std::visit([](auto code) {
 				constexpr auto [[maybe_unused]] _1 = http_codes::get_reason_by_code(_compile_time::codes[code]);
@@ -234,6 +234,8 @@ namespace webframe::core
 			*/
 			return true;
 		}
+
+	public:
 		static constexpr bool init()
 		{
 			static_assert(mime_types::get_mime_type(".zip").size() > 0, "mime_types were not initialized.");
@@ -254,7 +256,7 @@ namespace webframe::core
 		}
 
 		template <typename F>
-		application& handle(std::string code, F _res)
+		_application& handle(std::string code, F _res)
 		{
 			const auto res = wrap(_res);
 			responses[code] = responser(res);
@@ -262,7 +264,7 @@ namespace webframe::core
 		}
 
 		template <typename Ret, typename... Ts>
-		application& handle(std::string code, std::function<Ret(Ts...)> const& res)
+		_application& handle(std::string code, std::function<Ret(Ts...)> const& res)
 		{
 			responses[code] = responser(res);
 			return *this;
@@ -273,31 +275,31 @@ namespace webframe::core
 			return this->routes;
 		}
 
-		application& set_performancer(std::ostream* _performancer)
+		_application& set_performancer(std::ostream* _performancer)
 		{
 			performancer = SynchronizedFile(_performancer);
 			return *this;
 		}
 
-		application& set_logger(std::ostream* _logger)
+		_application& set_logger(std::ostream* _logger)
 		{
 			logger = InfoSynchronizedFile(_logger);
 			return *this;
 		}
 
-		application& set_warner(std::ostream* _logger)
+		_application& set_warner(std::ostream* _logger)
 		{
 			warn = WarningSynchronizedFile(_logger);
 			return *this;
 		}
 
-		application& set_error_logger(std::ostream* _logger)
+		_application& set_error_logger(std::ostream* _logger)
 		{
 			errors = ErrorSynchronizedFile(_logger);
 			return *this;
 		}
 
-		application& set_static(const std::string& path, const std::string& alias)
+		_application& set_static(const std::string& path, const std::string& alias)
 		{
 			std::filesystem::path p = std::filesystem::relative(path);
 			this->route(alias + "/{path}", [&path, this](const std::string& file) {
@@ -307,7 +309,7 @@ namespace webframe::core
 		}
 
 #ifdef USE_INJA
-		application& set_templates(const std::string& path)
+		_application& set_templates(const std::string& path)
 		{
 			this->template_dir = path;
 			return *this;
@@ -357,7 +359,7 @@ namespace webframe::core
 #endif
 
 		template <typename Ret, typename... Ts>
-		application& route(const std::string& path, std::function<Ret(Ts...)> const& res)
+		_application& route(const std::string& path, std::function<Ret(Ts...)> const& res)
 		{
 			auto x = convert_path_to_regex(path);
 			if (routes.find(x) == routes.end())
@@ -368,7 +370,7 @@ namespace webframe::core
 		}
 
 		template <typename F>
-		application& route(const std::string& path, F _res)
+		_application& route(const std::string& path, F _res)
 		{
 			const auto res = wrap(_res);
 			auto x = convert_path_to_regex(path);
@@ -379,7 +381,7 @@ namespace webframe::core
 			return *this;
 		}
 	private:
-		application& route(const std::string& path, responser res)
+		_application& route(const std::string& path, responser res)
 		{
 			auto x = convert_path_to_regex(path);
 			if (routes.find(x) == routes.end())
@@ -389,7 +391,7 @@ namespace webframe::core
 			return *this;
 		}
 	public:
-		application& extend_with(const router& set_of_routes, const std::string& prefix = "")
+		_application& extend_with(const router& set_of_routes, const std::string& prefix = "")
 		{
 			for (const auto& route : set_of_routes.routes) {
 				this->route(prefix + route.first, route.second);
@@ -604,9 +606,9 @@ namespace webframe::core
 		};
 
 	public:
-		application& run(const char* PORT, const unsigned int cores, bool limited = false, int requests = -1)
+		_application& run(const char* PORT, const unsigned int cores, bool limited = false, int requests = -1)
 		{
-			webframe::core::application::port_status.initiate(PORT);
+			webframe::core::_application::port_status.initiate(PORT);
 			std::thread([this](const char* PORT, const unsigned int cores, bool limited, int requests) {
 #ifdef _WIN32
 				// Initialize Winsock.
@@ -616,8 +618,8 @@ namespace webframe::core
 				//this->logger << "(main) Startup finished " << iResult << "\n";
 				if (iResult != NO_ERROR) {
 					this->errors << "(main) WSAStartup failed with error: " << iResult << "\n";
-					webframe::core::application::port_status.alert_start(PORT);
-					webframe::core::application::port_status.alert_end(PORT);
+					webframe::core::_application::port_status.alert_start(PORT);
+					webframe::core::_application::port_status.alert_end(PORT);
 					return;
 				}
 #endif
@@ -648,8 +650,8 @@ namespace webframe::core
 				if (status != 0)
 				{
 					this->errors << "(main) getaddrinfo error: " << gai_strerror(status) << "\n";
-					webframe::core::application::port_status.alert_start(PORT);
-					webframe::core::application::port_status.alert_end(PORT);
+					webframe::core::_application::port_status.alert_start(PORT);
+					webframe::core::_application::port_status.alert_end(PORT);
 					return;
 				}
 
@@ -658,8 +660,8 @@ namespace webframe::core
 				if (listener == -1)
 				{
 					this->errors << "(main) socket error: " << gai_strerror(status) << "\n";
-					webframe::core::application::port_status.alert_start(PORT);
-					webframe::core::application::port_status.alert_end(PORT);
+					webframe::core::_application::port_status.alert_start(PORT);
+					webframe::core::_application::port_status.alert_end(PORT);
 					return;
 				}
 
@@ -668,8 +670,8 @@ namespace webframe::core
 				if (status < 0)
 				{
 					this->errors << "(main) bind error: " << status << " " << gai_strerror(status) << "\n";
-					webframe::core::application::port_status.alert_start(PORT);
-					webframe::core::application::port_status.alert_end(PORT);
+					webframe::core::_application::port_status.alert_start(PORT);
+					webframe::core::_application::port_status.alert_end(PORT);
 					return;
 				}
 
@@ -677,8 +679,8 @@ namespace webframe::core
 				if (status < 0)
 				{
 					this->errors << "(main) listen error: " << gai_strerror(status) << "\n";
-					webframe::core::application::port_status.alert_start(PORT);
-					webframe::core::application::port_status.alert_end(PORT);
+					webframe::core::_application::port_status.alert_start(PORT);
+					webframe::core::_application::port_status.alert_end(PORT);
 					return;
 				}
 
@@ -686,8 +688,8 @@ namespace webframe::core
 				if (status < 0)
 				{
 					this->errors << "(main) nonblocking config error: " << gai_strerror(status) << "\n";
-					webframe::core::application::port_status.alert_start(PORT);
-					webframe::core::application::port_status.alert_end(PORT);
+					webframe::core::_application::port_status.alert_start(PORT);
+					webframe::core::_application::port_status.alert_end(PORT);
 					return;
 				}
 
@@ -699,7 +701,7 @@ namespace webframe::core
 
 				while (!limited || requests > 0) {
 					// Check if abort was requested
-					if (webframe::core::application::port_status.is_over(PORT)) {
+					if (webframe::core::_application::port_status.is_over(PORT)) {
 						break;
 					}
 
@@ -710,7 +712,7 @@ namespace webframe::core
 					
 					// Alert waiting for the first request
 					if (!started) {
-						webframe::core::application::port_status.alert_start(PORT);
+						webframe::core::_application::port_status.alert_start(PORT);
 						started = true;
 					}
 
@@ -755,8 +757,8 @@ namespace webframe::core
 					}), client);
 				}
 
-				if (!webframe::core::application::port_status.is_over(PORT)) {
-					webframe::core::application::port_status.alert_end(PORT);
+				if (!webframe::core::_application::port_status.is_over(PORT)) {
+					webframe::core::_application::port_status.alert_end(PORT);
 				}
 #ifdef _WIN32
 				WSACleanup();
@@ -767,29 +769,30 @@ namespace webframe::core
 
 		static void wait_start(const char* PORT)
 		{
-			webframe::core::application::port_status.get_start(PORT).lock();
+			webframe::core::_application::port_status.get_start(PORT).lock();
 		}
 
 		static void wait_end(const char* PORT)
 		{
-			webframe::core::application::port_status.get_end(PORT).lock();
+			webframe::core::_application::port_status.get_end(PORT).lock();
 		}
 
 		static void request_stop(const char* PORT)
 		{
-			webframe::core::application::port_status.alert_end(PORT);
+			webframe::core::_application::port_status.alert_end(PORT);
 		}
 
 		static void reset(const char* PORT)
 		{
-			webframe::core::application::port_status.reset(PORT);
+			webframe::core::_application::port_status.reset(PORT);
 		}
 	protected:
 		static server_status port_status;
 	public:
 		friend class router;
+		friend class application;
 	};
-	server_status application::port_status = server_status();
+	server_status _application::port_status = server_status();
 
 } // namespace core
 
@@ -797,7 +800,9 @@ namespace webframe::core
 
 namespace webframe::core
 {
-	application& create_app() {
-		return *(new application());
+	_application& create_app() {
+		return *(new _application());
 	}
 }
+
+#include "interface.hpp"

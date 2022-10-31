@@ -19,7 +19,7 @@ std::ostream* null;
 SCENARIO("application responser can respond with the correct header") {
 	GIVEN("Standard application with /") {
 		
-		webframe::core::application& app = webframe::core::create_app();
+		webframe::core::_application& app = webframe::core::create_app();
 		app
 			.route("/", []() {
 				return "";
@@ -30,10 +30,10 @@ SCENARIO("application responser can respond with the correct header") {
 			REQUIRE_THAT(r,	StartsWith("HTTP/1.1 200 OK"));
 		}
 
-		delete& app;
+		delete &app;
 	}
 	GIVEN("Internl server error within a request") {
-		webframe::core::application& app = webframe::core::create_app();
+		webframe::core::_application& app = webframe::core::create_app();
 		app
 			.route("/", []() {
 				return webframe::core::response(webframe::core::status_line("500"), { {"Content-Type", "text/html; charset=utf-8"} }, "");
@@ -44,13 +44,13 @@ SCENARIO("application responser can respond with the correct header") {
 			REQUIRE_THAT(r, StartsWith("HTTP/1.1 500 Internal Server Error"));
 		}
 
-		delete& app;
+		delete &app;
 	}
 }
 
 SCENARIO("application responser can respond with the correct body") {
 	GIVEN("Standard application with / and body \"sample\"") {
-		webframe::core::application& app = webframe::core::create_app(); 
+		webframe::core::_application& app = webframe::core::create_app();
 		app
 			.route("/", []() {
 				return "sample";
@@ -61,10 +61,10 @@ SCENARIO("application responser can respond with the correct body") {
 			REQUIRE_THAT(r, ContainsSubstring("sample"));
 		}
 
-		delete& app;
+		delete &app;
 	}
 	GIVEN("Standard application with /{user} and body {{user}}") {
-		webframe::core::application& app = webframe::core::create_app();
+		webframe::core::_application& app = webframe::core::create_app();
 		app
 			.route("/{text}", [](std::string username) {
 				return username;
@@ -78,13 +78,13 @@ SCENARIO("application responser can respond with the correct body") {
 			REQUIRE_THAT(r, ContainsSubstring("username"));
 		}
 
-		delete& app;
+		delete &app;
 	}
 }
 
 SCENARIO("Application responds correct") {
 	GIVEN("Standart application with \"<h1>Hello, World!</h1>\" on / and /{number}") {
-		webframe::core::application& app = webframe::core::create_app();
+		webframe::core::application app;
 		app
 			.set_logger(null)
 			.set_performancer(null)
@@ -118,12 +118,8 @@ SCENARIO("Application responds correct") {
 
 		app.request_stop("8890");
 		app.wait_end("8890");
-
-		delete& app;
 	}
 }
-
-webframe::core::application* app;
 
 TEMPLATE_TEST_CASE_SIG("Standart application with \"Hello, World!\" on /{number} for number", "[IT]",
 	((int V), V), (0), (1), (2), (3), (4), (5), (6), (7), (8), (9), (10), (11), (12), (13), (14), (15), (16), (17), (18), (19), (20), (21), (22), (23), (24), (25), (26), (27), (28), (29), (30), (31)) {
@@ -138,17 +134,16 @@ TEMPLATE_TEST_CASE_SIG("Standart application with \"Hello, World!\" on /{number}
 int main (int argc, char** argv)
 {
 	static_assert(webframe::core::application::init(), "constexpr initiation failed");
-
+	
 	std::filebuf null_f;
 	null_f.open("./bin/log/null.txt", std::ios_base::out);
 	std::ostream nul(&null_f);
 	null = &nul;
 
-	//null.setstate(std::ios_base::badbit);
-	
-	webframe::core::create_app()
-		.set_logger(null)
-		.set_performancer(null)
+	webframe::core::application app;
+	app
+		.set_logger(&nul)
+		.set_performancer(&nul)
 		.route("/{number}", [](int steps) {
 			volatile unsigned long long int test = 0;
 			for (int i = 0; i < (1 << steps); i++)
