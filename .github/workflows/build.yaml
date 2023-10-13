@@ -8,32 +8,20 @@ on:
       - dev/*
 
 jobs:
-  builds:
+  linux-builds:
     strategy:
       fail-fast: false
       matrix:
         cxx_compiler: [clang++, g++]
-        os: [macos-11, macos-12, windows-2019, windows-2022, ubuntu-20.04, ubuntu-22.04]
+        os: [macos-11, macos-12, ubuntu-20.04, ubuntu-22.04]
         inja: [ON, OFF]
         include:
-          # Add MSVC to the windows builds
-          - os: windows-2019
-            cxx_compiler: cl
-            job_name: MSVC
-          - os: windows-2022
-            cxx_compiler: cl
-            job_name: MSVC
-          # Set MinGW as GCC compiler for Windows
-          - os: windows-2019
-            cxx_compiler: g++
-            job_name: MinGW
-          - os: windows-2022
-            cxx_compiler: g++
-            job_name: MinGW
           # Name the compiler properly
           - cxx_compiler: clang++
+            cc_compiler: clang
             job_name: Clang
           - cxx_compiler: g++
+            cc_compiler: gcc
             job_name: GCC
     runs-on: ${{ matrix.os }}
     name: build-${{ matrix.os }}-${{ matrix.job_name }}-Inja.${{ matrix.inja }}
@@ -41,19 +29,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
-      - name: Install dependencies on Windows
-        if: contains(matrix.os, 'windows')
-        run: |
-          choco install mingw llvm
-          cmake --version
-          gcc --version
-          clang++ --version
       - name: Install dependencies on MacOS
         if: contains(matrix.os, 'macos')
         run: |
-          brew install llvm cmake
+          export HOMEBREW_NO_ANALYTICS=1
+          brew install llvm cmake gcc
           cmake --version
           clang++ --version
+          g++ --version
       - name: Install dependencies on Ubuntu
         if: contains(matrix.os, 'ubuntu')
         run: |
@@ -67,7 +50,7 @@ jobs:
       - name: Configure CMake with ${{ matrix.cxx_compiler }}
         shell: bash
         run: |
-          cmake -DCMAKE_CXX_COMPILER=${{ matrix.cxx_compiler }} -DUSE_INJA=${{ matrix.inja }} . -B build
+          cmake -DCMAKE_C_COMPILER=/usr/bin/${{ matrix.cc_compiler }} -DCMAKE_CXX_COMPILER=/usr/bin/${{ matrix.cxx_compiler }} -DUSE_INJA=${{ matrix.inja }} . -B build
       - name: Build
         shell: bash
         run: |
@@ -78,17 +61,59 @@ jobs:
           mkdir -p ./tests/bin/log
           mkdir -p ./bin/log
       - name: Run tests
-        if: contains(matrix.os, 'windows')
-        shell: bash
-        run: |
-          ./build/Debug/tests/Core-Tests.exe
-      - name: Run tests
         if: contains(matrix.os, 'ubuntu') || contains(matrix.os, 'macos')
         shell: bash
         run: |
           ./build/tests/Core-Tests
+  windows-builds:
+    strategy:
+      fail-fast: false
+      matrix:
+        cxx_compiler: [clang++.exe, g++.exe, cl.exe]
+        os: [windows-2019, windows-2022]
+        inja: [ON, OFF]
+        include:
+          # Name the compiler properly
+          - cxx_compiler: clang++.exe
+            cc_compiler: clang.exe
+            job_name: Clang
+          - cxx_compiler: g++.exe
+            cc_compiler: gcc.exe
+            job_name: GCC
+          - cxx_compiler: cl.exe
+            cc_compiler: cl.exe
+            job_name: MSVC
+    runs-on: ${{ matrix.os }}
+    name: build-${{ matrix.os }}-${{ matrix.job_name }}-Inja.${{ matrix.inja }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+      - name: Install dependencies on Windows
+        if: contains(matrix.os, 'windows')
+        run: |
+          choco install mingw --version 13.1.0 --force
+          choco install llvm --version 17.0.2 --force
+          cmake --version
+          gcc --version
+          clang++ --version
+      - name: Configure CMake with ${{ matrix.cxx_compiler }}
+        shell: bash
+        run: |
+          export CC=${{ matrix.cc_compiler }}
+          export CXX=${{ matrix.cxx_compiler }}
+          cmake -DUSE_INJA=${{ matrix.inja }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx_compiler }} -DCMAKE_C_COMPILER=${{ matrix.cc_compiler }} . -B build
+      - name: Setup
+        shell: bash
+        run: |
+          mkdir -p ./tests/bin/log
+          mkdir -p ./bin/log
+      - name: Run tests
+        shell: bash
+        run: |
+          ./build/Debug/tests/Core-Tests.exe
   benchmarks:
-    needs: [builds]
+    needs: [linux-builds, windows-builds]
     runs-on: ubuntu-latest
     steps:
       - name: Benchmark
