@@ -47,7 +47,7 @@ jobs:
       - name: Install dependencies on Windows
         if: contains(matrix.os, 'windows')
         run: |
-          choco install mingw --version 11.2.0.07112021
+          choco install mingw --version 12.2.0.3042023 --force
           choco install llvm
           cmake --version
           gcc --version
