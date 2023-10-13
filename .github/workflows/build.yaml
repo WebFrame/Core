@@ -79,9 +79,15 @@ jobs:
           mkdir -p ./tests/bin/log
           mkdir -p ./bin/log
       - name: Run tests
+        if: contains(matrix.os, 'windows')
         shell: bash
         run: |
           ./tests/Core-Tests.exe
+      - name: Run tests
+        if: contains(matrix.os, 'ubuntu') || contains(matrix.os, 'macos')
+        shell: bash
+        run: |
+          ./tests/Core-Tests
   benchmarks:
     needs: [builds]
     runs-on: ubuntu-latest
