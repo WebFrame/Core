@@ -44,8 +44,7 @@ jobs:
       - name: Install dependencies on Windows
         if: contains(matrix.os, 'windows')
         run: |
-          choco install mingw --version 12.2.0.3042023 --force
-          choco install llvm
+          choco install mingw llvm
           cmake --version
           gcc --version
           clang++ --version
@@ -68,7 +67,7 @@ jobs:
       - name: Configure CMake with ${{ matrix.cxx_compiler }}
         shell: bash
         run: |
-          CXX_COMPILE=${{ matrix.cxx_compiler }} cmake -DUSE_INJA=${{ matrix.inja }} . -B build
+          cmake -DCMAKE_CXX_COMPILER=${{ matrix.cxx_compiler }} -DUSE_INJA=${{ matrix.inja }} . -B build
       - name: Build
         shell: bash
         run: |
@@ -82,12 +81,12 @@ jobs:
         if: contains(matrix.os, 'windows')
         shell: bash
         run: |
-          ./tests/Core-Tests.exe
+          ./build/Debug/tests/Core-Tests.exe
       - name: Run tests
         if: contains(matrix.os, 'ubuntu') || contains(matrix.os, 'macos')
         shell: bash
         run: |
-          ./tests/Core-Tests
+          ./build/tests/Core-Tests
   benchmarks:
     needs: [builds]
     runs-on: ubuntu-latest
