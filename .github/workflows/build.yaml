@@ -1,0 +1,93 @@
+name: Compile & Build
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - release/*
+  pull_request:
+    types: [opened]
+    branches:
+      - dev/*
+
+jobs:
+  builds:
+    strategy:
+      fail-fast: false
+      matrix:
+        cxx_compiler: [clang++, g++]
+        os: [macos-11, macos-12, windows-2019, windows-2022, ubuntu-20.04, ubuntu-22.04]
+        inja: [ON, OFF]
+        include:
+          # Add MSVC to the windows builds
+          - os: windows-2019
+            cxx_compiler: cl
+            job_name: MSVC
+          - os: windows-2022
+            cxx_compiler: cl
+            job_name: MSVC
+          # Set MinGW as GCC compiler for Windows
+          - os: windows-2019
+            cxx_compiler: g++
+            job_name: MinGW
+          - os: windows-2022
+            cxx_compiler: g++
+            job_name: MinGW
+          # Name the compiler properly
+          - cxx_compiler: clang++
+            job_name: Clang
+          - cxx_compiler: g++
+            job_name: GCC
+    runs-on: ${{ matrix.os }}
+    name: build-${{ matrix.os }}-${{ matrix.job_name }}-Inja.${{ matrix.inja }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+      - name: Install dependencies on Windows
+        if: contains(matrix.os, 'windows')
+        run: |
+          choco install mingw --version 11.2.0.07112021
+          choco install llvm
+          cmake --version
+          gcc --version
+          clang++ --version
+      - name: Install dependencies on MacOS
+        if: contains(matrix.os, 'macos')
+        run: |
+          brew install llvm cmake
+          cmake --version
+          clang++ --version
+      - name: Install dependencies on Ubuntu
+        if: contains(matrix.os, 'ubuntu')
+        run: |
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install -y gcc-11 g++-11 make clang
+          cmake --version
+          gcc-11 --version
+          g++-11 --version
+          clang++ --version
+      - name: Configure CMake with ${{ matrix.cxx_compiler }}
+        shell: bash
+        run: |
+          CXX_COMPILE=${{ matrix.cxx_compiler }} cmake -DUSE_INJA=${{ matrix.inja }} . -B build
+      - name: Build
+        shell: bash
+        run: |
+          cmake --build build
+      - name: Setup
+        shell: bash
+        run: |
+          mkdir -p ./tests/bin/log
+          mkdir -p ./bin/log
+      - name: Run tests
+        shell: bash
+        run: |
+          ./tests/Core-Tests.exe
+  benchmarks:
+    needs: [builds]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Benchmark
+        uses: ./.github/workflows/benchmark-and-deploy.yaml

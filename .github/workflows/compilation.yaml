@@ -1,13 +1,6 @@
 run-name: Compile & Build / ${{ github.event.head_commit.message }}
 name: Compile & Build
-on:
-  workflow_dispatch:
-  push:
-  pull_request:
-    types: [opened]
-  pull_request_target:
-    branches:
-      - "*"
+on: workflow_dispatch
 
 jobs:
   macos-build:
