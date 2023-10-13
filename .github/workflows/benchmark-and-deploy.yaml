@@ -45,7 +45,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         port: [8888]
-        server: [ac++-O, ac++-O1, ac++-O2, ac++-O3, ac++-Ofast, ac++-Og, ac++-Os, c++-O, c++-O1, c++-O2, c++-O3, c++-Ofast, c++-Og, c++-Os, python, node]
+        server: [ac++-O, ac++-O1, ac++-O2, ac++-O3, ac++-Ofast, ac++-Og, ac++-Os, c++-O, c++-O1, c++-O2, c++-O3, c++-Ofast, c++-Og, c++-Os] # , python, node]
     name: ${{ matrix.os }}-${{ matrix.server }}
     runs-on: ${{ matrix.os }}
     steps:
