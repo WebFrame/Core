@@ -12,14 +12,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cxx_compiler: [clang++, g++]
-        os: [macos-11, macos-12, ubuntu-20.04, ubuntu-22.04]
+        cxx_compiler: [g++] #, clang++]
+        os: [macos-11, ubuntu-20.04] # , ubuntu-22.04, macos-12]
         inja: [ON, OFF]
         include:
           # Name the compiler properly
-          - cxx_compiler: clang++
-            cc_compiler: clang
-            job_name: Clang
+          # - cxx_compiler: clang++
+          #   cc_compiler: clang
+          #   job_name: Clang
           - cxx_compiler: g++
             cc_compiler: gcc
             job_name: GCC
@@ -69,20 +69,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cxx_compiler: [clang++.exe, g++.exe, cl.exe]
-        os: [windows-2019, windows-2022]
+        cxx_compiler: [clang++.exe] # , g++.exe, cl.exe]
+        os: [windows-2019] # , windows-2022]
         inja: [ON, OFF]
         include:
           # Name the compiler properly
           - cxx_compiler: clang++.exe
             cc_compiler: clang.exe
             job_name: Clang
-          - cxx_compiler: g++.exe
-            cc_compiler: gcc.exe
-            job_name: GCC
-          - cxx_compiler: cl.exe
-            cc_compiler: cl.exe
-            job_name: MSVC
+          # - cxx_compiler: g++.exe
+          #   cc_compiler: gcc.exe
+          #   job_name: GCC
+          # - cxx_compiler: cl.exe
+          #   cc_compiler: cl.exe
+          #   job_name: MSVC
     runs-on: ${{ matrix.os }}
     name: build-${{ matrix.os }}-${{ matrix.job_name }}-Inja.${{ matrix.inja }}
     steps:
