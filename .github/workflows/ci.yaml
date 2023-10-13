@@ -11,27 +11,19 @@ on:
       - dev/*
 
 env:
-  CLANG_TIDY_VERSION: "15.0.2"
-  VERBOSE: 1
+  # Conan cache environment variables
+  CONAN_SYSREQUIRES_MODE: enabled
+  CONAN_USER_HOME: "${{ github.workspace }}/conan-cache"
+  CONAN_USER_HOME_SHORT: "${{ github.workspace }}/conan-cache/short"
+  CLANG_TIDY_VERSION: "13.0.0"
 
 jobs:
   builds:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
-
-      # Recommendations:
-      #   * support at least 2 operating systems
-      #   * support at least 2 compilers
-      #   * make sure all supported configurations for your project are built
-      #
-      # Disable/enable builds in this list to meet the above recommendations
-      # and your own projects needs
       matrix:
-        os:
-          - ubuntu-20.04
-          - macos-10.15
-          - windows-2019
+        os: [ubuntu-22.04, ubuntu-20.04, macos-13, macos-13-xl, macos-12, macos-12-xl, macos-11, windows-latest, windows-2022, windows-2019]
         compiler:
           # you can specify the version after `-` like "llvm-15.0.2".
           - llvm-15.0.2
@@ -41,30 +33,17 @@ jobs:
         build_type:
           - Release
           - Debug
-        package_maintainer_mode:
-          - ON
-          - OFF
-        build_shared:
-          - OFF
-
-        exclude:
-          # mingw is determined by this author to be too buggy to support
-          - os: windows-2019
-            compiler: gcc-11
 
         include:
           # Add appropriate variables for gcov version required. This will intentionally break
           # if you try to use a compiler that does not have gcov set
           - compiler: gcc-11
             gcov_executable: gcov
-            enable_ipo: On
 
           - compiler: llvm-15.0.2
-            enable_ipo: Off
             gcov_executable: "llvm-cov gcov"
 
           - os: macos-10.15
-            enable_ipo: Off
             enable_cppcheck: OFF
             enable_clang_tidy: OFF
 
@@ -72,11 +51,9 @@ jobs:
             enable_clang_tidy: On
             enable_cppcheck: On
 
-
           # Set up preferred package generators, for given build configurations
           - build_type: Release
             package_maintainer_mode: OFF
-            package_generator: TBZ2
 
           # This exists solely to make sure a non-multiconfig build works
           - os: ubuntu-20.04
@@ -85,10 +62,8 @@ jobs:
             build_type: Debug
             gcov_executable: gcov
             package_maintainer_mode: On
-            enable_ipo: Off
             enable_clang_tidy: On
             enable_cppcheck: On
-
 
           # Windows msvc builds
           - os: windows-2022
@@ -96,20 +71,16 @@ jobs:
             generator: "Visual Studio 17 2022"
             build_type: Debug
             package_maintainer_mode: On
-            enable_ipo: On
             enable_clang_tidy: Off
             enable_cppcheck: Off
-
 
           - os: windows-2022
             compiler: msvc
             generator: "Visual Studio 17 2022"
             build_type: Release
             package_maintainer_mode: On
-            enable_ipo: On
             enable_clang_tidy: Off
             enable_cppcheck: Off
-
 
           - os: windows-2022
             compiler: msvc
@@ -119,24 +90,19 @@ jobs:
             enable_clang_tidy: Off
             enable_cppcheck: Off
 
-
           - os: windows-2022
             compiler: msvc
             generator: "Visual Studio 17 2022"
             build_type: Release
             package_maintainer_mode: Off
-            package_generator: ZIP
             enable_clang_tidy: Off
             enable_cppcheck: Off
-
 
           - os: windows-2022
             compiler: msvc
             generator: "Visual Studio 17 2022"
             build_type: Release
             package_maintainer_mode: On
-            enable_ipo: On
-            build_shared: On
             enable_clang_tidy: Off
             enable_cppcheck: Off
 
@@ -157,7 +123,7 @@ jobs:
         with:
           compiler: ${{ matrix.compiler }}
           build_type: ${{ matrix.build_type }}
-          package_maintainer_mode: ${{ matrix.package_maintainer_mode }}
+          developer_mode: ${{ matrix.developer_mode }}
           generator: ${{ matrix.generator }}
 
       - name: Setup Cpp
@@ -165,16 +131,13 @@ jobs:
         with:
           compiler: ${{ matrix.compiler }}
           vcvarsall: ${{ contains(matrix.os, 'windows' )}}
-
           cmake: true
           ninja: true
+          conan: true
           vcpkg: false
           ccache: true
           clangtidy: ${{ env.CLANG_TIDY_VERSION }}
-
-
           cppcheck: true
-
           gcovr: true
           opencppcoverage: true
 
