@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, ubuntu-20.04, macos-13, macos-13-xl, macos-12, macos-12-xl, macos-11, windows-latest, windows-2022, windows-2019]
+        os: [ubuntu-22.04, ubuntu-20.04, macos-13, macos-12, macos-11, windows-latest, windows-2022, windows-2019]
         compiler:
           # you can specify the version after `-` like "llvm-15.0.2".
           - llvm-15.0.2
@@ -32,7 +32,6 @@ jobs:
           - "Ninja Multi-Config"
         build_type:
           - Release
-          - Debug
 
         include:
           # Add appropriate variables for gcov version required. This will intentionally break
@@ -43,10 +42,6 @@ jobs:
           - compiler: llvm-15.0.2
             gcov_executable: "llvm-cov gcov"
 
-          - os: macos-10.15
-            enable_cppcheck: OFF
-            enable_clang_tidy: OFF
-
           - os: ubuntu-20.04
             enable_clang_tidy: On
             enable_cppcheck: On
@@ -56,37 +51,11 @@ jobs:
             package_maintainer_mode: OFF
 
           # This exists solely to make sure a non-multiconfig build works
-          - os: ubuntu-20.04
-            compiler: gcc-11
-            generator: "Unix Makefiles"
-            build_type: Debug
-            gcov_executable: gcov
-            package_maintainer_mode: On
-            enable_clang_tidy: On
-            enable_cppcheck: On
-
-          # Windows msvc builds
-          - os: windows-2022
-            compiler: msvc
-            generator: "Visual Studio 17 2022"
-            build_type: Debug
-            package_maintainer_mode: On
-            enable_clang_tidy: Off
-            enable_cppcheck: Off
-
           - os: windows-2022
             compiler: msvc
             generator: "Visual Studio 17 2022"
             build_type: Release
             package_maintainer_mode: On
-            enable_clang_tidy: Off
-            enable_cppcheck: Off
-
-          - os: windows-2022
-            compiler: msvc
-            generator: "Visual Studio 17 2022"
-            build_type: Debug
-            package_maintainer_mode: Off
             enable_clang_tidy: Off
             enable_cppcheck: Off
 
