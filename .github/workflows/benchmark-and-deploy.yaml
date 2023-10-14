@@ -13,6 +13,12 @@ on:
         required: true
         type: string
 jobs:
+  env:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Env
+      run: |
+        echo "${{ inputs.branch }} ${{ github.head_ref }}"
   cppcheck:
     runs-on: ubuntu-latest
     steps:
@@ -160,7 +166,7 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.branch }}
+          ref: ${{ github.head_ref }}
           submodules: 'recursive'
       - name: Download all artifacts 🔧
         uses: actions/download-artifact@v3
@@ -183,10 +189,10 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ inputs.branch }}
+          branch: ${{ github.head_ref }}
   Deploy2GithubPages:
     needs: [deploy]
     uses: WebFrame/webframe.github.io/.github/workflows/website_update.yaml@test-pipelines
     with:
-      branch:
+      branch: ${{ github.head_ref }}
       GITHUB_TOKEN: ${{ github.token }}

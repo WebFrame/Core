@@ -34,6 +34,9 @@ jobs:
           - "Ninja Multi-Config"
         build_type:
           - Release
+        inja:
+          - ON
+          - OFF
 
         #exclude:
         #  - os: windows-latest
@@ -173,7 +176,7 @@ jobs:
 
       - name: Configure CMake
         run: |
-          cmake -S . -B ./build -G "${{matrix.generator}}" -DCMAKE_BUILD_TYPE:STRING=${{matrix.build_type}}
+          cmake -S . -B ./build -G "${{matrix.generator}}" -DUSE_INJA=${{ matrix.inja }} -DCMAKE_BUILD_TYPE:STRING=${{matrix.build_type}}
 
       - name: Build
         # Execute the build.  You can specify a specific target with "--target <NAME>"
