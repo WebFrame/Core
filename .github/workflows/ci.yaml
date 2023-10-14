@@ -258,10 +258,14 @@ jobs:
         shell: bash
         run: |
           ./build/tests/${{matrix.build_type}}/Core-Tests.exe
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
   benchmarks:
     needs: [builds]
     uses: ./.github/workflows/benchmark-and-deploy.yaml
     with:
-      branch:
+      branch: ${{ github.head_ref }}
       GITHUB_TOKEN: ${{ github.token }}
     secrets: inherit
