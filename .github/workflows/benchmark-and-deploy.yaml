@@ -8,7 +8,6 @@ on:
         required: true
         default: 'main'
         type: string
-    secrets:
       GITHUB_TOKEN:
         description: 'GITHUB_TOKEN'
         required: true
@@ -183,7 +182,7 @@ jobs:
       - name: Push pipeline reports
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ inputs.GITHUB_TOKEN }}
           branch: ${{ inputs.branch }}
   Deploy2GithubPages:
     needs: [deploy]
