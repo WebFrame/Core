@@ -1,7 +1,7 @@
 name: Check builds
 on:
   workflow_dispatch:
-  
+
   pull_request:
   release:
     types: [published]
@@ -258,4 +258,7 @@ jobs:
   benchmarks:
     needs: [builds]
     uses: ./.github/workflows/benchmark-and-deploy.yaml
+    with:
+      branch:
+      GITHUB_TOKEN: ${{ github.token }}
     secrets: inherit
