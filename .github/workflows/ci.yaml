@@ -266,6 +266,6 @@ jobs:
     needs: [builds]
     uses: ./.github/workflows/benchmark-and-deploy.yaml
     with:
-      branch: ${{ github.head_ref }}
+      branch: ${{ github.ref_name }}
       GITHUB_TOKEN: ${{ github.token }}
     secrets: inherit
