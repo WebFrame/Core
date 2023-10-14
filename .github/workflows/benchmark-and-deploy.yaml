@@ -1,13 +1,23 @@
 run-name: Benchmark & Deploy
 name: Benchmark & Deploy
-on: workflow_dispatch
-
+on:
+  workflow_call:
+    inputs:
+      branch:
+        description: 'Branch ref'
+        required: true
+        default: 'main'
+      secrets:
+        GITHUB_TOKEN:
+          description: 'GITHUB_TOKEN'
+          required: true
 jobs:
   cppcheck:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
+        ref: ${{ inputs.branch }}
         submodules: 'recursive'
     - name: Install CppCheck
       run: |
@@ -25,8 +35,9 @@ jobs:
   doxygen:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.branch }}
           submodules: 'recursive'
       - name: Configure
         shell: bash
@@ -59,8 +70,9 @@ jobs:
           echo "optimization=$optimization" >> $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.branch }}
           submodules: 'recursive'
       - name: Install dependencies on ubuntu
         if: startsWith(matrix.server, 'c++') || startsWith(matrix.server, 'ac++')
@@ -114,8 +126,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.branch }}
           submodules: 'recursive'
       - name: Download all artifacts 🔧
         uses: actions/download-artifact@v3
@@ -144,8 +157,9 @@ jobs:
     needs: [cppcheck, doxygen, benchmark]
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.branch }}
           submodules: 'recursive'
       - name: Download all artifacts 🔧
         uses: actions/download-artifact@v3
@@ -168,7 +182,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          branch: ${{ inputs.branch }}
   Deploy2GithubPages:
     needs: [deploy]
     uses: WebFrame/webframe.github.io/.github/workflows/website_update.yaml@test-pipelines
