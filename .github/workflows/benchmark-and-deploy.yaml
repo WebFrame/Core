@@ -195,5 +195,4 @@ jobs:
     with:
       branch: ${{ inputs.branch }}
       GITHUB_TOKEN: ${{ github.token }}
-    secrets:
-      token: ${{ github.token }}
+    secrets: inherit
