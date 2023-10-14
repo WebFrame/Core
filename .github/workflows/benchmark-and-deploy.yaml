@@ -8,11 +8,11 @@ on:
         required: true
         default: 'main'
         type: string
-      secrets:
-        GITHUB_TOKEN:
-          description: 'GITHUB_TOKEN'
-          required: true
-          type: string
+    secrets:
+      GITHUB_TOKEN:
+        description: 'GITHUB_TOKEN'
+        required: true
+        type: string
 jobs:
   cppcheck:
     runs-on: ubuntu-latest
