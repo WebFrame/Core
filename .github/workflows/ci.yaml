@@ -43,12 +43,12 @@ jobs:
             compiler: gcc-11
             generator: "Ninja Multi-Config"
             build_type: Release
-            
+
           - os: windows-2022
             compiler: gcc-11
             generator: "Ninja Multi-Config"
             build_type: Release
-            
+
           - os: windows-2019
             compiler: gcc-11
             generator: "Ninja Multi-Config"
@@ -153,16 +153,16 @@ jobs:
             ${{ env.XDG_CACHE_HOME }}/vcpkg/archives
             ${{ env.LOCALAPPDATA }}\vcpkg\archives
             ${{ env.APPDATA }}\vcpkg\archives
-          key: ${{ runner.os }}-${{ matrix.compiler }}-${{ env.BUILD_TYPE }}-${{ hashFiles('**/CMakeLists.txt') }}-${{ hashFiles('./vcpkg.json')}}
+          key: ${{ runner.os }}-${{ matrix.compiler }}-${{ matrix.build_type }}-${{ hashFiles('**/CMakeLists.txt') }}-${{ hashFiles('./vcpkg.json')}}
           restore-keys: |
-            ${{ runner.os }}-${{ env.BUILD_TYPE }}
+            ${{ runner.os }}-${{ matrix.build_type }}
 
       - name: Setup Cache
         uses: ./.github/actions/setup_cache
         with:
           compiler: ${{ matrix.compiler }}
           build_type: ${{ matrix.build_type }}
-          developer_mode: trrue
+          developer_mode: true
           generator: ${{ matrix.generator }}
 
       - name: Setup Cpp
@@ -231,12 +231,24 @@ jobs:
       #     flags: ${{ runner.os }}
       #     name: ${{ runner.os }}-coverage
       #     files: ./build/coverage.xml
-      
+
       - name: Setup tests
         shell: bash
         run: |
           mkdir -p ./tests/bin/log
           mkdir -p ./bin/log
+      - name: Root dir
+        shell: bash
+        run: |
+          ls .
+      - name: Build dir
+        shell: bash
+        run: |
+          ls build
+      - name: Test dir
+        shell: bash
+        run: |
+          ls tests
       - name: Run tests
         if: contains(matrix.generator, 'Unix Makefiles')
         shell: bash
@@ -252,7 +264,11 @@ jobs:
         shell: bash
         run: |
           ./build/tests/${{matrix.build_type}}/Core-Tests.exe
-  benchmarks:
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+  doc:
     needs: [builds]
     uses: ./.github/workflows/benchmark-and-deploy.yaml
     with:

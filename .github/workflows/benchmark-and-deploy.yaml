@@ -1,20 +1,20 @@
-run-name: Benchmark & Deploy / ${{ github.event.head_commit.message }}
+run-name: Benchmark & Deploy
 name: Benchmark & Deploy
 on:
-  workflow_dispatch:
-  push:
-  pull_request:
-    types: [opened]
-  pull_request_target:
-    branches:
-      - "*"
-
+  workflow_call:
+    inputs:
+      branch:
+        description: 'Branch ref'
+        required: true
+        default: 'main'
+        type: string
 jobs:
   cppcheck:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
+        ref: ${{ inputs.branch }}
         submodules: 'recursive'
     - name: Install CppCheck
       run: |
@@ -32,8 +32,9 @@ jobs:
   doxygen:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.branch }}
           submodules: 'recursive'
       - name: Configure
         shell: bash
@@ -52,7 +53,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         port: [8888]
-        server: [ac++-O, ac++-O1, ac++-O2, ac++-O3, ac++-Ofast, ac++-Og, ac++-Os, c++-O, c++-O1, c++-O2, c++-O3, c++-Ofast, c++-Og, c++-Os, python, node]
+        server: [ac++-O] #, ac++-O1, ac++-O2, ac++-O3, ac++-Ofast, ac++-Og, ac++-Os, c++-O, c++-O1, c++-O2, c++-O3, c++-Ofast, c++-Og, c++-Os] # , python, node]
     name: ${{ matrix.os }}-${{ matrix.server }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -66,8 +67,9 @@ jobs:
           echo "optimization=$optimization" >> $GITHUB_OUTPUT
           cat $GITHUB_OUTPUT
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.branch }}
           submodules: 'recursive'
       - name: Install dependencies on ubuntu
         if: startsWith(matrix.server, 'c++') || startsWith(matrix.server, 'ac++')
@@ -121,8 +123,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.branch }}
           submodules: 'recursive'
       - name: Download all artifacts 🔧
         uses: actions/download-artifact@v3
@@ -151,35 +154,41 @@ jobs:
     needs: [cppcheck, doxygen, benchmark]
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
+          ref: gh-pages
           submodules: 'recursive'
       - name: Download all artifacts 🔧
         uses: actions/download-artifact@v3
       - name: Prepare
         shell: bash
         run: |
-          rm -rf ./reports
-          mkdir -p ./reports/benchmark ./reports/docs ./reports/codeql_report
-          mv -f ./cppcheck/* reports/codeql_report/
-          mv -f ./doxygen/* reports/docs/
-          mv -f ./benchmark_report/* ./reports/benchmark/
+          echo "${{ inputs.branch }}" >> branches.txt
+          cat branches.txt | sort | uniq > branches.txt
+          rm -rf ./${{ inputs.branch }}/reports
+          mkdir -p ./${{ inputs.branch }}/reports/benchmark ./${{ inputs.branch }}/reports/docs ./${{ inputs.branch }}/reports/codeql_report
+          mv -f ./cppcheck/* ./${{ inputs.branch }}/reports/codeql_report/
+          mv -f ./doxygen/* ./${{ inputs.branch }}/reports/docs/
+          mv -f ./benchmark_report/* ./${{ inputs.branch }}/reports/benchmark/
       - name: Commit the reports
         shell: bash
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add reports/
+          git add ./${{ inputs.branch }}
           git commit -m "Pipeline reports"
       - name: Push pipeline reports
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-      - name: Deploy to GitHub Pages 🚀
-        continue-on-error: true
-        if: ${{ always() && github.ref == 'refs/heads/master' }}
-        uses: JamesIves/github-pages-deploy-action@v4.2.5
+          github_token: ${{ github.token }}
+          branch: gh-pages
+  trigger:
+    needs: [deploy]
+    runs-on: ubuntu-latest
+    name: "📦 Trigger update doc"
+    steps:
+      - uses: passeidireto/trigger-external-workflow-action@main
         with:
-          branch: gh-pages # The branch the action should deploy to.
-          folder: ./reports # The folder the action should deploy.
+          repository: WebFrame/webframe.github.io
+          event: doc_update
+          github_pat: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
