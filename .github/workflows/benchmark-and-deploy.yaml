@@ -8,6 +8,10 @@ on:
         required: true
         default: 'main'
         type: string
+      GITHUB_TOKEN:
+        description: 'GITHUB_TOKEN'
+        required: true
+        type: string
 jobs:
   env:
     runs-on: ubuntu-latest
@@ -190,3 +194,4 @@ jobs:
     uses: WebFrame/webframe.github.io/.github/workflows/website_update.yaml@test-pipelines
     with:
       core_branch: ${{ inputs.branch }}
+      core_GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
