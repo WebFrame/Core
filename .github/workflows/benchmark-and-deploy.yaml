@@ -165,7 +165,7 @@ jobs:
         run: |
           echo "${{ inputs.branch }}" >> branches.txt
           cat branches.txt | sort | uniq > branches.txt
-          rm -rf ./reports
+          rm -rf ./${{ inputs.branch }}/reports
           mkdir -p ./${{ inputs.branch }}/reports/benchmark ./${{ inputs.branch }}/reports/docs ./${{ inputs.branch }}/reports/codeql_report
           mv -f ./cppcheck/* ./${{ inputs.branch }}/reports/codeql_report/
           mv -f ./doxygen/* ./${{ inputs.branch }}/reports/docs/
