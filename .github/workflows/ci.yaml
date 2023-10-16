@@ -36,7 +36,7 @@ jobs:
           - Release
         inja:
           - ON
-          - OFF
+          # - OFF
 
         #exclude:
         #  - os: windows-latest
