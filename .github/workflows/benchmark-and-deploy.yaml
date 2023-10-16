@@ -156,7 +156,7 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
         with:
-          ref: gh-page
+          ref: gh-pages
           submodules: 'recursive'
       - name: Download all artifacts 🔧
         uses: actions/download-artifact@v3
@@ -181,4 +181,13 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ github.token }}
-          branch: gh-page
+          branch: gh-pages
+  trigger:
+    runs-on: ubuntu-latest
+    name: "📦 Trigger Project Test"
+    steps:
+      - uses: passeidireto/trigger-external-workflow-action@main
+        with:
+          repository: my-org/my-repo
+          event: doc_update
+          github_pat: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
