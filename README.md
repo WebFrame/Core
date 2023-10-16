@@ -8,11 +8,11 @@
 | GCC, Clang, MSVC  | -std=c++2a _or_ -std=c++20    |
 # Testing
 ## Cppcheck - static code analysis
-Check the static code analysis of the project [here](https://webframe.github.io/Core/codeql_report/).
+Check the static code analysis of the project [here](https://webframe.github.io/Core/main/reports/codeql_report/).
 ## Performance
-Check the performance check of the project [here](https://webframe.github.io/Core/benchmark/).
+Check the performance check of the project [here](webframe.github.io/Core/main/reports/benchmark).
 ## Code documentation
-Check the Doxygen documentation of the library [here](https://webframe.github.io/Core/docs/).
+Check the Doxygen documentation of the library [here](https://webframe.github.io/Core/main/reports/docs/).
 # How to use
 
 1. Make sure to include the library
