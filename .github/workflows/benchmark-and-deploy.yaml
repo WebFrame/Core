@@ -185,7 +185,7 @@ jobs:
   trigger:
     needs: [deploy]
     runs-on: ubuntu-latest
-    name: "📦 Trigger Project Test"
+    name: "📦 Trigger update doc"
     steps:
       - uses: passeidireto/trigger-external-workflow-action@main
         with:
