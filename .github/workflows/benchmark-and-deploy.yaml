@@ -193,6 +193,6 @@ jobs:
     needs: [deploy]
     uses: WebFrame/webframe.github.io/.github/workflows/website_update.yaml@test-pipelines
     with:
-      branch: ${{ inputs.branch }}
+      core_branch: ${{ inputs.branch }}
       GITHUB_TOKEN: ${{ github.token }}
     secrets: inherit
