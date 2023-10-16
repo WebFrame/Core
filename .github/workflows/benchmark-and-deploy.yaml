@@ -8,10 +8,6 @@ on:
         required: true
         default: 'main'
         type: string
-      GITHUB_TOKEN:
-        description: 'GITHUB_TOKEN'
-        required: true
-        type: string
 jobs:
   env:
     runs-on: ubuntu-latest
@@ -187,11 +183,11 @@ jobs:
       - name: Push pipeline reports
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ inputs.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ inputs.branch }}
   Deploy2GithubPages:
     needs: [deploy]
     uses: WebFrame/webframe.github.io/.github/workflows/website_update.yaml@test-pipelines
     with:
       core_branch: ${{ inputs.branch }}
-      core_GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+      core_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
